@@ -1,0 +1,2707 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <title>LavaLust PHP Framework</title>
+    
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="LavaLust is a lightweight Web Framework - (using MVC pattern) - for people who are developing web sites using PHP. It helps
+	you write code easily using Object-Oriented Approach. It also provides set of libraries for commonly needed tasks, as well as
+	a helper functions to minimize the amount of time coding.">
+    <meta name="author" content="Ronald M. Marasigan">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome JS-->
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+
+    <!-- Theme CSS -->  
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+	
+</head> 
+
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html"><img class="logo-icon me-2" src="assets/images/coderdocs-logo.svg" alt="logo"><span class="logo-text">Lava<span class="text-alt">Lust</span></span></a></div>    
+                </div><!--//docs-logo-wrapper-->
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <div class="top-search-box d-none d-lg-flex">
+		                <!--<form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>-->
+	                </div>
+	
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/ronmarasigan/LavaLust"><i class="fab fa-github fa-fw"></i></a></li>
+			            <li class="list-inline-item"><a href="https://facebook.com/marasiganronald"><i class="fab fa-facebook fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="https://www.linkedin.com/in/ron-marasigan-a843711b4"><i class="fab fa-linkedin fa-fw"></i></a></li>
+		            </ul><!--//social-list-->
+		            <a href="https://pinoywap.org/misc/lavalust" class="btn btn-primary d-none d-lg-flex">Download</a>
+	            </div><!--//docs-top-utilities-->
+            </div><!--//container-->
+        </div><!--//branding-->
+    </header><!--//header-->
+    
+    
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <div class="top-search-box d-lg-none p-3">
+                <!--<form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>-->
+            </div>
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+				    <li class="nav-item section-title"><a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>Introduction</a></li>
+				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder me-2"><i class="fas fa-arrow-down"></i></span>Installation</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-1">Server Requirements</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-2">Installation Instructions</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-3">Upgrading Version</a></li>
+				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder me-2"><i class="fas fa-cogs"></i></span>LavaLust Overview</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-1">Getting Started</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-2">LavaLust at a Glance</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-3">Supported Features</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-3-4">Application Flowchart</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-3-5">Model-View-Controller</a></li>
+				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-4"><span class="theme-icon-holder me-2"><i class="fas fa-tools"></i></span>General Topics</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-1">LavaLust URLs</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-2">Controllers</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-3">Views</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-4">Models</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-5">Helpers</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-6">Libraries</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-7">Auto-loading Libraries</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-8">URI Routing</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-9">Security</a></li>
+				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-5"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>Libraries</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Performance Class</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-5-2">Cache Class</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-5-3">Email Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-4">Form Validation Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-5">Upload Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Language Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-7">Session Library</a></li>
+			    </ul>
+
+		    </nav><!--//docs-nav-->
+	    </div><!--//docs-sidebar-->
+	    <div class="docs-content">
+		    <div class="container">
+			    <article class="docs-article" id="section-1">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">Introduction <span class="docs-time">Last updated: 2022-02-11</span></h1>
+					    <section class="docs-intro">
+						    <p>LavaLust is a lightweight Web Framework - (using MVC pattern) - for people who are developing web sites using PHP. It helps you write code easily using Object-Oriented Approach. It also provides set of libraries for commonly needed tasks, as well as a helper functions to minimize the amount of time coding.</p>
+							<p>Lavalust uses MVC patter. MVC is short for Model, View, and Controller. MVC is a popular way of organizing your code. The big idea behind MVC is that each section of your code has a purpose, and those purposes are different. Some of your code holds the data of your app, some of your code makes your app look nice, and some of your code controls how your app functions.</p>
+						</section><!--//docs-intro-->
+				    </header>
+				</article>
+			    <article class="docs-article" id="section-2">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">Installation</h1>
+					    <section class="docs-intro">
+							<p>Installation of Lavalust is easy as 1...2...3...</p>
+						</section><!--//docs-intro-->
+				    </header>
+				     <section class="docs-section" id="item-2-1">
+						<h2 class="section-heading">Server Requirements</h2>
+						<ol>
+							<li>At least use PHP 7.4 (it will work with 7.2+ but I suggest to use newer version of PHP)</li>
+							<li>MySQL 5 or higher</li>
+							<li>PDO is installed</li>
+							<li>Enaled mod_rewrite(optional but recommended for security purposes)</li>
+						</ol>
+					</section><!--//section-->
+					
+					<section class="docs-section" id="item-2-2">
+						<h2 class="section-heading">Installation Instruction</h2>
+						<p>You can install LavaLust in four steps</p>
+						<ol>
+							<li>Unzip the package</li>
+							<li>Upload the LavaLust folders and files to your server.</li>
+							<li>Open the app/config/config.php file with a text editor and set your base URL.</li>
+							<li>If you intend to use a database, open the app/config/database.php file with a text editor and set yourdatabase settings</li>
+						</ol>
+						<p>To add more flavor in your security, you can change the $system_path and $application_folder name to something new. You can do this by changing their values inside index.php. You can also move them outside public_html directory for better security.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$application_folder 	= 'app';
+$public_folder		= 'public';
+								</code>
+							</pre>
+
+						<p>If you plan to do so, you will need to change this two lines inside index.php. Change ROOT_DIR to the full path of where you placed your scheme and app folder. e.g. '/www/MyUser/scheme'.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+define('SYSTEM_DIR', ROOT_DIR . $system_path . DIRECTORY_SEPARATOR);
+define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);										
+								</code>
+							</pre>
+						</div><!--//docs-code-block-->
+					</section><!--//section-->
+
+					<section class="docs-section" id="item-2-3">
+						<h2 class="section-heading">Upgrading Version</h2>
+						<h4>Upgrading from 2.0 to 3.0</h4>
+						<div class="callout-block callout-block-info">
+                            
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>Version 3.0 has several updates in scheme folder files. It was also designed to use at least PHP 7.4.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
+						<h6>Changelog</h6>
+						<ul>
+							<li>Remove xss_clean() using Escaper class. If you want to use it, install htmlpurifier library then create a function "xss_clean()" inside a helper.</li>
+							<li>You can now use different instances of database connections. Changes also affect the database.php file inside the config folder. (it will be discussed later in this documetation) </li>
+							<li>Inside view fie, if you pass $data variable from controller, you can easily use the array key of it inside the view. (it will be discussed later in this documetation)</li>
+							<li>Updating new methods in Database Class and Form Form_validation</li>
+						</ul>
+						<hr>
+						<h4>Upgrading from 1.0 to 2.0</h4>
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
+						<div class="callout-block callout-block-info">
+                            
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>You can still use the Version 2 the way you use the Version 1 before. It just that some method/function names and folders were renamed.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<h6>Changelog</h6>
+						<ul>
+							<li>$this->load is now $this->call</li>
+							<li>super object get_instance() is now lava_instance()</li>
+							<li>folder structures but you can still change it to your preferred names and path</li>
+							<li>Constants and mimes file inside config folder were deleted. We are making the framework as simple and as
+								light as possible</li>
+							<li>cache is now inside runtime folder</li>
+						</ul>
+						<h4>Step 1: Update your LavaLust files</h4>
+						<p>Replace all files and directories in your scheme/ directory.</p>
+					</section><!--//section-->
+			    </article><!--//docs-article-->
+			    <article class="docs-article" id="section-3">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">LavaLust Overview</h1>
+					    <section class="docs-intro">
+							<p>The following pages describe the broad concepts behind LavaLust:</p>
+						</section><!--//docs-intro-->
+				    </header>
+				    <section class="docs-section" id="item-3-1">
+						<h2 class="section-heading">Getting Started With LavaLust</h2>
+						<p>I made this documentation as simple and clear as posible.</p>
+						<p>You need first to do <a href="https://github.com/ronmarasigan/LavaLust">install</a> LavaLust, then read all the topics one by one.</p>
+						<p>I also provide examples for you to try.</p>
+						<p>Once you get familiarize with the flow, you can proceed to the different libraries and helpers availble in the framework.</p>
+					</section>
+					<section class="docs-section" id="item-3-2">
+						<h2 class="section-heading">LavaLust at a Glance</h2>
+						<br>
+						<h4>Free, Fast and Light Weight</h4>
+						<p>LavaLust is an application framework written in PHP that was designed for faster project development. It has built-in libraries and helpers that can minimize the amount of time needed to code for something. LavaLust is also <b>OPEN-SOURCE</b> under MIT license. Unlike other frameworks out there, LavaLust is very <b>LIGHT WEIGHT</b> and <b>FAST</b>.</p>
+						<br>
+						<h4>Mode-View-Controller</h4>
+						<p>The Model-View-Controller (MVC) is an architectural pattern that separates an application into three main logical components: the model, the view, and the controller. Each of these components are built to handle specific development aspects of an application. MVC is one of the most frequently used industry-standard web development framework to create scalable and extensible projects.</p>
+						<br>
+						<h4>Genrates Clean URLs</h4>
+						<p>The URLs generated by LavaLust are clean and search-engine friendly. Rather than using the standard “query string” approach to URLs that is synonymous with dynamic systems, LavaLust uses a segment-based approach:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/news/article/345
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>By default the index.php file is included in the URL but it can be removed using a simple .htaccess file.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+					</section><!--//section-->
+					<section class="docs-section" id="item-3-3">
+						<h2 class="section-heading">Support Features</h2>
+						<ul>
+							<li>Model-View-Controller Pattern</li>
+							<li>Super Light Weight</li>
+							<li>Simple Query Builder Class</li>
+							<li>Form Data Validation</li>
+							<li>Session Management</li>
+							<li>Simple Email Sending</li>
+							<li>File Uploading Class</li>
+							<li>Performance Class</li>
+							<li>Pagination</li>
+							<li>Simple Page Caching</li>
+							<li>File Downloading Class</li>
+							<li>Search-engine Friendly URLs</li>
+							<li>Some helper functions</li>
+						</ul>
+					</section>
+					<section class="docs-section" id="item-3-4">
+						<h2 class="section-heading">Application Flow Chart</h2>
+						<p>The following graphic illustrates how data flows throughout the system:</p>
+						<img src="assets/images/appflowchart.gif" alt="application flowchart">
+						<ol>
+							<li>The index.php serves as the front controller, initializing the base
+							resources needed to run LavaLust.</li>
+							<li>The Router examines the HTTP request to determine what should be done
+							with it.</li>
+							<li>If a cache file exists, it is sent directly to the browser, bypassing
+							the normal system execution.</li>
+							<li>Security. Before the application controller is loaded, the HTTP
+							request and any user submitted data is filtered for security.</li>
+							<li>The Controller loads the model, core libraries, helpers, and any
+							other resources needed to process the specific request.</li>
+							<li>The finalized View is rendered then sent to the web browser to be
+							seen. If caching is enabled, the view is cached first so that on
+							subsequent</li>
+						</ol>
+					</section>
+					<section class="docs-section" id="item-3-5">
+						<h2 class="section-heading">Model-View-Controller</h2>
+						<p>LavaLust is based on the Model-View-Controller development pattern. MVC is a software approach that separates application logic from presentation. In practice, it permits your web pages to contain minimal scripting since the presentation is separate from the PHP scripting.</p>
+						<ul>
+							<li>The <strong>Model</strong> represents your data structures. Typically your model
+							classes will contain functions that help you retrieve, insert, and
+							update information in your database.</li>
+							<li>The <strong>View</strong> is the information that is being presented to a user. A
+							View will normally be a web page, but in LavaLust, a view can also
+							be a page fragment like a header or footer. It can also be an RSS
+							page, or any other type of “page”.</li>
+							<li>The <strong>Controller</strong> serves as an <em>intermediary</em> between the Model, the
+							View, and any other resources needed to process the HTTP request and
+							generate a web page.</li>
+						</ul>
+					</section>
+				</article>
+			    <article class="docs-article" id="section-4">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">General Topics</h1>
+					    <section class="docs-intro">
+							<p>We will discuss here all the topics that will be needed for better understanding of LavaLust Framework.</p>
+						</section><!--//docs-intro-->
+				    </header>
+					<section class="docs-section" id="item-4-1">
+						<h2 class="section-heading">LavaLust URLs</h2>
+						<p>URLs in LavaLust are designed using a segment-based approach for better search-engine optimization unlike the standard "query string" approach:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/news/article/345
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Query string URLs can be optionally enabled, as described below.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>URI Segments</h4>
+						<p>The segments in the URL, in following with the Model-View-Controller approach, usually represent:</p>
+						<ol>
+							<li>The first segment represents the controller <strong>class</strong> that should be
+							invoked.</li>
+							<li>The second segment represents the class <strong>function</strong>, or method, that
+							should be called.</li>
+							<li>The third, and any additional segments, represent the ID and any
+							variables that will be passed to the controller.</li>
+						</ol>
+						<br>
+						<h4>Removing the index.php file</h4>
+						<p>By default, the index.php file will be included in your URLs:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/news/article/my_article
+								</code>
+							</pre>
+						</div>
+						<p>If your Apache server has mod_rewrite enabled, you can easily remove this file by using a .htaccess file with some simple rules. Here is an example of such a file, using the “negative” method in which everything is redirected except the specified items:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="htaccess">
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+								</code>
+							</pre>
+						</div>
+						<p>In the above example, any HTTP request other than those for existing directories and existing files is treated as a request for your index.php file.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>These specific rules might not work for all server configurations.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Make sure to also exclude from the above rule any assets that you might need to be accessible from the outside world.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<br>
+						<h4>Adding a URL Suffix</h4>
+						<p>In your config/config.php file you can specify a suffix that will be added to all URLs generated by LavaLust. For example, if a URL is this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/products/view/shoes
+								</code>
+							</pre>
+						</div>
+						<br>
+						<h4>Enabling Query Strings</h4>
+						<p>In some cases you might prefer to use query strings URLs:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/product/view/?id=123
+								</code>
+							</pre>
+						</div>
+						<p>Query strings are only available for parameters. Controller and methods are fixed to use segment approach. You can do this by enabling it in your app/config.php file</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="php">
+$config['enable_query_strings'] = FALSE;
+								</code>
+							</pre>
+						</div>
+						<p>If you change “enable_query_strings” to TRUE this feature will become active.</p>
+					</section>
+					<section class="docs-section" id="item-4-2">
+						<h2 class="section-heading">Controllers</h2>
+						<p>Controllers are the heart of your application, as they determine how HTTP requests should be handled.</p>
+						<br>
+						<h4>What is a Controller?</h4>
+						<p><b>A Controller is simply a class file that is named in a way that can be associated with a URI.</b></p>
+						<p>Consider this URI:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/blog/
+								</code>
+							</pre>
+						</div>
+						<p>In the above example, LavaLust would attempt to find a controller named Blog.php and load it.</p>
+						<p><b>When a controller’s name matches the first segment of a URI, it will be loaded.</b></p>
+						<br>
+						<h4>Let’s try it: Hello World!</h4>
+						<p>Let’s create a simple controller so you can see it in action. Using your text editor, create a file called Blog.php, and put the following code in it:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+	public function index()
+	{
+		echo 'Hello World!';
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<p>Then save the file to your application/controllers/ directory.</p>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>The file must be called ‘Blog.php’, with a capital ‘B’.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>Now visit the your site using a URL similar to this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/blog/
+								</code>
+							</pre>
+						</div>
+						<p>If you did it right, you should see:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+Hello World!
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>Class names must start with an uppercase letter.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>This is valid:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>This is not valid:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class blog extends Controller {
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>Also, always make sure your controller extends the parent controller class so that it can inherit all its methods.</p>
+						<br>
+						<h4>Methods</h4>
+						<p>In the above example the method name is index(). The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/blog/index/
+								</code>
+							</pre>
+						</div>
+						<p><b>The second segment of the URI determines which method in the controller gets called.</b></p>
+						<p>Let’s try it. Add a new method to your controller:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php									
+class Blog extends Controller {
+
+	public function index()
+	{
+		echo 'Hello World!';
+	}
+
+	public function comments()
+	{
+		echo 'Look at this!';
+	}
+}
+								</code>
+							</pre>
+						</div>
+						Now load the following URL to see the comment method:
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/blog/comments/
+								</code>
+							</pre>
+						</div>
+						You should see your new message.
+						<br><br>
+						<h4>Passing URI Segments to your methods</h4>
+						<p>If your URI contains more than two segments they will be passed to your method as parameters.</p>
+						<p>For example, let’s say you have a URI like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/products/shoes/sandals/123
+								</code>
+							</pre>
+						</div>
+						Your method will be passed URI segments 3 and 4 (“sandals” and “123”):
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php									
+class Products extends Controller {
+
+	public function shoes($sandals, $id)
+	{
+		echo $sandals;
+		echo $id;
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>If you are using the URI Routing feature, the segments passed to your method will be the re-routed ones.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<br>
+						<h4>Defining a Default Controller</h4>
+						Lavalust can be told to load a default controller when a URI is not present, as will be the case when only your site root URL is requested. To specify a default controller, open your app/config/config.php file and set this variable:
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+$config['default_controller'] = 'blog';
+$config['default_method'] = 'index';
+								</code>
+							</pre>
+						</div>
+						<p>Where ‘blog’ and ‘index’ is the name of the controller class and method you want used. If you now load your main index.php file without specifying any URI segments you’ll see your “Hello World” message by default.</p>
+						<br>
+						<h4>Private methods</h4>
+						<p>In some cases you may want certain methods hidden from public access. In order to achieve this, simply declare the method as being private or protected and it will not be served via a URL request. For example, if you were to have a method like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+private function _utility()
+{
+	// some code
+}
+								</code>
+							</pre>
+						</div>
+						<p>Trying to access it via the URL, like this, will not work:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/blog/_utility/
+								</code>
+							</pre>
+						</div>
+						<h4>Class Constructors</h4>
+						<p>If you intend to use a constructor in any of your Controllers, you MUST place the following line of code in it:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+parent::__construct();
+								</code>
+							</pre>
+						</div>
+						<p>The reason this line is necessary is because your local constructor will be overriding the one in the parent controller class so we need to manually call it.</p>
+						<br>
+						<p>Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+		// Your own constructor code
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<p>Constructors are useful if you need to set some default values, or run a default process when your class is instantiated. Constructors can’t return a value, but they can do some default work.</p>
+						<br>
+						<h4>That’s it!</h4>
+						<p>That, in a nutshell, is all there is to know about controllers.</p>
+					</section>
+					<section class="docs-section" id="item-4-3">
+						<h2 class="section-heading">Views</h2>
+						<p>A view is simply a web page, or a page fragment, like a header, footer, sidebar, etc. In fact, views can flexibly be embedded within other views (within other views, etc., etc.) if you need this type of hierarchy.</p>
+						<p>Views are never called directly, they must be loaded by a controller. Remember that in an MVC framework, the Controller acts as the traffic cop, so it is responsible for fetching a particular view. If you have not read the Controllers page you should do so before continuing.</p>
+						<p>Using the example controller you created in the controller page, let’s add a view to it.</p>
+						<h4>Creating a View</h4>
+						<p>Using your text editor, create a file called blogview.php, and put this in it:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-html">
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;My Blog&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h1&gt;Welcome to my Blog!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+								</code>
+							</pre>
+						</div>
+						<p>Then save the file in your app/views/ directory.</p>
+						<h4>Loading a View</h4>
+						<p>To load a particular view file you will use the following method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->view('name');
+								</code>
+							</pre>
+						</div>
+						<p>Where name is the name of your view file.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The .php file extension does not need to be specified unless you use something other than .php.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>Now, open the controller file you made earlier called Blog.php, and replace the echo statement with the view loading method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+	public function index()
+	{
+		$this->call->view('blogview');
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<p>If you visit your site using the URL you did earlier you should see your new view. The URL was similar to this:</p>
+					</section>
+					<section class="docs-section" id="item-4-4">
+						<h2 class="section-heading">Models</h2>
+						<p>Models are PHP classes that are designed to work with information in your database. For example, let’s say you use LavaLust to manage a blog. You might have a model class that contains functions to insert, update, and retrieve your blog data. Here is an example of what such a model class might look like:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Blog_model extends Model {
+
+	public function get_last_ten_entries()
+	{
+		$data = $this->db->table('entries')->limit(10)->get_all();
+		return $data;
+	}
+
+	public function insert_entry()
+	{
+		$bind = array(
+			'title'    => $_POST['title']; // please read the below note
+			'content'  => $_POST['content'];
+			'date'     => time();
+		);
+
+		$this->db->table('entries')->insert($bind);
+	}
+
+	public function update_entry()
+	{
+		$bind = array() {
+			'title'    => $_POST['title'];
+			'content'  => $_POST['content'];
+			'date'     => time();
+		}
+		
+		$this->db->table('entries')->where('id', $_POST['id'])->update($bind);
+	}
+
+}
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The methods in the above example use the <a href="#">Query Builder</a> database methods.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>For the sake of simplicity in this example we’re using $_POST directly. This is generally bad practice, and a more common approach would be to use the <a href="#">IO Library</a> $this->io->post('title').</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<br>
+						<h4>Anatomy of a Model</h4>
+						<p>Model classes are stored in your app/models/ directory.
+						<br><br>
+						The basic prototype for a model class is this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Model_name extends Model {
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>Where Model_name is the name of your class. Class names must have the first letter capitalized with the rest of the name lowercase. Make sure your class extends the base Model class.
+						<br><br>
+						The file name must match the class name. For example, if this is your class:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class User_name extends Model {
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>Your file will be this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="plaintext">
+app/models/User_model.php
+								</code>
+							</pre>
+						</div>
+						<h4>Loading a Model</h4>
+						<p>Your models will typically be loaded and called from within your <a href="#item-4-2">controller</a> methods. To load a model you will use the following method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->model('model_name');
+								</code>
+							</pre>
+						</div>
+						<p>Once loaded, you will access your model methods using an object with the same name as your class:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->model('model_name');
+
+$this->model_name->method();
+								</code>
+							</pre>
+						</div>
+						pIf you would like your model assigned to a different object name you can specify it via the second parameter of the loading method:
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->model('model_name', 'foobar');
+
+$this->foobar->method();
+								</code>
+							</pre>
+						</div>
+						<p>Here is an example of a controller, that loads a model, then serves a view:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Blog_controller extends Controller {
+
+	public function blog()
+	{
+		$this->call->model('blog');
+
+		$data['query'] = $this->blog->get_last_ten_entries();
+
+		$this->call->view('blog', $data);
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<h4>Auto-loading Models</h4>
+						<p>If you find that you need a particular model globally throughout your application, you can tell LavaLust to auto-load it during system initialization. This is done by opening the app/config/autoload.php file and adding the model to the autoload array.</p>
+						<h4>Connecting to your Database</h4>
+						<p>When a model is loaded it does NOT connect automatically to your database. The following options for connecting are available to you:</p>
+						<h4>Automatically Connecting</h4>
+						<p>The “auto connect” feature will load and instantiate the database class with every page load. To enable “auto connecting”, add the word database to the library array, as indicated in the following file:</p>
+						<p>app/config/autoload.php</p>
+						<h4>Manually Connecting</h4>
+						<p>If only some of your pages require database connectivity you can manually connect to your database by adding this line of code in any function where it is needed, or in your class constructor to make the database available globally in that class.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database();
+								</code>
+							</pre>
+						</div>
+						<p>If the above function does not contain any information in the first parameter it will connect to the group specified in your database config file. For most people, this is the preferred method of use.</p>
+						<h4>Manually Connecting to a Database</h4>
+						<p>The first parameter of this function can optionally be used to specify a particular database group from your config file, or you can even submit connection values for a database that is not specified in your config file. Examples:
+						<br><br>
+						To choose a specific group from your config file you can do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database('group_name');
+								</code>
+							</pre>
+						</div>
+						<p>Where group_name is the name of the connection group from your config file.</p>
+						For information on each of these values please see the <a href="#">configuration page</a>.
+						<h4>Connecting to Multiple Databases</h4>
+						<p>If you need to connect to more than one database simultaneously you can do so as follows:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database();
+$this->call->database('group_one');
+$this->call->database('group_two');
+								</code>
+							</pre>
+						</div>
+						<p>Note: Change the words “group_one” and “group_two” to the specific group names you are connecting to. If you don't specify the group_name, it will automatically defined $this->db variable to use for database queries.</p>
+						<p>Now you can execute queries using the following:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('table_name')->get_all();
+$this->group_one->table('table_name')->get_all();
+$this->group_two->table('table_name')->get_all();
+								</code>
+							</pre>
+						</div>
+					</section><!--//section-->
+					<section class="docs-section" id="item-4-5">
+						<h2 class="section-heading">Helpers</h2>
+						<p>Helpers, as the name suggests, help you with tasks. Each helper file is simply a collection of functions in a particular category. There are URL Helpers, that assist in creating links, there are Form Helpers that help you create form elements, Cookie Helpers set and read cookies, File Helpers help you deal with files, etc.</p>
+						<p>Unlike most other systems in LavaLust, Helpers are not written in an Object Oriented format. They are simple, procedural functions. Each helper function performs one specific task, with no dependence on other functions.</p>
+						<p>LavaLust does not load Helper Files by default, so the first step in using a Helper is to load it. Once loaded, it becomes globally available in your <a href="#item-4-2">controller</a> and <a href="#item-4-3">views</a>.</p>
+						<p>Helpers are typically stored in your <b>scheme/helpers</b>, or <b>app/helpers</b> directory. LavaLust will look first in your <b>app/helpers</b> directory. If the directory does not exist or the specified helper is not located there LavaLust will instead look in your global <i>scheme/helpers/</i> directory.</p>
+						<h4>Loading</h4>
+						<p>Loading a helper file is quite simple using the following method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->helper('name');
+								</code>
+							</pre>
+						</div>
+						<p>Where name is the file name of the helper, without the .php file extension or the “helper” part.</p>
+						For example, to load the <b>URL Helper</b> file, which is named <b>url_helper.php</b>, you would do this:
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->helper('url');
+								</code>
+							</pre>
+						</div>
+						<p>A helper can be loaded anywhere within your controller methods (or even within your View files, although that’s not a good practice), as long as you load it before you use it. You can load your helpers in your controller constructor so that they become available automatically in any function, or you can load a helper in a specific function that needs it.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The Helper loading method above does not return a value, so don't try to assign it to a variable. Just use it as shown.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Loading Multiple Helpers</h4>
+						<p>If you need to load more than one helper you can specify them in an array, like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->helper(
+	array('helper1', 'helper2', 'helper3')
+);
+								</code>
+							</pre>
+						</div>
+						<h4>Using a Helper</h4>
+						<p>Once you’ve loaded the Helper File containing the function you intend to use, you’ll call it the way you would a standard PHP function.</p>
+						<p>For example, to create a link using the <span class="code_red">redirect()</span> function in one of your view files you would do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php echo redirect('blog/comments');?&gt;
+								</code>
+							</pre>
+						</div>
+						<p>Where “blog/comments” is the URI to the controller/method you wish to redirect to.</p>
+						<h4>Now What?</h4>
+						<p>In the Table of Contents you’ll find a list of all the available Helper Files. Browse each one to see what they do.</p>
+					</section><!--//section-->
+					<section class="docs-section" id="item-4-6">
+						<h2 class="section-heading">Libraries</h2>
+						All of the available libraries are located in your <i>scheme/libraries/</i> directory. In most cases, to use one of these classes involves initializing it within a <a href="#item4-2">controller</a> using the following initialization method:
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('class_name');
+								</code>
+							</pre>
+						</div>
+						<p>Where ‘class_name’ is the name of the class you want to invoke. For example, to load the <a href="#">Form Validation Library</a> you would do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('Form_validation');
+								</code>
+							</pre>
+						</div>
+						<p>Once initialized you can use it as indicated in the user guide page corresponding to that class.</p>
+						<p>Additionally, multiple libraries can be loaded at the same time by passing an array of libraries to the load method.</p>
+						<p>Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library(array('Form_validation', email));
+								</code>
+							</pre>
+						</div>
+						<h4>Creating Libraries</h4>
+						<p>When we use the term “Libraries” we are normally referring to the classes that are located in the libraries directory and described in the Class Reference of this user guide. In this case, however, we will instead describe how you can create your own libraries within your app/libraries directory in order to maintain separation between your local resources and the global framework resources.</p>
+						<p>As an added bonus, LavaLust permits your libraries to extend native classes if you simply need to add some functionality to an existing library. Or you can even replace native libraries just by placing identically named versions in your app/libraries directory.</p>
+						<p>In summary:</p>
+						<ul>
+							<li>You can create entirely new libraries.</li>
+							<li>You can replace native libraries.</li>
+						</ul>
+						<p>The page below explains these two concepts in detail.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>								
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>Do not attempt to replace the Database Class if you don't know what you are doing. There are variables that rely on it if loaded.</p>
+						<h4>Storage</h4>
+						<p>Your library classes should be placed within your <i>app/libraries</i> directory, as this is where LavaLust will look for them when they are initialized.</p>
+						<h4>Naming Conventions</h4>
+						<ul>
+							<li>File names must be capitalized. For example: Myclass.php</li>
+							<li>Class declarations must be capitalized. For example: class Myclass</li>
+							<li>Class names and file names must match.</li>
+						</ul>
+						<h4>The Class File</h4>
+						<p>Classes should have this basic prototype:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+class Someclass {
+
+	public function some_method()
+	{
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>We are using the name Someclass purely as an example.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Using Your Class</h4>
+						<p>From within any of your <a href="#item-4-2">Controller</a> methods you can initialize your class using the standard:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('someclass');
+								</code>
+							</pre>
+						</div>
+						<p>Where <i>someclass</i> is the file name, without the “.php” file extension. You can submit the file name capitalized or lower case. LavaLust doesn’t care.</p>
+						<p>Once loaded you can access your class using the lower case version:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->someclass->some_method();  // Object instances will always be lower case
+								</code>
+							</pre>
+						</div>
+						<h4>Passing Parameters When Initializing Your Class</h4>
+						<p>In the library loading method you can dynamically pass data as an array via the second parameter and it will be passed to your class constructor:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$params = array('type' => 'large', 'color' => 'red');
+
+$this->call->library('someclass', $params);
+								</code>
+							</pre>
+						</div>
+						<p>If you use this feature you must set up your class constructor to expect data:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+class Someclass {
+
+	public function __construct($params)
+	{
+			// Do something with $params
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<h4>Utilizing LavaLust Resources within Your Library</h4>
+						<p>To access LavaLust native resources within your library use the lava_instance() method. This method returns the LavaLust super object.</p>
+						<p>Normally from within your controller methods you will call any of the available LavaLust methods using the <span class="code_red">$this</span> construct:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->helper('url');
+$this->call->library('session');
+// etc.
+								</code>
+							</pre>
+						</div>
+						<p><span class="code_red">$this</span>, however, only works directly within your controllers, your models, or your views. If you would like to use LavaLust classes from within your own custom classes you can do so as follows:</p>
+						<p>First, assign the LavaLust object to a variable:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$LAVA =& lava_instance();
+								</code>
+							</pre>
+						</div>
+						<p>Once you’ve assigned the object to a variable, you’ll use that variable instead of <span class="code_red">$this</span>:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$LAVA->call->helper('url');
+$LAVA->call->library('session');
+// etc.
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>You’ll notice that the above <font color="">lava_instance()</span> function is being passed by reference:</p>
+								<p>$LAVA =& lava_instance();</p>
+								<p>This is very important. Assigning by reference allows you to use the original LavaLust object rather than creating a copy of it.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>However, since a library is a class, it would be better if you take full advantage of the OOP principles. So, in order to be able to use the LavaLust super-object in all of the class methods, you’re encouraged to assign it to a property instead:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Example_library {
+
+	protected $LAVA;
+
+	// We'll use a constructor, as you can't directly call a function
+	// from a property definition.
+	public function __construct()
+	{
+			// Assign the LavaLust super-object
+			$this->LAVA =& lava_instance();
+	}
+
+	public function foo()
+	{
+			$this->LAVA->call->helper('url');
+			redirect();
+	}
+
+}
+								</code>
+							</pre>
+						</div>
+						<h4>Replacing Native Libraries with Your Versions</h4>
+						<p>Simply by naming your class files identically to a native library will cause LavaLust to use it instead of the native one. To use this feature you must name the file and the class declaration exactly the same as the native library. For example, to replace the native Email library you’ll create a file named app/libraries/Email.php, and declare your class with:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Email {
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>To load your library you’ll see the standard loading method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('email');
+								</code>
+							</pre>
+						</div>
+					</section><!--//section-->
+					<section class="docs-section" id="item-4-7">
+						<h2 class="section-heading">Auto-loading Resources</h2>
+						<p>LavaLust comes with an “Auto-load” feature that permits libraries, helpers, and models to be initialized automatically every time the system runs. If you need certain resources globally throughout your application you should consider auto-loading them for convenience.</p>
+						<p>The following items can be loaded automatically:</p>
+						<ul>
+							<li>Classes found in the <i>libraries/</i> directory</li>
+							<li>Helper files found in the <i>helpers/</i> directory</li>
+							<li>Models found in the <i>models/</i> folder</li>
+						</ul>
+						<p>To autoload resources, open the <b>app/config/autoload.php</b> file and add the item you want loaded to the autoload array. You’ll find instructions in that file corresponding to each type of item.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Do not include the file extension (.php) when adding items to the autoload array.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>Additionally, if you want LavaLust to use a <a href="getcomposer.org">Composer</a> auto-loader, just set <span class="code_red">$config['composer_autoload']</span> to <span class="code_red">TRUE</span> or a custom path in <b>app/config/config.php</b>.</p>
+					</section><!--//section-->
+					<section class="docs-section" id="item-4-8">
+						<h2 class="section-heading">URI Routing</h2>
+						<p>Typically there is a one-to-one relationship between a URL string and its corresponding controller class/method. The segments in a URI normally follow this pattern:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="plaintext">
+example.com/class/function/id/
+								</code>
+							</pre>
+						</div>
+						<p>In some instances, however, you may want to remap this relationship so that a different class/method can be called instead of the one corresponding to the URL.</p>
+						<p>For example, let’s say you want your URLs to have this prototype:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="plaintext">
+example.com/product/1/
+example.com/product/2/
+example.com/product/3/
+example.com/product/4/
+								</code>
+							</pre>
+						</div>
+						<p>Normally the second segment of the URL is reserved for the method name, but in the example above it instead has a product ID. To overcome this, LavaLust allows you to remap the URI handler.</p>
+						<h4>Setting your own routing rules</h4>
+						<p>Routing rules are defined in your <i>app/config/routes.php</i> file. In it you’ll see an array called <span class="code_red">$route</span> that permits you to specify your own routing criteria. Routes can either be specified using wildcards or Regular Expressions.</p>
+						<h4>Wildcards</h4>
+						<p>A typical wildcard route might look something like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['product/:num'] = 'catalog/product_lookup';
+								</code>
+							</pre>
+						</div>
+						<p>In a route, the array key contains the URI to be matched, while the array value contains the destination it should be re-routed to. In the above example, if the literal word “product” is found in the first segment of the URL, and a number is found in the second segment, the “catalog” class and the “product_lookup” method are instead used.</p>
+						<p>You can match literal values or you can use two wildcard types:</p>
+						<p><b>(:num)</b> will match a segment containing only numbers. <b>(:any)</b> will match a segment containing any character (except for ‘/’, which is the segment delimiter).</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Wildcards are actually aliases for regular expressions, with <b>:any</b> being translated to <b>[^/]+</b> and <b>:num</b> to <b>[0-9]+</b>, respectively.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Routes will run in the order they are defined. Higher routes will always take precedence over lower ones.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Route rules are not filters! Setting a rule of e.g. ‘foo/bar/(:num)’ will not prevent controller Foo and method bar to be called with a non-numeric value if that is a valid route.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Examples</h4>
+						<p>Here are a few routing examples:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['journals'] = 'blogs';
+								</code>
+							</pre>
+						</div>
+						<p>A URL containing the word “journals” in the first segment will be remapped to the “blogs” class.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['blog/joe'] = 'blogs/users/34';
+								</code>
+							</pre>
+						</div>
+						<p>A URL containing the segments blog/joe will be remapped to the “blogs” class and the “users” method. The ID will be set to “34”.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['product/(:any)'] = 'catalog/product_lookup';
+								</code>
+							</pre>
+						</div>
+						<p>A URL with “product” as the first segment, and anything in the second will be remapped to the “catalog” class and the “product_lookup” method.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['product/(:num)'] = 'catalog/product_lookup_by_id/$1';
+								</code>
+							</pre>
+						</div>
+						<p>A URL with “product” as the first segment, and a number in the second will be remapped to the “catalog” class and the “product_lookup_by_id” method passing in the match as a variable to the method.</p>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>Do not use leading/trailing slashes.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Regular Expressions</h4>
+						<p>If you prefer you can use regular expressions to define your routing rules. Any valid regular expression is allowed, as are back-references.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>If you use back-references you must use the dollar syntax rather than the double backslash syntax.</p>								
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>A typical RegEx route might look something like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['products/([a-z]+)/(\d+)'] = '$1/id_$2';
+								</code>
+							</pre>
+						</div>
+						<p>In the above example, a URI similar to products/shirts/123 would instead call the “shirts” controller class and the “id_123” method.</p>
+						<p>With regular expressions, you can also catch multiple segments at once. For example, if a user accesses a password protected area of your web application and you wish to be able to redirect them back to the same page after they log in, you may find this example useful:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['login/(.+)'] = 'auth/login/$1';
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>In the above example, if the <span class="code_red">$1</span> placeholder contains a slash, it will still be split into multiple parameters when passed to <span class="code_red">Auth::login()</span>.</p>								
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>For those of you who don’t know regular expressions and want to learn more about them, regular-expressions.info might be a good starting point.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>You can also mix and match wildcards with regular expressions.</p>								
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Using HTTP verbs in routes</h4>
+						<p>It is possible to use HTTP verbs (request method) to define your routing rules. This is particularly useful when building RESTful applications. You can use standard HTTP verbs (GET, PUT, POST, DELETE, PATCH) or a custom one such (e.g. PURGE). HTTP verb rules are case-insensitive. All you need to do is to add the verb as an array key to your route. Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['products']['put'] = 'product/insert';
+								</code>
+							</pre>
+						</div>
+						<p>In the above example, a PUT request to URI “products” would call the <span class="code_red">Product::insert()</span> controller method.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['products/(:num)']['DELETE'] = 'product/delete/$1';
+								</code>
+							</pre>
+						</div>
+						<p>A DELETE request to URL with “products” as first the segment and a number in the second will be mapped to the <span class="code_red">Product::delete()</span> method, passing the numeric value as the first parameter.</p>
+						<p>Using HTTP verbs is of course, optional.</p>
+						<h4>Reserved Routes</h4>
+						<p>There are two reserved routes:</p>
+						<p>You are encouraged to always have a default route as otherwise a 404 page will appear by default.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['404_override'] = '';
+								</code>
+							</pre>
+						</div>
+						<p>This route indicates which controller class should be loaded if the requested controller is not found. It will override the default 404 error page.</p>
+						<p>It won’t affect to the <span class="code_red">show_404()</span> function, which will continue loading the default <i>error_404.php</i> file at <i>app/views/errors/error_404.php</i>.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$route['translate_uri_dashes'] = FALSE;
+								</code>
+							</pre>
+						</div>
+						<p>As evident by the boolean value, this is not exactly a route. This option enables you to automatically replace dashes (‘-’) with underscores in the controller and method URI segments, thus saving you additional route entries if you need to do that. This is required, because the dash isn’t a valid class or method name character and would cause a fatal error if you try to use it.</p>
+					</section><!--//section-->
+					<section class="docs-section" id="item-4-9">
+						<h2 class="section-heading">Security</h2>
+						<p>This page describes some “best practices” regarding web security, and details LavaLust's internal security features.</p>
+						<h4>URI Security</h4>
+						<p>LavaLust is fairly restrictive regarding which characters it allows in your URI strings in order to help minimize the possibility that malicious data can be passed to your application. URIs may only contain the following:</p>
+						<ul>
+							<li>Alpha-numeric text (latin characters only)</li>
+							<li>Tilde: ~</li>
+							<li>Percent sign: %</li>
+							<li>Period: .</li>
+							<li>Colon: :</li>
+							<li>Underscore: _</li>
+							<li>Dash: -</li>
+							<li>Space</li>
+						</ul>
+						<h4>display_errors</h4>
+						<p>In production environments, it is typically desirable to “disable” PHP’s error reporting by setting the internal <i>display_errors</i> flag to a value of 0. This disables native PHP errors from being rendered as output, which may potentially contain sensitive information.</p>
+						<p>Setting LavaLust's <b>ENVIRONMENT</b> constant in index.php to a value of <b>‘production’</b> will turn off these errors. In development mode, it is recommended that a value of ‘development’ is used. </p>
+						<h5>Best Practices</h5>
+						<p>Before accepting any data into your application, whether it be POST data from a form submission, COOKIE data, URI data, XML-RPC data, or even data from the SERVER array, you are encouraged to practice this three step approach:</p>
+						<ol>
+							<li>Validate the data to ensure it conforms to the correct type, length, size, etc.</li>
+							<li>Filter the data as if it were tainted.</li>
+							<li>Escape the data before submitting it into your database or outputting it to a browser.</li>
+						</ol>
+						<h4>XSS Filtering</h4>
+						<p>LavaLust has html_escape() function that escapes string or array to prevent XSS. If you are planning to accept html elements/tags from users then you might need to use other libraries such as HTMLPurifier.</p>
+						<h4>CSRF protection</h4>
+						<p>CSRF stands for Cross-Site Request Forgery, which is the process of an attacker tricking their victim into unknowingly submitting a request.</p>
+						<p>LavaLust provides CSRF protection out of the box, which will get automatically triggered for every non-GET HTTP request, but also needs you to create your submit forms in a certain way. You can call <b>security helper</b> and use <span class="code_red">csrf_field()</span> function to add hidden with csrf token inside a form that can be check automatically or manually.</p>
+						<p>To automatically check the csrf token added and submitted using <span class="code_red">csrf_field()</span> function:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$config['csrf_protection'] = TRUE;
+								</code>
+							</pre>
+						</div>
+						<h4>Password handling</h4>
+						<p>It is <i>critical</i> that you handle passwords in your application properly.</p>
+						<p>Unfortunately, many developers don’t know how to do that, and the web is full of outdated or otherwise wrongful advices, which doesn’t help.</p>
+						<p>We would like to give you a list of combined do’s and don’ts to help you with that. Please read below.</p>
+						<ul>
+							<li>DO NOT store passwords in plain-text format. Always hash your passwords.</li>
+							<li>DO NOT use Base64 or similar encoding for storing passwords. This is as good as storing them in plain-text. Really. Do <b>hashing</b>, not <i>encoding</i>. Encoding, and encryption too, are two-way processes. Passwords are secrets that must only be known to their owner, and thus must work only in one direction. Hashing does that - there’s no un-hashing or de-hashing, but there is decoding and decryption.</li>
+							<li>DO NOT use weak or broken hashing algorithms like MD5 or SHA1. These algorithms are old, proven to be flawed, and not designed for password hashing in the first place. Also, DON’T invent your own algorithms. Only use strong password hashing algorithms like BCrypt, which is used in PHP’s own Password Hashing functions.</li>
+							<li>DO NOT ever display or send a password in plain-text format! Even to the password’s owner, if you need a “Forgotten password” feature, just randomly generate a new, one-time (this is also important) password and send that instead.</li>
+							<li>DO NOT put unnecessary limits on your users’ passwords. If you’re using a hashing algorithm other than BCrypt (which has a limit of 72 characters), you should set a relatively high limit on password lengths in order to mitigate DoS attacks - say, 1024 characters. Other than that however, there’s no point in forcing a rule that a password can only be up to a number of characters, or that it can’t contain a certain set of special characters. Not only does this reduce security instead of improving it, but there’s literally no reason to do it. No technical limitations and no (practical) storage constraints apply once you’ve hashed them, none!</li>
+						</ul>
+						<h4>Validate input data</h4>
+						<p>LavaLust has a <a href="#">Form Validation Library</a> that assists you in validating, filtering, and prepping your data.</p>
+						<p>Even if that doesn’t work for your use case however, be sure to always validate and sanitize all input data. For example, if you expect a numeric string for an input variable, you can check for that with is_numeric() or ctype_digit(). Always try to narrow down your checks to a certain pattern.</p>
+						<p>Have it in mind that this includes not only <span class="code_red">$_POST</span> and <span class="code_red">$_GET</span> variables, but also cookies, the user-agent string and basically <i>all data that is not created directly by your own code</i>.</p>
+						<h4>Escape all data before database insertion</h4>
+						<p>Never insert information into your database without escaping it. It was already done if you use the native Database Class. It uses prepared statements for mySQL database.</p>
+						<h4>Hide your files</h4>
+						<p>Another good security practice is to only leave your index.php and “assets” (e.g. .js, css and image files) under your server’s webroot directory (most commonly named “htdocs/”). These are the only files that you would need to be accessible from the web.</p>
+						<p>Allowing your visitors to see anything else would potentially allow them to access sensitive data, execute scripts, etc.</p>
+						<p>If you’re not allowed to do that, you can try using a .htaccess file to restrict access to those resources.</p>
+						<P>LavaLust will have an index.html file in all of its directories in an attempt to hide some of this data, but have it in mind that this is not enough to prevent a serious attacker.</P>
+					</section><!--//section-->
+				</article>
+				<article class="docs-article" id="section-5">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">Libraries</h1>
+					    <section class="docs-intro">
+							<p>We will discuss here all the topics in LavaLust Framework Libraries.</p>
+						</section><!--//docs-intro-->
+				    </header>
+					<section class="docs-section" id="item-5-1">
+						<h2 class="section-heading">Performance Class</h4>
+						<p>LavaLust has a Performance class that is always active, enabling the time difference between any two marked points to be calculated.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>This class is initialized automatically by the system so there is no need to do it manually.</p>
+								<p>In addition, the benchmark is always started the moment the framework is invoked, and ended by the output class right before sending the final view to the browser, enabling a very accurate timing of the entire system execution to be shown.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Using the Performance Class</h4>
+						<p>The Benchmark class can be used within your <a href="#item-4-2">controllers</a> , <a href="#item-4-3">views</a>, or your <a href="#item-4-4">models</a>. The process for usage is this:</p>
+						<ol>
+							<li>Mark a start point</li>
+							<li>Mark an end point</li>
+							<li>Run the “elapsed time” function to view the results</li>
+							<p>Here’s an example using real code:</p>
+						</ol>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->performance->tag('referrence_name');
+
+// Some code happens here
+
+$this->performance->tag('referrence_name');
+echo $this->benchmark->elapsed_time('referrence_name');			
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The words “code_start” and “code_end” are arbitrary. They are simply words used to set two markers. You can use any words you want, and you can set multiple sets of markers. Consider this example:</p>
+								<div class="docs-code-block">
+									<pre>
+										<code class="language-php">
+$this->performance->mark('dog');
+
+// Some code happens here
+
+$this->performance->mark('cat');
+
+// More code happens here
+
+$this->performance->mark('cat');
+
+$this->performance->mark('bird');
+
+// More code happens here
+
+$this->performance->mark('bird');
+
+$this->performance->mark('dog');
+
+echo $this->performance->elapsed_time('dog');
+echo $this->performance->elapsed_time('cat');
+echo $this->performance->elapsed_time('bird');
+										</code>
+									</pre>
+								</div>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Displaying Total Execution Time</h4>
+						<p>If you would like to display the total elapsed time from the moment LavaLust starts to the moment the final output is sent to the browser, simply place this in one of your view templates:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php echo $this->benchmark->elapsed_time();?&gt;
+								</code>
+							</pre>
+						</div>
+						<h4>Displaying Memory Consumption</h4>
+						<p>If your PHP installation is configured with –enable-memory-limit, you can display the amount of memory consumed by the entire system using the following code in one of your view file:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php echo $this->benchmark->memory_usage();?&gt;
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>This function can only be used in your view files. The consumption will reflect the total memory used by the entire app.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-2">
+						<h2 class="section-heading">Cache Class</h2>
+						<p>LavaLust provide a simple caching system that can boost the performance of your application.</p>
+						<p>You can cache liraries or models and other object or array data. You need first to load Cache library by calling <span class="code_red">$this->call->library('cache')</span>.</p>
+						<p>You ca specify the cache folder by changing the configuration set in app/config/config.php file.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$config['cache_dir'] = 'runtime/cache/';
+								</code>
+							</pre>
+						</div>
+						<br>
+						<p><b>Example: Caching a model</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->model('news_model', 'get_news', array($param1, $param2), 120);
+								</code>
+							</pre>
+						</div>
+						<p>In the example above let say we have news_model class with <span class="code_red">get_news()</span> method and two parameters: <span class="code_red">$param1</span> and <span class="code_red">$param2</span>. <span class="code_red">get_news()</span> method will be cached for 120 minutes as set as the 4th parameter in the example. </p>
+						<br>
+						<p><b>Example: Caching a library</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla));
+								</code>
+							</pre>
+						</div>
+						<p>In the example above let say we have some_library class with <span class="code_red">calculate_something()</span> method and three parameters: <span class="code_red">$foo</span>, <span class="code_red">$bar</span> and <span class="code_red">$bar</span>. <span class="code_red">calculate_something()</span> method will be cached for unlimited time if you do not specify it in the 4th parameter. This is also applicable in caching model.</p>
+						<br>
+						<p><b>Example: Caching a array or object</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = array(
+	'id' => 1,
+	'username' => 'acidcore'
+	);
+//Storing the data in a cache with a name "cached_name"
+$this->cache->write($data, 'cached_name');
+
+//Retrieving a cache based on its name "cached_name"
+$data = $this->cache->get('cached_name');
+								</code>
+							</pre>
+						</div>
+						<br>
+						<p><b>Example: Delete specific cache by its name.</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->delete('cached_name');
+								</code>
+							</pre>
+						</div>
+						<p>In the example above, it will find and delete a cache inside cached folder based on its name "cached_name".</p>
+						<p><b>Example: Delete all cache</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->delete_all();
+								</code>
+							</pre>
+						</div>
+						<p>In the example above, it will delete all stored cache inside the cache direcotry.</p>
+						<p><b>Example: Delete cache based on cache group</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->write($data, 'nav_header');
+$this->cache->write($data, 'nav_footer');
+$this->cache->delete_group('nav_');
+								</code>
+							</pre>
+						</div>
+						<p>In the example above, it will find and delete a cache with the prefix nav_ inside cached folder.</p>
+						<p><b>Example: Delete cache from library or model</b></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->cache->model('news', 'get_news', array($param1, $param2), -1);
+								</code>
+							</pre>
+						</div>
+						<p>In the example above, the cache version of the method get_news of news model will be deleted inside the cache directory. This will be the same if you'll use this in library classes.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Model or library will be cached in unlimited time if you do not specify the time in minute before the cache expired. It was set as the fourth parameter in <span class="code_red">$this->cache->model()</span> and <span class="code_red">$this->cache->library()</span></p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-3">
+						<h2 class="section-heading">Email Class</h2>
+						<p>Sending email is simple and easy to do. It only uses built-in mail() function of PHP. If you are planning to use more advanced features, you can use <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer library</a>.</p>
+						<p>Here is a basic example demonstrating how you might send email. Note: This example assumes you are sending the email from one of your <a href="#item-4-2">controllers.</a></p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('email');
+
+$this->email->sender('your@example.com', 'Your Name');
+$this->email->recipient('someone@example.com');
+
+$this->email->subject('Email Test');
+$this->email->email_content('Testing the email class.');
+
+$this->email->send();
+								</code>
+							</pre>
+						</div>
+						<p><b>Here are the complete list of methods that can be used in sending email.</b></p>
+						<table class="table table-bordered table-small">
+							<thead>
+								<tr>
+									<th>Method</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>sender($sender_email, $sender_name)</td>
+									<td>$sender_email(required): Email address of the sender<br>p$sender_name: Name of the sender</td>
+								</tr>
+								<tr>
+									<td>recepient($receiver_email)</td>
+									<td>$receiver_email(required): Email address of the recepient</td>
+								</tr>
+								<tr>
+									<td>subject($subject)</td>
+									<td>$subject(required): Subject that will appear in the email</td>
+								</tr>
+								<tr>
+									<td>email_content($content, $email_type)</td>
+									<td>$content(required): Content of the email<br>$email_type: default value is "plain". You can set it to "html" if your email has html content</td>
+								</tr>
+								<tr>
+									<td>attachment($path)</td>
+									<td>$path(required): Path where your attachment is located.</td>
+								</tr>
+								<tr>
+									<td>send()</td>
+									<td>It will send the email.</td>
+								</tr>
+							</tbody>
+						  </table>
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-4">
+						<h2 class="section-heading">Form Validation Class</h2>
+						<p>Before explaining LavaLust's approach to data validation, let’s describe the ideal scenario:</p>
+						<ol>
+							<li>A form is displayed.</li>
+							<li>You fill it in and submit it.</li>
+							<li>If you submitted something invalid, or perhaps missed a required
+							item, the form is redisplayed containing your data along with an
+							error message describing the problem.</li>
+							<li>This process continues until you have submitted a valid form.</li>
+						</ol>
+						<p>On the receiving end, the script must:</p>
+						<ol>
+							<li>Check for required data.</li>
+							<li>Verify that the data is of the correct type, and meets the correct
+							criteria. For example, if a username is submitted it must be
+							validated to contain only permitted characters. It must be of a
+							minimum length, and not exceed a maximum length. The username can’t
+							be someone else’s existing username, or perhaps even a reserved word.
+							Etc.</li>
+							<li>Sanitize the data for security.</li>
+							<li>Pre-format the data if needed (Does the data need to be trimmed? HTML
+							encoded? Etc.)</li>
+							<li>Prep the data for insertion in the database.</li>
+						</ol>
+						<p>Although there is nothing terribly complex about the above process, it usually requires a significant amount of code, and to display error messages, various control structures are usually placed within the form HTML. Form validation, while simple to create, is generally very messy and tedious to implement.</p>
+						<br>
+						<h4>Form Validation Tutorial</h4>
+						<p>In order to implement form validation you’ll need three things:</p>
+						<ol>
+							<li>A <a href="#item-4-3">View</a> file containing a form.</li>
+							<li>A View file containing a “success” message to be displayed upon
+							successful submission.</li>
+							<li>A <a href="#item-4-2">controller</a> method to receive and
+							process the submitted data.</li>
+						</ol>
+						<h5>The Form</h5>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;My Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;?php echo $this->form_validation->errors(); ?&gt;
+&lt;form action=&quot;&lt;?php echo site_url('form');?&gt;&quot; method=&quot;post&quot;&gt;
+&lt;h5&gt;Username&lt;/h5&gt;
+&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;&quot; size=&quot;50&quot; /&gt;
+&lt;h5&gt;Password&lt;/h5&gt;
+&lt;input type=&quot;text&quot; name=&quot;password&quot; value=&quot;&quot; size=&quot;50&quot; /&gt;
+
+&lt;h5&gt;Password Confirm&lt;/h5&gt;
+&lt;input type=&quot;text&quot; name=&quot;passconf&quot; value=&quot;&quot; size=&quot;50&quot; /&gt;
+
+&lt;h5&gt;Email Address&lt;/h5&gt;
+&lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;&quot; size=&quot;50&quot; /&gt;
+
+&lt;div&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/div&gt;
+
+&lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+								</code>
+							</pre>
+						</div>
+						<h5>The Success Page</h5>
+						<p>Using a text editor, create a form called formsuccess.php. In it, place this code and save it to your application/views/ folder:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;My Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h3&gt;Your form was successfully submitted!&lt;/h3&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+								</code>
+							</pre>
+						</div>
+						<h5>The Controller</h5>
+						<p>Using a text editor, create a controller called Form.php. In it, place this code and save it to your application/controllers/ folder:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+
+class Form extends Controller {
+
+	public function index()
+	{
+		$this-&gt;call-&gt;library('form_validation');
+
+		if ($this-&gt;form_validation-&gt;run() == FALSE)
+		{
+			$this-&gt;call-&gt;view('myform');
+		}
+		else
+		{
+			$this-&gt;call-&gt;view('formsuccess');
+		}
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<h5>Try it!</h5>
+						<p>To try your form, visit your site using a URL similar to this one:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="plaintext">
+example.com/index.php/form/
+								</code>
+							</pre>
+						</div>
+						<p>If you submit the form you should simply see the form reload. That’s because you haven’t set up any validation rules yet.</p>
+						<p><b>Since you haven’t told the Form Validation class to validate anything yet, it returns FALSE (boolean false) by default. ``The run()`` method only returns TRUE if it has successfully applied your rules without any of them failing.</b></p>
+						<br>
+						<h5>Explanation</h5>
+						<p>You’ll notice several things about the above pages:</p>
+						<p>The form (myform.php) is a standard web form with a couple exceptions:</p>
+						<ol>
+							<li>It uses a form helper to create the form opening. Technically, this
+							isn’t necessary. You could create the form using standard HTML.
+							However, the benefit of using the helper is that it generates the
+							action URL for you, based on the URL in your config file. This makes
+							your application more portable in the event your URLs change.
+							</li>
+							<li>At the top of the form you’ll notice the following function call:</li>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+&lt;?php echo $this->form_validation->errors(); ?&gt;
+									</code>
+								</pre>
+							</div>
+							<p>This function will return any error messages sent back by the validator. If there are no messages it returns an empty string.</p>
+						</ol>
+						<p>The controller (Form.php) has one method: <span class="code_red">index()</span>. This method runs the validation routine.
+							Based on whether the validation was successful it either presents the
+							form or the success page.</p>
+						<h5>Setting Validation Rules</h5>
+						<p>Let us take a look at our controller above. There are no validation rules set so we will
+							try to use some of the common validation methods.
+						</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+
+class Form extends Controller {
+
+public function index()
+{
+	$this-&gt;call-&gt;library('form_validation');
+	$this->form_validation
+		->name('username')
+			->required()
+			->min_length(5)
+			->max_length(20)
+		->name('password')
+			->required()
+			->min_length(8)
+		->name('passconf')
+			->matches('password')
+			->required()
+			->min_length(8)
+		->name('email')
+			->valid_email();
+	if ($this-&gt;form_validation-&gt;run() == FALSE)
+	{
+		$this-&gt;call-&gt;view('myform');
+	}
+	else
+	{
+		$this-&gt;call-&gt;view('formsuccess');
+	}
+}
+}
+								</code>
+							</pre>
+						</div>
+						<p>In the above code, we use <span class="code_red">name()</span> method to get the input to validate.
+							You should use the exact name you’ve given the form field. <span class="code_red">required()</span>, 
+							<span class="code_red">min_length()</span>, <span class="code_red">max_length()</span>, 
+							<span class="code_red">matches()</span> and <span class="code_red">valid_email()</span> are all validation methods. 
+							There is an optional parameter for each methods that is used to add custom error message.</p>
+						<br>
+						<p><b>Here are the complete list of methods that can be used in form validation.</b></p>
+						<table class="table table-bordered table-small">
+							<thead>
+								<tr>
+									<th>Method</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>name()</td>
+									<td>Form input name(require): The exact name you’ve given the form field for validation</td>
+								</tr>
+								<tr>
+									<td>pattern($name, $custom_error)</td>
+									<td>$name(required):  The pattern you want to check if matched. <br>
+									Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
+									</td>
+								</tr>
+								<tr>
+									<td>pattern($name, $custom_error)</td>
+									<td>$name(required):  The pattern you want to check if matched. <br>
+									Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
+									</td>
+								</tr>
+								<tr>
+									<td>custom_pattern($pattern, $custom_error)</td>
+									<td>$pattern(required):  The pattern you want to check if matched. Use regex syntax.
+									</td>
+								</tr>
+								<tr>
+									<td>required($custom_error)</td>
+									<td>Check if the field is not empty.
+									</td>
+								</tr>
+								<tr>
+									<td>matches($field, $custom_error)</td>
+									<td>$field(required): Check if the field macthes with the current fields.
+									</td>
+								</tr>
+								<tr>
+									<td>differs($field, $custom_error)</td>
+									<td>$field(required): Check if the field differs with the current fields.
+									</td>
+								</tr>
+								<tr>
+									<td>is_unique($table, $field, $str, $custom_error)</td>
+									<td>$table(required): Database table to check if record does not already exists.<br>
+										$fields(required): Table column name <br>
+										$str (required): The value to check is exists
+									</td>
+								</tr>
+								<tr>
+									<td>exact_length($length, $custom_error)</td>
+									<td>$length(required): The length of string to check.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>min_length($length, $custom_error)</td>
+									<td>$length(required): The minimum length of string to check.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>max_length($length, $custom_error)</td>
+									<td>$length(required): The max length of string to check.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>valid_email($email, $custom_error)</td>
+									<td>email(required): The email address to check if valid.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>alpha($custom_error)</td>
+									<td>Check if consists of alpha characters.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>alpha_numeric($custom_error)</td>
+									<td>Check if consists of alpha-numeric characters.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>alpha_numeric_space($custom_error)</td>
+									<td>Check if consists of alpha-numeric characters and spaces.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>alpha_space($custom_error)</td>
+									<td>Check if consists of alpha characters and spaces.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>alpha_numeric_dash($custom_error)</td>
+									<td>Check if consists of alpha-numeric characters and dashes.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>numeric($custom_error)</td>
+									<td>Check if consists of numeric characters.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>greater_than($value, $custom_error)</td>
+									<td>$value(required): The value to check if greater than the value of the input field.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>greater_than_equal_to($value, $custom_error)</td>
+									<td>$value(required): The value to check if greater than or equal to the value of the input field.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>less_than($value, $custom_error)</td>
+									<td>$value(required): The value to check if less than the value of the input field.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>less_than_equal_to($value, $custom_error)</td>
+									<td>$value(required): The value to check if less than or equal to the value of the input field.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>in_list($list, $custom_error)</td>
+									<td>$list(required): The value to check if within an array of values.<br>
+									</td>
+								</tr>
+								<tr>
+									<td>run()</td>
+									<td>Check if there is no errors while validating. If true, no errors found.<br>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>$custom_error parameter accepts custom error message for each validation method.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-5">
+						<h2 class="section-heading">Upload Class</h2>
+						<p>LavaLust's File Uploading Class permits files to be uploaded. You can set various preferences, restricting the type and size of the files.</p>
+						<h4>The Process</h4>
+						<p>Uploading a file involves the following general process:</p>
+						<ul>
+							<li>An upload form is displayed, allowing a user to select a file and
+							upload it.</li>
+							<li>When the form is submitted, the file is uploaded to the destination
+							you specify.</li>
+							<li>Along the way, the file is validated to make sure it is allowed to be
+							uploaded based on the preferences you set.</li>
+							<li>Once uploaded, the user will be shown a success message.</li>
+						</ul>
+						<p>To demonstrate this process here is brief tutorial. Afterward you’ll
+						find reference information.</p>
+						<h5>Creating the Upload Form</h5>
+						<p>Using a text editor, create a form called upload_form.php. In it, place this code and save it to your <b>application/views/</b> directory:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php echo $error;?&gt;
+
+&lt;?php echo form_open_multipart('upload/do_upload');?&gt;
+
+&lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;
+
+&lt;br /&gt;&lt;br /&gt;
+
+&lt;input type=&quot;submit&quot; value=&quot;upload&quot; /&gt;
+
+&lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+								</code>
+							</pre>
+						</div>
+						<p>You’ll notice we are using a form helper to create the opening form tag.
+							File uploads require a multipart form, so the helper creates the proper
+							syntax for you. You’ll also notice we have an $error variable. This is
+							so we can show error messages in the event the user does something
+							wrong.</p>
+						<h5>The Success Page</h5>
+						<p>Using a text editor, create a form called upload_success.php. In it, place this code and save it to your app/views/ directory:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Upload Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h3&gt;Your file was successfully uploaded!&lt;/h3&gt;
+
+&lt;?php echo $filename;?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+								</code>
+							</pre>
+						</div>
+						<h5>The Controller</h5>
+						<p>Using a text editor, create a controller called Upload.php. In it, place this code and save it to your app/controllers/ directory:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Upload extends Controller {
+
+	public function upload() {
+		$this->call->library('upload', $_FILES["userfile"]);
+		$this->upload
+			->max_size(5)
+			->min_size(1)
+			->set_dir('public')
+			->allowed_extensions(array('jpg'))
+			->allowed_mimes(array('image/jpeg'))
+			->is_image()
+			->encrypt_name();
+		if($this->upload->do_upload()) {
+			$data['filename'] = $this->upload->get_filename();
+			$this->call->view('upload_form', $data);
+		} else {
+			$data['errors'] = array('error' => $this->upload->get_errors());
+			$this->call->view('upload_form', $data);
+		}
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<h5>The Upload Directory</h5>
+						<p>You’ll need a destination directory for your uploaded images. Create a directory at the root of your LavaLust installation called uploads and set its file permissions to 777.</p>
+						<h4>Reference Guide</h4>
+						<p>Like most other classes in LavaLust, the Upload class is initialized in your controller using the $this->call->library() method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="languge-php">
+$this->call->library('upload');
+								</code>
+							</pre>
+						</div>
+						<p>Once the Upload class is loaded, the object will be available using: $this->upload</p>
+						<h4>Setting Preferences</h4>
+						<p>Similar to other libraries, you’ll control what is allowed to be upload based on your preferences. In the controller you built above you set the following preferences:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('upload', $_FILES["userfile"]);
+$this->upload
+	->max_size(5)
+	->min_size(1)
+	->set_dir('public')
+	->allowed_extensions(array('jpg'))
+	->allowed_mimes(array('image/jpeg'))
+	->is_image()
+	->encrypt_name();
+								</code>
+							</pre>
+						</div>
+						<p>The above preferences should be fairly self-explanatory. Below is a table describing all available preferences.</p>
+						<h5>Preferences</h5>
+						<p>The following preferences are available. The default value indicates what will be used if you do not specify that preference.</p>
+						<table class="table table-bordered table-small">
+							<thead>
+								<tr>
+									<th>Method</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>allowed_extensions()</td>
+									<td>Allowed file extension. Use default if not set. array('gif', 'jpg', 'jpeg', 'png')</td>
+								</tr>
+								<tr>
+									<td>allowed_mimes()</td>
+									<td>Allowed mimes. Use default if not set. array('image/gif', 'image/jpg', 'image/jpeg', 'image/png')</td>
+								</tr>
+								<tr>
+									<td>set_dir()</td>
+									<td>Directory to store files</td>
+								</tr>
+								<tr>
+									<td>max_size()</td>
+									<td>Allowed maximum file size.</td>
+								</tr>
+								<tr>
+									<td>min_size()</td>
+									<td>Allowed minimum file size.</td>
+								</tr>
+								<tr>
+									<td>is_image()</td>
+									<td>Return true if the file is an image.</td>
+								</tr>
+								<tr>
+									<td>get_errors()</td>
+									<td>Return all errors.</td>
+								</tr>
+								<tr>
+									<td>do_upload()</td>
+									<td>Method to upload the file.</td>
+								</tr>
+								<tr>
+									<td>get_filename()</td>
+									<td>Return the filename of the uploaded file.</td>
+								</tr>
+								<tr>
+									<td>get_size()</td>
+									<td>Return the size of the uploaded file.</td>
+								</tr>
+								<tr>
+									<td>get_extension()</td>
+									<td>Return the file extension of the uploaded file.</td>
+								</tr>
+								<tr>
+									<td>ecrypt_name()</td>
+									<td>Encrypt the filename of the uploaded file.</td>
+								</tr>
+							</tbody>
+						</table>
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-6">
+						<h2 class="section-heading">Language Class</h2>
+						<p>The Language Class provides functions to retrieve language files and lines of text for purposes of internationalization.</p>
+						<p>In your LavaLust scheme folder, you will find a language sub-directory containing a sample file for the english idiom. (en-US)</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+return array(
+	/**
+	* Pagination
+	*/
+	'first_link' => '&lsaquo; First',
+	'next_link' => '&gt;',
+	'prev_link' => '&lt;',
+	'last_link' => 'Last &rsaquo;',
+	'page_delimiter' => '/?page=',//if query string is enabled in your config, you can use something like `/?page=` to this
+	'classes' => array('nav' => '', 'ul' => 'pagination', 'li' => 'page-item', 'a' => 'page-link'),//default for bootstrap 4. You can change the value according to your choice.
+
+	/**
+	* Other String to be translated here
+	*/
+	'welcome' => 'Hello {username} {type}',										
+								</code>
+							</pre>
+						</div>
+						<p>As you can see, there are default keys with value in english language. If you want to add language file and alter the values of each keys, you need to use two functions under language helper. <span class="code_red">lang()</span> and <span class="code_red">language()</span></p>
+					<p>You can add language file inside app/language folder. For example you will add tl-PH.php and you will alter some values if selected as default language.</p>
+					<div class="docs-code-block">
+						<pre>
+							<code class="language-php">
+return array(
+/**
+* Pagination
+*/
+'first_link' => '&lsaquo; Una',
+'next_link' => '&gt;',
+'prev_link' => '&lt;',
+'last_link' => 'Huli &rsaquo;',
+'page_delimiter' => '/?page=',//if query string is enabled in your config, you can use something like `/?page=` to this
+'classes' => array('nav' => '', 'ul' => 'pagination', 'li' => 'page-item', 'a' => 'page-link'),//default for bootstrap 4. You can change the value according to your choice.
+
+/**
+* Other String to be translated here
+*/
+'welcome' => 'Hello {username} {type}',										
+							</code>
+						</pre>
+					</div>
+					<p>To use it as default language, you can call language helper and use the said two functions above.</p>
+					<div class="docs-code-block">
+						<pre>
+							<code class="language-php">
+$this->call->helper('language');
+language('tl-PH');
+lang('first_link');
+lang('last_link');
+							</code>
+						</pre>
+					</div>
+					<p>In the example, you will see "&lsaquo; Una" and "Huli &rsaquo; instead of the "&lsaquo; First" and "Last &rsaquo;" because you chose tl-PH upon using <span class="code_red">language()</span> function.</p>
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-7">
+						<h2 class="section-heading">Session Library</h2>
+						<p>The Session class permits you maintain a user’s “state” and track their activity while they browse your site.</p>
+						<p>At the moment LavaLust comes with file session storage driver only:</p>
+						<h4>Using the Session Class</h4>
+						<h5>Initializing a Session</h5>
+						<p>Sessions will typically run globally with each page load, so the Session class should either be initialized in your controller constructors, or it can be auto-loaded by the system. For the most part the session class will run unattended in the background, so simply initializing the class will cause it to read, create, and update sessions when necessary.</p>
+						<p>To initialize the Session class manually in your controller constructor, use the <span class="code_red">$this->call->library()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('session');
+								</code>
+							</pre>
+						</div>
+						<p>Once loaded, the Sessions library object will be available using:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session;
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>Because the Loader Class is instantiated by LavaLust base controller, make sure to call parent::__construct() before trying to load a library from inside a controller constructor.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h5>How do Sessions work?</h5>
+						<p>When a page is loaded, the session class will check to see if valid session cookie is sent by the user’s browser. If a sessions cookie does not exist (or if it doesn’t match one stored on the server or has expired) a new session will be created and saved.</p>
+						<p>If a valid session does exist, its information will be updated. With each update, the session ID may be regenerated if configured to do so.</p>
+						<p>It’s important for you to understand that once initialized, the Session class runs automatically. There is nothing you need to do to cause the above behavior to happen. You can, as you’ll see below, work with session data, but the process of reading, writing, and updating a session is automatic.</p>
+						<h5>What is Session Data?</h5>
+						<p>Session data is simply an array associated with a particular session ID (cookie).</p>
+						<p>If you’ve used sessions in PHP before, you should be familiar with PHP’s $_SESSION superglobal (if not, please read the content on that link).</p>
+						<p>LavaLust gives access to its session data through the same means, as it uses the session handlers’ mechanism provided by PHP. Using session data is as simple as manipulating (read, set and unset values) the $_SESSION array.</p>
+						<p>In addition, LavaLust also provides 2 special types of session data that are further explained below: flashdata and tempdata.</p>
+						<h5>Retrieving Session Data</h5>
+						<p>Any piece of information from the session array is available through the $_SESSION superglobal:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$_SESSION['item']
+								</code>
+							</pre>
+						</div>
+						<p>Or through the Session library method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->userdata('item');
+								</code>
+							</pre>
+						</div>
+						<p>Where item is the array key corresponding to the item you wish to fetch. For example, to assign a previously stored ‘name’ item to the <span class="code_red">$name</span> variable, you will do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$name = $_SESSION['name'];
+
+// or:
+
+$name = $this->session->userdata('name');
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The <span class="code_red">userdata()</span> method returns NULL if the item you are trying to access does not exist.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>If you want to retrieve all of the existing userdata, you can simply omit the item key</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$_SESSION
+
+// or:
+
+$this->session->userdata();
+								</code>
+							</pre>
+						</div>
+						<h5>Adding Session Data</h5>
+						<p>Let’s say a particular user logs into your site. Once authenticated, you could add their username and e-mail address to the session, making that data globally available to you without having to run a database query when you need it.</p>
+						You can simply assign data to the $_SESSION array, as with any other variable. Or as a property of <span class="code_red">$this->session</span>.
+						<p>Alternatively, the method of assigning it as “userdata” is also available. That however passing an array containing your new data to the <span class="code_red">set_userdata()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->set_userdata($array);
+								</code>
+							</pre>
+						</div>
+						<p>Where <span class="code_red">$array</span> is an associative array containing your new data. Here’s an example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$newdata = array(
+	'username'  => 'johndoe',
+	'email'     => 'johndoe@some-site.com',
+	'logged_in' => TRUE
+);
+
+$this->session->set_userdata($newdata);
+								</code>
+							</pre>
+						</div>
+						<p>If you want to add userdata one value at a time, set_userdata() also supports this syntax:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->set_userdata('some_name', 'some_value');
+								</code>
+							</pre>
+						</div>
+						<p>If you want to verify that a session value exists, simply check with <span class="code_red">isset()</span>:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+// returns FALSE if the 'some_name' item doesn't exist or is NULL,
+// TRUE otherwise:
+isset($_SESSION['some_name'])
+								</code>
+							</pre>
+						</div>
+						<p>Or you can call <span class="code_red">has_userdata()</span>:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->has_userdata('some_name');
+								</code>
+							</pre>
+						</div>
+						<h5>Removing Session Data</h5>
+						<p>Just as with any other variable, unsetting a value in <span class="code_red">$_SESSION</span> can be done through <span class="code_red">unset()</span>:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+unset($_SESSION['some_name']);
+
+// or multiple values:
+
+unset(
+	$_SESSION['some_name'],
+	$_SESSION['another_name']
+);
+								</code>
+							</pre>
+						</div>
+						<p>Also, just as <span class="code_red">set_userdata()</span> can be used to add information to a session, <span class="code_red">unset_userdata()</span> can be used to remove it, by passing the session key. For example, if you wanted to remove ‘some_name’ from your session data array:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$array_items = array('username', 'email');
+
+$this->session->unset_userdata($array_items);
+								</code>
+							</pre>
+						</div>
+						<h5>Flashdata</h5>
+						<p>LavaLust supports “flashdata”, or session data that will only be available for the next request, and is then automatically cleared.</p>
+						<p>This can be very useful, especially for one-time informational, error or status messages (for example: “Record 2 deleted”).</p>
+						<p>It should be noted that flashdata variables are regular session vars, only marked in a specific way under the ‘__ci_vars’ key (please don’t touch that one, you’ve been warned).</p>
+						<p>To mark an existing item as “flashdata”:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->mark_as_flash('item');
+								</code>
+							</pre>
+						</div>
+						<p>If you want to mark multiple items as flashdata, simply pass the keys as an array:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->mark_as_flash(array('item', 'item2'));
+								</code>
+							</pre>
+						</div>
+						<p>To add flashdata:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$_SESSION['item'] = 'value';
+$this->session->mark_as_flash('item');
+								</code>
+							</pre>
+						</div>
+						<p>Or alternatively, using the <span class="code_red">set_flashdata()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->set_flashdata('item', 'value');
+								</code>
+							</pre>
+						</div>
+						<p>You can also pass an array to <span class="code_red">set_flashdata()</span>, in the same manner as <span class="code_red">set_userdata()</span>.</p>
+						<p>Reading flashdata variables is the same as reading regular session data through $_SESSION:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$_SESSION['item']
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>The <span class="code_red">userdata()</span> method will NOT return flashdata items.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>However, if you want to be sure that you’re reading “flashdata” (and not any other kind), you can also use the <span class="code_red">flashdata()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->flashdata('item');
+								</code>
+							</pre>
+						</div>
+						<p>Or to get an array with all flashdata, simply omit the key parameter:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->flashdata();
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>The <span class="code_red">flashdata()</span> method returns NULL if the item cannot be found.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>If you find that you need to preserve a flashdata variable through an additional request, you can do so using the <span class="code_red">keep_flashdata()</span> method. You can either pass a single item or an array of flashdata items to keep.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->session->keep_flashdata('item');
+$this->session->keep_flashdata(array('item1', 'item2', 'item3'));
+								</code>
+							</pre>
+						</div>
+						<h5>Session Preferences</h5>
+						<p>LavaLust will usually make everything work out of the box. However, Sessions are a very sensitive component of any application, so some careful configuration must be done. Please take your time to consider all of the options and their effects.</p>
+						<p>You’ll find the following Session related preferences in your app/config/config.php file:</p>
+						<table class="table table-bordered table-small">
+							<thead>
+								<tr>
+									<th>Preference</th>
+									<th>Default</th>
+									<th>Options</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>sess_driver</td>
+									<td>files</td>
+									<td>files</td>
+									<td>The session storage driver to use.</td>
+								</tr>
+								<tr>
+									<td>sess_cookie_name</td>
+									<td>LLSession</td>
+									<td>[A-Za-z_-] characters only</td>
+									<td>The name used for the session cookie.</td>
+								</tr>
+								<tr>
+									<td>sess_expiration</td>
+									<td>7200 (2 hours)</td>
+									<td>Time in seconds (integer)</td>
+									<td>The number of seconds you would like the session to last. If you would like a non-expiring session (until browser is closed) set the value to zero: 0</td>
+								</tr>
+								<tr>
+									<td>sess_save_path</td>
+									<td>Empty</td>
+									<td>None</td>
+									<td>Specifies the storage location, depends on the driver being used.</td>
+								</tr>
+								<tr>
+									<td>sess_match_ip</td>
+									<td>FALSE</td>
+									<td>TRUE/FALSE (boolean)</td>
+									<td>Whether to validate the user’s IP address when reading the session cookie. Note that some ISPs dynamically changes the IP, so if you want a non-expiring session you will likely set this to FALSE.</td>
+								</tr>
+								<tr>
+									<td>sess_time_to_update</td>
+									<td>300</td>
+									<td>Time in seconds (integer)</td>
+									<td>This option controls how often the session class will regenerate itself and create a new session ID. Setting it to 0 will disable session ID regeneration.</td>
+								</tr>
+								<tr>
+									<td>sess_regenerate_destroy</td>
+									<td>FALSE</td>
+									<td>TRUE/FALSE (boolean)</td>
+									<td>Whether to destroy session data associated with the old session ID when auto-regenerating the session ID. When set to FALSE, the data will be later deleted by the garbage collector.</td>
+								</tr>								
+							</tbody>
+						</table>
+					</section><!--//section-->
+				</article>
+			    <footer class="footer">
+				    <div class="container text-center py-5">
+				        <small class="copyright">© Copyright 2020 - 2022, LavaLust. Last updated on May 06, 2022. <br> Due to same logic, class and methods naming, part(s) of the docs was derived from CodeIgniter User Guide <br> Theme by <a href="https://themes.3rdwavemedia.com/" target="_blank">3rd Wave Media</a></small>
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="#"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li>
+				        </ul><!--//social-list-->
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div><!--//docs-wrapper-->
+   
+       
+    <!-- Javascript -->          
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
+    
+    
+    <!-- Page Specific JS -->
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+    <script src="assets/js/highlight-custom.js"></script> 
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+
+</body>
+</html> 
+
