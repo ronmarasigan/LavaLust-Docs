@@ -1722,40 +1722,42 @@ $this->email->send();
 							</pre>
 						</div>
 						<p><b>Here are the complete list of methods that can be used in sending email.</b></p>
-						<table class="table table-bordered table-small table-responsive">
-							<thead>
-								<tr>
-									<th>Method</th>
-									<th>Description</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>sender($sender_email, $sender_name)</td>
-									<td>$sender_email(required): Email address of the sender<br>p$sender_name: Name of the sender</td>
-								</tr>
-								<tr>
-									<td>recepient($receiver_email)</td>
-									<td>$receiver_email(required): Email address of the recepient</td>
-								</tr>
-								<tr>
-									<td>subject($subject)</td>
-									<td>$subject(required): Subject that will appear in the email</td>
-								</tr>
-								<tr>
-									<td>email_content($content, $email_type)</td>
-									<td>$content(required): Content of the email<br>$email_type: default value is "plain". You can set it to "html" if your email has html content</td>
-								</tr>
-								<tr>
-									<td>attachment($path)</td>
-									<td>$path(required): Path where your attachment is located.</td>
-								</tr>
-								<tr>
-									<td>send()</td>
-									<td>It will send the email.</td>
-								</tr>
-							</tbody>
-						  </table>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Method</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>sender($sender_email, $sender_name)</td>
+										<td>$sender_email(required): Email address of the sender<br>p$sender_name: Name of the sender</td>
+									</tr>
+									<tr>
+										<td>recepient($receiver_email)</td>
+										<td>$receiver_email(required): Email address of the recepient</td>
+									</tr>
+									<tr>
+										<td>subject($subject)</td>
+										<td>$subject(required): Subject that will appear in the email</td>
+									</tr>
+									<tr>
+										<td>email_content($content, $email_type)</td>
+										<td>$content(required): Content of the email<br>$email_type: default value is "plain". You can set it to "html" if your email has html content</td>
+									</tr>
+									<tr>
+										<td>attachment($path)</td>
+										<td>$path(required): Path where your attachment is located.</td>
+									</tr>
+									<tr>
+										<td>send()</td>
+										<td>It will send the email.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</section><!--//section-->
 					<section class="docs-section" id="item-5-4">
 						<h2 class="section-heading">Form Validation Class</h2>
@@ -1951,139 +1953,141 @@ public function index()
 							There is an optional parameter for each methods that is used to add custom error message.</p>
 						<br>
 						<p><b>Here are the complete list of methods that can be used in form validation.</b></p>
-						<table class="table table-bordered table-small table-responsive">
-							<thead>
-								<tr>
-									<th>Method</th>
-									<th>Description</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>name()</td>
-									<td>Form input name(require): The exact name you’ve given the form field for validation</td>
-								</tr>
-								<tr>
-									<td>pattern($name, $custom_error)</td>
-									<td>$name(required):  The pattern you want to check if matched. <br>
-									Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
-									</td>
-								</tr>
-								<tr>
-									<td>pattern($name, $custom_error)</td>
-									<td>$name(required):  The pattern you want to check if matched. <br>
-									Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
-									</td>
-								</tr>
-								<tr>
-									<td>custom_pattern($pattern, $custom_error)</td>
-									<td>$pattern(required):  The pattern you want to check if matched. Use regex syntax.
-									</td>
-								</tr>
-								<tr>
-									<td>required($custom_error)</td>
-									<td>Check if the field is not empty.
-									</td>
-								</tr>
-								<tr>
-									<td>matches($field, $custom_error)</td>
-									<td>$field(required): Check if the field macthes with the current fields.
-									</td>
-								</tr>
-								<tr>
-									<td>differs($field, $custom_error)</td>
-									<td>$field(required): Check if the field differs with the current fields.
-									</td>
-								</tr>
-								<tr>
-									<td>is_unique($table, $field, $str, $custom_error)</td>
-									<td>$table(required): Database table to check if record does not already exists.<br>
-										$fields(required): Table column name <br>
-										$str (required): The value to check is exists
-									</td>
-								</tr>
-								<tr>
-									<td>exact_length($length, $custom_error)</td>
-									<td>$length(required): The length of string to check.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>min_length($length, $custom_error)</td>
-									<td>$length(required): The minimum length of string to check.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>max_length($length, $custom_error)</td>
-									<td>$length(required): The max length of string to check.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>valid_email($email, $custom_error)</td>
-									<td>email(required): The email address to check if valid.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>alpha($custom_error)</td>
-									<td>Check if consists of alpha characters.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>alpha_numeric($custom_error)</td>
-									<td>Check if consists of alpha-numeric characters.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>alpha_numeric_space($custom_error)</td>
-									<td>Check if consists of alpha-numeric characters and spaces.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>alpha_space($custom_error)</td>
-									<td>Check if consists of alpha characters and spaces.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>alpha_numeric_dash($custom_error)</td>
-									<td>Check if consists of alpha-numeric characters and dashes.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>numeric($custom_error)</td>
-									<td>Check if consists of numeric characters.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>greater_than($value, $custom_error)</td>
-									<td>$value(required): The value to check if greater than the value of the input field.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>greater_than_equal_to($value, $custom_error)</td>
-									<td>$value(required): The value to check if greater than or equal to the value of the input field.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>less_than($value, $custom_error)</td>
-									<td>$value(required): The value to check if less than the value of the input field.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>less_than_equal_to($value, $custom_error)</td>
-									<td>$value(required): The value to check if less than or equal to the value of the input field.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>in_list($list, $custom_error)</td>
-									<td>$list(required): The value to check if within an array of values.<br>
-									</td>
-								</tr>
-								<tr>
-									<td>run()</td>
-									<td>Check if there is no errors while validating. If true, no errors found.<br>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Method</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>name()</td>
+										<td>Form input name(require): The exact name you’ve given the form field for validation</td>
+									</tr>
+									<tr>
+										<td>pattern($name, $custom_error)</td>
+										<td>$name(required):  The pattern you want to check if matched. <br>
+										Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
+										</td>
+									</tr>
+									<tr>
+										<td>pattern($name, $custom_error)</td>
+										<td>$name(required):  The pattern you want to check if matched. <br>
+										Possible value: url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email
+										</td>
+									</tr>
+									<tr>
+										<td>custom_pattern($pattern, $custom_error)</td>
+										<td>$pattern(required):  The pattern you want to check if matched. Use regex syntax.
+										</td>
+									</tr>
+									<tr>
+										<td>required($custom_error)</td>
+										<td>Check if the field is not empty.
+										</td>
+									</tr>
+									<tr>
+										<td>matches($field, $custom_error)</td>
+										<td>$field(required): Check if the field macthes with the current fields.
+										</td>
+									</tr>
+									<tr>
+										<td>differs($field, $custom_error)</td>
+										<td>$field(required): Check if the field differs with the current fields.
+										</td>
+									</tr>
+									<tr>
+										<td>is_unique($table, $field, $str, $custom_error)</td>
+										<td>$table(required): Database table to check if record does not already exists.<br>
+											$fields(required): Table column name <br>
+											$str (required): The value to check is exists
+										</td>
+									</tr>
+									<tr>
+										<td>exact_length($length, $custom_error)</td>
+										<td>$length(required): The length of string to check.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>min_length($length, $custom_error)</td>
+										<td>$length(required): The minimum length of string to check.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>max_length($length, $custom_error)</td>
+										<td>$length(required): The max length of string to check.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>valid_email($email, $custom_error)</td>
+										<td>email(required): The email address to check if valid.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>alpha($custom_error)</td>
+										<td>Check if consists of alpha characters.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>alpha_numeric($custom_error)</td>
+										<td>Check if consists of alpha-numeric characters.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>alpha_numeric_space($custom_error)</td>
+										<td>Check if consists of alpha-numeric characters and spaces.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>alpha_space($custom_error)</td>
+										<td>Check if consists of alpha characters and spaces.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>alpha_numeric_dash($custom_error)</td>
+										<td>Check if consists of alpha-numeric characters and dashes.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>numeric($custom_error)</td>
+										<td>Check if consists of numeric characters.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>greater_than($value, $custom_error)</td>
+										<td>$value(required): The value to check if greater than the value of the input field.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>greater_than_equal_to($value, $custom_error)</td>
+										<td>$value(required): The value to check if greater than or equal to the value of the input field.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>less_than($value, $custom_error)</td>
+										<td>$value(required): The value to check if less than the value of the input field.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>less_than_equal_to($value, $custom_error)</td>
+										<td>$value(required): The value to check if less than or equal to the value of the input field.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>in_list($list, $custom_error)</td>
+										<td>$list(required): The value to check if within an array of values.<br>
+										</td>
+									</tr>
+									<tr>
+										<td>run()</td>
+										<td>Check if there is no errors while validating. If true, no errors found.<br>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 						<div class="callout-block callout-block-info">
 							<div class="content">
 								<h4 class="callout-title">
@@ -2226,64 +2230,66 @@ $this->upload
 						<p>The above preferences should be fairly self-explanatory. Below is a table describing all available preferences.</p>
 						<h5>Preferences</h5>
 						<p>The following preferences are available. The default value indicates what will be used if you do not specify that preference.</p>
-						<table class="table table-bordered table-small table-responsive">
-							<thead>
-								<tr>
-									<th>Method</th>
-									<th>Description</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>allowed_extensions()</td>
-									<td>Allowed file extension. Use default if not set. array('gif', 'jpg', 'jpeg', 'png')</td>
-								</tr>
-								<tr>
-									<td>allowed_mimes()</td>
-									<td>Allowed mimes. Use default if not set. array('image/gif', 'image/jpg', 'image/jpeg', 'image/png')</td>
-								</tr>
-								<tr>
-									<td>set_dir()</td>
-									<td>Directory to store files</td>
-								</tr>
-								<tr>
-									<td>max_size()</td>
-									<td>Allowed maximum file size.</td>
-								</tr>
-								<tr>
-									<td>min_size()</td>
-									<td>Allowed minimum file size.</td>
-								</tr>
-								<tr>
-									<td>is_image()</td>
-									<td>Return true if the file is an image.</td>
-								</tr>
-								<tr>
-									<td>get_errors()</td>
-									<td>Return all errors.</td>
-								</tr>
-								<tr>
-									<td>do_upload()</td>
-									<td>Method to upload the file.</td>
-								</tr>
-								<tr>
-									<td>get_filename()</td>
-									<td>Return the filename of the uploaded file.</td>
-								</tr>
-								<tr>
-									<td>get_size()</td>
-									<td>Return the size of the uploaded file.</td>
-								</tr>
-								<tr>
-									<td>get_extension()</td>
-									<td>Return the file extension of the uploaded file.</td>
-								</tr>
-								<tr>
-									<td>ecrypt_name()</td>
-									<td>Encrypt the filename of the uploaded file.</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Method</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>allowed_extensions()</td>
+										<td>Allowed file extension. Use default if not set. array('gif', 'jpg', 'jpeg', 'png')</td>
+									</tr>
+									<tr>
+										<td>allowed_mimes()</td>
+										<td>Allowed mimes. Use default if not set. array('image/gif', 'image/jpg', 'image/jpeg', 'image/png')</td>
+									</tr>
+									<tr>
+										<td>set_dir()</td>
+										<td>Directory to store files</td>
+									</tr>
+									<tr>
+										<td>max_size()</td>
+										<td>Allowed maximum file size.</td>
+									</tr>
+									<tr>
+										<td>min_size()</td>
+										<td>Allowed minimum file size.</td>
+									</tr>
+									<tr>
+										<td>is_image()</td>
+										<td>Return true if the file is an image.</td>
+									</tr>
+									<tr>
+										<td>get_errors()</td>
+										<td>Return all errors.</td>
+									</tr>
+									<tr>
+										<td>do_upload()</td>
+										<td>Method to upload the file.</td>
+									</tr>
+									<tr>
+										<td>get_filename()</td>
+										<td>Return the filename of the uploaded file.</td>
+									</tr>
+									<tr>
+										<td>get_size()</td>
+										<td>Return the size of the uploaded file.</td>
+									</tr>
+									<tr>
+										<td>get_extension()</td>
+										<td>Return the file extension of the uploaded file.</td>
+									</tr>
+									<tr>
+										<td>ecrypt_name()</td>
+										<td>Encrypt the filename of the uploaded file.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</section><!--//section-->
 					<section class="docs-section" id="item-5-6">
 						<h2 class="section-heading">Language Class</h2>
@@ -2614,60 +2620,62 @@ $this->session->keep_flashdata(array('item1', 'item2', 'item3'));
 						<h5>Session Preferences</h5>
 						<p>LavaLust will usually make everything work out of the box. However, Sessions are a very sensitive component of any application, so some careful configuration must be done. Please take your time to consider all of the options and their effects.</p>
 						<p>You’ll find the following Session related preferences in your app/config/config.php file:</p>
-						<table class="table table-bordered table-small table-responsive">
-							<thead>
-								<tr>
-									<th>Preference</th>
-									<th>Default</th>
-									<th>Options</th>
-									<th>Description</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>sess_driver</td>
-									<td>files</td>
-									<td>files</td>
-									<td>The session storage driver to use.</td>
-								</tr>
-								<tr>
-									<td>sess_cookie_name</td>
-									<td>LLSession</td>
-									<td>[A-Za-z_-] characters only</td>
-									<td>The name used for the session cookie.</td>
-								</tr>
-								<tr>
-									<td>sess_expiration</td>
-									<td>7200 (2 hours)</td>
-									<td>Time in seconds (integer)</td>
-									<td>The number of seconds you would like the session to last. If you would like a non-expiring session (until browser is closed) set the value to zero: 0</td>
-								</tr>
-								<tr>
-									<td>sess_save_path</td>
-									<td>Empty</td>
-									<td>None</td>
-									<td>Specifies the storage location, depends on the driver being used.</td>
-								</tr>
-								<tr>
-									<td>sess_match_ip</td>
-									<td>FALSE</td>
-									<td>TRUE/FALSE (boolean)</td>
-									<td>Whether to validate the user’s IP address when reading the session cookie. Note that some ISPs dynamically changes the IP, so if you want a non-expiring session you will likely set this to FALSE.</td>
-								</tr>
-								<tr>
-									<td>sess_time_to_update</td>
-									<td>300</td>
-									<td>Time in seconds (integer)</td>
-									<td>This option controls how often the session class will regenerate itself and create a new session ID. Setting it to 0 will disable session ID regeneration.</td>
-								</tr>
-								<tr>
-									<td>sess_regenerate_destroy</td>
-									<td>FALSE</td>
-									<td>TRUE/FALSE (boolean)</td>
-									<td>Whether to destroy session data associated with the old session ID when auto-regenerating the session ID. When set to FALSE, the data will be later deleted by the garbage collector.</td>
-								</tr>								
-							</tbody>
-						</table>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Preference</th>
+										<th>Default</th>
+										<th>Options</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>sess_driver</td>
+										<td>files</td>
+										<td>files</td>
+										<td>The session storage driver to use.</td>
+									</tr>
+									<tr>
+										<td>sess_cookie_name</td>
+										<td>LLSession</td>
+										<td>[A-Za-z_-] characters only</td>
+										<td>The name used for the session cookie.</td>
+									</tr>
+									<tr>
+										<td>sess_expiration</td>
+										<td>7200 (2 hours)</td>
+										<td>Time in seconds (integer)</td>
+										<td>The number of seconds you would like the session to last. If you would like a non-expiring session (until browser is closed) set the value to zero: 0</td>
+									</tr>
+									<tr>
+										<td>sess_save_path</td>
+										<td>Empty</td>
+										<td>None</td>
+										<td>Specifies the storage location, depends on the driver being used.</td>
+									</tr>
+									<tr>
+										<td>sess_match_ip</td>
+										<td>FALSE</td>
+										<td>TRUE/FALSE (boolean)</td>
+										<td>Whether to validate the user’s IP address when reading the session cookie. Note that some ISPs dynamically changes the IP, so if you want a non-expiring session you will likely set this to FALSE.</td>
+									</tr>
+									<tr>
+										<td>sess_time_to_update</td>
+										<td>300</td>
+										<td>Time in seconds (integer)</td>
+										<td>This option controls how often the session class will regenerate itself and create a new session ID. Setting it to 0 will disable session ID regeneration.</td>
+									</tr>
+									<tr>
+										<td>sess_regenerate_destroy</td>
+										<td>FALSE</td>
+										<td>TRUE/FALSE (boolean)</td>
+										<td>Whether to destroy session data associated with the old session ID when auto-regenerating the session ID. When set to FALSE, the data will be later deleted by the garbage collector.</td>
+									</tr>								
+								</tbody>
+							</table>
+						</div>
 					</section><!--//section-->
 				</article>
 			    <footer class="footer">
