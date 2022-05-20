@@ -1511,11 +1511,11 @@ $config['csrf_protection'] = TRUE;
 									Note
 								</h4>
 								<p>This class is initialized automatically by the system so there is no need to do it manually.</p>
-								<p>In addition, the benchmark is always started the moment the framework is invoked, and ended by the output class right before sending the final view to the browser, enabling a very accurate timing of the entire system execution to be shown.</p>
+								<p>In addition, the performance is always started the moment the framework is invoked, and ended by the output class right before sending the final view to the browser, enabling a very accurate timing of the entire system execution to be shown.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<h4>Using the Performance Class</h4>
-						<p>The Benchmark class can be used within your <a href="#item-4-2">controllers</a> , <a href="#item-4-3">views</a>, or your <a href="#item-4-4">models</a>. The process for usage is this:</p>
+						<p>The Performance class can be used within your <a href="#item-4-2">controllers</a> , <a href="#item-4-3">views</a>, or your <a href="#item-4-4">models</a>. The process for usage is this:</p>
 						<ol>
 							<li>Mark a start point</li>
 							<li>Mark an end point</li>
@@ -1530,7 +1530,7 @@ $this->performance->tag('referrence_name');
 // Some code happens here
 
 $this->performance->tag('referrence_name');
-echo $this->benchmark->elapsed_time('referrence_name');			
+echo $this->performance->elapsed_time('referrence_name');			
 								</code>
 							</pre>
 						</div>
@@ -1542,7 +1542,7 @@ echo $this->benchmark->elapsed_time('referrence_name');
 									</span><!--//icon-holder-->
 									Note
 								</h4>
-								<p>The words “code_start” and “code_end” are arbitrary. They are simply words used to set two markers. You can use any words you want, and you can set multiple sets of markers. Consider this example:</p>
+								<p>The words "tag" are arbitrary. They are simply words used to set the marker. You can use any words you want, and you can set multiple sets of markers. Consider this example:</p>
 								<div class="docs-code-block">
 									<pre>
 										<code class="language-php">
@@ -1577,7 +1577,7 @@ echo $this->performance->elapsed_time('bird');
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-&lt;?php echo $this->benchmark->elapsed_time();?&gt;
+&lt;?php echo $this->performance->elapsed_time();?&gt;
 								</code>
 							</pre>
 						</div>
@@ -1586,7 +1586,7 @@ echo $this->performance->elapsed_time('bird');
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-&lt;?php echo $this->benchmark->memory_usage();?&gt;
+&lt;?php echo $this->performance->memory_usage();?&gt;
 								</code>
 							</pre>
 						</div>
