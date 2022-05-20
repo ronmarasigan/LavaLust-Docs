@@ -160,12 +160,25 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 							</pre>
 						</div><!--//docs-code-block-->
 					</section><!--//section-->
-
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
+						<h4>Upgrading from 3.0 to 3.0.1</h4>
+						<p>Replace all files and directories in your scheme/ directory.</p>
+						<div class="callout-block callout-block-info">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
+						<hr>
 						<h4>Upgrading from 2.0 to 3.0</h4>
-						<div class="callout-block callout-block-info">
-                            
+						<div class="callout-block callout-block-info">                          
                             <div class="content">
                                 <h4 class="callout-title">
 	                                <span class="callout-icon-holder me-1">
@@ -182,13 +195,14 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 							<li>Remove xss_clean() using Escaper class. If you want to use it, install htmlpurifier library then create a function "xss_clean()" inside a helper.</li>
 							<li>You can now use different instances of database connections. Changes also affect the database.php file inside the config folder. (it will be discussed later in this documetation) </li>
 							<li>Inside view fie, if you pass $data variable from controller, you can easily use the array key of it inside the view. (it will be discussed later in this documetation)</li>
-							<li>Updating new methods in Database Class and Form Form_validation</li>
+							<li>In models, you dont't need to add exec() method in insert(), update() and delete() because Lavalust automatically added it for you. Example: model</li>
+							<li>You can now use put models inside sub directories. Example: model/sub_dir/Sample_model.php</li>
+							<li>You can now use http verb in routes. Just add the type of request after the route</li>
 						</ul>
 						<hr>
 						<h4>Upgrading from 1.0 to 2.0</h4>
 						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<div class="callout-block callout-block-info">
-                            
+						<div class="callout-block callout-block-info">                           
                             <div class="content">
                                 <h4 class="callout-title">
 	                                <span class="callout-icon-holder me-1">
@@ -522,7 +536,7 @@ class blog extends Controller {
 						<p>Also, always make sure your controller extends the parent controller class so that it can inherit all its methods.</p>
 						<br>
 						<h4>Methods</h4>
-						<p>In the above example the method name is index(). The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
+						<p>In the above example the method name is <span class="code-red">index()/span> . The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-plaintext">
@@ -825,6 +839,14 @@ app/models/User_model.php
 							<pre>
 								<code class="language-php">
 $this->call->model('model_name');
+								</code>
+							</pre>
+						</div>
+						<p>If your model is located in a sub-directory, include the relative path from your models directory. For example, if you have a model located at application/models/blog/Queries.php you’ll load it using:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->load->model('blog/queries');
 								</code>
 							</pre>
 						</div>
