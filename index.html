@@ -2152,9 +2152,9 @@ public function index()
 &lt;/head&gt;
 &lt;body&gt;
 
-&lt;?php echo $error;?&gt;
+&lt;?php foreach($errors as $error) { echo $error; };?&gt;
 
-&lt;form action="&lt;?php echo site_url('upload/do_upload');&gt;?" method="post" enctype="multipart/form-data">&lt;/form&gt;
+&lt;form action="&lt;?php echo site_url('upload/do_upload');?&gt;" method="post" enctype="multipart/form-data">&lt;/form&gt;
 
 &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;
 
@@ -2215,7 +2215,7 @@ class Upload extends Controller {
 			$data['filename'] = $this->upload->get_filename();
 			$this->call->view('upload_form', $data);
 		} else {
-			$data['errors'] = array('error' => $this->upload->get_errors());
+			$data['errors'] = $this->upload->get_errors();
 			$this->call->view('upload_form', $data);
 		}
 	}
