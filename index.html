@@ -2154,7 +2154,7 @@ public function index()
 
 &lt;?php echo $error;?&gt;
 
-&lt;?php echo form_open_multipart('upload/do_upload');?&gt;
+&lt;form action="&lt;?php echo site_url('upload/do_upload');&gt;?" method="post" enctype="multipart/form-data">&lt;/form&gt;
 
 &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;
 
