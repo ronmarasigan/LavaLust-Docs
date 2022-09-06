@@ -126,7 +126,7 @@
 				     <section class="docs-section" id="item-2-1">
 						<h2 class="section-heading">Server Requirements</h2>
 						<ol>
-							<li>At least use PHP 7.4 (it will work with 7.2+ but I suggest to use newer version of PHP)</li>
+							<li>Requires PHP version >= 7.4</li>
 							<li>MySQL 5 or higher</li>
 							<li>PDO is installed</li>
 							<li>Enaled mod_rewrite(optional but recommended for security purposes)</li>
@@ -162,10 +162,35 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 						</div><!--//docs-code-block-->
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
+						<h4>Upgrading from 3.0.3 to 3.1.0</h4>
+						<p>Replace all files and directories in your scheme/ directory.</p>
+						<div class="callout-block callout-block-danger">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>Please update to this version. There are several changes in scheme folder files as of this version.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<div class="callout-block callout-block-info">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
+						<hr>
 						<h2 class="section-heading">Upgrading Version</h2>
 						<h4>Upgrading from 3.0.3 to 3.0.4</h4>
 						<p>Replace all files and directories in your scheme/ directory.</p>
-						<p>Copy the new welcome_page.php and replace the old file inside app/view/ directory.</p>
 						<div class="callout-block callout-block-info">                           
                             <div class="content">
                                 <h4 class="callout-title">
@@ -181,7 +206,6 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 						<hr>
 						<h4>Upgrading from 3.0.2 to 3.0.3</h4>
 						<p>Replace all files and directories in your scheme/ directory.</p>
-						<p>Copy the new welcome_page.php and replace the old file inside app/view/ directory.</p>
 						<div class="callout-block callout-block-info">                           
                             <div class="content">
                                 <h4 class="callout-title">
@@ -199,6 +223,17 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 						<p>Replace all files and directories in your scheme/ directory.</p>
 						<p>Copy the new welcome_page.php and replace the old file inside app/view/ directory.</p>
 						<p>You are now forbidden to directly use <span class="code_red">$this</span> inside view files and other non class file.</p>
+						<div class="callout-block callout-block-warning">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>Starting LavaLust 3.0.1 you are advised to use PHP 7.4 or higher. If you are running PHP 7.2 or lower please use LavaLust 3.0.0 or lower.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
 						<div class="callout-block callout-block-info">                           
                             <div class="content">
                                 <h4 class="callout-title">
@@ -444,16 +479,6 @@ RewriteRule ^(.*)$ index.php/$1 [L]
 								<p>Make sure to also exclude from the above rule any assets that you might need to be accessible from the outside world.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
-						<br>
-						<h4>Adding a URL Suffix</h4>
-						<p>In your config/config.php file you can specify a suffix that will be added to all URLs generated by LavaLust. For example, if a URL is this:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-plaintext">
-example.com/index.php/products/view/shoes
-								</code>
-							</pre>
-						</div>
 						<br>
 						<h4>Enabling Query Strings</h4>
 						<p>In some cases you might prefer to use query strings URLs:</p>
@@ -1029,7 +1054,7 @@ $this->call->helper(
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-&lt;?php echo redirect('blog/comments');?&gt;
+&lt;?php redirect('blog/comments');?&gt;
 								</code>
 							</pre>
 						</div>
