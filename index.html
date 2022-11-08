@@ -163,6 +163,31 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
+						<h4>Upgrading from 3.1.1 to 3.1.2</h4>
+						<div class="callout-block callout-block-danger">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>Please check config.php file and remove the $config['enable_query_strings']. It will now automaticall allow usage of query strings.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Replace all files and directories in your scheme/ directory.</p>
+						<div class="callout-block callout-block-info">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
 						<h4>Upgrading from 3.1.0 to 3.1.1</h4>
 						<div class="callout-block callout-block-danger">                           
                             <div class="content">
@@ -506,24 +531,7 @@ RewriteRule ^(.*)$ index.php/$1 [L]
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<br>
-						<h4>Enabling Query Strings</h4>
-						<p>In some cases you might prefer to use query strings URLs:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-plaintext">
-example.com/product/view/?id=123
-								</code>
-							</pre>
-						</div>
-						<p>Query strings are only available for parameters. Controller and methods are fixed to use segment approach. You can do this by enabling it in your app/config.php file</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="php">
-$config['enable_query_strings'] = FALSE;
-								</code>
-							</pre>
-						</div>
-						<p>If you change “enable_query_strings” to TRUE this feature will become active.</p>
+						
 					</section>
 					<section class="docs-section" id="item-4-2">
 						<h2 class="section-heading">Controllers</h2>
