@@ -163,6 +163,20 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
+						<h4>Upgrading from 3.1.2 to 3.1.3</h4>
+						<p>Replace all files and directories in your scheme/ directory.</p>
+						<div class="callout-block callout-block-info">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>						
 						<h4>Upgrading from 3.1.1 to 3.1.2</h4>
 						<div class="callout-block callout-block-danger">                           
                             <div class="content">
@@ -618,7 +632,7 @@ class blog extends Controller {
 						<p>Also, always make sure your controller extends the parent controller class so that it can inherit all its methods.</p>
 						<br>
 						<h4>Methods</h4>
-						<p>In the above example the method name is <span class="code-red">index()/span> . The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
+						<p>In the above example the method name is <span class="code-red">index()</span> . The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-plaintext">
@@ -942,7 +956,7 @@ $this->model_name->method();
 								</code>
 							</pre>
 						</div>
-						pIf you would like your model assigned to a different object name you can specify it via the second parameter of the loading method:
+						If you would like your model assigned to a different object name you can specify it via the second parameter of the loading method:
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
@@ -1108,7 +1122,7 @@ $this->call->library('Form_validation');
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->call->library(array('Form_validation', email));
+$this->call->library(array('Form_validation', 'email'));
 								</code>
 							</pre>
 						</div>
@@ -2222,7 +2236,7 @@ public function index()
 						<p>To demonstrate this process here is brief tutorial. Afterward you’ll
 						find reference information.</p>
 						<h5>Creating the Upload Form</h5>
-						<p>Using a text editor, create a form called upload_form.php. In it, place this code and save it to your <b>application/views/</b> directory:</p>
+						<p>Using a text editor, create a form called upload_form.php. In it, place this code and save it to your <b>app/views/</b> directory:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
