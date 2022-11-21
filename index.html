@@ -1598,7 +1598,7 @@ $config['csrf_protection'] = TRUE;
 							<li>DO NOT put unnecessary limits on your users’ passwords. If you’re using a hashing algorithm other than BCrypt (which has a limit of 72 characters), you should set a relatively high limit on password lengths in order to mitigate DoS attacks - say, 1024 characters. Other than that however, there’s no point in forcing a rule that a password can only be up to a number of characters, or that it can’t contain a certain set of special characters. Not only does this reduce security instead of improving it, but there’s literally no reason to do it. No technical limitations and no (practical) storage constraints apply once you’ve hashed them, none!</li>
 						</ul>
 						<h4>Validate input data</h4>
-						<p>LavaLust has a <a href="#">Form Validation Library</a> that assists you in validating, filtering, and prepping your data.</p>
+						<p>LavaLust has a <a href="#item-5-4">Form Validation Library</a> that assists you in validating, filtering, and prepping your data.</p>
 						<p>Even if that doesn’t work for your use case however, be sure to always validate and sanitize all input data. For example, if you expect a numeric string for an input variable, you can check for that with is_numeric() or ctype_digit(). Always try to narrow down your checks to a certain pattern.</p>
 						<p>Have it in mind that this includes not only <span class="code_red">$_POST</span> and <span class="code_red">$_GET</span> variables, but also cookies, the user-agent string and basically <i>all data that is not created directly by your own code</i>.</p>
 						<h4>Escape all data before database insertion</h4>
