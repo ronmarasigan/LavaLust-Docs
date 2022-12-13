@@ -1851,7 +1851,11 @@ $this->email->send();
 								<tbody>
 									<tr>
 										<td>sender($sender_email, $sender_name)</td>
-										<td>$sender_email(required): Email address of the sender<br>p$sender_name: Name of the sender</td>
+										<td>$sender_email(required): Email address of the sender<br>$sender_name: Name of the sender</td>
+									</tr>
+									<tr>
+										<td>reply_to($sender_email)</td>
+										<td>$sender_email: Email address of the where the reply should go.</td>
 									</tr>
 									<tr>
 										<td>recepient($receiver_email)</td>
