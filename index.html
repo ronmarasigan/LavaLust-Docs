@@ -101,7 +101,9 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-5">Upload Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Language Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-7">Session Library</a></li>
-			    </ul>
+					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>Database Reference</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Quick Start: Usage Examples</a></li>
+				</ul>
 
 		    </nav><!--//docs-nav-->
 	    </div><!--//docs-sidebar-->
@@ -163,6 +165,20 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
+						<h4>Upgrading from 3.1.3 to 3.1.4</h4>
+						<p>Replace all files and directories in your scheme/ directory.</p>
+						<div class="callout-block callout-block-info">                           
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>						
 						<h4>Upgrading from 3.1.2 to 3.1.3</h4>
 						<p>Replace all files and directories in your scheme/ directory.</p>
 						<div class="callout-block callout-block-info">                           
@@ -988,51 +1004,13 @@ class Blog_controller extends Controller {
 						<p>If you find that you need a particular model globally throughout your application, you can tell LavaLust to auto-load it during system initialization. This is done by opening the app/config/autoload.php file and adding the model to the autoload array.</p>
 						<h4>Connecting to your Database</h4>
 						<p>When a model is loaded it does NOT connect automatically to your database. The following options for connecting are available to you:</p>
-						<h4>Automatically Connecting</h4>
-						<p>The “auto connect” feature will load and instantiate the database class with every page load. To enable “auto connecting”, add the word database to the library array, as indicated in the following file:</p>
-						<p>app/config/autoload.php</p>
-						<h4>Manually Connecting</h4>
-						<p>If only some of your pages require database connectivity you can manually connect to your database by adding this line of code in any function where it is needed, or in your class constructor to make the database available globally in that class.</p>
+						<ul>
+							<li>You can connect using the standard database methods described here, either from within your Controller class or your Model class.</li>
+						</ul>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->call->database();
-								</code>
-							</pre>
-						</div>
-						<p>If the above function does not contain any information in the first parameter it will connect to the group specified in your database config file. For most people, this is the preferred method of use.</p>
-						<h4>Manually Connecting to a Database</h4>
-						<p>The first parameter of this function can optionally be used to specify a particular database group from your config file, or you can even submit connection values for a database that is not specified in your config file. Examples:
-						<br><br>
-						To choose a specific group from your config file you can do this:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$this->call->database('group_name');
-								</code>
-							</pre>
-						</div>
-						<p>Where group_name is the name of the connection group from your config file.</p>
-						<p>For information on each of these values please see the <a href="#">configuration page</a>.</p>
-						<h4>Connecting to Multiple Databases</h4>
-						<p>If you need to connect to more than one database simultaneously you can do so as follows:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$this->call->database();
-$this->call->database('group_one');
-$this->call->database('group_two');
-								</code>
-							</pre>
-						</div>
-						<p>Note: Change the words “group_one” and “group_two” to the specific group names you are connecting to. If you don't specify the group_name, it will automatically defined $this->db variable to use for database queries.</p>
-						<p>Now you can execute queries using the following:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$this->db->table('table_name')->get_all();
-$this->group_one->table('table_name')->get_all();
-$this->group_two->table('table_name')->get_all();
+$this->load->model('model_name');
 								</code>
 							</pre>
 						</div>
@@ -2800,6 +2778,74 @@ $this->session->keep_flashdata(array('item1', 'item2', 'item3'));
 							</table>
 						</div>
 					</section><!--//section-->
+				</article>
+				<article class="docs-article" id="section-6">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">Database Query Builder Class</h1>
+					    <section class="docs-intro">
+							<p>LavaLust has database class that supports both semi-traditional structures and Query Builder patterns..</p>
+						</section><!--//docs-intro-->
+				    </header>
+					<section class="docs-section" id="item-6-1">
+						<h2 class="section-heading">Available Methods and Usage</h4>
+						<p>The following code loads and initializes the database class based on your <a href="#item-6-2">configuration</a> settings:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database();
+								</code>
+							</pre>
+						</div>
+						<p>Once loaded the class is ready to be used as described below.</p>
+						<p>Note: If all your pages require database access you can connect automatically. See the <a href="#item-6-3">connecting</a> page for details.</p>
+						<h4>1. $this->db->raw()</h4>
+						<p>This method has one require parameter which is the SQL statement.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = $this->db->raw('select * from user');
+foreach($data as $row) {
+	echo $row['id'];
+	echo $row['username'];
+	echo $row['password'];
+}
+
+echo $this->db->row_count();
+								</code>
+							</pre>
+						</div>
+						<p>This method has two(2) more parameters that are not required. Arrays of value and PDO fetch mode. Check the example below.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = $this->db->raw('select * from user where = ?', array(1), PDO::FETCH_ASSOC);
+foreach($data as $row) {
+	echo $row['id'];
+	echo $row['username'];
+	echo $row['password'];
+}
+
+echo $this->db->row_count();
+								</code>
+							</pre>
+						</div>
+						<p>The second parameter is an array which will be substituted to the placeholder (?) when statement is executed. While the third one can be FETCH_OBJ, FETCH_CLASS, etc. </p>
+						<p>Note: If you need to chance the fetch mode and you don't need to supply any array value, jusy add empty array to the second parameter.</p>
+												<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = $this->db->raw('select * from user', array(), PDO::FETCH_OBJ);
+foreach($data as $row) {
+	echo $row->id;
+	echo $row->username;
+	echo $row->password;
+}
+
+echo $this->db->row_count();
+								</code>
+							</pre>
+						</div>
+					</section>
 				</article>
 			    <footer class="footer">
 				    <div class="container text-center py-5">
