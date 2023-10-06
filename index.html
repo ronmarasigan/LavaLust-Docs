@@ -101,8 +101,11 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-5">Upload Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Language Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-7">Session Library</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-8">Input and Output</a></li>
 					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>Database Reference</a></li>
-					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Quick Start: Usage Examples</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Database Configuration</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-2">Connecting to Database</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-3">Query Builder</a></li>
 				</ul>
 
 		    </nav><!--//docs-nav-->
@@ -2778,17 +2781,217 @@ $this->session->keep_flashdata(array('item1', 'item2', 'item3'));
 							</table>
 						</div>
 					</section><!--//section-->
+					<section class="docs-section" id="item-5-8">
+						<h2 class="section-heading">Input and Ouput</h2>
+						<div class="callout-block callout-block-info">
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>This class is initialized automatically by the system so there is no need to do it manually.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
+						<h4>Accessing form data</h4>
+						<h5>Using POST, GET, COOKIE, or SERVER Data</h5>
+						<p>LavaLust comes with helper methods that let you fetch POST, GET, COOKIE or SERVER items. The main advantage of using the provided methods rather than fetching an item directly ($_POST['something']) is that the methods will check to see if the item is set and return NULL if not. This lets you conveniently use data without having to test whether an item exists first. In other words, normally you might do something like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$something = isset($_POST['something']) ? $_POST['something'] : NULL;
+								</code>
+							</pre>
+						</div>
+						<p>With LavaLust's built in methods you can simply do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$something = $this->io->post('something');
+								</code>
+							</pre>
+						</div>
+						<p>The main methods are:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+//The first parameter will contain the name of the POST item you are looking for:
+$this->io->post('field')
+$this->io->post(array('field1', 'field2'));
+
+//This method is identical to post(), only it fetches GET data.
+$this->io->get('field')
+$this->io->get(array('field1', 'field2'));
+
+//This method is identical to post() and get(), only it fetches cookie data:
+$this->io->cookie('field')
+$this->io->cookie(array('some_cookie', 'some_cookie2'));
+
+//This method is identical to the post(), get() and cookie() methods, only it fetches server data ($_SERVER):
+$this->io->server('field')
+$this->io->server(array('SERVER_PROTOCOL', 'REQUEST_URI'));
+								</code>
+							</pre>
+						</div>
+						<p>There are other availble methods like:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+//This method works pretty much the same way as post() and get(), only combined. It will search through both POST and GET streams for data, looking in POST first, and then in GET:
+$this->io->post_get('field')
+
+//This method works the same way as post_get() only it looks for GET data first.
+$this->io->get_post('field')
+
+//Sets a cookie containing the values you specify. There are two ways to pass information to this method so that a cookie can be set: Array Method, and Discrete Parameters:
+//options value: doamin, path, prefix, secure, and samesite									
+$this->io->set_cookie($name, $value, $expiration, $options = array())
+
+//Returns the IP address for the current user. If the IP address is not valid, the method will return ‘0.0.0.0’:
+$this->io->ip_address()
+
+//Takes an IP address as input and returns TRUE or FALSE (boolean) depending on whether it is valid or not.
+$this->io->valid_ip('sample_id')
+
+//Checks to see if the HTTP_X_REQUESTED_WITH server header has been set, and returns boolean TRUE if it is or FALSE if not.
+$this->io->is_ajax()
+
+//Returns the $_SERVER['REQUEST_METHOD'], with the option to set it in uppercase or lowercase.
+$this->io->method()
+								</code>
+							</pre>
+						</div>
+					</section>
 				</article>
 				<article class="docs-article" id="section-6">
 				    <header class="docs-header">
-					    <h1 class="docs-heading">Database Query Builder Class</h1>
+					    <h1 class="docs-heading">Database Reference</h1>
 					    <section class="docs-intro">
 							<p>LavaLust has database class that supports both semi-traditional structures and Query Builder patterns..</p>
 						</section><!--//docs-intro-->
 				    </header>
 					<section class="docs-section" id="item-6-1">
-						<h2 class="section-heading">Available Methods and Usage</h4>
-						<p>The following code loads and initializes the database class based on your <a href="#item-6-2">configuration</a> settings:</p>
+						<h2 class="section-heading">Database Configuration</h2>
+						<p>LavaLust has a config file that lets you store your database connection values (username, password, database name, etc.). The config file is located at application/config/database.php. </p>
+						<p>The config settings are stored in a multi-dimensional array with this prototype:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$database['main'] = array(
+'driver'	=> '',
+'hostname'	=> '',
+'port'		=> '',
+'username'	=> '',
+'password'	=> '',
+'database'	=> '',
+'charset'	=> '',
+'dbprefix'	=> '',
+);
+								</code>
+							</pre>
+						</div>
+						<h4>Explanation Values</h4>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Name Config</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>driver</td>
+										<td>The database type. ie: mysqli, postgre, odbc, etc. Must be specified in lower case.</td>
+									</tr>
+									<tr>
+										<td>hostname</td>
+										<td>The hostname of your database server. Often this is ‘localhost’.</td>
+									</tr>
+									<tr>
+										<td>port</td>
+										<td>The database port number. To use this value you have to add a line to the database config array.</td>
+									</tr>
+									<tr>
+										<td>username</td>
+										<td>The username used to connect to the database.</td>
+									</tr>
+									<tr>
+										<td>password</td>
+										<td>The password used to connect to the database.</td>
+									</tr>
+									<tr>
+										<td>database</td>
+										<td>The name of the database you want to connect to.</td>
+									</tr>
+									<tr>
+										<td>dbprefix</td>
+										<td>An optional table prefix which will added to the table name when running Query Builder queries. This permits multiple LavaLust installations to share one database.</td>
+									</tr>
+									<tr>
+										<td>charset</td>
+										<td>The character set used in communicating with the database.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<section class="docs-section" id="item-6-2">
+						<h2 class="section-heading">Connecting to your Database</h2>
+												<h4>Automatically Connecting</h4>
+						<p>The “auto connect” feature will load and instantiate the database class with every page load. To enable “auto connecting”, add the word database to the library array, as indicated in the following file:</p>
+						<p>app/config/autoload.php</p>
+						<h4>Manually Connecting</h4>
+						<p>If only some of your pages require database connectivity you can manually connect to your database by adding this line of code in any function where it is needed, or in your class constructor to make the database available globally in that class.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database();
+								</code>
+							</pre>
+						</div>
+						<p>If the above function does not contain any information in the first parameter it will connect to the group specified in your database config file. For most people, this is the preferred method of use.</p>
+						<h4>Manually Connecting to a Database</h4>
+						<p>The first parameter of this function can optionally be used to specify a particular database group from your config file, or you can even submit connection values for a database that is not specified in your config file. Examples:
+						<br><br>
+						To choose a specific group from your config file you can do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database('group_name');
+								</code>
+							</pre>
+						</div>
+						<p>Where group_name is the name of the connection group from your config file.</p>
+						<p>For information on each of these values please see the <a href="#">configuration page</a>.</p>
+						<h4>Connecting to Multiple Databases</h4>
+						<p>If you need to connect to more than one database simultaneously you can do so as follows:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->database();
+$this->call->database('group_one');
+$this->call->database('group_two');
+								</code>
+							</pre>
+						</div>
+						<p>Note: Change the words “group_one” and “group_two” to the specific group names you are connecting to. If you don't specify the group_name, it will automatically defined $this->db variable to use for database queries.</p>
+						<p>Now you can execute queries using the following:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('table_name')->get_all();
+$this->group_one->table('table_name')->get_all();
+$this->group_two->table('table_name')->get_all();
+								</code>
+							</pre>
+						</div>
+					</section>
+					<section class="docs-section" id="item-6-3">
+						<h2 class="section-heading">Query Builder</h2>
+						<h4>Available Methods and Usage</h4>
+						<p>The following code loads and initializes the database class based on your <a href="#item-6-1">configuration</a> settings:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
@@ -2797,8 +3000,8 @@ $this->call->database();
 							</pre>
 						</div>
 						<p>Once loaded the class is ready to be used as described below.</p>
-						<p>Note: If all your pages require database access you can connect automatically. See the <a href="#item-6-3">connecting</a> page for details.</p>
-						<h4>1. $this->db->raw()</h4>
+						<p>Note: If all your pages require database access you can connect automatically</p>
+						<h4>raw()</h4>
 						<p>This method has one require parameter which is the SQL statement.</p>
 						<div class="docs-code-block">
 							<pre>
@@ -2831,7 +3034,7 @@ echo $this->db->row_count();
 						</div>
 						<p>The second parameter is an array which will be substituted to the placeholder (?) when statement is executed. While the third one can be FETCH_OBJ, FETCH_CLASS, etc. </p>
 						<p>Note: If you need to chance the fetch mode and you don't need to supply any array value, jusy add empty array to the second parameter.</p>
-												<div class="docs-code-block">
+						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
 $data = $this->db->raw('select * from user', array(), PDO::FETCH_OBJ);
@@ -2845,6 +3048,405 @@ echo $this->db->row_count();
 								</code>
 							</pre>
 						</div>
+						<h4>select()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: string parameter
+$this->db->table('table')->select('column1, column2')->get_all();
+# Output: "SELECT column1, column2 FROM table"
+
+$this->db->table('table')->select('column1 AS c1, column2 AS c2')->get_all();
+# Output: "SELECT column1 AS c1, column2 AS c2 FROM table"
+
+								</code>
+							</pre>
+						</div>
+						<h4>select functions</h4>
+						<p>You can use this method in 5 ways. These;</p>
+						<ul>
+							<li>select_min</li>
+							<li>select_max</li>
+							<li>select_sum</li>
+							<li>select_avg</li>
+							<li>select_count</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1:
+$this->db->table('table')->select_max('price')->get();
+# Output: "SELECT MAX(price) FROM table"
+
+# Usage 2:
+$this->db->table('table')->select_count('id', 'total_row')->get();
+# Output: "SELECT COUNT(id) AS total_row FROM table"
+								</code>
+							</pre>
+						</div>
+						<h4>table()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: string parameter
+$this->db->table('table');
+# Output: "SELECT * FROM table"
+
+$this->db->table('table1, table2');
+# Output: "SELECT * FROM table1, table2"
+
+$this->db->table('table1 AS t1, table2 AS t2');
+# Output: "SELECT * FROM table1 AS t1, table2 AS t2"
+								</code>
+							</pre>
+						</div>
+						<h4>get() and get_all()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# get(): return 1 record. It has one optional parameter, yo u can set the fetchmode. example: PDO::FETCH_OBJ by
+# default PDO::FETCH_ASSOC
+# get_all(): return multiple records.
+
+$this->db->table('table')->get_all();
+# Output: "SELECT * FROM table"
+
+$this->db->table('users')->select('username')->where('status', 1)->get_all();
+# Output: "SELECT username FROM users WHERE status='1'"
+
+$this->db->table('pages')->select('title')->where('id', 17)->get();
+# Output: "SELECT title FROM pages WHERE id='17' LIMIT 1"
+								</code>
+							</pre>
+						</div>
+						<h4>insert()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$bind = array(
+	'username' => $username,
+	'password' => $this->passwordhash($password),
+	'email' => $email,
+	'usertype' => $usertype,
+	);
+
+$this->db->table('user')->insert($bind);
+# Output: "INSERT INTO user username, password, email, usertype VALUES ($username, $password, $email, $usertype)"
+								</code>
+							</pre>
+						</div>
+						<h4>update()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = [
+	'username' => 'ronmarasigan',
+	'password' => 'pass',
+	'activation' => 1,
+	'status' => 1
+];
+
+$this->db->table('users')->where('id', 10)->update($data);
+# Output: "UPDATE users SET username='ronmarasigan', password='pass', activation='1', status='1' WHERE id='10'"
+								</code>
+							</pre>
+						</div>
+						<h4>delete()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('table')->where("id", 17)->delete();
+# Output: "DELETE FROM table WHERE id = '17'"
+
+# OR
+
+$this->db->table('table')->delete();
+# Output: "TRUNCATE TABLE delete"
+								</code>
+							</pre>
+						</div>
+						<h4>where()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$where = [
+	'name' => 'Ron',
+	'age' => 23,
+	'status' => 1
+];
+$this->db->table('users')->where($where)->get();
+# Output: "SELECT * FROM users WHERE name='Ron' AND age='23' AND status='1' LIMIT 1"
+
+# OR
+
+$this->db->table('users')->where('active', 1)->get_all();
+# Output: "SELECT * FROM users WHERE active='1'"
+
+# OR
+
+$this->db->table('users')->where('age', '>=', 18)->get_all();
+# Output: "SELECT * FROM users WHERE age>='18'"
+
+# OR
+
+$this->db->table('users')->where('age = ? OR age = ?', [18, 20])->get_all();
+# Output: "SELECT * FROM users WHERE age='18' OR age='20'"
+								</code>
+							</pre>
+						</div>
+						<p>You can use this method in 6 ways. These;</p>
+						<ul>
+							<li>where</li>
+							<li>or_where</li>
+							<li>not_where</li>
+							<li>or_not_where</li>
+							<li>where_null</li>
+							<li>where_not_null</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')->where('active', 1)->not_where('auth', 1)->get_all();
+# Output: "SELECT * FROM users WHERE active = '1' AND NOT auth = '1'"
+
+# OR
+
+$this->db->table('users')->where('age', 20)->or_where('age', '>', 25)->get_all();
+# Output: "SELECT * FROM users WHERE age = '20' OR age > '25'"
+
+$this->db->table('users')->where_not_null('email')->get_all();
+# Output: "SELECT * FROM users WHERE email IS NOT NULL"
+								</code>
+							</pre>
+						</div>
+						<h4>join()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('test as t')->join('foo as f', 't.id=f.t_id')->where('t.status', 1)->get_all();
+# Output: "SELECT * FROM test as t JOIN foo as f ON t.id=f.t_id WHERE t.status='1'"
+								</code>
+							</pre>
+						</div>
+						<p>You can use this method in 7 ways. These;</p>
+						<ul>
+							<li>join</li>
+							<li>left_join</li>
+							<li>right_join</li>
+							<li>inner_join</li>
+							<li>full_outer_join</li>
+							<li>left_outer_join</li>
+							<li>right_outer_join</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('test as t')->left_join('foo as f', 't.id=f.t_id')->get_all();
+# Output: "SELECT * FROM test as t LEFT JOIN foo as f ON t.id=f.t_id"
+
+$this->db->table('test as t')->full_outer_join('foo as f', 't.id=f.t_id')->get_all();
+# Output: "SELECT * FROM test as t FULL OUTER JOIN foo as f ON t.id=f.t_id"
+								</code>
+							</pre>
+						</div>
+						<h4>grouped()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')
+	->grouped(function($q) {
+		$q->where('country', 'USA')->or_where('country', 'Philippines');
+	})
+	->where('status', 1)
+	->get_all();
+# Ouput: "SELECT * FROM users WHERE (country='USA' OR country='Philippines') AND status ='1'"
+								</code>
+							</pre>
+						</div>
+						<h4>in()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')->where('active', 1)->in('id', [1, 2, 3])->getAll();
+# Output: "SELECT * FROM users WHERE active = '1' AND id IN ('1', '2', '3')"
+								</code>
+							</pre>
+						</div>
+						<p>You can use this method in 4 ways. These;</p>
+						<ul>
+							<li>in</li>
+							<li>or_in</li>
+							<li>not_in</li>
+							<li>or_not_in</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')->where('active', 1)->not_in('id', [1, 2, 3])->get_all();
+# Output: "SELECT * FROM users WHERE active = '1' AND id NOT IN ('1', '2', '3')"
+
+# OR
+
+$this->db->table('users')->where('users', 1)->or_in('id', [1, 2, 3])->get_all();
+# Output: "SELECT * FROM table WHERE active = '1' OR id IN ('1', '2', '3')"
+
+								</code>
+							</pre>
+						</div>
+						<h4>between()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')->where('active', 1)->between('age', 18, 25)->get_all();
+# Output: "SELECT * FROM users WHERE active = '1' AND age BETWEEN '18' AND '25'"
+								</code>
+							</pre>
+						</div>
+						<p>You can use this method in 4 ways. These;</p>
+						<ul>
+							<li>between</li>
+							<li>or_between</li>
+							<li>not_between</li>
+							<li>or_not_between</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('users')->where('active', 1)->not_between('age', 18, 25)->get_all();
+# Output: "SELECT * FROM users WHERE active = '1' AND age NOT BETWEEN '18' AND '25'"
+
+# OR
+
+$this->db->table('users')->where('active', 1)->or_between('age', 18, 25)->get_all();
+# Output: "SELECT * FROM users WHERE active = '1' OR age BETWEEN '18' AND '25'"
+								</code>
+							</pre>
+						</div>
+						<h4>like()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('books')->like('title', "%php%")->get_all();
+# Output: "SELECT * FROM books WHERE title LIKE '%php%'"
+								</code>
+							</pre>
+						</div>
+						<p>You can use this method in 4 ways. These;</p>
+						<ul>
+							<li>like</li>
+							<li>or_like</li>
+							<li>not_like</li>
+							<li>or_not_like</li>
+						</ul>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('books')->where('active', 1)->not_like('tags', '%dot-net%')->get_all();
+# Output: "SELECT * FROM books WHERE active = '1' AND tags NOT LIKE '%dot-net%'"
+
+# OR
+
+$this->db->table('books')->like('bio', '%php%')->or_like('bio', '%java%')->get_all();
+# Output: "SELECT * FROM books WHERE bio LIKE '%php%' OR bio LIKE '%java%'"
+								</code>
+							</pre>
+						</div>
+						<h4>group_by()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: One parameter
+$this->db->table('books')->where('status', 1)->group_by('cat_id')->get_all();
+# Output: "SELECT * FROM books WHERE status = '1' GROUP BY cat_id"
+
+# Usage 1: Array parameter
+$this->db->table('books')->where('status', 1)->group_by(['cat_id', 'user_id'])->get_all();
+# Output: "SELECT * FROM books WHERE status = '1' GROUP BY cat_id, user_id"
+								</code>
+							</pre>
+						</div>
+						<h4>having()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->table('books')->where('status', 1)->group_by('city')->having('COUNT(person)', 100)->get_all();
+# Output: "SELECT * FROM books WHERE status='1' GROUP BY city HAVING COUNT(person) > '100'"
+
+# OR
+
+$this->db->table('employee')->where('active', 1)->group_by('department_id')->having('AVG(salary)', '<=', 500)->get_all();
+# Output: "SELECT * FROM employee WHERE active='1' GROUP BY department_id HAVING AVG(salary) <= '500'"
+
+# OR
+
+$this->db->table('employee')->where('active', 1)->group_by('department_id')->having('AVG(salary) > ? AND MAX(salary) < ?', [250, 1000])->get_all();
+# Output: "SELECT * FROM employee WHERE active='1' GROUP BY department_id HAVING AVG(salary) > '250' AND MAX(salary) < '1000'"
+								</code>
+							</pre>
+						</div>
+						<h4>order_by()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: One parameter
+$this->db->table('test')->where('status', 1)->order_by('id', 'ASC')->get_all();
+# Output: "SELECT * FROM test WHERE status='1' ORDER BY id ASC"
+								</code>
+							</pre>
+						</div>
+						<h4>limit()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: One parameter
+$this->db->table('table')->limit(10)->get_all();
+# Output: "SELECT * FROM table LIMIT 10"
+#or
+# Usage 2: One parameter
+$this->db->table('table')->limit(10, 20)->get_all();
+# Output: "SELECT * FROM table LIMIT 10"
+								</code>
+							</pre>
+						</div>
+						<h4>offset()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: One parameter
+$this->db->table('table')->offset(10)->get_all();
+# Output: "SELECT * FROM table OFFSET 10"
+								</code>
+							</pre>
+						</div>
+						<h4>pagination()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+# Usage 1: One parameter
+$this->db->table('table')->pagination(10, 1)->get_all();
+# Output: "SELECT * FROM table LIMIT 10 OFFSET 10"
+								</code>
+							</pre>
+						</div>
+						<h4>transaction()</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->db->transaction();
+
+$data = [
+	'title' => 'new title',
+	'status' => 2
+];
+$this->db->table('table')->where('id', 10)->update($data);
+
+$this->db->commit();
+# OR
+$this->db->rollBack();
+								</code>
+							</pre>
+						</div>
+						
 					</section>
 				</article>
 			    <footer class="footer">
