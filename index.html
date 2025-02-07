@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
-    <title>LavaLust PHP Framework</title>
-    
+    <title>LavaLust 4</title>
+
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta name="description" content="LavaLust is a lightweight Web Framework - (using MVC pattern) - for people who are developing web sites using PHP. It helps
 	you write code easily using Object-Oriented Approach. It also provides set of libraries for commonly needed tasks, as well as
 	a helper functions to minimize the amount of time coding.">
-    <meta name="author" content="Ronald M. Marasigan">    
-    <link rel="shortcut icon" href="favicon.ico"> 
-    
+    <meta name="author" content="Ronald M. Marasigan">
+    <link rel="shortcut icon" href="favicon.ico">
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
-    
+
     <!-- FontAwesome JS-->
     <script defer src="assets/fontawesome/js/all.min.js"></script>
-    
+
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark-dimmed.min.css">
     <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
 
-    <!-- Theme CSS -->  
+    <!-- Theme CSS -->
     <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
 
-</head> 
+</head>
 
-<body class="docs-page">    
-    <header class="header fixed-top">	    
+<body class="docs-page">
+    <header class="header fixed-top">
         <div class="branding docs-branding">
             <div class="container-fluid position-relative py-2">
                 <div class="docs-logo-wrapper">
@@ -39,7 +39,7 @@
 	                    <span></span>
 	                    <span></span>
 	                </button>
-	                <div class="site-logo"><a class="navbar-brand" href="index.html"><img class="logo-icon me-2" src="assets/images/logo.png" alt="logo"><span class="logo-text">Lava<span class="text-alt">Lust</span></span></a></div>    
+	                <div class="site-logo"><a class="navbar-brand" href="index.html"><img class="logo-icon me-2" src="assets/images/logo.png" alt="logo"><span class="logo-text">LavaLust<span class="text-alt text-danger">4</span></span></a></div>
                 </div><!--//docs-logo-wrapper-->
 	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
 	                <div class="top-search-box d-none d-lg-flex">
@@ -48,7 +48,7 @@
 				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
 				        </form>-->
 	                </div>
-	
+
 					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
 						<li class="list-inline-item"><a href="https://github.com/ronmarasigan"><i class="fab fa-github fa-fw"></i></a></li>
 			            <li class="list-inline-item"><a href="https://facebook.com/marasiganronald"><i class="fab fa-facebook fa-fw"></i></a></li>
@@ -60,8 +60,8 @@
             </div><!--//container-->
         </div><!--//branding-->
     </header><!--//header-->
-    
-    
+
+
     <div class="docs-wrapper">
 	    <div id="docs-sidebar" class="docs-sidebar">
 		    <div class="top-search-box d-lg-none p-3">
@@ -85,13 +85,12 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-3-5">Model-View-Controller</a></li>
 				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-4"><span class="theme-icon-holder me-2"><i class="fas fa-tools"></i></span>General Topics</a></li>
 				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-1">LavaLust URLs</a></li>
-				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-2">Controllers</a></li>
+				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-2">Controllers and Routing</a></li>
 				    <li class="nav-item"><a class="nav-link scrollto" href="#item-4-3">Views</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-4">Models</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-5">Helpers</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-6">Libraries</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-7">Auto-loading Libraries</a></li>
-					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-8">URI Routing</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-4-9">Security</a></li>
 				    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-5"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>Libraries</a></li>
 				    <li class="nav-item"><a class="nav-link scrollto" href="#item-5-1">Performance Class</a></li>
@@ -102,10 +101,14 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-6">Language Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-7">Session Library</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-8">Input and Output</a></li>
-					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>Database Reference</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-9">Config Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-10">Encryption Class</a></li>
+					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-database"></i></span>Database Reference</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Database Configuration</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-2">Connecting to Database</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-3">Query Builder</a></li>
+					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-7"><span class="theme-icon-holder me-2"><i class="fas fa-database"></i></span>Helpers</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-7-1">String Functions</a></li>
 				</ul>
 
 		    </nav><!--//docs-nav-->
@@ -114,7 +117,7 @@
 		    <div class="container">
 			    <article class="docs-article" id="section-1">
 				    <header class="docs-header">
-					    <h1 class="docs-heading">Introduction <span class="docs-time">Last updated: 2024-03-05</span></h1>
+					    <h1 class="docs-heading">Introduction <span class="docs-time">Last updated: 2024-08-22</span></h1>
 					    <section class="docs-intro">
 						    <p>LavaLust is a lightweight Web Framework - (using MVC pattern) - for people who are developing web sites using PHP. It helps you write code easily using Object-Oriented Approach. It also provides set of libraries for commonly needed tasks, as well as a helper functions to minimize the amount of time coding.</p>
 							<p>Lavalust uses MVC pattern. MVC is short for Model, View, and Controller. MVC is a popular way of organizing your code. The big idea behind MVC is that each section of your code has a purpose, and those purposes are different. Some of your code holds the data of your app, some of your code makes your app look nice, and some of your code controls how your app functions.</p>
@@ -137,13 +140,21 @@
 							<li>Enaled mod_rewrite(optional but recommended for security purposes)</li>
 						</ol>
 					</section><!--//section-->
-					
+
 					<section class="docs-section" id="item-2-2">
 						<h2 class="section-heading">Installation Instruction</h2>
+						<h4>Manual Installation</h4>
 						<p>You can install LavaLust in four steps</p>
 						<ol>
 							<li>Unzip the package</li>
 							<li>Upload the LavaLust folders and files to your server.</li>
+							<li>Open the app/config/config.php file with a text editor and set your base URL.</li>
+							<li>If you intend to use a database, open the app/config/database.php file with a text editor and set yourdatabase settings</li>
+						</ol>
+						<h4>Using Git</h4>
+						<ol>
+							<li>Install Git</li>
+							<li>Select the server folder then open a terminal. Type "git clone https://github.com/ronmarasigan/LavaLust" and hit enter.</li>
 							<li>Open the app/config/config.php file with a text editor and set your base URL.</li>
 							<li>If you intend to use a database, open the app/config/database.php file with a text editor and set yourdatabase settings</li>
 						</ol>
@@ -161,16 +172,16 @@ $application_folder 	= 'app';
 							<pre>
 								<code class="language-php">
 define('SYSTEM_DIR', ROOT_DIR . $system_path . DIRECTORY_SEPARATOR);
-define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);										
+define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 								</code>
 							</pre>
 						</div><!--//docs-code-block-->
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
-						<h4>Upgrading from 3.1.4 to 4.0</h4>
+						<h4>Upgrading from 3.* to 4.0</h4>
 						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
+						<div class="callout-block callout-block-info">
                             <div class="content">
                                 <h4 class="callout-title">
 	                                <span class="callout-icon-holder me-1">
@@ -178,14 +189,10 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 		                            </span><!--//icon-holder-->
 	                                Note
 	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-								<p>Routing in version 4.0 is different from later versions. Please see the new guide on how routing works in version 4.0</p>
+                                <p>There are some changes in config.php file. Please backup your old then replace it by the new one. After replacing, update  it based on the your current config.</p>
                             </div><!--//content-->
                         </div><!--//callout-block-->
-						<h2 class="section-heading">Upgrading Version</h2>
-						<h4>Upgrading from 3.1.3 to 3.1.4</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
+                        <div class="callout-block callout-block-info">
                             <div class="content">
                                 <h4 class="callout-title">
 	                                <span class="callout-icon-holder me-1">
@@ -193,206 +200,10 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 		                            </span><!--//icon-holder-->
 	                                Note
 	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>						
-						<h4>Upgrading from 3.1.2 to 3.1.3</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>						
-						<h4>Upgrading from 3.1.1 to 3.1.2</h4>
-						<div class="callout-block callout-block-danger">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>Please check config.php file and remove the $config['enable_query_strings']. It will now automaticall allow usage of query strings.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
+                                <p>Routing in LavaLust4 is way different compare to LavaLust3 and below. It is now somehow similar to the modern routing of other fullstack framework.</p>
                             </div><!--//content-->
                         </div><!--//callout-block-->
 						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<h4>Upgrading from 3.1.0 to 3.1.1</h4>
-						<div class="callout-block callout-block-danger">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>Please check config.php file and change the default value of $config['cookie_secure'] to FALSE and $config['cookie_samesite'] to Lax.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<hr>
-						<h4>Upgrading from 3.0.4 to 3.1.0</h4>
-						<div class="callout-block callout-block-danger">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>Please update to this version. There are several changes in scheme folder files as of this version.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<hr>
-						<h4>Upgrading from 3.0.3 to 3.0.4</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<hr>
-						<h4>Upgrading from 3.0.2 to 3.0.3</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<hr>
-						<h4>Upgrading from 3.0.1 to 3.0.2</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
-						<p>Copy the new welcome_page.php and replace the old file inside app/view/ directory.</p>
-						<p>You are now forbidden to directly use <span class="code_red">$this</span> inside view files and other non class file.</p>
-						<div class="callout-block callout-block-warning">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>Starting LavaLust 3.0.1 you are advised to use PHP 7.4 or higher. If you are running PHP 7.2 or lower please use LavaLust 3.0.0 or lower.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>If you have any custom developed files in these directories, please make copies of them first.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<hr>
-						<h4>Upgrading from 2.0 to 3.0</h4>
-						<div class="callout-block callout-block-info">                          
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>Version 3.0 has several updates in scheme folder files. It was also designed to use at least PHP 7.4.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<h6>Changelog</h6>
-						<ul>
-							<li>Remove xss_clean() using Escaper class. If you want to use it, install htmlpurifier library then create a function "xss_clean()" inside a helper.</li>
-							<li>You can now use different instances of database connections. Changes also affect the database.php file inside the config folder. (it will be discussed later in this documetation) </li>
-							<li>Inside view fie, if you pass $data variable from controller, you can easily use the array key of it inside the view. (it will be discussed later in this documetation)</li>
-							<li>In models, you dont't need to add exec() method in insert(), update() and delete() because Lavalust automatically added it for you. Example: model</li>
-							<li>You can now use put models inside sub directories. Example: model/sub_dir/Sample_model.php</li>
-							<li>You can now use http verb in routes. Just add the type of request after the route</li>
-						</ul>
-						<hr>
-						<h4>Upgrading from 1.0 to 2.0</h4>
-						<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
-						<div class="callout-block callout-block-info">                           
-                            <div class="content">
-                                <h4 class="callout-title">
-	                                <span class="callout-icon-holder me-1">
-		                                <i class="fas fa-info-circle"></i>
-		                            </span><!--//icon-holder-->
-	                                Note
-	                            </h4>
-                                <p>You can still use the Version 2 the way you use the Version 1 before. It just that some method/function names and folders were renamed.</p>
-                            </div><!--//content-->
-                        </div><!--//callout-block-->
-						<h6>Changelog</h6>
-						<ul>
-							<li>$this->load is now $this->call</li>
-							<li>super object get_instance() is now lava_instance()</li>
-							<li>folder structures but you can still change it to your preferred names and path</li>
-							<li>Constants and mimes file inside config folder were deleted. We are making the framework as simple and as
-								light as possible</li>
-							<li>cache is now inside runtime folder</li>
-						</ul>
-						<h4>Step 1: Update your LavaLust files</h4>
-						<p>Replace all files and directories in your scheme/ directory.</p>
 					</section><!--//section-->
 			    </article><!--//docs-article-->
 			    <article class="docs-article" id="section-3">
@@ -418,7 +229,7 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 						<h4>Mode-View-Controller</h4>
 						<p>The Model-View-Controller (MVC) is an architectural pattern that separates an application into three main logical components: the model, the view, and the controller. Each of these components are built to handle specific development aspects of an application. MVC is one of the most frequently used industry-standard web development framework to create scalable and extensible projects.</p>
 						<br>
-						<h4>Genrates Clean URLs</h4>
+						<h4>Generates Clean URLs</h4>
 						<p>The URLs generated by LavaLust are clean and search-engine friendly. Rather than using the standard “query string” approach to URLs that is synonymous with dynamic systems, LavaLust uses a segment-based approach:</p>
 						<div class="docs-code-block">
 							<pre>
@@ -451,6 +262,8 @@ example.com/news/article/345
 							<li>Simple Email Sending</li>
 							<li>File Uploading Class</li>
 							<li>Performance Class</li>
+							<li>Config Class</li>
+							<li>Simple Logger Class</li>
 							<li>Pagination</li>
 							<li>Simple Page Caching</li>
 							<li>File Downloading Class</li>
@@ -511,17 +324,93 @@ example.com/news/article/345
 example.com/news/article/345
 								</code>
 							</pre>
-						</div>						
-						<h4>URI Segments</h4>
-						<p>The segments in the URL, in following with the Model-View-Controller approach, usually represent:</p>
-						<ol>
-							<li>The first segment represents the controller <strong>class</strong> that should be
-							invoked.</li>
-							<li>The second segment represents the class <strong>function</strong>, or method, that
-							should be called.</li>
-							<li>The third, and any additional segments, represent the ID and any
-							variables that will be passed to the controller.</li>
-						</ol>
+						</div>
+						<h4>URL Structure</h4>
+							<h6>Base URL contains only the Hostname</h6>
+							<p>When you have the Base URL https://www.example.com/ and imagine the following URL:</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-plaintext">
+https://www.example.com/blog/news/2022/10?page=2
+									</code>
+								</pre>
+							</div>
+						<p>We use the following terms:</p>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Term</th>
+										<th>Example</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Base URL</td>
+										<td>https://www.example.com/</td>
+										<td>Base URL is often denoted as baseURL.</td>
+									</tr>
+									<tr>
+										<td>URI Path</td>
+										<td>/blog/news/2022/10</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Route Path</td>
+										<td>/blog/news/2022/10</td>
+										<td>The URI path relative to the Base URL. It is also called as URI string.</td>
+									</tr>
+									<tr>
+										<td>Query</td>
+										<td>page=2</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<h4>Base URL contains Sub folders</h4>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+https://www.example.com/lv-blog/blog/news/2022/10?page=2
+								</code>
+							</pre>
+						</div>
+						<p>We use the following terms:</p>
+						<div class="table-responsive-sm">
+							<table class="table table-bordered table-small">
+								<thead>
+									<tr>
+										<th>Term</th>
+										<th>Example</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Base URL</td>
+										<td>https://www.example.com/</td>
+										<td>Base URL is often denoted as baseURL.</td>
+									</tr>
+									<tr>
+										<td>URI Path</td>
+										<td>/lv-blog/blog/news/2022/10</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Route Path</td>
+										<td>/blog/news/2022/10</td>
+										<td>The URI path relative to the Base URL. It is also called as URI string.</td>
+									</tr>
+									<tr>
+										<td>Query</td>
+										<td>page=2</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 						<br>
 						<h4>Removing the index.php file</h4>
 						<p>By default, the index.php file will be included in your URLs:</p>
@@ -566,33 +455,249 @@ RewriteRule ^(.*)$ index.php/$1 [L]
 								<p>Make sure to also exclude from the above rule any assets that you might need to be accessible from the outside world.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>Open app/config/config.php and find the $config['index_page'] = 'index.php'; make it empty.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
 						<br>
-						
+
 					</section>
 					<section class="docs-section" id="item-4-2">
-						<h2 class="section-heading">Controllers</h2>
-						<p>Controllers are the heart of your application, as they determine how HTTP requests should be handled.</p>
-						<br>
-						<h4>What is a Controller?</h4>
-						<p><b>A Controller is simply a class file that is named in a way that can be associated with a URI.</b></p>
-						<p>Consider this URI:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-plaintext">
-example.com/index.php/blog/
-								</code>
-							</pre>
-						</div>
-						<p>In the above example, LavaLust would attempt to find a controller named Blog.php and load it.</p>
-						<p><b>When a controller’s name matches the first segment of a URI, it will be loaded.</b></p>
-						<br>
-						<h4>Let’s try it: Hello World!</h4>
-						<p>Let’s create a simple controller so you can see it in action. Using your text editor, create a file called Blog.php, and put the following code in it:</p>
+						<h2 class="section-heading">Controllers and Routing</h2>
+						<h4>What is URI Routing?</h4>
+						<p>URI Routing associates a URI with a controller’s method.</p>
+						<p>LavaLust uses Defined Route Routing. You can define routes manually. It allows flexible URL.</p>
+						<h4>Setting Routing Rules</h4>
+						<p>Routing rules are defined in the app/config/routes.php file. In it you’ll see that it creates an instance of the Router class (<span class="code_red">$routes</span>) that permits you to specify your own routing criteria. Routes can be specified using placeholders or Regular Expressions.</p>
+						<p>When you specify a route, you choose a method to corresponding to HTTP verbs (request method). If you expect a GET request, you use the <span class="code_red">get()</span> method:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
 &lt;?php
-class Blog extends Controller {
+$router->get('/', 'Welcome::index');
+								</code>
+							</pre>
+						</div>
+						<p>A route takes the Route Path (URI path relative to the BaseURL. <span class="code_red">/</span>) on the left, and maps it to the Route Handler (controller and method <span class="code_red">Home::index</span>) on the right, along with any parameters that should be passed to the controller.</p>
+						<p>The controller and method should be listed in the same way that you would use a static method, by separating the class and its method with a double-colon, like <span class="code_red">Users::list</span>.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+// Calls $Users->list()
+$router->get('users', 'Users::list');
+								</code>
+							</pre>
+						</div>
+						<h4>Examples</h4>
+						<p>Here are a few basic routing examples.</p>
+						<p>A URL containing the word journals in the first segment will be mapped to the <span class="code_red">\app\controllers\Blogs</span> class, and the default method, which is usually <span class="code_red">index()</span>:</p>
+
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->get('journals', 'Blogs');
+								</code>
+							</pre>
+						</div>
+						<p>A URL with product as the first segment, and anything in the second will be mapped to the <span class="code_red">\app\controllers\Catalog</span> class and the <span class="code_red">productLookup()</span> method:</p>
+						<p>Controllers are the heart of your application, as they determine how HTTP requests should be handled.</p>
+						<p>A URL with product as the first segment, and a number in the second will be mapped to the <span class="code_red">\app\controllers\Catalog</span> class and the <span class="code_red">productLookupByID()</span> method passing in the match as a variable to the method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->get('product/{id}', 'Catalog::productLookupByID');
+								</code>
+							</pre>
+						</div>
+						<h4>HTTP verb Routes</h4>
+						<p>You can use any standard HTTP verb (GET, POST, PUT, DELETE, OPTIONS, etc):</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->post('products', 'Product::feature');
+$router->put('products/1', 'Product::feature');
+$router->delete('products/1', 'Product::feature');
+								</code>
+							</pre>
+						</div>
+						<p>You can supply multiple verbs that a route should match by passing them in as an array to the <span class="code_red">match()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->match('products', 'Product::feature', 'GET|POST');
+//the above code is same with
+&lt;?php
+$router->match('products', 'Product::feature', ['GET', 'POST]);
+								</code>
+							</pre>
+						</div>
+						<h4>Using Closures</h4>
+						<p>You can use an anonymous function, or Closure, as the destination that a route maps to. This function will be executed when the user visits that URI. This is handy for quickly executing small tasks, or even just showing a simple view:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->get('feed', function () {
+    $rss = new RSSFeeder();
+
+    return $rss->feed('general');
+});
+								</code>
+							</pre>
+						</div>
+						<h4>Route Parameter</h4>
+						<p>Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$route->get('user/{id}', function ($id) {
+    return 'User '.$id;
+});
+								</code>
+							</pre>
+						</div>
+						<p>You may define as many route parameters as required by your route:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$router->get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
+	// ...
+});
+								</code>
+							</pre>
+						</div>
+						<p>Route parameters are always encased within {} braces and should consist of alphabetic characters. Underscores (_) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.</p>
+						<h4>Regular Expression Constraints</h4>
+						<p>You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$router->get('/user/{name}', function (string $name) {
+	// ...
+})->where('name', '[A-Za-z]+');
+	
+$router->get('/user/{id}', function (string $id) {
+	// ...
+})->where('id', '[0-9]+');
+	
+$router->get('/user/{id}/{name}', function (string $id, string $name) {
+	// ...
+})->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+								</code>
+							</pre>
+						</div>
+						<p>For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$router->get('/user/{id}/{name}', function ($id, $name) {
+	// ...
+})->where_number('id')->where_alpha('name');
+	
+$router->get('/user/{name}', function ($name) {
+	// ...
+})->where_alphanumeric('name');
+	
+$router->get('/user/{id}', function ($id) {
+	// ...
+})->where_uuid('id');
+	
+$router->get('/user/{id}', function ($id) {
+	//
+})->where_ulid('id');
+	
+$router->get('/category/{category}', function ($category) {
+	// ...
+})->where_in('category', ['movie', 'song', 'painting']);
+								</code>
+							</pre>
+						</div>
+						<p>If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.</p>						
+						<h4>Grouping Routes</h4>
+						<p>You can group your routes under a common name with the <span class="code_red">group()</span> method. The group name becomes a segment that appears prior to the routes defined inside of the group. This allows you to reduce the typing needed to build out an extensive set of routes that all share the opening string, like when building an admin area:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->group('admin', function() use ($router) {
+    $router->get('users', 'Users::index');
+    $router->get('blog', 'Blog::index');
+});
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>You can use lava_instance() in routes.php by passing it to a variable then add it by using the "use" keyword.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$_lava =& lava_instance();
+$router->get('/', function() use ($_lava) {
+    $_lava->call->view('welcome_page');
+});
+								</code>
+							</pre>
+						</div>
+						<p>This would prefix the users and blog URIs with admin, handling URLs like admin/users and admin/blog.</p>
+
+						<h4>What is a Controller?</h4>
+						<p>Controllers are the heart of your application, as they determine how HTTP requests should be handled.</p>
+						<p>A Controller is simply a class file that handles a HTTP request. URI Routing associates a URI with a controller.</p>
+						<h4>Protecting Methods</h4>
+						<p>In some cases, you may want certain methods hidden from public access. To achieve this, simply declare the method as <span class="code_red">private</span> or <span class="code_red">protected</span>. That will prevent it from being served by a URL request.</p>
+						<p>For example, if you were to define a method like this for the <span class="code_red">Helloworld</span> controller:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Helloworld extends Controller
+{
+    protected function utility()
+    {
+        // some code
+    }
+}
+								</code>
+							</pre>
+						</div>
+						<p>and to define a route <span class="code_red">(helloworld/utitilty)</span> for the method. Then trying to access it using the following URL will not work:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/hellowworld/utility
+								</code>
+							</pre>
+						</div>
+						<h4>Let’s try it: Hello World!</h4>
+						<p>Let’s create a simple controller so you can see it in action. Using your text editor, create a file called Helloworld.php, and put the following code in it:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Helloworld extends Controller {
 
 	public function index()
 	{
@@ -611,14 +716,23 @@ class Blog extends Controller {
 									</span><!--//icon-holder-->
 									Important
 								</h4>
-								<p>The file must be called ‘Blog.php’, with a capital ‘B’.</p>
+								<p>The file must be called Helloworld.php’, with a capital ‘H’.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
+						<p>Define Route Routing</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+$router->get('helloworld', 'HelloWorld::index');
+								</code>
+							</pre>
+						</div>
 						<p>Now visit the your site using a URL similar to this:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-plaintext">
-example.com/index.php/blog/
+example.com/index.php/helloworld/
 								</code>
 							</pre>
 						</div>
@@ -646,7 +760,7 @@ Hello World!
 							<pre>
 								<code class="language-php">
 &lt;?php
-class Blog extends Controller {
+class Helloworld extends Controller {
 
 }
 								</code>
@@ -657,7 +771,7 @@ class Blog extends Controller {
 							<pre>
 								<code class="language-php">
 &lt;?php
-class blog extends Controller {
+class helloworld extends Controller {
 
 }
 								</code>
@@ -666,21 +780,34 @@ class blog extends Controller {
 						<p>Also, always make sure your controller extends the parent controller class so that it can inherit all its methods.</p>
 						<br>
 						<h4>Methods</h4>
-						<p>In the above example the method name is <span class="code-red">index()</span> . The “index” method is always loaded by default if the second segment of the URI is empty. Another way to show your “Hello World” message would be this:</p>
+						<h5>Method Visibility</h5>
+						<p>When you define a method that is executable via HTTP request, the method must be declared as <span class="code_red">public</span>.</p>
+						<div class="callout-block callout-block-danger">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-exclamation-triangle"></i>
+									</span><!--//icon-holder-->
+									Important
+								</h4>
+								<p>For security reasons be sure to declare any new utility methods as <span class="code_red">protected</span> or <span class="code_red">private</span>.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-plaintext">
-example.com/index.php/blog/index/
+example.com/index.php/helloworld/index/
 								</code>
 							</pre>
 						</div>
-						<p><b>The second segment of the URI determines which method in the controller gets called.</b></p>
+						<h4>Normal Methods</h4>
+						<p>The second segment of the URI determines which method in the controller gets called.</p>
 						<p>Let’s try it. Add a new method to your controller:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-&lt;?php									
-class Blog extends Controller {
+&lt;?php
+class Helloworld extends Controller {
 
 	public function index()
 	{
@@ -695,15 +822,24 @@ class Blog extends Controller {
 								</code>
 							</pre>
 						</div>
-						Now load the following URL to see the comment method:
+						<p>Define Route Routing</p>
 						<div class="docs-code-block">
 							<pre>
-								<code class="language-plaintext">
-example.com/index.php/blog/comments/
+								<code class="language-php">
+&lt;?php
+$router->get('comments', 'HelloWorld::comments');
 								</code>
 							</pre>
 						</div>
-						You should see your new message.
+						<p>Now load the following URL to see the comment method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-plaintext">
+example.com/index.php/comments/
+								</code>
+							</pre>
+						</div>
+						<p>You should see your new message</p>
 						<br><br>
 						<h4>Passing URI Segments to your methods</h4>
 						<p>If your URI contains more than two segments they will be passed to your method as parameters.</p>
@@ -715,11 +851,11 @@ example.com/index.php/products/shoes/sandals/123
 								</code>
 							</pre>
 						</div>
-						Your method will be passed URI segments 3 and 4 (“sandals” and “123”):
+						<p>Your method will be passed URI segments 3 and 4 (“sandals” and “123”):</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-&lt;?php									
+&lt;?php
 class Products extends Controller {
 
 	public function shoes($sandals, $id)
@@ -731,47 +867,14 @@ class Products extends Controller {
 								</code>
 							</pre>
 						</div>
-						<div class="callout-block callout-block-danger">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-exclamation-triangle"></i>
-									</span><!--//icon-holder-->
-									Important
-								</h4>
-								<p>If you are using the URI Routing feature, the segments passed to your method will be the re-routed ones.</p>
-							</div><!--//content-->
-						</div><!--//callout-block-->
+
 						<br>
 						<h4>Defining a Default Controller</h4>
-						Lavalust can be told to load a default controller when a URI is not present, as will be the case when only your site root URL is requested. To specify a default controller, open your app/config/config.php file and set this variable:
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-plaintext">
-$config['default_controller'] = 'blog';
-$config['default_method'] = 'index';
-								</code>
-							</pre>
-						</div>
-						<p>Where ‘blog’ and ‘index’ is the name of the controller class and method you want used. If you now load your main index.php file without specifying any URI segments you’ll see your “Hello World” message by default.</p>
-						<br>
-						<h4>Private methods</h4>
-						<p>In some cases you may want certain methods hidden from public access. In order to achieve this, simply declare the method as being private or protected and it will not be served via a URL request. For example, if you were to have a method like this:</p>
+						<p>Default controller and method was already define as the default routes inside app\config\routes.php file. You can update it to change it to new one.</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-private function _utility()
-{
-	// some code
-}
-								</code>
-							</pre>
-						</div>
-						<p>Trying to access it via the URL, like this, will not work:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-plaintext">
-example.com/index.php/blog/_utility/
+$router->get('/', 'Welcome::index');
 								</code>
 							</pre>
 						</div>
@@ -791,7 +894,7 @@ parent::__construct();
 							<pre>
 								<code class="language-php">
 &lt;?php
-class Blog extends Controller {
+class Helloworld extends Controller {
 
 	public function __construct()
 	{
@@ -866,6 +969,172 @@ class Blog extends Controller {
 							</pre>
 						</div>
 						<p>If you visit your site using the URL you did earlier you should see your new view. The URL was similar to this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="plaintext">
+example.com/index.php/blog/
+								</code>
+							</pre>
+						</div>
+						<h4>Loading multiple views</h4>
+						<p>LavaLust will intelligently handle multiple calls to $this->call->view() from within a controller. If more than one call happens they will be appended together. For example, you may wish to have a header view, a menu view, a content view, and a footer view. That might look something like this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Page extends Controller {
+
+	public function index()
+	{
+		$data['page_title'] = 'Your title';
+		$this->load->view('header');
+		$this->load->view('menu');
+		$this->load->view('content', $data);
+		$this->load->view('footer');
+	}
+
+}
+								</code>
+							</pre>
+						</div>
+						<p>In the example above, we are using “dynamically added data”, which you will see below.</p>
+						<h4>Storing Views within Sub-directories</h4>
+						<p>Your view files can also be stored within sub-directories if you prefer that type of organization. When doing so you will need to include the directory name loading the view. Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->view('directory_name/file_name');
+								</code>
+							</pre>
+						</div>
+						<h4>Adding Dynamic Data to the View</h4>
+						<p>Data is passed from the controller to the view by way of an array or an object in the second parameter of the view loading method. Here is an example using an array:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = array(
+	'title' => 'My Title',
+	'heading' => 'My Heading',
+	'message' => 'My Message'
+);
+
+$this->call->view('blogview', $data);
+								</code>
+							</pre>
+						</div>
+						<p>And here’s an example using an object:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$data = new Someclass();
+$this->load->view('blogview', $data);
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>If you use an object, the class variables will be turned into array elements.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<p>Let’s try it with your controller file. Open it add this code:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+	public function index()
+	{
+			$data['title'] = "My Real Title";
+			$data['heading'] = "My Real Heading";
+
+			$this->call->view('blogview', $data);
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<p>Now open your view file and change the text to variables that correspond to the array keys in your data:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-html">
+<html>
+<head>
+		<title><?php echo $title;?></title>
+</head>
+<body>
+		<h1><?php echo $heading;?></h1>
+</body>
+</html>
+								</code>
+							</pre>
+						</div>
+						<p>Then load the page at the URL you’ve been using and you should see the variables replaced.</p>
+						<h4>Creating Loops</h4>
+						<p>The data array you pass to your view files is not limited to simple variables. You can pass multi dimensional arrays, which can be looped to generate multiple rows. For example, if you pull data from your database it will typically be in the form of a multi-dimensional array.</p>
+						<p>Here’s a simple example. Add this to your controller:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+&lt;?php
+class Blog extends Controller {
+
+	public function index()
+	{
+			$data['todo_list'] = array('Clean House', 'Call Mom', 'Run Errands');
+
+			$data['title'] = "My Real Title";
+			$data['heading'] = "My Real Heading";
+
+			$this->call->view('blogview', $data);
+	}
+}
+								</code>
+							</pre>
+						</div>
+						<p>Now open your view file and create a loop:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-html">
+<html>
+<head>
+	<title><?php echo $title;?></title>
+</head>
+<body>
+	<h1><?php echo $heading;?></h1>
+
+	<h3>My Todo List</h3>
+
+	<ul>
+	<?php foreach ($todo_list as $item):?>
+
+			<li><?php echo $item;?></li>
+
+	<?php endforeach;?>
+	</ul>
+
+</body>
+</html>
+								</code>
+							</pre>
+						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>You’ll notice that in the example above we are using PHP’s alternative syntax. If you are not familiar with it you can read about it here.</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
 					</section>
 					<section class="docs-section" id="item-4-4">
 						<h2 class="section-heading">Models</h2>
@@ -899,7 +1168,7 @@ class Blog_model extends Model {
 			'content'  => $_POST['content'];
 			'date'     => time();
 		}
-		
+
 		$this->db->table('entries')->where('id', $_POST['id'])->update($bind);
 	}
 
@@ -915,7 +1184,7 @@ class Blog_model extends Model {
 									</span><!--//icon-holder-->
 									Note
 								</h4>
-								<p>The methods in the above example use the <a href="#">Query Builder</a> database methods.</p>
+								<p>The methods in the above example use the <a href="#section-6">Query Builder</a> database methods.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<div class="callout-block callout-block-info">
@@ -995,7 +1264,9 @@ $this->model_name->method();
 							<pre>
 								<code class="language-php">
 $this->call->model('model_name', 'foobar');
-
+$this->foobar->method();
+//or if you load multiple methods
+$this->call->model(array('foobar' => 'model_name'));
 $this->foobar->method();
 								</code>
 							</pre>
@@ -1138,7 +1409,7 @@ $this->call->library(array('Form_validation', 'email'));
 										<i class="fas fa-info-circle"></i>
 									</span><!--//icon-holder-->
 									Note
-								</h4>								
+								</h4>
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<p>Do not attempt to replace the Database Class if you don't know what you are doing. There are variables that rely on it if loaded.</p>
@@ -1279,14 +1550,14 @@ class Example_library {
 	// from a property definition.
 	public function __construct()
 	{
-			// Assign the LavaLust super-object
-			$this->LAVA =& lava_instance();
+		// Assign the LavaLust super-object
+		$this->LAVA =& lava_instance();
 	}
 
 	public function foo()
 	{
-			$this->LAVA->call->helper('url');
-			redirect();
+		$this->LAVA->call->helper('url');
+		redirect();
 	}
 
 }
@@ -1335,214 +1606,6 @@ $this->call->library('email');
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<p>Additionally, if you want LavaLust to use a <a href="getcomposer.org">Composer</a> auto-loader, just set <span class="code_red">$config['composer_autoload']</span> to <span class="code_red">TRUE</span> or a custom path in <b>app/config/config.php</b>.</p>
-					</section><!--//section-->
-					<section class="docs-section" id="item-4-8">
-						<h2 class="section-heading">URI Routing</h2>
-						<p>Typically there is a one-to-one relationship between a URL string and its corresponding controller class/method. The segments in a URI normally follow this pattern:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="plaintext">
-example.com/class/function/id/
-								</code>
-							</pre>
-						</div>
-						<p>In some instances, however, you may want to remap this relationship so that a different class/method can be called instead of the one corresponding to the URL.</p>
-						<p>For example, let’s say you want your URLs to have this prototype:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="plaintext">
-example.com/product/1/
-example.com/product/2/
-example.com/product/3/
-example.com/product/4/
-								</code>
-							</pre>
-						</div>
-						<p>Normally the second segment of the URL is reserved for the method name, but in the example above it instead has a product ID. To overcome this, LavaLust allows you to remap the URI handler.</p>
-						<h4>Setting your own routing rules</h4>
-						<p>Routing rules are defined in your <i>app/config/routes.php</i> file. In it you’ll see an array called <span class="code_red">$route</span> that permits you to specify your own routing criteria. Routes can either be specified using wildcards or Regular Expressions.</p>
-						<h4>Wildcards</h4>
-						<p>A typical wildcard route might look something like this:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['product/:num'] = 'catalog/product_lookup';
-								</code>
-							</pre>
-						</div>
-						<p>In a route, the array key contains the URI to be matched, while the array value contains the destination it should be re-routed to. In the above example, if the literal word “product” is found in the first segment of the URL, and a number is found in the second segment, the “catalog” class and the “product_lookup” method are instead used.</p>
-						<p>You can match literal values or you can use two wildcard types:</p>
-						<p><b>(:num)</b> will match a segment containing only numbers. <b>(:any)</b> will match a segment containing any character (except for ‘/’, which is the segment delimiter).</p>
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>Wildcards are actually aliases for regular expressions, with <b>:any</b> being translated to <b>[^/]+</b> and <b>:num</b> to <b>[0-9]+</b>, respectively.</p>
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>Routes will run in the order they are defined. Higher routes will always take precedence over lower ones.</p>
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>Route rules are not filters! Setting a rule of e.g. ‘foo/bar/(:num)’ will not prevent controller Foo and method bar to be called with a non-numeric value if that is a valid route.</p>
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<h4>Examples</h4>
-						<p>Here are a few routing examples:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['journals'] = 'blogs';
-								</code>
-							</pre>
-						</div>
-						<p>A URL containing the word “journals” in the first segment will be remapped to the “blogs” class.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['blog/joe'] = 'blogs/users/34';
-								</code>
-							</pre>
-						</div>
-						<p>A URL containing the segments blog/joe will be remapped to the “blogs” class and the “users” method. The ID will be set to “34”.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['product/(:any)'] = 'catalog/product_lookup';
-								</code>
-							</pre>
-						</div>
-						<p>A URL with “product” as the first segment, and anything in the second will be remapped to the “catalog” class and the “product_lookup” method.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['product/(:num)'] = 'catalog/product_lookup_by_id/$1';
-								</code>
-							</pre>
-						</div>
-						<p>A URL with “product” as the first segment, and a number in the second will be remapped to the “catalog” class and the “product_lookup_by_id” method passing in the match as a variable to the method.</p>
-						<div class="callout-block callout-block-danger">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-exclamation-triangle"></i>
-									</span><!--//icon-holder-->
-									Important
-								</h4>
-								<p>Do not use leading/trailing slashes.</p>
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<h4>Regular Expressions</h4>
-						<p>If you prefer you can use regular expressions to define your routing rules. Any valid regular expression is allowed, as are back-references.</p>
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>If you use back-references you must use the dollar syntax rather than the double backslash syntax.</p>								
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<p>A typical RegEx route might look something like this:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['products/([a-z]+)/(\d+)'] = '$1/id_$2';
-								</code>
-							</pre>
-						</div>
-						<p>In the above example, a URI similar to products/shirts/123 would instead call the “shirts” controller class and the “id_123” method.</p>
-						<p>With regular expressions, you can also catch multiple segments at once. For example, if a user accesses a password protected area of your web application and you wish to be able to redirect them back to the same page after they log in, you may find this example useful:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['login/(.+)'] = 'auth/login/$1';
-								</code>
-							</pre>
-						</div>
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>In the above example, if the <span class="code_red">$1</span> placeholder contains a slash, it will still be split into multiple parameters when passed to <span class="code_red">Auth::login()</span>.</p>								
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<p>For those of you who don’t know regular expressions and want to learn more about them, regular-expressions.info might be a good starting point.</p>
-						<div class="callout-block callout-block-info">
-							<div class="content">
-								<h4 class="callout-title">
-									<span class="callout-icon-holder me-1">
-										<i class="fas fa-info-circle"></i>
-									</span><!--//icon-holder-->
-									Note
-								</h4>
-								<p>You can also mix and match wildcards with regular expressions.</p>								
-							</div><!--//content-->
-						</div><!--//callout-block-->
-						<h4>Using HTTP verbs in routes</h4>
-						<p>It is possible to use HTTP verbs (request method) to define your routing rules. This is particularly useful when building RESTful applications. You can use standard HTTP verbs (GET, PUT, POST, DELETE, PATCH) or a custom one such (e.g. PURGE). HTTP verb rules are case-insensitive. All you need to do is to add the verb as an array key to your route. Example:</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['products']['put'] = 'product/insert';
-								</code>
-							</pre>
-						</div>
-						<p>In the above example, a PUT request to URI “products” would call the <span class="code_red">Product::insert()</span> controller method.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['products/(:num)']['DELETE'] = 'product/delete/$1';
-								</code>
-							</pre>
-						</div>
-						<p>A DELETE request to URL with “products” as first the segment and a number in the second will be mapped to the <span class="code_red">Product::delete()</span> method, passing the numeric value as the first parameter.</p>
-						<p>Using HTTP verbs is of course, optional.</p>
-						<h4>Reserved Routes</h4>
-						<p>There are two reserved routes:</p>
-						<p>You are encouraged to always have a default route as otherwise a 404 page will appear by default.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['404_override'] = '';
-								</code>
-							</pre>
-						</div>
-						<p>This route indicates which controller class should be loaded if the requested controller is not found. It will override the default 404 error page.</p>
-						<p>It won’t affect to the <span class="code_red">show_404()</span> function, which will continue loading the default <i>error_404.php</i> file at <i>app/views/errors/error_404.php</i>.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$route['translate_uri_dashes'] = FALSE;
-								</code>
-							</pre>
-						</div>
-						<p>As evident by the boolean value, this is not exactly a route. This option enables you to automatically replace dashes (‘-’) with underscores in the controller and method URI segments, thus saving you additional route entries if you need to do that. This is required, because the dash isn’t a valid class or method name character and would cause a fatal error if you try to use it.</p>
 					</section><!--//section-->
 					<section class="docs-section" id="item-4-9">
 						<h2 class="section-heading">Security</h2>
@@ -1614,7 +1677,7 @@ $config['csrf_protection'] = TRUE;
 						</section><!--//docs-intro-->
 				    </header>
 					<section class="docs-section" id="item-5-1">
-						<h2 class="section-heading">Performance Class</h4>
+						<h2 class="section-heading">Performance Class</h2>
 						<p>LavaLust has a Performance class that is always active, enabling the time difference between any two marked points to be calculated.</p>
 						<div class="callout-block callout-block-info">
 							<div class="content">
@@ -1639,12 +1702,12 @@ $config['csrf_protection'] = TRUE;
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->performance->tag('referrence_name');
+$this->performance->start('referrence_name');
 
 // Some code happens here
 
-$this->performance->tag('referrence_name');
-echo $this->performance->elapsed_time('referrence_name');			
+$this->performance->stop('referrence_name');
+echo $this->performance->elapsed_time('referrence_name');
 								</code>
 							</pre>
 						</div>
@@ -1660,23 +1723,23 @@ echo $this->performance->elapsed_time('referrence_name');
 								<div class="docs-code-block">
 									<pre>
 										<code class="language-php">
-$this->performance->mark('dog');
+$this->performance->start('dog');
 
 // Some code happens here
 
-$this->performance->mark('cat');
+$this->performance->start('cat');
 
 // More code happens here
 
-$this->performance->mark('cat');
+$this->performance->stop('cat');
 
-$this->performance->mark('bird');
+$this->performance->start('bird');
 
 // More code happens here
 
-$this->performance->mark('bird');
+$this->performance->stop('bird');
 
-$this->performance->mark('dog');
+$this->performance->stop('dog');
 
 echo $this->performance->elapsed_time('dog');
 echo $this->performance->elapsed_time('cat');
@@ -1922,7 +1985,7 @@ $this->email->send();
 &lt;title&gt;My Form&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
-&lt;?php $LAVA = get_instance(); ?&gt;
+&lt;?php $LAVA = lava_instance(); ?&gt;
 &lt;?php echo $LAVA->form_validation->errors(); ?&gt;
 &lt;form action=&quot;&lt;?php echo site_url('form');?&gt;&quot; method=&quot;post&quot;&gt;
 &lt;h5&gt;Username&lt;/h5&gt;
@@ -2066,9 +2129,9 @@ public function index()
 							</pre>
 						</div>
 						<p>In the above code, we use <span class="code_red">name()</span> method to get the input to validate.
-							You should use the exact name you’ve given the form field. <span class="code_red">required()</span>, 
-							<span class="code_red">min_length()</span>, <span class="code_red">max_length()</span>, 
-							<span class="code_red">matches()</span> and <span class="code_red">valid_email()</span> are all validation methods. 
+							You should use the exact name you’ve given the form field. <span class="code_red">required()</span>,
+							<span class="code_red">min_length()</span>, <span class="code_red">max_length()</span>,
+							<span class="code_red">matches()</span> and <span class="code_red">valid_email()</span> are all validation methods.
 							There is an optional parameter for each methods that is used to add custom error message.</p>
 						<br>
 						<p><b>Here are the complete list of methods that can be used in form validation.</b></p>
@@ -2431,7 +2494,7 @@ return array(
 	/**
 	* Other String to be translated here
 	*/
-	'welcome' => 'Hello {username} {type}',										
+	'welcome' => 'Hello {username} {type}',
 								</code>
 							</pre>
 						</div>
@@ -2454,7 +2517,7 @@ return array(
 /**
 * Other String to be translated here
 */
-'welcome' => 'Hello {username} {type}',										
+'welcome' => 'Hello {username} {type}',
 							</code>
 						</pre>
 					</div>
@@ -2791,7 +2854,7 @@ $this->session->keep_flashdata(array('item1', 'item2', 'item3'));
 										<td>FALSE</td>
 										<td>TRUE/FALSE (boolean)</td>
 										<td>Whether to destroy session data associated with the old session ID when auto-regenerating the session ID. When set to FALSE, the data will be later deleted by the garbage collector.</td>
-									</tr>								
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -2860,7 +2923,7 @@ $this->io->post_get('field')
 $this->io->get_post('field')
 
 //Sets a cookie containing the values you specify. There are two ways to pass information to this method so that a cookie can be set: Array Method, and Discrete Parameters:
-//options value: doamin, path, prefix, secure, and samesite									
+//options value: doamin, path, prefix, secure, and samesite
 $this->io->set_cookie($name, $value, $expiration, $options = array())
 
 //Returns the IP address for the current user. If the IP address is not valid, the method will return ‘0.0.0.0’:
@@ -2877,7 +2940,164 @@ $this->io->method()
 								</code>
 							</pre>
 						</div>
+						<h4>Other Response Methods</h4>
+						<p>If you need customize responses with the ability to add and set headers, set status codes and contents you LavaLust IO class has default methods for them.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+//Sample Response
+//HTML content
+$this->io->add_header('Content-Type', 'text/html');
+$this->io->set_content('<h1>Hello, World!</h1>');
+
+//or simple
+$this->io->set_html_content('<h1>Hello, World!</h1>');
+
+//Set status code
+$this->io->set_status_code(200);
+
+//Send Response
+$this->io->send();
+								</code>
+							</pre>
+						</div>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+//Alternatively, send a JSON response (for API)
+$this->io->add_header('Access-Control-Allow-Origin', '*');
+$this->io->add_header('Content-Type', 'application/json');
+//Or use array for add_header
+$this->io->add_header([
+	'Access-Control-Allow-Origin' => '*',
+	'Content-Type' => 'application/json'
+]);
+$data = ['message' => 'Hello, World!'];
+$this->io->set_status_code(200);
+$this->io->send_json($data);
+								</code>
+							</pre>
+						</div>
 					</section>
+					<section class="docs-section" id="item-5-9">
+						<h2 class="section-heading">Config Class</h2>
+						<p>The Config class provides a means to retrieve configuration preferences. These preferences can come from the default config file (app/config/config.php) or from your own custom config files.</p>
+						<p>By default, LavaLust has one primary config file, located at app/config/config.php. If you open the file using your text editor you’ll see that config items are stored in an array called $config.</p>
+						<p>You can add your own config items to this file, or if you prefer to keep your configuration items separate (assuming you even need config items), simply create your own file and save it in config folder.</p>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>If you do create your own config files use the same format as the primary one, storing your items in an array called $config. LavaLust will intelligently manage these files so there will be no conflict even though the array has the same name (assuming an array index is not named the same as another).</p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
+						<h4>Manual Loading</h4>
+						<p>To load one of your custom config files you will use the following function within the controller that needs it:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->config->load('filename');
+								</code>
+							</pre>
+						</div>
+						<p>Where filename is the name of your config file, without the .php file extension.</p>
+						<p>If you need to load multiple config files normally they will be merged into one master config array. Name collisions can occur, however, if you have identically named array indexes in different config files. To avoid collisions you can set the second parameter to TRUE and each config file will be stored in an array index corresponding to the name of the config file. Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+// Stored in an array with this prototype: $this->config['blog_settings'] = $config
+$this->config->load('blog_settings', TRUE);
+								</code>
+							</pre>
+						</div>
+						<h4>Auto-loading</h4>
+						<p>If you find that you need a particular config file globally, you can have it loaded automatically by the system. To do this, open the autoload.php file, located at application/config/autoload.php, and add your config file as indicated in the file.</p>
+						<h4>Fetching Config Items</h4>
+						<p>To retrieve an item from your config file, use the following function:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->config->get('item_name');
+								</code>
+							</pre>
+						</div>
+						<p>Where item_name is the $config array index you want to retrieve. For example, to fetch your language choice you’ll do this:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$lang = $this->config->get('language');
+								</code>
+							</pre>
+						</div>
+						<p>The function returns NULL if the item you are trying to fetch does not exist.</p>
+						<P>If you are using the second parameter of the $this->config->load function in order to assign your config items to a specific index you can retrieve it by specifying the index name in the second parameter of the $this->config->get() function. Example:</P>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+// Loads a config file named blog_settings.php and assigns it to an index named "blog_settings"
+$this->config->load('blog_settings', TRUE);
+
+// Retrieve a config item named site_name contained within the blog_settings array
+$site_name = $this->config->get('site_name', 'blog_settings');
+
+// An alternate way to specify the same item:
+$blog_config = $this->config->get('blog_settings');
+$site_name = $blog_config['site_name'];
+								</code>
+							</pre>
+						</div>
+						<h4>Setting a Config Item</h4>
+						<p>If you would like to dynamically set a config item or change an existing one, you can do so using:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->config->set('item_name', 'item_value');
+								</code>
+							</pre>
+						</div>
+						<p>Where item_name is the $config array index you want to change, and item_value is its value.</p>
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-10">
+						<h2 class="section-heading">Encryption Class</h2>
+						<p>The Encryption Library provides two-way data encryption. To do so in a cryptographically secure way, it utilizes PHP extensions called OpenSSL</p>
+						<h4>Initializing the Class</h4>
+						<p>Like most other classes in LavaLust, the Encryption library is initialized in your controller using the <span class="code_red">$this->call->library()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('encryption');
+//or									
+$this->call->library('encryption', 'cipher type'); //cipher is optional. If empty, it will use AES-256-CBC cipher.
+								</code>
+							</pre>
+						</div>
+						<p>Once loaded, the Encryption library object will be available using:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->encryption;
+								</code>
+							</pre>
+						</div>
+						<p>By default, the Encryption Library will use the AES-256 cipher in CBC mode, using your configured encryption_key.</p>
+						<h4>Encrypting and decrypting data</h4>
+						<p>Encrypting and decrypting data with the already configured library settings is simple. As simple as just passing the string to the <span class="code_red">encrypt()</span> and/or <span class="code_red">decrypt()</span> methods:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$plain_text = 'This is a plain-text message!';
+$ciphertext = $this->encryption->encrypt($plain_text);
+
+// Outputs: This is a plain-text message!
+echo $this->encryption->decrypt($ciphertext);
+								</code>
+							</pre>
+						</div>
+					</section><!--//section-->
 				</article>
 				<article class="docs-article" id="section-6">
 				    <header class="docs-header">
@@ -3018,10 +3238,11 @@ $this->call->database();
 						<p>Note: If all your pages require database access you can connect automatically</p>
 						<h4>raw()</h4>
 						<p>This method has one require parameter which is the SQL statement.</p>
+						<p>The second parameter is an array which will be substituted to the placeholder (?) or named placeholder (:id) when statement is executed.</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$data = $this->db->raw('select * from user');
+$data = $this->db->raw('select * from user where id = ?', array(1))->fetchAll();
 foreach($data as $row) {
 	echo $row['id'];
 	echo $row['username'];
@@ -3032,31 +3253,15 @@ echo $this->db->row_count();
 								</code>
 							</pre>
 						</div>
-						<p>This method has two(2) more parameters that are not required. Arrays of value and PDO fetch mode. Check the example below.</p>
+						<p>You can also use named parameters like this.</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$data = $this->db->raw('select * from user where = ?', array(1), PDO::FETCH_ASSOC);
+$data = $this->db->raw('select * from user where id = :id', array('id' => 1))->fetchAll();
 foreach($data as $row) {
 	echo $row['id'];
 	echo $row['username'];
 	echo $row['password'];
-}
-
-echo $this->db->row_count();
-								</code>
-							</pre>
-						</div>
-						<p>The second parameter is an array which will be substituted to the placeholder (?) when statement is executed. While the third one can be FETCH_OBJ, FETCH_CLASS, etc. </p>
-						<p>Note: If you need to chance the fetch mode and you don't need to supply any array value, jusy add empty array to the second parameter.</p>
-						<div class="docs-code-block">
-							<pre>
-								<code class="language-php">
-$data = $this->db->raw('select * from user', array(), PDO::FETCH_OBJ);
-foreach($data as $row) {
-	echo $row->id;
-	echo $row->username;
-	echo $row->password;
 }
 
 echo $this->db->row_count();
@@ -3461,38 +3666,49 @@ $this->db->rollBack();
 								</code>
 							</pre>
 						</div>
-						
+
+					</section>
+				</article>
+				<article class="docs-article" id="section-7">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">Helpers</h1>
+					    <section class="docs-intro">
+							<p>LavaLust has Helper files for faster development.</p>
+						</section><!--//docs-intro-->
+				    </header>
+					<section class="docs-section" id="item-7-1">
+						<h2>String Helper</h2>
 					</section>
 				</article>
 			    <footer class="footer">
 				    <div class="container text-center py-5">
-				        <small class="copyright">© Copyright 2020 - 2022, LavaLust by <a href="https://facebook.com/marasiganronald">Ron Marasigan</a> <br> Due to same logic, class and methods naming, part(s) of the docs was derived from CodeIgniter User Guide <br> Logo by <a href="https://www.facebook.com/eric.tierra16">Eric Tierra <br> </a> Theme by <a href="https://themes.3rdwavemedia.com/" target="_blank">3rd Wave Media</a></small>
+				        <small class="copyright">© Copyright 2020 - 2024, LavaLust by <a href="https://facebook.com/marasiganronald">Ron Marasigan</a> <br> This documentation only supports the basic usage of the framework. You may encounter typographical errors, not updated syntax, etc. If you want to help in updating please let me know by contacting me on facebook.<br> Logo by <a href="https://www.facebook.com/eric.tierra16">Eric Tierra <br> </a> Theme by <a href="https://themes.3rdwavemedia.com/" target="_blank">3rd Wave Media</a></small>
 				        <ul class="social-list list-unstyled pt-4 mb-0">
-						    <li class="list-inline-item"><a href="https://github.com/ronmarasigan"><i class="fab fa-github fa-fw"></i></a></li> 
+						    <li class="list-inline-item"><a href="https://github.com/ronmarasigan"><i class="fab fa-github fa-fw"></i></a></li>
 				            <li class="list-inline-item"><a href="https://facebook.com/marasiganronald"><i class="fab fa-facebook-f fa-fw"></i></a></li>
 							<li class="list-inline-item"><a href="https://discord.gg/trcEtgS5ET"><i class="fab fa-discord fa-fw"></i></a></li>
 				            <li class="list-inline-item"><a href="https://www.linkedin.com/in/ron-marasigan-a843711b4"><i class="fab fa-linkedin fa-fw"></i></a></li>
 				        </ul><!--//social-list-->
 				    </div>
 			    </footer>
-		    </div> 
+		    </div>
 	    </div>
     </div><!--//docs-wrapper-->
-   
-       
-    <!-- Javascript -->          
+
+
+    <!-- Javascript -->
     <script src="assets/plugins/popper.min.js"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
-    
-    
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
     <!-- Page Specific JS -->
     <script src="assets/plugins/smoothscroll.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
 	<script>hljs.highlightAll();</script>
-    <script src="assets/js/highlight-custom.js"></script> 
-    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
-    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
-    <script src="assets/js/docs.js"></script> 
+    <script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+    <script src="assets/js/docs.js"></script>
 
 </body>
 </html>
