@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaLust Framework - URL Helpers Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            margin-top: 35px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 25px;
+            color: #2980b9;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .function {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+            font-family: monospace;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info-table tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - URL Helpers</h1>
+    
+    <p>The URL Helper provides functions for working with URLs, redirections, and asset loading in your LavaLust PHP Framework application.</p>
+
+    <div class="function">
+        <h2>base_url()</h2>
+        
+        <h3>Description</h3>
+        <p>Returns the sanitized base URL of your application as defined in the BASE_URL constant.</p>
+        
+        <h3>Syntax</h3>
+        <pre>base_url()</pre>
+        
+        <h3>Parameters</h3>
+        <p>None</p>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The sanitized base URL</p>
+        
+        <h3>Example Usage</h3>
+        <pre>&lt;a href="&lt;?php echo base_url(); ?&gt;"&gt;Home&lt;/a&gt;
+&lt;img src="&lt;?php echo base_url(); ?&gt;public/images/logo.png"&gt;</pre>
+        
+        <div class="note">
+            <h4>Note</h4>
+            <p>The URL is sanitized using FILTER_SANITIZE_URL to remove illegal URL characters.</p>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>site_url()</h2>
+        
+        <h3>Description</h3>
+        <p>Generates a complete URL by appending the specified path to the base URL, including the index page if configured.</p>
+        
+        <h3>Syntax</h3>
+        <pre>site_url(string $url = '')</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$url</span></td>
+                    <td>string</td>
+                    <td>Path to append to the base URL</td>
+                    <td>empty string</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The complete URL</p>
+        
+        <h3>Example Usage</h3>
+        <pre>&lt;a href="&lt;?php echo site_url('products'); ?&gt;"&gt;Products&lt;/a&gt;
+&lt;a href="&lt;?php echo site_url('admin/dashboard'); ?&gt;"&gt;Dashboard&lt;/a&gt;</pre>
+        
+        <div class="note">
+            <h4>Configuration</h4>
+            <p>If <code>index_page</code> is set in the config file, it will be included in the generated URL.</p>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>redirect()</h2>
+        
+        <h3>Description</h3>
+        <p>Performs an HTTP redirect to the specified URI.</p>
+        
+        <h3>Syntax</h3>
+        <pre>redirect(string $uri = '', bool $permanent = false, bool $exit = true)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$uri</span></td>
+                    <td>string</td>
+                    <td>URI to redirect to (can be relative or absolute)</td>
+                    <td>empty string</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$permanent</span></td>
+                    <td>bool</td>
+                    <td>Whether to send a permanent (301) redirect</td>
+                    <td>false</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$exit</span></td>
+                    <td>bool</td>
+                    <td>Whether to exit script execution after redirect</td>
+                    <td>true</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span></p>
+        
+        <h3>Example Usage</h3>
+        <pre>// Simple redirect
+redirect('login');
+
+// Permanent redirect
+redirect('old-page', true);
+
+// Redirect to external URL
+redirect('https://example.com');
+
+// Redirect without exiting
+redirect('next-step', false, false);
+// Additional code can run here if $exit is false</pre>
+        
+        <div class="warning">
+            <h4>Important</h4>
+            <p>This function sends HTTP headers and should be called before any output is sent to the browser.</p>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>load_js() / load_css()</h2>
+        
+        <h3>Description</h3>
+        <p>Generates HTML script/link tags for loading JavaScript/CSS files from the public directory.</p>
+        
+        <h3>Syntax</h3>
+        <pre>load_js(array $paths)
+load_css(array $paths)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$paths</span></td>
+                    <td>array</td>
+                    <td>Array of file paths relative to public directory (without extension)</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span> - Outputs HTML tags directly</p>
+        
+        <h3>Example Usage</h3>
+        <pre>&lt;head&gt;
+    &lt;?php load_css(['css/bootstrap', 'css/style']); ?&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- content --&gt;
+    &lt;?php load_js(['js/jquery', 'js/app']); ?&gt;
+&lt;/body&gt;</pre>
+        
+        <div class="note">
+            <h4>File Locations</h4>
+            <p>Files should be placed in the public directory (as defined by PUBLIC_DIR constant). The .js/.css extension is automatically added.</p>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>active()</h2>
+        
+        <h3>Description</h3>
+        <p>Outputs a CSS class if the current URL matches the specified path, useful for highlighting active navigation items.</p>
+        
+        <h3>Syntax</h3>
+        <pre>active(string $currect_page, string $css_class = 'active')</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$currect_page</span></td>
+                    <td>string</td>
+                    <td>Path to check against current URL</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$css_class</span></td>
+                    <td>string</td>
+                    <td>CSS class to output if active</td>
+                    <td>'active'</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span> - Outputs the CSS class directly if active</p>
+        
+        <h3>Example Usage</h3>
+        <pre>&lt;li class="&lt;?php active('dashboard'); ?&gt;"&gt;
+    &lt;a href="&lt;?php echo site_url('dashboard'); ?&gt;"&gt;Dashboard&lt;/a&gt;
+&lt;/li&gt;
+
+&lt;li class="&lt;?php active('products', 'current'); ?&gt;"&gt;
+    &lt;a href="&lt;?php echo site_url('products'); ?&gt;"&gt;Products&lt;/a&gt;
+&lt;/li&gt;</pre>
+    </div>
+
+    <div class="function">
+        <h2>segment()</h2>
+        
+        <h3>Description</h3>
+        <p>Returns the specified URI segment (zero-based index).</p>
+        
+        <h3>Syntax</h3>
+        <pre>segment(int $seg)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$seg</span></td>
+                    <td>int</td>
+                    <td>Zero-based index of the URI segment to retrieve</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string|false</span> - The URI segment or false if not found</p>
+        
+        <h3>Example Usage</h3>
+        <pre>// For URL: example.com/users/profile/123
+
+$user_id = segment(2); // Returns '123'
+$action = segment(1); // Returns 'profile'
+$controller = segment(0); // Returns 'users'</pre>
+    </div>
+
+    <h2>URL Configuration</h2>
+    <p>Several URL helpers depend on these configuration constants:</p>
+    <ul>
+        <li><code>BASE_URL</code> - The root URL of your application</li>
+        <li><code>PUBLIC_DIR</code> - The public directory name (default: 'public')</li>
+        <li><code>index_page</code> - The front controller (e.g., 'index.php')</li>
+    </ul>
+
+    <h2>Security Considerations</h2>
+    <ul>
+        <li>All generated URLs are sanitized to prevent XSS attacks</li>
+        <li>When using redirect(), ensure the target URL is validated</li>
+        <li>Be cautious with user-provided input in segment()</li>
+    </ul>
+
+    <h2>Best Practices</h2>
+    <ul>
+        <li>Always use these helpers instead of hardcoding URLs</li>
+        <li>For assets, use load_js()/load_css() to ensure correct paths</li>
+        <li>Use active() for navigation menus to maintain consistent active states</li>
+        <li>Prefer site_url() over base_url() for internal links</li>
+    </ul>
+</body>
+</html>
