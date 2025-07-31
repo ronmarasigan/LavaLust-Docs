@@ -3377,7 +3377,7 @@ echo $this->encryption->decrypt($ciphertext);
 						<h2 class="section-heading">Migration Class</h2>
 						<p>Migration class is a way to manage changes to your database schema over time. It's a structured way to track and apply changes like creating tables, adding columns, or modifying indexes. These changes are defined in code and then executed against the database, allowing for a controlled and reproducible way to evolve the database schema.</p>
 						<h4>Enable and Create Migration</h4>
-						<p>Like most other classes in LavaLust, the Encryption library is initialized in your controller using the <span class="code_red">$this->call->library()</span> method:</p>
+						<p>Like most other classes in LavaLust, the Migration library is initialized in your controller using the <span class="code_red">$this->call->library()</span> method:</p>
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
@@ -3393,6 +3393,7 @@ $this->migration;
 								</code>
 							</pre>
 						</div>
+						<p>You should also need to update config/migration.php file accordingly. Enable migration and configure the rest.</p>
 						<p>Create a controller and put these methods inside. Example Migrations.php</p>
 						<div class="docs-code-block">
 							<pre>
@@ -3469,6 +3470,246 @@ class Create_users_table {
 						</div>
 						<p>To run the migration, in you browser type localhost/project_name/migrate then hit enter. All migration files will be executed. To rollback, just use localhost/project_name/rollback.</p>
 					</section><!--//section-->
+					<section class="docs-section" id="item-5-12">
+						<h2 class="section-heading">Restful API</h2>
+							<p>This class is designed to streamline and simplify the creation of RESTful web services. This also provide a structured and standardized approach to building APIs that adhere to the principles of Representational State Transfer (REST) architecture. </p>
+							<h4>Enable API Library</h4>
+							<p>Like most other classes in LavaLust, the API library is initialized in your controller using the <span class="code_red">$this->call->library()</span> method:</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->call->library('api');
+									</code>
+								</pre>
+							</div>
+							<p>Once loaded, the API library object will be available using:</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api;
+									</code>
+								</pre>
+							</div>
+							<p>You should also need to update config/api.php file accordingly. Enable api and configure the rest.</p>
+							<h4>Basic Utilities</h4>
+							<p><b>handle_cors():</b> Sends CORS headers to allow cross-origin requests.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->handle_cors();
+									</code>
+								</pre>
+							</div>
+							<p><b>body()</b>: Parses incoming JSON or form-data request body into an array.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->body();
+									</code>
+								</pre>
+							</div>
+							<p><b>get_query_params()</b>: Returns the $_GET query parameters.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$params = $this->api->get_query_params();
+									</code>
+								</pre>
+							</div>
+							<p><b>require_method(string $method)</b>: Ensures the request uses a specific HTTP method.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->require_method('POST');
+									</code>
+								</pre>
+							</div>
+							<p><b>respond_error(string $message, int $code = 400)</b>: Sends JSON error response with HTTP status code.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->respond(['status' => 'ok']);
+									</code>
+								</pre>
+							</div>
+							<p><b>respond_error(string $message, int $code = 400)</b>: Sends JSON error response with HTTP status code.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->respond_error('Invalid request');
+									</code>
+								</pre>
+							</div>
+							<h4>JWT Methods</h4>
+							<p><b>encode_jwt(array $payload):</b> Encodes the JWT with HMAC SHA256.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$token = $this->api->encode_jwt(['sub' => 1, 'exp' => time() + 3600]);
+									</code>
+								</pre>
+							</div>
+							<p><b>validate_jwt(string $token)</b>: Verifies JWT validity and expiration.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$payload = $this->api->validate_jwt($token);
+									</code>
+								</pre>
+							</div>
+							<p><b>get_bearer_token()</b>: Extracts token from Authorization: Bearer header.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$token = $this->api->get_bearer_token();
+									</code>
+								</pre>
+							</div>
+							<p><b>require_jwt()</b>: Validates the Bearer token or responds with 401 Unauthorized.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$user_payload = $this->api->require_jwt();
+									</code>
+								</pre>
+							</div>
+							<h4>Token System</h4>
+							<p><b>issue_tokens(array $user_data)</b>: Issues a new access token and refresh token.</p>
+							<h5>Usage</h5>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$tokens = $this->api->issue_tokens([
+    'id' => 1,
+    'role' => 'admin',
+    'scopes' => ['read', 'write']
+]);
+									</code>
+								</pre>
+							</div>
+							<h5>Returns</h5>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+{
+  "access_token": "xxxxx",
+  "refresh_token": "yyyyy",
+  "expires_in": 900
+}
+
+									</code>
+								</pre>
+							</div>
+							<p><b>refresh_access_token(string $refresh_token)</b>: Validates a refresh token and issues a new token set.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->refresh_access_token($refresh_token);
+									</code>
+								</pre>
+							</div>
+							<p><b>revoke_refresh_token(string $refresh_token)</b>: Deletes a refresh token from DB.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->revoke_refresh_token($refresh_token);
+									</code>
+								</pre>
+							</div>
+							<p><b>cleanup_expired_refresh_tokens(int $user_id)</b>: Deletes expired tokens for a given user.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->cleanup_expired_refresh_tokens(1);
+									</code>
+								</pre>
+							</div>
+							<h4>Refresh Token Encryption</h4>
+							<p><b>encrypt_token(string $token)</b>: Encrypts a token string using AES-256-CBC.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$encrypted = $this->api->encrypt_token('my_token');
+									</code>
+								</pre>
+							</div>
+							<p><b>decrypt_token(string $encrypted)</b>: Decrypts an encrypted token string.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$token = $this->api->decrypt_token($encrypted);
+									</code>
+								</pre>
+							</div>
+							<h4>Basic Auth</h4>
+							<p><b>check_basic_auth(string $valid_user, string $valid_pass)</b>: Returns true if HTTP basic auth matches.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+if ($this->api->check_basic_auth('admin', 'secret')) {
+    // allow
+}
+									</code>
+								</pre>
+							</div>
+							<p><b>require_basic_auth(string $valid_user, string $valid_pass)</b>: Forces HTTP basic auth check or sends 401 Unauthorized.</p>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$this->api->require_basic_auth('admin', 'secret');
+									</code>
+								</pre>
+							</div>
+							<h4>Sample Route Usage</h4>
+							<h3>POST /Login</h3>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$input = $this->api->body();
+$user = $this->db->table('users')->where('email', $input['email'])->where('password', md5($input['password']))->get();
+
+if ($user) {
+    $tokens = $this->api->issue_tokens(['id' => $user['id'], 'role' => $user['role']]);
+    $this->api->respond(['message' => 'Login successful', 'tokens' => $tokens]);
+} else {
+    $this->api->respond_error('Invalid credentials', 401);
+}
+
+									</code>
+								</pre>
+							</div>
+							<h3>GET /profile</h3>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$payload = $this->api->require_jwt();
+$user_id = $payload['sub'];
+$user = $this->db->table('users')->where('id', $user_id)->get();
+$api->respond(['user' => $user]);
+									</code>
+								</pre>
+							</div>
+							<h3>POST /refresh</h3>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$input = $this->api->body();
+$this->api->refresh_access_token($input['refresh_token']);
+									</code>
+								</pre>
+							</div>
+							<h3>POST /logout</h3>
+							<div class="docs-code-block">
+								<pre>
+									<code class="language-php">
+$input = $this->api->body();
+$this->api->revoke_refresh_token($input['refresh_token']);
+$this->api->respond(['message' => 'Logged out']);
+
+									</code>
+								</pre>
+							</div>
+					</section>
 				</article>
 				<article class="docs-article" id="section-6">
 				    <header class="docs-header">
