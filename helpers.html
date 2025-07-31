@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaLust Framework - File System Helpers Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            margin-top: 35px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 25px;
+            color: #2980b9;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .function {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+            font-family: monospace;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info-table tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - File System Helpers</h1>
+    
+    <div class="function">
+        <h2>write_file()</h2>
+        
+        <h3>Description</h3>
+        <p>Writes content to a file with exclusive locking to prevent concurrent access issues.</p>
+        
+        <h3>Syntax</h3>
+        <pre>write_file(string $file, string $content, string $mode = 'w')</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$file</span></td>
+                    <td>string</td>
+                    <td>Path to the file to write to</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$content</span></td>
+                    <td>string</td>
+                    <td>Data to write to the file</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$mode</span></td>
+                    <td>string</td>
+                    <td>File open mode ('w' for write, 'a' for append, etc.)</td>
+                    <td>'w'</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">int|false</span> - Number of bytes written or FALSE on failure</p>
+        
+        <h3>Features</h3>
+        <ul>
+            <li>Uses file locking (LOCK_EX) to prevent concurrent writes</li>
+            <li>Automatically closes the file handle after writing</li>
+            <li>Supports different file modes (write, append, etc.)</li>
+        </ul>
+        
+        <h3>Example Usage</h3>
+        <pre>// Write to a file (overwrites existing content)
+$bytes = write_file('/path/to/file.txt', 'Hello World');
+
+// Append to a file
+$bytes = write_file('/path/to/log.txt', "New log entry\n", 'a');
+
+if ($bytes === false) {
+    echo "Failed to write file";
+}</pre>
+        
+        <div class="warning">
+            <h4>Important Notes</h4>
+            <ul>
+                <li>Ensure the directory is writable by the web server</li>
+                <li>The function will overwrite existing files by default (mode 'w')</li>
+                <li>For large files, consider using chunked writing instead</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>delete_files()</h2>
+        
+        <h3>Description</h3>
+        <p>Recursively deletes files and optionally directories within a specified path.</p>
+        
+        <h3>Syntax</h3>
+        <pre>delete_files(string $dir_path, bool $del_dir = FALSE, bool $htdocs = FALSE)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$dir_path</span></td>
+                    <td>string</td>
+                    <td>Directory path to clean</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$del_dir</span></td>
+                    <td>bool</td>
+                    <td>Whether to delete the directory itself after cleaning</td>
+                    <td>FALSE</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$htdocs</span></td>
+                    <td>bool</td>
+                    <td>Whether to protect web server files (.htaccess, index.*, web.config)</td>
+                    <td>FALSE</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span> - No return value</p>
+        
+        <h3>Behavior</h3>
+        <ul>
+            <li>Recursively deletes all files in the directory and subdirectories</li>
+            <li>Optionally preserves web server configuration files</li>
+            <li>Can optionally remove the parent directory itself</li>
+            <li>Skips '.' and '..' directory entries</li>
+        </ul>
+        
+        <h3>Example Usage</h3>
+        <pre>// Delete all files in temp directory but keep the directory
+delete_files('/path/to/temp');
+
+// Delete everything including the directory
+delete_files('/path/to/old_data', true);
+
+// Delete files but protect web server files
+delete_files('/path/to/public_cache', false, true);</pre>
+        
+        <div class="warning">
+            <h4>Danger Zone</h4>
+            <ul>
+                <li>This function is destructive and cannot be undone</li>
+                <li>Always double-check the path before execution</li>
+                <li>Consider implementing a backup mechanism before mass deletion</li>
+                <li>Be extremely careful with $del_dir = TRUE</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>copy_file()</h2>
+        
+        <h3>Description</h3>
+        <p>Copies or moves a file to a new location with a single function call.</p>
+        
+        <h3>Syntax</h3>
+        <pre>copy_file(string $path, string $copy_path, bool $remove_original = FALSE)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$path</span></td>
+                    <td>string</td>
+                    <td>Source file path</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$copy_path</span></td>
+                    <td>string</td>
+                    <td>Destination file path</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$remove_original</span></td>
+                    <td>bool</td>
+                    <td>Whether to move (TRUE) or copy (FALSE) the file</td>
+                    <td>FALSE</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">bool</span> - TRUE on success, FALSE on failure</p>
+        
+        <h3>Features</h3>
+        <ul>
+            <li>Unified interface for both copy and move operations</li>
+            <li>Simple boolean switch to choose between copy/move</li>
+            <li>Uses native PHP copy() and rename() functions</li>
+        </ul>
+        
+        <h3>Example Usage</h3>
+        <pre>// Copy a file
+$success = copy_file('/path/to/source.txt', '/path/to/backup.txt');
+
+// Move a file (equivalent to rename)
+$success = copy_file('/path/to/temp.txt', '/path/to/final.txt', true);
+
+if (!$success) {
+    echo "File operation failed";
+}</pre>
+        
+        <div class="note">
+            <h4>Usage Tips</h4>
+            <ul>
+                <li>For moving files across partitions, PHP's rename() may fail - consider manual copy+delete</li>
+                <li>Ensure proper permissions on both source and destination directories</li>
+                <li>Destination directory must exist before operation</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Security Considerations</h2>
+    <ul>
+        <li>Always validate file paths before operations</li>
+        <li>Consider implementing user permission checks</li>
+        <li>Be cautious with user-provided file paths</li>
+        <li>Set appropriate directory permissions (usually 755 for dirs, 644 for files)</li>
+    </ul>
+
+    <h2>Performance Tips</h2>
+    <ul>
+        <li>For large files, consider stream-based operations</li>
+        <li>Batch operations can be optimized by checking directory existence once</li>
+        <li>delete_files() can be resource-intensive for large directory trees</li>
+    </ul>
+</body>
+</html>

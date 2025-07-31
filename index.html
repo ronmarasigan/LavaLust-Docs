@@ -3661,7 +3661,7 @@ $this->api->require_basic_auth('admin', 'secret');
 								</pre>
 							</div>
 							<h4>Sample Route Usage</h4>
-							<h3>POST /Login</h3>
+							<h5>POST /Login</h5>
 							<div class="docs-code-block">
 								<pre>
 									<code class="language-php">
@@ -3678,7 +3678,7 @@ if ($user) {
 									</code>
 								</pre>
 							</div>
-							<h3>GET /profile</h3>
+							<h5>GET /profile</h5>
 							<div class="docs-code-block">
 								<pre>
 									<code class="language-php">
@@ -3689,7 +3689,7 @@ $api->respond(['user' => $user]);
 									</code>
 								</pre>
 							</div>
-							<h3>POST /refresh</h3>
+							<h5>POST /refresh</h5>
 							<div class="docs-code-block">
 								<pre>
 									<code class="language-php">
@@ -3698,14 +3698,13 @@ $this->api->refresh_access_token($input['refresh_token']);
 									</code>
 								</pre>
 							</div>
-							<h3>POST /logout</h3>
+							<h5>POST /logout</h5>
 							<div class="docs-code-block">
 								<pre>
 									<code class="language-php">
 $input = $this->api->body();
 $this->api->revoke_refresh_token($input['refresh_token']);
 $this->api->respond(['message' => 'Logged out']);
-
 									</code>
 								</pre>
 							</div>
