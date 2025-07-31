@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Helpers Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            margin-top: 35px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 25px;
+            color: #2980b9;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .function {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+            font-family: monospace;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info-table tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - Language Helpers</h1>
+    
+    <p>The Language Helper provides functions for internationalization (i18n) and localization (l10n) in your LavaLust PHP Framework application.</p>
+
+    <div class="function">
+        <h2>lang()</h2>
+        
+        <h3>Description</h3>
+        <p>Translates a language key to the currently selected language, with optional parameter substitution and HTML escaping.</p>
+        
+        <h3>Syntax</h3>
+        <pre>lang(string $key, array $params = array(), bool $escape = FALSE)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$key</span></td>
+                    <td>string</td>
+                    <td>The language key to translate</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$params</span></td>
+                    <td>array</td>
+                    <td>Associative array of parameters to replace in the translated string</td>
+                    <td>empty array</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$escape</span></td>
+                    <td>bool</td>
+                    <td>Whether to HTML escape the output</td>
+                    <td>FALSE</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The translated string</p>
+        
+        <h3>Features</h3>
+        <ul>
+            <li>Simple key-based translation lookup</li>
+            <li>Parameter substitution in translated strings</li>
+            <li>Optional HTML escaping for security</li>
+            <li>Uses the framework's language system</li>
+        </ul>
+        
+        <h3>Example Usage</h3>
+        <pre>// Simple translation
+echo lang('welcome_message');
+
+// Translation with parameters
+echo lang('greeting', ['name' => 'John', 'time' => 'morning']);
+
+// With HTML escaping (recommended for user-facing content)
+echo lang('html_content', [], TRUE);</pre>
+
+        <h3>Language File Example</h3>
+        <pre>// In application/language/english/main_lang.php
+$lang['welcome_message'] = 'Welcome to our application!';
+$lang['greeting'] = 'Good %time%, %name%!';
+$lang['html_content'] = '&lt;strong&gt;Important&lt;/strong&gt; message';</pre>
+        
+        <div class="note">
+            <h4>Best Practices</h4>
+            <ul>
+                <li>Organize language keys by module/feature</li>
+                <li>Use descriptive key names that indicate their purpose</li>
+                <li>Always escape output when displaying user-facing content</li>
+                <li>Keep language files in UTF-8 encoding</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="function">
+        <h2>language()</h2>
+        
+        <h3>Description</h3>
+        <p>Sets or gets the current application language.</p>
+        
+        <h3>Syntax</h3>
+        <pre>language(string $lang)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$lang</span></td>
+                    <td>string</td>
+                    <td>Language code to switch to (e.g., 'english', 'spanish')</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">object</span> - The language instance for method chaining</p>
+        
+        <h3>Features</h3>
+        <ul>
+            <li>Changes the active language for all subsequent translations</li>
+            <li>Returns the language object for method chaining</li>
+            <li>Integrates with the framework's language system</li>
+        </ul>
+        
+        <h3>Example Usage</h3>
+        <pre>// Set language to Spanish
+language('spanish');
+
+// Chain with other methods (if supported)
+language('french')->load('validation');</pre>
+        
+        <div class="note">
+            <h4>Implementation Notes</h4>
+            <ul>
+                <li>Language files should be stored in application/language/{language}/</li>
+                <li>Typically called early in the application lifecycle</li>
+                <li>Language can be stored in session for persistent selection</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Internationalization Workflow</h2>
+    <ol>
+        <li>Create language files for each supported language in application/language/</li>
+        <li>Set the default language in config.php or detect from user preferences</li>
+        <li>Use language() to set the active language when needed</li>
+        <li>Wrap all user-facing strings in lang() calls</li>
+        <li>Load language files as needed for different parts of your application</li>
+    </ol>
+
+    <h2>Security Considerations</h2>
+    <ul>
+        <li>Always use HTML escaping ($escape = TRUE) for user-facing content</li>
+        <li>Validate language selection against available languages</li>
+        <li>Sanitize any dynamic content passed as parameters</li>
+        <li>Keep language files outside web root if possible</li>
+    </ul>
+
+    <h2>Performance Tips</h2>
+    <ul>
+        <li>Load only the language files you need for each request</li>
+        <li>Cache frequently used translations if performance is critical</li>
+        <li>Consider compiling language files for production</li>
+        <li>Group related language keys together in files</li>
+    </ul>
+
+    <div class="warning">
+        <h3>Common Pitfalls</h3>
+        <ul>
+            <li>Missing language keys will typically return the key itself - implement a fallback system</li>
+            <li>Parameter names in translations must match exactly with those passed to lang()</li>
+            <li>Language files must return the $lang array for proper loading</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaLust Framework - String Helpers Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            margin-top: 35px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 25px;
+            color: #2980b9;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .function {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+            font-family: monospace;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info-table tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - String Helpers</h1>
+    
+    <p>The String Helper provides functions for common string manipulation tasks in your LavaLust PHP Framework application.</p>
+
+    <div class="function">
+        <h2>str_insert()</h2>
+        
+        <h3>Description</h3>
+        <p>Replaces placeholders in a string with corresponding values from an associative array.</p>
+        
+        <h3>Syntax</h3>
+        <pre>str_insert(array $keyValue, string $string)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$keyValue</span></td>
+                    <td>array</td>
+                    <td>Associative array of search => replace pairs</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$string</span></td>
+                    <td>string</td>
+                    <td>The string containing placeholders to replace</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The string with replacements made</p>
+        
+        <h3>Example Usage</h3>
+        <pre>$data = ['{name}' => 'John', '{age}' => '30'];
+$template = "Hello {name}, you are {age} years old.";
+echo str_insert($data, $template);
+// Output: Hello John, you are 30 years old.</pre>
+    </div>
+
+    <div class="function">
+        <h2>str_between()</h2>
+        
+        <h3>Description</h3>
+        <p>Extracts all substrings between left and right delimiters.</p>
+        
+        <h3>Syntax</h3>
+        <pre>str_between(string $left, string $right, string $string)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$left</span></td>
+                    <td>string</td>
+                    <td>Left delimiter</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$right</span></td>
+                    <td>string</td>
+                    <td>Right delimiter</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$string</span></td>
+                    <td>string</td>
+                    <td>String to search in</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">array</span> - Array of matched strings between delimiters</p>
+        
+        <h3>Example Usage</h3>
+        <pre>$text = "Sample [text] with [multiple] matches";
+$results = str_between('[', ']', $text);
+// Returns: ['text', 'multiple']</pre>
+    </div>
+
+    <div class="function">
+        <h2>str_after() / str_before()</h2>
+        
+        <h3>Description</h3>
+        <p>Extracts substring after or before the first occurrence of a search string.</p>
+        
+        <h3>Syntax</h3>
+        <pre>str_after(string $search, string $string)
+str_before(string $search, string $string)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$search</span></td>
+                    <td>string</td>
+                    <td>String to search for</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$string</span></td>
+                    <td>string</td>
+                    <td>String to search in</td>
+                    <td><em>Required</em></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The substring after/before the search string</p>
+        
+        <h3>Example Usage</h3>
+        <pre>$email = "user@example.com";
+$username = str_before('@', $email); // Returns "user"
+$domain = str_after('@', $email);    // Returns "example.com"</pre>
+    </div>
+
+    <div class="function">
+        <h2>str_limitwords() / str_limitchars()</h2>
+        
+        <h3>Description</h3>
+        <p>Truncates a string to a specified number of words or characters.</p>
+        
+        <h3>Syntax</h3>
+        <pre>str_limitwords(string $string, int $limit = 10, string $end = '...')
+str_limitchars(string $string, int $limit = 100, string $end = '...')</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$string</span></td>
+                    <td>string</td>
+                    <td>String to truncate</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$limit</span></td>
+                    <td>int</td>
+                    <td>Maximum words/chars to keep</td>
+                    <td>10 (words) / 100 (chars)</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$end</span></td>
+                    <td>string</td>
+                    <td>String to append if truncated</td>
+                    <td>'...'</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">string</span> - The truncated string</p>
+        
+        <h3>Example Usage</h3>
+        <pre>$text = "This is a sample text string for demonstration purposes.";
+
+// Limit to 5 words
+echo str_limitwords($text, 5);
+// Output: "This is a sample text..."
+
+// Limit to 20 characters
+echo str_limitchars($text, 20);
+// Output: "This is a sample..."</pre>
+    </div>
+
+    <div class="function">
+        <h2>strip_slashes() / strip_quotes() / quotes_to_entities()</h2>
+        
+        <h3>Description</h3>
+        <p>Various string sanitization functions.</p>
+        
+        <h3>Syntax</h3>
+        <pre>strip_slashes(mixed $str)
+strip_quotes(string $str)
+quotes_to_entities(string $str)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>strip_slashes</td>
+                    <td>Removes slashes from a string or array (recursive)</td>
+                </tr>
+                <tr>
+                    <td>strip_quotes</td>
+                    <td>Removes single and double quotes from a string</td>
+                </tr>
+                <tr>
+                    <td>quotes_to_entities</td>
+                    <td>Converts quotes to HTML entities</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Example Usage</h3>
+        <pre>$text = "This \"string\" has 'quotes' and \\slashes\\";
+
+echo strip_slashes($text);      // "This "string" has 'quotes' and slashes"
+echo strip_quotes($text);       // "This string has quotes and \slashes\"
+echo quotes_to_entities($text); // "This &quot;string&quot; has &#39;quotes&#39; and \slashes\"</pre>
+    </div>
+
+    <div class="function">
+        <h2>reduce_double_slashes() / reduce_multiples()</h2>
+        
+        <h3>Description</h3>
+        <p>Cleans up strings with repeated characters.</p>
+        
+        <h3>Syntax</h3>
+        <pre>reduce_double_slashes(string $str)
+reduce_multiples(string $str, string $character = ',', bool $trim = FALSE)</pre>
+        
+        <h3>Parameters</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>reduce_double_slashes</td>
+                    <td>Reduces multiple slashes to single slashes (except in http://)</td>
+                </tr>
+                <tr>
+                    <td>reduce_multiples</td>
+                    <td>Reduces multiple instances of a specified character</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Example Usage</h3>
+        <pre>$url = "http://example.com//path//to//file";
+echo reduce_double_slashes($url); // "http://example.com/path/to/file"
+
+$list = "a,,b,c,,,d";
+echo reduce_multiples($list);     // "a,b,c,d"</pre>
+    </div>
+
+    <div class="function">
+        <h2>random_string()</h2>
+        
+        <h3>Description</h3>
+        <p>Generates random strings of various types.</p>
+        
+        <h3>Syntax</h3>
+        <pre>random_string(string $type = 'alnum', int $len = 8)</pre>
+        
+        <h3>Types</h3>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>basic</td>
+                    <td>Random number</td>
+                </tr>
+                <tr>
+                    <td>alpha</td>
+                    <td>Alphabetic characters only</td>
+                </tr>
+                <tr>
+                    <td>alnum</td>
+                    <td>Alphanumeric characters (default)</td>
+                </tr>
+                <tr>
+                    <td>numeric</td>
+                    <td>Numeric characters only</td>
+                </tr>
+                <tr>
+                    <td>nozero</td>
+                    <td>Numeric characters without zero</td>
+                </tr>
+                <tr>
+                    <td>md5</td>
+                    <td>MD5 hash</td>
+                </tr>
+                <tr>
+                    <td>sha1</td>
+                    <td>SHA1 hash</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>Example Usage</h3>
+        <pre>echo random_string('alpha', 10);  // "XcFhJiKlmN"
+echo random_string('numeric', 6); // "384729"
+echo random_string('md5');        // "d41d8cd98f00b204e9800998ecf8427e"</pre>
+    </div>
+
+    <div class="function">
+        <h2>increment_string()</h2>
+        
+        <h3>Description</h3>
+        <p>Increments a string by appending a number or incrementing an existing number.</p>
+        
+        <h3>Syntax</h3>
+        <pre>increment_string(string $str, string $separator = '_', int $first = 1)</pre>
+        
+        <h3>Example Usage</h3>
+        <pre>echo increment_string('file');       // "file_1"
+echo increment_string('file_1');    // "file_2"
+echo increment_string('file', '-'); // "file-1"</pre>
+    </div>
+
+    <div class="function">
+        <h2>alternator()</h2>
+        
+        <h3>Description</h3>
+        <p>Alternates between values with each call.</p>
+        
+        <h3>Syntax</h3>
+        <pre>alternator(mixed ...$args)</pre>
+        
+        <h3>Example Usage</h3>
+        <pre>$alt = alternator('one', 'two', 'three');
+echo $alt(); // "one"
+echo $alt(); // "two"
+echo $alt(); // "three"
+echo $alt(); // "one" (cycles back to start)</pre>
+    </div>
+
+    <div class="function">
+        <h2>repeater()</h2>
+        
+        <h3>Description</h3>
+        <p>Repeats a string a specified number of times.</p>
+        
+        <h3>Syntax</h3>
+        <pre>repeater(string $data, int $num = 1)</pre>
+        
+        <h3>Example Usage</h3>
+        <pre>echo repeater('abc', 3); // "abcabcabc"
+echo repeater('-', 10); // "----------"</pre>
+    </div>
+</body>
+</html>

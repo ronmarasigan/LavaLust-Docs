@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Helper Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .function {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - Cookie Helper Documentation</h1>
+    
+    <p>The Cookie Helper provides functions to easily manage cookies in your LavaLust PHP Framework application.</p>
+    
+    <div class="note">
+        <strong>Note:</strong> These functions are part of the LavaLust framework and require the framework to be properly initialized.
+    </div>
+
+    <h2>set_cookie()</h2>
+    <div class="function">
+        <h3>Description</h3>
+        <p>Sets a cookie with the specified name and value.</p>
+        
+        <h3>Syntax</h3>
+        <pre>set_cookie(string $name, string $value = '', int $expiration = 0, array $options = array())</pre>
+        
+        <h3>Parameters</h3>
+        <ul>
+            <li><span class="param">$name</span> (string) - The name of the cookie.</li>
+            <li><span class="param">$value</span> (string) - The value of the cookie. Default: empty string.</li>
+            <li><span class="param">$expiration</span> (int) - The time the cookie expires. This is a Unix timestamp. Default: 0 (expires when browser closes).</li>
+            <li><span class="param">$options</span> (array) - Additional cookie options as an associative array. Possible keys:
+                <ul>
+                    <li><code>domain</code> - Cookie domain</li>
+                    <li><code>path</code> - Cookie path</li>
+                    <li><code>prefix</code> - Cookie name prefix</li>
+                    <li><code>secure</code> - If TRUE, only transmit over HTTPS</li>
+                    <li><code>httponly</code> - If TRUE, only accessible via HTTP (no JavaScript)</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span> - This function does not return anything.</p>
+        
+        <h3>Example</h3>
+        <pre>// Set a cookie that expires in 1 hour
+set_cookie('username', 'john_doe', time() + 3600);
+
+// Set a cookie with additional options
+set_cookie('prefs', 'dark_mode', time() + 86400, [
+    'domain' => '.example.com',
+    'path' => '/',
+    'secure' => true,
+    'httponly' => true
+]);</pre>
+    </div>
+
+    <h2>get_cookie()</h2>
+    <div class="function">
+        <h3>Description</h3>
+        <p>Retrieves the value of a cookie with the specified name.</p>
+        
+        <h3>Syntax</h3>
+        <pre>get_cookie(string $name)</pre>
+        
+        <h3>Parameters</h3>
+        <ul>
+            <li><span class="param">$name</span> (string) - The name of the cookie to retrieve.</li>
+        </ul>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">mixed</span> - The value of the cookie if it exists, NULL otherwise.</p>
+        
+        <h3>Example</h3>
+        <pre>// Get a cookie value
+$username = get_cookie('username');
+
+if ($username !== null) {
+    echo "Welcome back, " . htmlspecialchars($username);
+} else {
+    echo "Please log in";
+}</pre>
+    </div>
+
+    <h2>delete_cookie()</h2>
+    <div class="function">
+        <h3>Description</h3>
+        <p>Deletes a cookie by setting its value to empty and expiration to the past.</p>
+        
+        <h3>Syntax</h3>
+        <pre>delete_cookie(string $name, string $domain = '', string $path = '/', string $prefix = '')</pre>
+        
+        <h3>Parameters</h3>
+        <ul>
+            <li><span class="param">$name</span> (string) - The name of the cookie to delete.</li>
+            <li><span class="param">$domain</span> (string) - The domain the cookie was set for. Default: empty string.</li>
+            <li><span class="param">$path</span> (string) - The path the cookie was set for. Default: '/'.</li>
+            <li><span class="param">$prefix</span> (string) - The prefix used when the cookie was set. Default: empty string.</li>
+        </ul>
+        
+        <h3>Return Value</h3>
+        <p><span class="return">void</span> - This function does not return anything.</p>
+        
+        <h3>Example</h3>
+        <pre>// Delete a cookie
+delete_cookie('username');
+
+// Delete a cookie with specific domain and path
+delete_cookie('prefs', '.example.com', '/account');</pre>
+    </div>
+
+    <h2>Notes</h2>
+    <ul>
+        <li>These functions internally use the framework's I/O component (<code>lava_instance()->io</code>).</li>
+        <li>Cookie prefixes can be configured in the framework's configuration file.</li>
+        <li>For security, consider always setting the <code>secure</code> and <code>httponly</code> flags when setting cookies.</li>
+        <li>Cookie values are automatically escaped when set and unescaped when retrieved.</li>
+    </ul>
+</body>
+</html>
