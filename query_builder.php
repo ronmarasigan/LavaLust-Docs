@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaLust Framework - Database Class Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        h2 {
+            margin-top: 35px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 30px;
+            color: #2980b9;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        h4 {
+            margin-top: 20px;
+            color: #16a085;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .method {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .param {
+            font-weight: bold;
+            color: #2980b9;
+            font-family: monospace;
+        }
+        .return {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background-color: #ffebee;
+            padding: 15px;
+            border-left: 4px solid #f44336;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .info-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info-table tr:hover {
+            background-color: #e9e9e9;
+        }
+        .property {
+            margin-bottom: 15px;
+        }
+        .property-name {
+            font-weight: bold;
+            color: #8e44ad;
+        }
+        .property-type {
+            color: #2980b9;
+            font-style: italic;
+        }
+        .property-desc {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>LavaLust Framework - Database Class Documentation</h1>
+    
+    <p>The Database class provides a fluent interface for working with databases in LavaLust PHP Framework, supporting both simple and complex queries with parameter binding and security protections.</p>
+
+    <div class="note">
+        <h3>Class Overview</h3>
+        <p>The Database class implements:</p>
+        <ul>
+            <li>Fluent query builder interface</li>
+            <li>Prepared statements with parameter binding</li>
+            <li>Multiple database connections</li>
+            <li>Transactions with savepoints</li>
+            <li>CRUD operations</li>
+            <li>Complex joins and conditions</li>
+            <li>Bulk insert/update operations</li>
+        </ul>
+    </div>
+
+    <h2>Class Properties</h2>
+    
+    <div class="property">
+        <div class="property-name">private static $instance</div>
+        <div class="property-type">object</div>
+        <div class="property-desc">Singleton instance of the Database class</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $db</div>
+        <div class="property-type">PDO</div>
+        <div class="property-desc">PDO database connection instance</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $dbprefix</div>
+        <div class="property-type">string</div>
+        <div class="property-desc">Database table prefix</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $table</div>
+        <div class="property-type">string</div>
+        <div class="property-desc">Current table name</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $columns</div>
+        <div class="property-type">string</div>
+        <div class="property-desc">Columns to select</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $sql</div>
+        <div class="property-type">string</div>
+        <div class="property-desc">Generated SQL query</div>
+    </div>
+
+    <div class="property">
+        <div class="property-name">private $bindValues</div>
+        <div class="property-type">array</div>
+        <div class="property-desc">Bound values for prepared statements</div>
+    </div>
+
+    <!-- Additional properties documented similarly... -->
+
+    <h2>Constructor</h2>
+    
+    <div class="method">
+        <h3>__construct($dbname = NULL)</h3>
+        <p>Initializes a new database connection.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$dbname</span></td>
+                    <td>string</td>
+                    <td>Name of database configuration to use</td>
+                    <td>NULL (uses 'main' config)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Example</h4>
+        <pre>// Using default database configuration
+$db = new Database();
+
+// Using specific database configuration
+$db = new Database('secondary_db');</pre>
+    </div>
+
+    <h2>Connection Methods</h2>
+    
+    <div class="method">
+        <h3>instance($dbname)</h3>
+        <p>Singleton pattern to get database instance.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$dbname</span></td>
+                    <td>string</td>
+                    <td>Name of database configuration to use</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">Database</span> - Database instance</p>
+        
+        <h4>Example</h4>
+        <pre>$db = Database::instance('main');</pre>
+    </div>
+
+    <h2>Query Building Methods</h2>
+
+    <div class="method">
+        <h3>table($table_name)</h3>
+        <p>Sets the table to perform operations on.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$table_name</span></td>
+                    <td>string</td>
+                    <td>Name of the table (without prefix)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">$this</span> - For method chaining</p>
+        
+        <h4>Example</h4>
+        <pre>$db->table('users')->get_all();</pre>
+    </div>
+
+    <div class="method">
+        <h3>select($columns)</h3>
+        <p>Specifies columns to select.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$columns</span></td>
+                    <td>string</td>
+                    <td>Comma-separated column names</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">$this</span> - For method chaining</p>
+        
+        <h4>Example</h4>
+        <pre>$db->table('users')->select('id, name, email')->get_all();</pre>
+    </div>
+
+    <div class="method">
+        <h3>where() / or_where() / not_where() / or_not_where()</h3>
+        <p>Adds WHERE conditions to the query.</p>
+        
+        <h4>Parameters (where)</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$where</span></td>
+                    <td>string|array</td>
+                    <td>Column name or array of conditions</td>
+                    <td><em>Required</em></td>
+                </tr>
+                <tr>
+                    <td><span class="param">$op</span></td>
+                    <td>string|array</td>
+                    <td>Operator or value if operator omitted</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$val</span></td>
+                    <td>mixed</td>
+                    <td>Value to compare</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$type</span></td>
+                    <td>string</td>
+                    <td>Type of where (e.g., 'NOT ')</td>
+                    <td>''</td>
+                </tr>
+                <tr>
+                    <td><span class="param">$andOr</span></td>
+                    <td>string</td>
+                    <td>Logical operator ('AND' or 'OR')</td>
+                    <td>'AND'</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Variations</h4>
+        <ul>
+            <li><code>or_where()</code> - OR condition</li>
+            <li><code>not_where()</code> - NOT condition</li>
+            <li><code>or_not_where()</code> - OR NOT condition</li>
+        </ul>
+        
+        <h4>Examples</h4>
+        <pre>// Simple where
+$db->where('age', '>', 18)->get_all();
+
+// Multiple conditions
+$db->where([
+    'status' => 'active',
+    'age >' => 21
+])->get_all();
+
+// OR condition
+$db->or_where('name', 'LIKE', '%john%')->get_all();</pre>
+    </div>
+
+    <h2>CRUD Operations</h2>
+
+    <div class="method">
+        <h3>insert($fields)</h3>
+        <p>Inserts a new record into the database.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$fields</span></td>
+                    <td>array</td>
+                    <td>Associative array of column => value pairs</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Last inserted ID</p>
+        
+        <h4>Example</h4>
+        <pre>$id = $db->table('users')->insert([
+    'name' => 'John Doe',
+    'email' => 'john@example.com'
+]);</pre>
+    </div>
+
+    <div class="method">
+        <h3>update($fields)</h3>
+        <p>Updates records in the database.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$fields</span></td>
+                    <td>array</td>
+                    <td>Associative array of column => value pairs</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Number of affected rows</p>
+        
+        <h4>Example</h4>
+        <pre>$affected = $db->table('users')
+    ->where('id', 1)
+    ->update(['name' => 'Jane Doe']);</pre>
+    </div>
+
+    <div class="method">
+        <h3>delete()</h3>
+        <p>Deletes records from the database.</p>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Number of affected rows</p>
+        
+        <h4>Example</h4>
+        <pre>$deleted = $db->table('users')
+    ->where('id', 1)
+    ->delete();</pre>
+    </div>
+
+    <div class="method">
+        <h3>get() / get_all()</h3>
+        <p>Executes a SELECT query and returns results.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$mode</span></td>
+                    <td>integer</td>
+                    <td>PDO fetch mode</td>
+                    <td>PDO::FETCH_ASSOC</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <ul>
+            <li><code>get()</code>: <span class="return">array</span> - Single row</li>
+            <li><code>get_all()</code>: <span class="return">array</span> - All matching rows</li>
+        </ul>
+        
+        <h4>Examples</h4>
+        <pre>// Get single row
+$user = $db->table('users')->where('id', 1)->get();
+
+// Get all rows
+$users = $db->table('users')->get_all();</pre>
+    </div>
+
+    <h2>Advanced Features</h2>
+
+    <div class="method">
+        <h3>bulk_insert($records)</h3>
+        <p>Inserts multiple records in a single query.</p>
+        
+        <h4>Parameters</h4>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="param">$records</span></td>
+                    <td>array</td>
+                    <td>Array of associative arrays (records)</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Number of inserted rows</p>
+        
+        <h4>Example</h4>
+        <pre>$records = [
+    ['name' => 'John', 'email' => 'john@example.com'],
+    ['name' => 'Jane', 'email' => 'jane@example.com']
+];
+$inserted = $db->table('users')->bulk_insert($records);</pre>
+    </div>
+
+    <div class="method">
+        <h3>transaction() / commit() / roll_back()</h3>
+        <p>Manages database transactions.</p>
+        
+        <h4>Methods</h4>
+        <ul>
+            <li><code>transaction()</code> - Begins a transaction</li>
+            <li><code>commit()</code> - Commits the transaction</li>
+            <li><code>roll_back()</code> - Rolls back the transaction</li>
+        </ul>
+        
+        <h4>Example</h4>
+        <pre>try {
+    $db->transaction();
+    
+    $db->table('accounts')
+        ->where('id', 1)
+        ->update(['balance' => $newBalance]);
+        
+    $db->commit();
+} catch(Exception $e) {
+    $db->roll_back();
+}</pre>
+    </div>
+
+    <h2>Utility Methods</h2>
+
+    <div class="method">
+        <h3>last_id()</h3>
+        <p>Gets the last inserted ID.</p>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Last inserted ID</p>
+    </div>
+
+    <div class="method">
+        <h3>row_count()</h3>
+        <p>Gets the number of rows affected by the last query.</p>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">integer</span> - Number of affected rows</p>
+    </div>
+
+    <div class="method">
+        <h3>get_sql()</h3>
+        <p>Gets the last executed SQL query.</p>
+        
+        <h4>Return Value</h4>
+        <p><span class="return">string</span> - The SQL query</p>
+    </div>
+
+    <h2>Best Practices</h2>
+    <ul>
+        <li>Always use parameter binding (via where() methods) to prevent SQL injection</li>
+        <li>Use transactions for operations that require multiple queries to succeed or fail together</li>
+        <li>For complex queries, consider breaking them into smaller parts</li>
+        <li>Use the query builder methods rather than raw SQL when possible</li>
+        <li>For reporting queries, consider using database views instead</li>
+    </ul>
+
+    <h2>Performance Tips</h2>
+    <ul>
+        <li>Use select() to specify only needed columns rather than SELECT *</li>
+        <li>Add appropriate indexes for frequently queried columns</li>
+        <li>For bulk operations, use bulk_insert() and bulk_update()</li>
+        <li>Consider using pagination() for large result sets</li>
+        <li>Close connections when done (handled automatically in destructor)</li>
+    </ul>
+</body>
+</html>
