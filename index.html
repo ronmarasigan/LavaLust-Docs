@@ -103,6 +103,8 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-8">Input and Output</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-9">Config Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-10">Encryption Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-11">Migration Class</a></li>
+					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-12">Restful API</a></li>
 					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-database"></i></span>Database Reference</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Database Configuration</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-2">Connecting to Database</a></li>
@@ -264,6 +266,9 @@ example.com/news/article/345
 							<li>Performance Class</li>
 							<li>Config Class</li>
 							<li>Simple Logger Class</li>
+							<li>Encryption Class</li>
+							<li>Restful API</li>
+							<li>Migration Class</li>
 							<li>Pagination</li>
 							<li>Simple Page Caching</li>
 							<li>File Downloading Class</li>
@@ -1299,7 +1304,277 @@ class Blog_controller extends Controller {
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->load->model('model_name');
+$this->load->database();
+								</code>
+							</pre>
+							
+						</div>
+						<h4>Model (ORM Abstraction)</h4>
+						<p>The Model class is also the base ORM abstraction for interacting with database tables. Each custom model should extend this class to inherit built-in CRUD and relational methods.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+| Property              | Type     | Description                       |
+| --------------------- | -------- | --------------------------------- |
+| `$table`              | `string` | Name of the database table        |
+| `$primary_key`        | `string` | Primary key column name           |
+| `$soft_delete_column` | `string` | Column name used for soft deletes |
+| `$has_soft_delete`    | `bool`   | Enables soft delete behavior      |
+
+								</code>
+							</pre>
+						</div>
+						<h3>Methods</h3>
+						<p><b>insert(array $data): int</b>: Inserts a new row into the table.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$user_id = $this->User_model->insert([
+    'name' => 'John Doe',
+    'email' => 'john@example.com'
+]);
+								</code>
+							</pre>
+						</div>	
+						<p><b>update(int $id, array $data): bool</b>: Updates a row by primary key.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->update(5, ['name' => 'Jane Doe']);
+								</code>
+							</pre>
+						</div>
+						<p><b>delete(int $id): bool</b>: Permanently deletes a record by ID.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->delete(3);
+								</code>
+							</pre>
+						</div>	
+						<p><b>soft_delete(int $id): bool</b>: Soft deletes a record by setting the soft delete column.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->soft_delete(4);
+								</code>
+							</pre>
+						</div>	
+						<p><b>restore(int $id): bool</b>: Restores a soft-deleted row by setting the soft delete column to NULL.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->restore(4);
+								</code>
+							</pre>
+						</div>	
+						<p><b>find(int $id, bool $with_deleted = false): array|null</b>: Finds a single row by primary key.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$user = $this->User_model->find(1);
+								</code>
+							</pre>
+						</div>	
+						<p><b>all(bool $with_deleted = false): array</b>: Returns all rows.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$users = $this->User_model->all();
+								</code>
+							</pre>
+						</div>	
+						<p><b>first(bool $with_deleted = false): array|null</b>: Returns the first row (ordered by primary key ASC).</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$user = $this->User_model->first();
+								</code>
+							</pre>
+						</div>	
+						<p><b>last(bool $with_deleted = false): array|null</b>: Returns the last row (ordered by primary key DESC).</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$user = $this->User_model->last();
+								</code>
+							</pre>
+						</div>
+						<p><b>count(bool $with_deleted = false): int</b>: Returns the total number of records.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$total = $this->User_model->count();
+								</code>
+							</pre>
+						</div>
+						<p><b>exists(array $conditions, bool $with_deleted = false): bool</b>: Checks if a row exists with given conditions.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$exists = $this->User_model->exists(['email' => 'john@example.com']);
+								</code>
+							</pre>
+						</div>
+						<p><b>paginate(int $per_page, int $page, array $conditions = [], bool $with_deleted = false): array</b>: Paginates results.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$page = $this->User_model->paginate(10, 1);
+								</code>
+							</pre>
+						</div>
+						<p><b>truncate(): bool</b>: Deletes all rows in the table.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->truncate();
+								</code>
+							</pre>
+						</div>
+						<p><b>order_by(string $column, string $order = 'ASC', bool $with_deleted = false)</b>: array
+Orders query results.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$users = $this->User_model->order_by('name', 'DESC');
+								</code>
+							</pre>
+						</div>
+						<p><b>limit(int $number, bool $with_deleted = false): array</b>: Limits the number of results returned.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$users = $this->User_model->limit(5);
+								</code>
+							</pre>
+						</div>
+						<p><b>bulk_insert(array $data): bool</b>: Inserts multiple rows at once.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->bulk_insert([
+    ['name' => 'Alice'],
+    ['name' => 'Bob']
+]);
+								</code>
+							</pre>
+						</div>
+						<p><b>bulk_update(array $data, string $key = 'id'): bool</b>: Updates multiple rows at once.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->bulk_update([
+    ['id' => 1, 'name' => 'Updated A'],
+    ['id' => 2, 'name' => 'Updated B']
+]);
+								</code>
+							</pre>
+						</div>
+						<p><b>get_columns(): array</b>: Returns an array of the table's columns.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$columns = $this->User_model->get_columns();
+								</code>
+							</pre>
+						</div>
+						<p><b>where(array $conditions, bool $with_deleted = false)</b>: Adds a WHERE clause.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->where(['role' => 'admin'])->get_all();
+								</code>
+							</pre>
+						</div>
+						<p><b>group_by(string $column):</b> Groups results by a column.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->group_by('role')->get_all();
+								</code>
+							</pre>
+						</div>
+						<p><b>having(string $column, string $operator, mixed $value)</b>: Adds a HAVING clause after group_by.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->group_by('role')->having('COUNT(id)', '>', 2)->get_all();
+								</code>
+							</pre>
+						</div>
+						<p><b>raw(string $sql, array $params = []): PDOStatement</b>: Runs a raw SQL query.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$results = $this->User_model->raw('SELECT * FROM users WHERE status = ?', ['active'])->fetchAll();
+								</code>
+							</pre>
+						</div>
+						<p><b>has_many(string $related_model, string $foreign_key, mixed $current_id): array</b>: Gets many related rows from another model.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$posts = $this->User_model->has_many('Post_model', 'user_id', 1);
+								</code>
+							</pre>
+						</div>
+						<p><b>has_one(string $related_model, string $foreign_key, mixed $current_id): array|null</b>: Gets one related row from another model.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$profile = $this->User_model->has_one('Profile_model', 'user_id', 1);
+								</code>
+							</pre>
+						</div>
+						<p><b>many_to_many(string $related_model, string $pivot_table, string $current_key, string $related_key, mixed $current_id): array</b>: Gets many related rows via a pivot table.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$roles = $this->User_model->many_to_many('Role_model', 'user_roles', 'user_id', 'role_id', 1);
+								</code>
+							</pre>
+						</div>
+						<p><b>belongs_to(string $related_model, string $foreign_key, mixed $foreign_key_value): array|null</b>: Gets the related model by a foreign key.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$dept = $this->User_model->belongs_to('Department_model', 'id', 3);
+								</code>
+							</pre>
+						</div>
+						<p><b>scope(callable $callback): $this</b>: Applies a custom scoped query.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->scope(function($db) {
+    $db->where('status', 'active');
+})->get_all();
+								</code>
+							</pre>
+						</div>
+						<p><b>transaction(): void</b>: Begins a transaction.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->transaction();
+								</code>
+							</pre>
+						</div>
+						<p><b>commit(): void</b>: Commits a transaction.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->commit();
+								</code>
+							</pre>
+						</div>
+						<p><b>rollback(): void</b>: Rolls back a transaction.
+Rolls back a transaction.</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->User_model->rollback();
 								</code>
 							</pre>
 						</div>
@@ -3097,6 +3372,102 @@ echo $this->encryption->decrypt($ciphertext);
 								</code>
 							</pre>
 						</div>
+					</section><!--//section-->
+					<section class="docs-section" id="item-5-11">
+						<h2 class="section-heading">Migration Class</h2>
+						<p>Migration class is a way to manage changes to your database schema over time. It's a structured way to track and apply changes like creating tables, adding columns, or modifying indexes. These changes are defined in code and then executed against the database, allowing for a controlled and reproducible way to evolve the database schema.</p>
+						<h4>Enable and Create Migration</h4>
+						<p>Like most other classes in LavaLust, the Encryption library is initialized in your controller using the <span class="code_red">$this->call->library()</span> method:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->call->library('migration');
+								</code>
+							</pre>
+						</div>
+						<p>Once loaded, the Migration library object will be available using:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$this->migration;
+								</code>
+							</pre>
+						</div>
+						<p>Create a controller and put these methods inside. Example Migrations.php</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Migration extends Controller {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->call->library('migration'); //this call the migration library
+    }
+
+    public function create_migratation($migration_class) { //eg. of migration_class value "create_user_table"
+        $this->migration->create_migratation($migration_class);
+    }
+    public function migrate() {
+        $this->migration->migrate();
+    }
+    public function rollback() {
+        $this->migration->rollback();
+    }
+}
+								</code>
+							</pre>
+						</div>
+						<p>To run the following methods you need to add these to routes. Example:</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+$router->get('create-migration/{migration_class}', 'Migration::create_migration');
+$router->get('migrate', 'Migration::migrate');
+$router->get('rollback', 'Migration::rollback');
+								</code>
+							</pre>
+						</div>
+						<p>In your browser, type localhost/project_name/create_migration/create_users_table then hit enter. This will create a migration file inside app/migrations. Example: 001_create_users_table.php. Open the file and update based on your needs.
+						</p>
+						<div class="docs-code-block">
+							<pre>
+								<code class="language-php">
+class Create_users_table {
+    
+    private $_lava;
+    protected $dbforge;
+
+    public function __construct()
+    {
+        $this->_lava =& lava_instance();
+        $this->_lava->call->dbforge();
+    }
+
+    public function up()
+    {
+        // Define the table structure here
+        $this->_lava->dbforge->add_field(array(
+            'id' => array(
+            'type'           => 'INT',
+            'constraint'     => 11,
+            'auto_increment' => TRUE,
+            )
+        ));
+        $this->_lava->dbforge->add_key('id', TRUE);
+        $this->_lava->dbforge->create_table('your_table_name');//change this to your table column name
+    }
+
+    public function down()
+    {
+        // Drop the table
+        $this->_lava->dbforge->drop_table('your_table_name');//change this to your table column name
+    }
+}
+								</code>
+							</pre>
+						</div>
+						<p>To run the migration, in you browser type localhost/project_name/migrate then hit enter. All migration files will be executed. To rollback, just use localhost/project_name/rollback.</p>
 					</section><!--//section-->
 				</article>
 				<article class="docs-article" id="section-6">
