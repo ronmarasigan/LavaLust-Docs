@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction to PHP</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #eef6fc;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>👋 Introduction to PHP</h1>
+
+  <h2>📘 What Is PHP?</h2>
+  <p><strong>PHP</strong> stands for <em>Hypertext Preprocessor</em>. It is a widely-used, open-source server-side scripting language designed for web development. PHP can be embedded directly into HTML and is executed on the server to generate dynamic content.</p>
+
+  <h2>⚙️ How PHP Works</h2>
+  <ol>
+    <li>The user requests a page via a browser.</li>
+    <li>The web server (e.g., Apache or Nginx) receives the request.</li>
+    <li>The server passes the request to the PHP interpreter.</li>
+    <li>PHP executes the script, optionally interacts with a database, and returns HTML to the browser.</li>
+  </ol>
+
+  <h2>👨‍💻 Your First PHP Script</h2>
+  <p>Let’s write a simple “Hello, World!” program in PHP:</p>
+  <pre><code>&lt;?php
+echo "Hello, World!";
+?&gt;</code></pre>
+  <p>This script uses <code>echo</code> to output text. The <code>&lt;?php</code> and <code>?&gt;</code> tags tell the server to interpret the enclosed code as PHP.</p>
+
+  <h2>📦 What Can PHP Do?</h2>
+  <ul>
+    <li>Generate dynamic page content</li>
+    <li>Collect form data</li>
+    <li>Send and receive cookies</li>
+    <li>Interact with databases (e.g., MySQL)</li>
+    <li>Manage sessions</li>
+    <li>Build entire web applications (CMS, e-commerce, etc.)</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>intro.php</code> and write a script that displays your name and the current date using <code>echo</code> and <code>date()</code>.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.phptutorial.net/" target="_blank">PHP Tutorial – phptutorial.net</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-introduction/" target="_blank">PHP Introduction – GeeksforGeeks</a></li>
+    <li><a href="https://www.php.net/manual/en/introduction.php" target="_blank">PHP Manual – Introduction</a></li>
+  </ul>
+
+</body>
+</html>
