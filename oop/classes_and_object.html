@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Classes and Objects Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #f0f7ff;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2980b9;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📘 PHP Classes and Objects Lecture</h1>
+
+  <h2>🔍 What Are Classes and Objects?</h2>
+  <p>In PHP, a <strong>class</strong> is a blueprint for creating objects. It defines properties (variables) and methods (functions) that describe the behavior and state of the object.</p>
+  <p>An <strong>object</strong> is an instance of a class. It holds actual data and can perform actions defined by the class.</p>
+
+  <h2>🧱 Defining a Class</h2>
+  <p>Use the <code>class</code> keyword followed by the class name and curly braces:</p>
+  <pre><code>class Car {
+  public $brand;
+  public $model;
+
+  public function setBrand($brand) {
+    $this->brand = $brand;
+  }
+
+  public function getBrand() {
+    return $this->brand;
+  }
+}</code></pre>
+
+  <h2>🚗 Creating Objects</h2>
+  <p>Use the <code>new</code> keyword to create an object from a class:</p>
+  <pre><code>$myCar = new Car();
+$myCar->setBrand("Toyota");
+echo $myCar->getBrand();</code></pre>
+
+  <h2>⚙️ Constructor Method</h2>
+  <p>The <code>__construct()</code> method automatically runs when an object is created:</p>
+  <pre><code>class Car {
+  public $brand;
+  public $model;
+
+  public function __construct($brand, $model) {
+    $this->brand = $brand;
+    $this->model = $model;
+  }
+
+  public function displayInfo() {
+    echo "Car: $this->brand $this->model";
+  }
+}
+
+$car = new Car("Toyota", "Corolla");
+$car->displayInfo();</code></pre>
+
+  <h2>🔑 The <code>$this</code> Keyword</h2>
+  <p><code>$this</code> refers to the current object and is used to access its properties and methods:</p>
+  <pre><code>public function setModel($model) {
+  $this->model = $model;
+}</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a class called <code>Student</code> with properties <code>name</code> and <code>grade</code>. Add a constructor and a method to display the student's info. Then create two objects with different data.</p>
+  </div>
+
+  <h2>📚 Summary</h2>
+  <ul>
+    <li><strong>Class</strong>: Blueprint for objects.</li>
+    <li><strong>Object</strong>: Instance of a class.</li>
+    <li><strong>Constructor</strong>: Initializes object properties.</li>
+    <li><strong>$this</strong>: Refers to the current object.</li>
+  </ul>
+
+</body>
+</html>
