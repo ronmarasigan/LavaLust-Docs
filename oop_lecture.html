@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Object-Oriented Programming Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #f0f7ff;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2980b9;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📘 PHP Object-Oriented Programming (OOP) Lecture</h1>
+
+  <h2>🔍 What is OOP?</h2>
+  <p>Object-Oriented Programming (OOP) is a programming paradigm that organizes code into objects — reusable components that encapsulate data and behavior. PHP supports OOP starting from version 5 and is widely used in modern web development.</p>
+
+  <h2>🏗️ Core Principles of OOP in PHP</h2>
+
+  <h3>1. Encapsulation</h3>
+  <p>Encapsulation is the concept of hiding internal object details and exposing only necessary parts through public methods.</p>
+  <pre><code>class User {
+  private $name;
+
+  public function setName($name) {
+    $this->name = $name;
+  }
+
+  public function getName() {
+    return $this->name;
+  }
+}
+
+$user = new User();
+$user->setName("Ron");
+echo $user->getName();</code></pre>
+
+  <h3>2. Inheritance</h3>
+  <p>Inheritance allows a class to inherit properties and methods from another class.</p>
+  <pre><code>class Animal {
+  public function makeSound() {
+    echo "Some sound";
+  }
+}
+
+class Dog extends Animal {
+  public function makeSound() {
+    echo "Bark";
+  }
+}
+
+$dog = new Dog();
+$dog->makeSound();</code></pre>
+
+  <h3>3. Polymorphism</h3>
+  <p>Polymorphism lets different classes define methods with the same name but different behaviors.</p>
+  <pre><code>class Bird {
+  public function move() {
+    echo "Fly";
+  }
+}
+
+class Fish {
+  public function move() {
+    echo "Swim";
+  }
+}
+
+function moveAnimal($animal) {
+  $animal->move();
+}
+
+moveAnimal(new Bird()); // Fly
+moveAnimal(new Fish()); // Swim</code></pre>
+
+  <h3>4. Abstraction</h3>
+  <p>Abstraction allows you to define abstract classes or interfaces that specify methods without implementing them.</p>
+  <pre><code>abstract class Shape {
+  abstract public function area();
+}
+
+class Circle extends Shape {
+  private $radius;
+
+  public function __construct($radius) {
+    $this->radius = $radius;
+  }
+
+  public function area() {
+    return pi() * $this->radius * $this->radius;
+  }
+}
+
+$circle = new Circle(5);
+echo $circle->area();</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a class called <code>Car</code> with properties <code>brand</code> and <code>speed</code>. Add methods to accelerate and display the current speed. Then create a subclass <code>ElectricCar</code> that overrides the accelerate method to increase speed faster.</p>
+  </div>
+
+  <h2>📚 Summary</h2>
+  <ul>
+    <li><strong>Encapsulation</strong>: Hide internal data, expose public methods.</li>
+    <li><strong>Inheritance</strong>: Reuse code from parent classes.</li>
+    <li><strong>Polymorphism</strong>: Same method name, different behavior.</li>
+    <li><strong>Abstraction</strong>: Define structure without implementation.</li>
+  </ul>
+
+</body>
+</html>
