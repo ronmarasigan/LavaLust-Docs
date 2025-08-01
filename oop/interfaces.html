@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Interfaces Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #2980b9;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #2980b9;
+      padding-left: 15px;
+      background-color: #eaf2fb;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2471a3;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔗 PHP Interfaces Lecture</h1>
+
+  <h2>📘 What Is an Interface?</h2>
+  <p>An <strong>interface</strong> defines a contract that classes must follow. It specifies method signatures without implementing them. Interfaces promote flexibility and polymorphism in object-oriented design.</p>
+
+  <h2>🛠 Syntax</h2>
+  <pre><code>interface Logger {
+    public function log(string $message);
+}</code></pre>
+
+  <h2>🧱 Implementing an Interface</h2>
+  <pre><code>class FileLogger implements Logger {
+    public function log(string $message) {
+        echo "Logging to file: $message";
+    }
+}
+
+$logger = new FileLogger();
+$logger->log("System started.");</code></pre>
+
+  <h2>📋 Rules</h2>
+  <ul>
+    <li>All methods in an interface must be <strong>public</strong>.</li>
+    <li>Interfaces cannot contain method bodies.</li>
+    <li>Classes must implement <strong>all methods</strong> declared in the interface.</li>
+    <li>Interfaces can contain <strong>constants</strong>.</li>
+    <li>Interfaces can be <strong>extended</strong> by other interfaces.</li>
+  </ul>
+
+  <h2>🔀 Multiple Interfaces</h2>
+  <pre><code>interface Printable {
+    public function print();
+}
+
+interface Scannable {
+    public function scan();
+}
+
+class MultiFunctionPrinter implements Printable, Scannable {
+    public function print() {
+        echo "Printing document...";
+    }
+
+    public function scan() {
+        echo "Scanning document...";
+    }
+}</code></pre>
+
+  <h2>🧬 Interface Inheritance</h2>
+  <pre><code>interface Readable {
+    public function read();
+}
+
+interface Document extends Readable {
+    public function getContents();
+}</code></pre>
+
+  <h2>📦 Interface Constants</h2>
+  <pre><code>interface Status {
+    const SUCCESS = 1;
+    const FAILURE = 0;
+}
+
+echo Status::SUCCESS; // Output: 1</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create an interface <code>Shape</code> with a method <code>area()</code>. Implement it in <code>Circle</code> and <code>Rectangle</code> classes. Use the interface to calculate and display areas polymorphically.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/PhP/php_oop_interfaces.asp" target="_blank">W3Schools: PHP OOP Interfaces</a></li>
+    <li><a href="https://www.php.net/manual/en/language.oop5.interfaces.php" target="_blank">PHP Manual: Object Interfaces</a></li>
+    <li><a href="https://www.phptutorial.net/php-oop/php-interface/" target="_blank">PHP Tutorial: Interface Guide</a></li>
+  </ul>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Namespaces Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #7f8c8d;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #7f8c8d;
+      padding-left: 15px;
+      background-color: #ecf0f1;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #34495e;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📦 PHP Namespaces Lecture</h1>
+
+  <h2>📘 What Is a Namespace?</h2>
+  <p>A <strong>namespace</strong> is a way to group related classes, functions, and constants to avoid name collisions and improve code organization. Introduced in PHP 5.3, namespaces are similar to directories in a file system.</p>
+
+  <h2>🛠 Declaring a Namespace</h2>
+  <pre><code>&lt;?php
+namespace Html;
+
+class Table {
+    public $title = "";
+    public $numRows = 0;
+
+    public function message() {
+        echo "&lt;p&gt;Table '{$this->title}' has {$this->numRows} rows.&lt;/p&gt;";
+    }
+}
+?&gt;</code></pre>
+
+  <h2>📥 Using Namespaced Classes</h2>
+  <pre><code>&lt;?php
+require 'Html/Table.php';
+
+$table = new Html\Table();
+$table->title = "My Table";
+$table->numRows = 5;
+$table->message();
+?&gt;</code></pre>
+
+  <h2>🔗 Using the <code>use</code> Keyword</h2>
+  <pre><code>&lt;?php
+use Html\Table;
+
+$table = new Table();
+$table->title = "Aliased Table";
+$table->numRows = 3;
+$table->message();
+?&gt;</code></pre>
+
+  <h2>🧭 Nested Namespaces</h2>
+  <pre><code>&lt;?php
+namespace App\Models;
+
+class User {
+    public function greet() {
+        echo "Hello from User";
+    }
+}
+?&gt;</code></pre>
+
+  <h2>📋 Key Points</h2>
+  <ul>
+    <li>Declare namespaces at the top of the file.</li>
+    <li>Use fully qualified names or <code>use</code> keyword to access namespaced elements.</li>
+    <li>Namespaces can contain classes, interfaces, functions, and constants.</li>
+    <li>Use aliases to simplify long namespace paths.</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a namespace <code>Library\Books</code> with a class <code>Author</code>. Add a method <code>getName()</code>. Then use the class in another file with an alias <code>use Library\Books\Author as Writer</code>.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_namespaces.asp" target="_blank">W3Schools: PHP Namespaces</a></li>
+    <li><a href="https://www.php.net/manual/en/language.namespaces.php" target="_blank">PHP Manual: Namespaces</a></li>
+    <li><a href="https://www.phptutorial.net/php-oop/php-namespace/" target="_blank">PHP Tutorial: Namespace Guide</a></li>
+  </ul>
+
+</body>
+</html>

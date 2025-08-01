@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Static Methods and Properties Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #1abc9c;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #1abc9c;
+      padding-left: 15px;
+      background-color: #e8f8f5;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #16a085;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⚙️ PHP Static Methods and Properties Lecture</h1>
+
+  <h2>📘 What Are Static Methods and Properties?</h2>
+  <p><strong>Static methods and properties</strong> belong to the class itself, not to any object instance. They can be accessed without creating an object.</p>
+
+  <h2>🛠 Syntax</h2>
+  <pre><code>class Math {
+    public static $pi = 3.14159;
+
+    public static function square($n) {
+        return $n * $n;
+    }
+}</code></pre>
+
+  <h2>📦 Accessing Static Members</h2>
+  <pre><code>echo Math::$pi;               // Output: 3.14159
+echo Math::square(5);         // Output: 25</code></pre>
+
+  <h2>🔁 Accessing Inside the Class</h2>
+  <pre><code>class Counter {
+    public static $count = 0;
+
+    public static function increment() {
+        self::$count++;
+    }
+
+    public static function getCount() {
+        return self::$count;
+    }
+}
+
+Counter::increment();
+echo Counter::getCount();     // Output: 1</code></pre>
+
+  <h2>🧬 Inheritance and Static Members</h2>
+  <pre><code>class Base {
+    public static $message = "Hello from Base";
+}
+
+class Derived extends Base {}
+
+echo Derived::$message;       // Output: Hello from Base</code></pre>
+
+  <h2>📋 Key Points</h2>
+  <ul>
+    <li>Use <code>static</code> keyword to declare static members.</li>
+    <li>Use <code>self::</code> to access static members inside the class.</li>
+    <li>Use <code>ClassName::</code> to access them outside.</li>
+    <li><code>$this</code> is not available in static methods.</li>
+    <li>Static members are shared across all instances.</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a class <code>Temperature</code> with a static property <code>$unit</code> set to <code>"Celsius"</code>. Add a static method <code>convertToFahrenheit($c)</code> that converts Celsius to Fahrenheit. Access both statically.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.phptutorial.net/php-oop/php-static-methods/" target="_blank">PHP Tutorial: Static Methods and Properties</a></li>
+    <li><a href="https://www.w3schools.com/php/php_oop_static_properties.asp" target="_blank">W3Schools: Static Properties</a></li>
+    <li><a href="https://www.php.net/manual/en/language.oop5.static.php" target="_blank">PHP Manual: Static Keyword</a></li>
+  </ul>
+
+</body>
+</html>
