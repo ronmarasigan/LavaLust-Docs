@@ -44,13 +44,24 @@
     pre {
       background-color: #f5f5f5;
       color: #333;
-      padding: 15px;
+      padding: 15px 20px;
       border-radius: 5px;
       overflow-x: auto;
       font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
       line-height: 1.5;
       margin: 20px 0;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
     }
     .note {
       background-color: #fffde7;
@@ -72,16 +83,16 @@
   <h2>🧱 Defining a Class</h2>
   <p>Use the <code>class</code> keyword followed by the class name and curly braces:</p>
   <pre><code>class Car {
-  public $brand;
-  public $model;
+    public $brand;
+    public $model;
 
-  public function setBrand($brand) {
-    $this->brand = $brand;
-  }
+    public function setBrand($brand) {
+        $this->brand = $brand;
+    }
 
-  public function getBrand() {
-    return $this->brand;
-  }
+    public function getBrand() {
+        return $this->brand;
+    }
 }</code></pre>
 
   <h2>🚗 Creating Objects</h2>
@@ -93,17 +104,17 @@ echo $myCar->getBrand();</code></pre>
   <h2>⚙️ Constructor Method</h2>
   <p>The <code>__construct()</code> method automatically runs when an object is created:</p>
   <pre><code>class Car {
-  public $brand;
-  public $model;
+    public $brand;
+    public $model;
 
-  public function __construct($brand, $model) {
-    $this->brand = $brand;
-    $this->model = $model;
-  }
+    public function __construct($brand, $model) {
+        $this->brand = $brand;
+        $this->model = $model;
+    }
 
-  public function displayInfo() {
-    echo "Car: $this->brand $this->model";
-  }
+    public function displayInfo() {
+        echo "Car: $this->brand $this->model";
+    }
 }
 
 $car = new Car("Toyota", "Corolla");
@@ -112,7 +123,7 @@ $car->displayInfo();</code></pre>
   <h2>🔑 The <code>$this</code> Keyword</h2>
   <p><code>$this</code> refers to the current object and is used to access its properties and methods:</p>
   <pre><code>public function setModel($model) {
-  $this->model = $model;
+    $this->model = $model;
 }</code></pre>
 
   <h2>🧪 Practice Activity</h2>
