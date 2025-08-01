@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Inheritance Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #27ae60;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #27ae60;
+      padding-left: 15px;
+      background-color: #eafaf1;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #16a085;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧬 PHP Inheritance Lecture</h1>
+
+  <h2>📘 What Is Inheritance?</h2>
+  <p>Inheritance allows a class (child/subclass) to acquire properties and methods from another class (parent/superclass). It promotes code reuse and logical hierarchy.</p>
+
+  <h2>🔧 Syntax</h2>
+  <pre><code>class ParentClass {
+    public function greet() {
+        echo "Hello from Parent";
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function welcome() {
+        echo "Welcome from Child";
+    }
+}</code></pre>
+
+  <h2>🟢 Single Inheritance</h2>
+  <p>One class inherits from one parent class.</p>
+  <pre><code>class Animal {
+    public function eat() {
+        echo "Eating...";
+    }
+}
+
+class Dog extends Animal {
+    public function bark() {
+        echo "Barking...";
+    }
+}
+
+$dog = new Dog();
+$dog->eat();   // Inherited
+$dog->bark();  // Own method</code></pre>
+
+  <h2>🟡 Multilevel Inheritance</h2>
+  <p>A class inherits from a class that itself inherits from another class.</p>
+  <pre><code>class A {
+    public function greet() {
+        echo "Hello from A";
+    }
+}
+
+class B extends A {
+    public function welcome() {
+        echo "Welcome from B";
+    }
+}
+
+class C extends B {
+    public function message() {
+        echo "Message from C";
+    }
+}
+
+$obj = new C();
+$obj->greet();    // From A
+$obj->welcome();  // From B
+$obj->message();  // From C</code></pre>
+
+  <h2>🧭 Hierarchical Inheritance</h2>
+  <p>Multiple classes inherit from the same parent class.</p>
+  <pre><code>class Vehicle {
+    public function start() {
+        echo "Starting vehicle...";
+    }
+}
+
+class Car extends Vehicle {
+    public function drive() {
+        echo "Driving car...";
+    }
+}
+
+class Bike extends Vehicle {
+    public function ride() {
+        echo "Riding bike...";
+    }
+}
+
+$car = new Car();
+$car->start();  // Inherited
+$car->drive();  // Own method
+
+$bike = new Bike();
+$bike->start(); // Inherited
+$bike->ride();  // Own method</code></pre>
+
+  <h2>⚠️ Notes on Visibility</h2>
+  <ul>
+    <li><strong>Public</strong>: Inherited and accessible everywhere.</li>
+    <li><strong>Protected</strong>: Inherited and accessible in child classes.</li>
+    <li><strong>Private</strong>: Not inherited or accessible in child classes.</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a base class <code>Employee</code> with properties like <code>$name</code> and <code>$salary</code>. Extend it with <code>Manager</code> and <code>Developer</code> classes, each with their own method like <code>assignTask()</code> or <code>writeCode()</code>. Demonstrate inheritance and method overriding.</p>
+  </div>
+
+</body>
+</html>
