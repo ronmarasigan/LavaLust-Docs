@@ -41,67 +41,12 @@
       font-family: 'Consolas', 'Monaco', monospace;
       font-size: 0.95em;
     }
-    pre {
-      background-color: #2d2d2d;
-      color: #f8f8f2;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-      font-family: 'Consolas', 'Monaco', monospace;
-      line-height: 1.5;
-      margin: 20px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .function {
-      background-color: white;
-      padding: 20px;
-      border-radius: 5px;
-      margin-bottom: 30px;
-      border-left: 5px solid #3498db;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .param {
-      font-weight: bold;
-      color: #2980b9;
-      font-family: monospace;
-    }
-    .return {
-      font-weight: bold;
-      color: #27ae60;
-    }
     .note {
       background-color: #fffde7;
       padding: 15px;
       border-left: 4px solid #ffd600;
       margin: 20px 0;
       border-radius: 4px;
-    }
-    .warning {
-      background-color: #ffebee;
-      padding: 15px;
-      border-left: 4px solid #f44336;
-      margin: 20px 0;
-      border-radius: 4px;
-    }
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-    .info-table th, .info-table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-    .info-table th {
-      background-color: #3498db;
-      color: white;
-    }
-    .info-table tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    .info-table tr:hover {
-      background-color: #e9e9e9;
     }
   </style>
 </head>
@@ -120,63 +65,66 @@
   </ul>
 
   <h3>macOS / Linux</h3>
-  <ul>
-    <li>Open Terminal and run:</li>
-  </ul>
-  <pre><code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"</code></pre>
-  <ul>
-    <li>To install globally:</li>
-  </ul>
-  <pre><code>sudo mv composer.phar /usr/local/bin/composer</code></pre>
-  <ul>
-    <li>Verify installation:</li>
-  </ul>
-  <pre><code>composer</code></pre>
+  <div class="note">
+    <p>Open Terminal and run:</p>
+    <p><code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"</code></p>
+    <p><code>php composer-setup.php</code></p>
+    <p><code>php -r "unlink('composer-setup.php');"</code></p>
+    <p>To install globally:</p>
+    <p><code>sudo mv composer.phar /usr/local/bin/composer</code></p>
+    <p>Verify installation:</p>
+    <p><code>composer</code></p>
+  </div>
 
   <h2>🚀 Basic Composer Usage</h2>
 
   <h3>Step 1: Create <code>composer.json</code></h3>
-  <pre><code>{
-  "require": {
-    "monolog/monolog": "2.0.*"
-  }
-}</code></pre>
+  <div class="note">
+    <code>
+    {<br>
+      "require": {<br>
+        "monolog/monolog": "2.0.*"<br>
+      }<br>
+    }
+    </code>
+  </div>
 
   <h3>Step 2: Install Dependencies</h3>
-  <pre><code>composer install</code></pre>
+  <p>Run this in your project folder:</p>
+  <p><code>composer install</code></p>
 
   <h3>Step 3: Update Dependencies</h3>
-  <pre><code>composer update</code></pre>
+  <p><code>composer update</code></p>
 
   <h3>Step 4: Autoload Packages</h3>
-  <pre><code>require_once 'vendor/autoload.php';</code></pre>
+  <p>Include this in your PHP file:</p>
+  <p><code>require_once 'vendor/autoload.php';</code></p>
 
   <h2>🧪 Sample Project: Logging with Monolog</h2>
 
   <h3>1. Initialize Project</h3>
-  <pre><code>composer init</code></pre>
+  <p><code>composer init</code></p>
 
   <h3>2. Add Monolog</h3>
-  <pre><code>composer require monolog/monolog</code></pre>
+  <p><code>composer require monolog/monolog</code></p>
 
   <h3>3. Create <code>index.php</code></h3>
-  <pre><code>&lt;?php
-require_once 'vendor/autoload.php';
-
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
-$log = new Logger('student_log');
-$log->pushHandler(new StreamHandler('app.log', Logger::WARNING));
-
-$log->warning('This is a warning');
-$log->error('This is an error');
-?&gt;</code></pre>
+  <div class="note">
+    <code>
+    &lt;?php<br>
+    require_once 'vendor/autoload.php';<br><br>
+    use Monolog\Logger;<br>
+    use Monolog\Handler\StreamHandler;<br><br>
+    $log = new Logger('student_log');<br>
+    $log->pushHandler(new StreamHandler('app.log', Logger::WARNING));<br><br>
+    $log->warning('This is a warning');<br>
+    $log->error('This is an error');<br>
+    ?&gt;
+    </code>
+  </div>
 
   <h3>4. Run the File</h3>
-  <pre><code>php index.php</code></pre>
+  <p><code>php index.php</code></p>
 
   <h3>5. Check <code>app.log</code> for Output</h3>
   <p>Open the <code>app.log</code> file in your project folder to see the logged messages.</p>
