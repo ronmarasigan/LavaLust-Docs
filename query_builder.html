@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LavaLust Framework - Database Class Documentation</title>
+    <title>Database Class Documentation</title>
     <style>
         :root {
             --primary: #3498db;
@@ -241,7 +241,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>LavaLust Framework - Database Class</h1>
+            <p><a href="index.html">&lt;&lt;back</a></p>
+            <h1>Database Class</h1>
             <p class="subtitle">Comprehensive Documentation for Database Operations</p>
         </header>
         
@@ -372,10 +373,10 @@
                     
                     <h4>Example</h4>
                     <pre>// Default connection
-$db = new Database();
+$this->call->database();
 
 // Specific database configuration
-$db = new Database('secondary_db');</pre>
+$this->call->atabase('secondary_db');</pre>
                 </div>
                 
                 <div class="method">
@@ -437,7 +438,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">$this</span> - For method chaining</p>
                     
                     <h4>Example</h4>
-                    <pre>$db->table('users')->get_all();</pre>
+                    <pre>$this->db->table('users')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -466,7 +467,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">integer</span> - Last inserted ID</p>
                     
                     <h4>Example</h4>
-                    <pre>$id = $db->table('users')->insert([
+                    <pre>$id = $this->db->table('users')->insert([
     'name' => 'John Doe',
     'email' => 'john@example.com'
 ]);</pre>
@@ -498,7 +499,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">integer</span> - Number of affected rows</p>
                     
                     <h4>Example</h4>
-                    <pre>$affected = $db->table('users')
+                    <pre>$affected = $this->db->table('users')
     ->where('id', 1)
     ->update(['name' => 'Jane Doe']);</pre>
                 </div>
@@ -511,7 +512,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">integer</span> - Number of affected rows</p>
                     
                     <h4>Example</h4>
-                    <pre>$deleted = $db->table('users')
+                    <pre>$deleted = $this->db->table('users')
     ->where('id', 1)
     ->delete();</pre>
                 </div>
@@ -544,7 +545,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">array</span> - Single row result</p>
                     
                     <h4>Example</h4>
-                    <pre>$user = $db->table('users')->where('id', 1)->get();</pre>
+                    <pre>$user = $this->db->table('users')->where('id', 1)->get();</pre>
                 </div>
                 
                 <div class="method">
@@ -575,7 +576,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">array</span> - All matching rows</p>
                     
                     <h4>Example</h4>
-                    <pre>$users = $db->table('users')->get_all();</pre>
+                    <pre>$users = $this->db->table('users')->get_all();</pre>
                 </div>
             </section>
             
@@ -608,7 +609,7 @@ $db = new Database('secondary_db');</pre>
                     <p><span class="return">$this</span> - For method chaining</p>
                     
                     <h4>Example</h4>
-                    <pre>$db->table('users')->select('id, name, email')->get_all();</pre>
+                    <pre>$this->db->table('users')->select('id, name, email')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -656,16 +657,16 @@ $db = new Database('secondary_db');</pre>
                     
                     <h4>Examples</h4>
                     <pre>// Simple where
-$db->where('age', '>', 18)->get_all();
+$this->db->where('age', '>', 18)->get_all();
 
 // Multiple conditions
-$db->where([
+$this->db->where([
     'status' => 'active',
     'age >' => 21
 ])->get_all();
 
 // OR condition
-$db->or_where('name', 'LIKE', '%john%')->get_all();</pre>
+$this->db->or_where('name', 'LIKE', '%john%')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -700,13 +701,13 @@ $db->or_where('name', 'LIKE', '%john%')->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// Standard LIKE
-$db->like('name', '%john%')->get_all();
+$this->db->like('name', '%john%')->get_all();
 
 // OR LIKE
-$db->or_like('email', '%gmail%')->get_all();
+$this->db->or_like('email', '%gmail%')->get_all();
 
 // NOT LIKE
-$db->not_like('status', 'inactive')->get_all();</pre>
+$this->db->not_like('status', 'inactive')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -741,13 +742,13 @@ $db->not_like('status', 'inactive')->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// IN condition
-$db->in('id', [1, 2, 3])->get_all();
+$this->db->in('id', [1, 2, 3])->get_all();
 
 // NOT IN
-$db->not_in('status', ['deleted', 'banned'])->get_all();
+$this->db->not_in('status', ['deleted', 'banned'])->get_all();
 
 // OR IN
-$db->or_in('category_id', [5, 6])->get_all();</pre>
+$this->db->or_in('category_id', [5, 6])->get_all();</pre>
                 </div>
             </section>
             
@@ -791,7 +792,7 @@ $db->or_in('category_id', [5, 6])->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->table('users')
+                    <pre>$this->db->table('users')
     ->join('profiles', 'profiles.user_id = users.id')
     ->get_all();</pre>
                 </div>
@@ -802,16 +803,16 @@ $db->or_in('category_id', [5, 6])->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// INNER JOIN
-$db->inner_join('orders', 'orders.user_id = users.id');
+$this->db->inner_join('orders', 'orders.user_id = users.id');
 
 // LEFT JOIN
-$db->left_join('comments', 'comments.post_id = posts.id');
+$this->db->left_join('comments', 'comments.post_id = posts.id');
 
 // RIGHT JOIN
-$db->right_join('departments', 'departments.id = employees.dept_id');
+$this->db->right_join('departments', 'departments.id = employees.dept_id');
 
 // FULL OUTER JOIN
-$db->full_outer_join('archives', 'archives.item_id = items.id');</pre>
+$this->db->full_outer_join('archives', 'archives.item_id = items.id');</pre>
                 </div>
             </section>
             
@@ -850,13 +851,13 @@ $db->full_outer_join('archives', 'archives.item_id = items.id');</pre>
                     
                     <h4>Examples</h4>
                     <pre>// Maximum value
-$db->select_max('age', 'max_age')->get();
+$this->db->select_max('age', 'max_age')->get();
 
 // Row count
-$db->select_count('id', 'total_users')->get();
+$this->db->select_count('id', 'total_users')->get();
 
 // Average value
-$db->select_avg('salary', 'average_salary')->get();</pre>
+$this->db->select_avg('salary', 'average_salary')->get();</pre>
                 </div>
                 
                 <div class="method">
@@ -867,7 +868,7 @@ $db->select_avg('salary', 'average_salary')->get();</pre>
                     <p><span class="return">integer</span> - Number of rows</p>
                     
                     <h4>Example</h4>
-                    <pre>$user_count = $db->table('users')->count();</pre>
+                    <pre>$user_count = $this->db->table('users')->count();</pre>
                 </div>
             </section>
             
@@ -898,10 +899,10 @@ $db->select_avg('salary', 'average_salary')->get();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// IS NULL
-$db->where_null('deleted_at')->get_all();
+$this->db->where_null('deleted_at')->get_all();
 
 // IS NOT NULL
-$db->where_not_null('email_verified_at')->get_all();</pre>
+$this->db->where_not_null('email_verified_at')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -942,13 +943,13 @@ $db->where_not_null('email_verified_at')->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// BETWEEN
-$db->between('age', 18, 30)->get_all();
+$this->db->between('age', 18, 30)->get_all();
 
 // NOT BETWEEN
-$db->not_between('salary', 30000, 50000)->get_all();
+$this->db->not_between('salary', 30000, 50000)->get_all();
 
 // OR BETWEEN
-$db->or_between('experience', 5, 10)->get_all();</pre>
+$this->db->or_between('experience', 5, 10)->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -974,7 +975,7 @@ $db->or_between('experience', 5, 10)->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->where('status', 'active')
+                    <pre>$this->db->where('status', 'active')
     ->grouped(function($q) {
         $q->where('age', '>', 18)
           ->or_where('parent_consent', 1);
@@ -1018,10 +1019,10 @@ $db->or_between('experience', 5, 10)->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// Limit to 10 rows
-$db->limit(10)->get_all();
+$this->db->limit(10)->get_all();
 
 // Limit with offset (20, 10)
-$db->limit(20, 10)->get_all();</pre>
+$this->db->limit(20, 10)->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -1047,7 +1048,7 @@ $db->limit(20, 10)->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->limit(10)->offset(20)->get_all();</pre>
+                    <pre>$this->db->limit(10)->offset(20)->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -1078,7 +1079,7 @@ $db->limit(20, 10)->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->table('posts')
+                    <pre>$this->db->table('posts')
     ->pagination(10, 2) // Page 2 with 10 records per page
     ->get_all();</pre>
                 </div>
@@ -1115,10 +1116,10 @@ $db->limit(20, 10)->get_all();</pre>
                     
                     <h4>Examples</h4>
                     <pre>// Order by name ascending
-$db->order_by('name')->get_all();
+$this->db->order_by('name')->get_all();
 
 // Order by date descending
-$db->order_by('created_at', 'DESC')->get_all();</pre>
+$this->db->order_by('created_at', 'DESC')->get_all();</pre>
                 </div>
                 
                 <div class="method">
@@ -1144,7 +1145,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->select('department, COUNT(*) as employee_count')
+                    <pre>$this->db->select('department, COUNT(*) as employee_count')
     ->group_by('department')
     ->get_all();</pre>
                 </div>
@@ -1186,7 +1187,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     </table>
                     
                     <h4>Example</h4>
-                    <pre>$db->select('department, COUNT(*) as employee_count')
+                    <pre>$this->db->select('department, COUNT(*) as employee_count')
     ->group_by('department')
     ->having('employee_count', '>', 5)
     ->get_all();</pre>
@@ -1204,7 +1205,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">boolean</span> - True on success</p>
                     
                     <h4>Example</h4>
-                    <pre>$db->transaction();</pre>
+                    <pre>$this->db->transaction();</pre>
                 </div>
                 
                 <div class="method">
@@ -1215,7 +1216,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">boolean</span> - True on success</p>
                     
                     <h4>Example</h4>
-                    <pre>$db->commit();</pre>
+                    <pre>$this->db->commit();</pre>
                 </div>
                 
                 <div class="method">
@@ -1226,7 +1227,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">boolean</span> - True on success</p>
                     
                     <h4>Example</h4>
-                    <pre>$db->roll_back();</pre>
+                    <pre>$this->db->roll_back();</pre>
                 </div>
                 
                 <div class="warning">
@@ -1251,7 +1252,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">integer</span> - Last inserted ID</p>
                     
                     <h4>Example</h4>
-                    <pre>$id = $db->last_id();</pre>
+                    <pre>$id = $this->db->last_id();</pre>
                 </div>
                 
                 <div class="method">
@@ -1262,7 +1263,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">integer</span> - Number of affected rows</p>
                     
                     <h4>Example</h4>
-                    <pre>$count = $db->row_count();</pre>
+                    <pre>$count = $this->db->row_count();</pre>
                 </div>
                 
                 <div class="method">
@@ -1273,7 +1274,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">string</span> - The SQL query</p>
                     
                     <h4>Example</h4>
-                    <pre>$sql = $db->get_sql();</pre>
+                    <pre>$sql = $this->db->get_sql();</pre>
                 </div>
                 
                 <div class="method">
@@ -1310,7 +1311,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
                     <p><span class="return">PDOStatement</span> - Result statement</p>
                     
                     <h4>Example</h4>
-                    <pre>$result = $db->raw("SELECT * FROM users WHERE age > ?", [18]);</pre>
+                    <pre>$result = $this->db->raw("SELECT * FROM users WHERE age > ?", [18]);</pre>
                 </div>
             </section>
             
@@ -1329,6 +1330,7 @@ $db->order_by('created_at', 'DESC')->get_all();</pre>
         <footer>
             <p>LavaLust Framework - Database Class Documentation &copy; 2023</p>
         </footer>
+        <p><a href="index.html">&lt;&lt;back</a></p>
     </div>
 </body>
 </html>
