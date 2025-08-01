@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Composer Installation & Usage Guide</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 25px;
+        color: #333;
+        background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    h1 {
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+    h2 {
+        margin-top: 35px;
+        border-left: 5px solid #3498db;
+        padding-left: 15px;
+        background-color: #f0f7ff;
+        padding: 10px 15px;
+        border-radius: 4px;
+    }
+    h3 {
+        margin-top: 25px;
+        color: #2980b9;
+    }
+    code {
+        background-color: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 0.95em;
+    }
+    pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: 'Consolas', 'Monaco', monospace;
+        line-height: 1.5;
+        margin: 20px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    ul {
+        margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛠️ Composer Installation & Usage Guide</h1>
+
+  <h2>💻 How to Install Composer</h2>
+
+  <h3>Windows</h3>
+  <ul>
+    <li>Download Composer from the <a href="https://getcomposer.org/download/" target="_blank">official Composer website</a>.</li>
+    <li>Run the <code>Composer-Setup.exe</code> installer.</li>
+    <li>During setup, locate your PHP executable (e.g., <code>C:/xampp/php/php.exe</code>).</li>
+    <li>After installation, open Command Prompt and type: <code>composer</code></li>
+  </ul>
+
+  <h3>macOS / Linux</h3>
+  <ul>
+    <li>Open Terminal and run:</li>
+  </ul>
+  <pre><code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"</code></pre>
+  <ul>
+    <li>To install globally:</li>
+  </ul>
+  <pre><code>sudo mv composer.phar /usr/local/bin/composer</code></pre>
+  <ul>
+    <li>Verify installation:</li>
+  </ul>
+  <pre><code>composer</code></pre>
+
+  <h2>🚀 Basic Composer Usage</h2>
+
+  <h3>Step 1: Create <code>composer.json</code></h3>
+  <pre><code>{
+  "require": {
+    "monolog/monolog": "2.0.*"
+  }
+}</code></pre>
+
+  <h3>Step 2: Install Dependencies</h3>
+  <pre><code>composer install</code></pre>
+
+  <h3>Step 3: Update Dependencies</h3>
+  <pre><code>composer update</code></pre>
+
+  <h3>Step 4: Autoload Packages</h3>
+  <pre><code>require_once 'vendor/autoload.php';</code></pre>
+
+  <h2>🧪 Sample Project: Logging with Monolog</h2>
+
+  <h3>1. Initialize Project</h3>
+  <pre><code>composer init</code></pre>
+
+  <h3>2. Add Monolog</h3>
+  <pre><code>composer require monolog/monolog</code></pre>
+
+  <h3>3. Create <code>index.php</code></h3>
+  <pre><code>&lt;?php
+require_once 'vendor/autoload.php';
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+$log = new Logger('student_log');
+$log->pushHandler(new StreamHandler('app.log', Logger::WARNING));
+
+$log->warning('This is a warning');
+$log->error('This is an error');
+?&gt;</code></pre>
+
+  <h3>4. Run the File</h3>
+  <pre><code>php index.php</code></pre>
+
+  <h3>5. Check <code>app.log</code> for Output</h3>
+  <p>Open the <code>app.log</code> file in your project folder to see the logged messages.</p>
+
+</body>
+</html>
