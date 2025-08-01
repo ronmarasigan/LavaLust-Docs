@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Constructors and Destructors Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #f0f7ff;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2980b9;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔧 PHP Constructors and Destructors Lecture</h1>
+
+  <h2>🧱 What is a Constructor?</h2>
+  <p>A <strong>constructor</strong> is a special method in a class that is automatically called when an object is created. It’s used to initialize object properties.</p>
+  <p>In PHP, constructors are defined using the <code>__construct()</code> method.</p>
+
+  <h3>✅ Example: Constructor</h3>
+  <pre><code>class Car {
+    public $model;
+    public $color;
+
+    public function __construct($model, $color) {
+        $this->model = $model;
+        $this->color = $color;
+    }
+
+    public function display() {
+        echo "Model: $this->model, Color: $this->color";
+    }
+}
+
+$myCar = new Car("Tesla", "Red");
+$myCar->display();</code></pre>
+
+  <h2>🧹 What is a Destructor?</h2>
+  <p>A <strong>destructor</strong> is a special method that is automatically called when an object is destroyed or goes out of scope. It’s useful for cleanup tasks like closing files or releasing resources.</p>
+  <p>In PHP, destructors are defined using the <code>__destruct()</code> method.</p>
+
+  <h3>✅ Example: Destructor</h3>
+  <pre><code>class Database {
+    public $connection;
+
+    public function __construct($hostname) {
+        $this->connection = "Connected to database at $hostname";
+        echo $this->connection;
+    }
+
+    public function __destruct() {
+        echo "\nConnection closed.";
+    }
+}
+
+$db = new Database("localhost");</code></pre>
+
+  <h2>📌 When Are They Called?</h2>
+  <ul>
+    <li><strong>Constructor:</strong> Called automatically when an object is created using <code>new</code>.</li>
+    <li><strong>Destructor:</strong> Called automatically when the object is no longer in use or the script ends.</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a class called <code>Logger</code> that writes a message when it's created and another when it's destroyed. Use <code>__construct()</code> and <code>__destruct()</code> to simulate logging behavior.</p>
+  </div>
+
+  <h2>📚 Summary</h2>
+  <ul>
+    <li><strong>__construct()</strong>: Initializes object properties.</li>
+    <li><strong>__destruct()</strong>: Cleans up when the object is destroyed.</li>
+    <li>Both are automatically triggered by PHP during the object lifecycle.</li>
+  </ul>
+
+</body>
+</html>
