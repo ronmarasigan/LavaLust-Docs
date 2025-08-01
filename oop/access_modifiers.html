@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Access Modifiers Lecture</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    h1 {
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #f0f7ff;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2980b9;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔐 PHP Access Modifiers Lecture</h1>
+
+  <h2>🔍 What Are Access Modifiers?</h2>
+  <p>Access modifiers in PHP control the visibility of class properties and methods. They determine where members can be accessed — inside the class, by subclasses, or externally.</p>
+
+  <h2>🟢 Public</h2>
+  <p><strong>Public</strong> members can be accessed from anywhere — inside the class, by subclasses, and from outside.</p>
+  <pre><code>class Fruit {
+    public $name;
+
+    public function setName($n) {
+        $this->name = $n;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+}
+
+$mango = new Fruit();
+$mango->setName("Mango");
+echo $mango->getName();</code></pre>
+
+  <h2>🔴 Private</h2>
+  <p><strong>Private</strong> members can only be accessed within the class itself. Not accessible from outside or by subclasses.</p>
+  <pre><code>class Secret {
+    private $code = "1234";
+
+    private function getCode() {
+        return $this->code;
+    }
+
+    public function reveal() {
+        return $this->getCode(); // Allowed internally
+    }
+}
+
+$obj = new Secret();
+echo $obj->reveal();      // ✅ Works
+echo $obj->code;          // ❌ Error
+echo $obj->getCode();     // ❌ Error</code></pre>
+
+  <h2>🟡 Protected</h2>
+  <p><strong>Protected</strong> members are accessible within the class and by subclasses, but not from outside.</p>
+  <pre><code>class ParentClass {
+    protected $message = "Hello from Parent";
+
+    protected function showMessage() {
+        return $this->message;
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function getMessage() {
+        return $this->showMessage(); // Allowed in subclass
+    }
+}
+
+$obj = new ChildClass();
+echo $obj->getMessage();     // ✅ Works
+echo $obj->message;          // ❌ Error</code></pre>
+
+  <h2>📌 Summary Table</h2>
+  <ul>
+    <li><strong>Public</strong>: Accessible from anywhere.</li>
+    <li><strong>Private</strong>: Accessible only within the class.</li>
+    <li><strong>Protected</strong>: Accessible within the class and subclasses.</li>
+  </ul>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a class <code>Account</code> with a private property <code>$balance</code>. Add public methods to deposit and withdraw money, and a protected method to log transactions. Extend the class with <code>PremiumAccount</code> and override the logging behavior.</p>
+  </div>
+
+</body>
+</html>
