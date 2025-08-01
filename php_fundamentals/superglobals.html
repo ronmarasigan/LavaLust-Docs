@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Superglobals</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #e67e22;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #e67e22;
+      padding-left: 15px;
+      background-color: #fdf2e9;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #d35400;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌐 PHP Superglobals</h1>
+
+  <h2>📘 What Are Superglobals?</h2>
+  <p><strong>Superglobals</strong> are built-in variables in PHP that are always accessible, regardless of scope. You can use them inside functions, classes, or files without needing to declare them global.</p>
+
+  <h2>📋 Common Superglobals</h2>
+
+  <h3>1. <code>$GLOBALS</code></h3>
+  <p>Contains all global variables in an associative array.</p>
+  <pre><code>$x = 5;
+$y = 10;
+
+function multiply() {
+    $GLOBALS['z'] = $GLOBALS['x'] * $GLOBALS['y'];
+}
+
+multiply();
+echo $z; // Outputs: 50</code></pre>
+
+  <h3>2. <code>$_SERVER</code></h3>
+  <p>Provides information about headers, paths, and script locations.</p>
+  <pre><code>echo $_SERVER['SERVER_NAME'];
+echo $_SERVER['REQUEST_METHOD'];</code></pre>
+
+  <h3>3. <code>$_GET</code></h3>
+  <p>Collects data sent via URL query parameters.</p>
+  <pre><code>// URL: index.php?name=Ron
+echo $_GET['name']; // Outputs: Ron</code></pre>
+
+  <h3>4. <code>$_POST</code></h3>
+  <p>Collects form data sent via POST method.</p>
+  <pre><code>// HTML Form
+&lt;form method="post"&gt;
+  &lt;input type="text" name="username"&gt;
+&lt;/form&gt;
+
+// PHP
+echo $_POST['username'];</code></pre>
+
+  <h3>5. <code>$_REQUEST</code></h3>
+  <p>Contains data from <code>$_GET</code>, <code>$_POST</code>, and <code>$_COOKIE</code>.</p>
+  <pre><code>echo $_REQUEST['username'];</code></pre>
+
+  <h3>6. <code>$_SESSION</code></h3>
+  <p>Stores session variables.</p>
+  <pre><code>session_start();
+$_SESSION['user'] = "Ron";
+echo $_SESSION['user'];</code></pre>
+
+  <h3>7. <code>$_COOKIE</code></h3>
+  <p>Stores cookie values.</p>
+  <pre><code>echo $_COOKIE['theme'];</code></pre>
+
+  <h3>8. <code>$_FILES</code></h3>
+  <p>Handles file uploads.</p>
+  <pre><code>$_FILES['upload']['name'];
+$_FILES['upload']['tmp_name'];</code></pre>
+
+  <h3>9. <code>$_ENV</code></h3>
+  <p>Contains environment variables.</p>
+  <pre><code>echo $_ENV['PATH'];</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>superglobals.php</code>. Use <code>$_GET</code> to retrieve a name from the URL, <code>$_POST</code> to collect form data, and <code>$_SERVER</code> to display the request method. Add a session variable and display it using <code>$_SESSION</code>.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/PHP/php_superglobals.asp" target="_blank">PHP Superglobals – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-superglobals/" target="_blank">PHP Superglobals – GeeksforGeeks</a></li>
+    <li><a href="https://www.php.net/manual/en/language.variables.superglobals.php" target="_blank">PHP Manual – Superglobals</a></li>
+  </ul>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Functions</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #27ae60;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #27ae60;
+      padding-left: 15px;
+      background-color: #eafaf1;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #27ae60;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 PHP Functions</h1>
+
+  <h2>📘 What Is a Function?</h2>
+  <p>A <strong>function</strong> is a reusable block of code that performs a specific task. Functions help organize code, reduce repetition, and improve maintainability.</p>
+
+  <h2>🛠️ Defining a Function</h2>
+  <pre><code>function greet() {
+    echo "Hello, world!";
+}</code></pre>
+  <p>To call the function:</p>
+  <pre><code>greet();</code></pre>
+
+  <h2>📥 Function Parameters</h2>
+  <pre><code>function greetUser($name) {
+    echo "Hello, $name!";
+}
+
+greetUser("Ron");</code></pre>
+
+  <h2>🎯 Return Values</h2>
+  <pre><code>function add($a, $b) {
+    return $a + $b;
+}
+
+echo add(5, 3); // Outputs: 8</code></pre>
+
+  <h2>⚙️ Default Parameter Values</h2>
+  <pre><code>function setHeight($height = 100) {
+    echo "Height is: $height";
+}
+
+setHeight();      // Uses default
+setHeight(250);   // Overrides default</code></pre>
+
+  <h2>🔍 Built-in Functions</h2>
+  <p>PHP includes over 1000 built-in functions. Examples:</p>
+  <pre><code>$str = "Hello, world!";
+echo strlen($str); // Outputs: 13
+
+$colors = ["red", "green", "blue"];
+print_r(array_reverse($colors));</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>functions.php</code>. Define a function <code>multiply()</code> that takes two parameters and returns their product. Then create a function <code>describeColor()</code> that accepts a color name and prints a message like "Red is vibrant."</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_functions.asp" target="_blank">PHP Functions – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-functions/" target="_blank">PHP Functions – GeeksforGeeks</a></li>
+    <li><a href="https://www.phptutorial.net/php-tutorial/php-functions/" target="_blank">PHP Functions – phptutorial.net</a></li>
+  </ul>
+
+</body>
+</html>

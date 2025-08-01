@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Syntax & Structure</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #1abc9c;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #1abc9c;
+      padding-left: 15px;
+      background-color: #e8f8f5;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧾 PHP Syntax & Structure</h1>
+
+  <h2>📘 Basic Syntax</h2>
+  <p>PHP code is written between <code>&lt;?php</code> and <code>?&gt;</code> tags. These tags tell the server to interpret the enclosed code as PHP.</p>
+  <pre><code>&lt;?php
+echo "Hello, PHP!";
+?&gt;</code></pre>
+
+  <h2>📄 File Structure</h2>
+  <p>A typical PHP file contains both HTML and PHP code. The file extension must be <code>.php</code>.</p>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;h1&gt;My First PHP Page&lt;/h1&gt;
+&lt;?php
+echo "This is dynamic content!";
+?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <h2>📌 Syntax Rules</h2>
+  <ul>
+    <li>PHP statements end with a semicolon <code>;</code></li>
+    <li>Variables start with <code>$</code> and are case-sensitive</li>
+    <li>Keywords like <code>if</code>, <code>echo</code>, <code>while</code> are not case-sensitive</li>
+    <li>PHP can be embedded directly into HTML</li>
+  </ul>
+
+  <h2>🗣 Comments in PHP</h2>
+  <p>Use comments to explain code. They are ignored by the interpreter.</p>
+  <pre><code>// Single-line comment
+# Another single-line comment
+/* Multi-line
+   comment block */</code></pre>
+
+  <h2>🔤 Case Sensitivity</h2>
+  <pre><code>&lt;?php
+$color = "blue";
+echo $color;   // ✅ Works
+echo $Color;   // ❌ Undefined variable
+?&gt;</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>syntax.php</code> that outputs your name, uses a comment, and includes both HTML and PHP code.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_syntax.asp" target="_blank">PHP Syntax – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-basic-syntax/" target="_blank">PHP Syntax – GeeksforGeeks</a></li>
+    <li><a href="https://codelucky.com/php-syntax/" target="_blank">PHP Syntax Guide – CodeLucky</a></li>
+  </ul>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Control Flow</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #9b59b6;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #9b59b6;
+      padding-left: 15px;
+      background-color: #f5f0fa;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #8e44ad;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔀 PHP Control Flow</h1>
+
+  <h2>📘 What Is Control Flow?</h2>
+  <p><strong>Control flow</strong> determines the order in which statements are executed in a program. PHP provides conditional statements and loops to control the flow based on logic and conditions.</p>
+
+  <h2>✅ Conditional Statements</h2>
+
+  <h3>1. if Statement</h3>
+  <pre><code>$x = 10;
+if ($x > 0) {
+    echo "Positive number";
+}</code></pre>
+
+  <h3>2. if...else Statement</h3>
+  <pre><code>$x = -5;
+if ($x > 0) {
+    echo "Positive";
+} else {
+    echo "Negative";
+}</code></pre>
+
+  <h3>3. if...elseif...else Statement</h3>
+  <pre><code>$day = "Monday";
+if ($day == "Saturday") {
+    echo "Weekend";
+} elseif ($day == "Sunday") {
+    echo "Weekend";
+} else {
+    echo "Weekday";
+}</code></pre>
+
+  <h3>4. switch Statement</h3>
+  <pre><code>$grade = "B";
+switch ($grade) {
+    case "A":
+        echo "Excellent";
+        break;
+    case "B":
+        echo "Good";
+        break;
+    case "C":
+        echo "Fair";
+        break;
+    default:
+        echo "Invalid grade";
+}</code></pre>
+
+  <h2>🔁 Looping Statements</h2>
+
+  <h3>1. while Loop</h3>
+  <pre><code>$i = 1;
+while ($i <= 5) {
+    echo $i;
+    $i++;
+}</code></pre>
+
+  <h3>2. do...while Loop</h3>
+  <pre><code>$i = 1;
+do {
+    echo $i;
+    $i++;
+} while ($i <= 5);</code></pre>
+
+  <h3>3. for Loop</h3>
+  <pre><code>for ($i = 1; $i <= 5; $i++) {
+    echo $i;
+}</code></pre>
+
+  <h3>4. foreach Loop</h3>
+  <pre><code>$colors = ["red", "green", "blue"];
+foreach ($colors as $color) {
+    echo $color;
+}</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>control-flow.php</code>. Use an <code>if-elseif</code> structure to check the current day and print a message. Then use a <code>for</code> loop to print numbers 1–10 and a <code>foreach</code> loop to display items in an array.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.geeksforgeeks.org/php/php-decision-making/" target="_blank">PHP Decision Making – GeeksforGeeks</a></li>
+    <li><a href="https://wpshout.com/learning-php-for-wordpress-development-control-flow-basics/" target="_blank">PHP Control Flow Basics – WPShout</a></li>
+    <li><a href="https://www.scientecheasy.com/2024/11/control-statements-in-php.html/" target="_blank">Control Statements in PHP – Scientech Easy</a></li>
+  </ul>
+
+</body>
+</html>

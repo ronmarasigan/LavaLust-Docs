@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Arrays</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #eaf4fc;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #2980b9;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📦 PHP Arrays</h1>
+
+  <h2>📘 What Is an Array?</h2>
+  <p>An <strong>array</strong> is a special variable that can hold multiple values under a single name. You can access values using numeric or named keys.</p>
+
+  <h2>🔢 Indexed Arrays</h2>
+  <p>Indexed arrays use numeric keys starting from 0.</p>
+  <pre><code>$fruits = ["apple", "banana", "cherry"];
+echo $fruits[0]; // Outputs: apple</code></pre>
+
+  <h2>🗂️ Associative Arrays</h2>
+  <p>Associative arrays use named keys to store values.</p>
+  <pre><code>$person = [
+  "name" => "Ron",
+  "age" => 30,
+  "city" => "Calapan"
+];
+echo $person["name"]; // Outputs: Ron</code></pre>
+
+  <h2>📊 Multidimensional Arrays</h2>
+  <p>Multidimensional arrays contain other arrays as elements.</p>
+  <pre><code>$students = [
+  "Anjali" => ["age" => 25, "grade" => "A"],
+  "Ron" => ["age" => 30, "grade" => "B"]
+];
+echo $students["Ron"]["grade"]; // Outputs: B</code></pre>
+
+  <h2>🧪 Creating Arrays</h2>
+  <p>You can use either <code>array()</code> or <code>[]</code> syntax:</p>
+  <pre><code>$colors = array("red", "green", "blue");
+$colors = ["red", "green", "blue"]; // Preferred</code></pre>
+
+  <h2>🔧 Modifying Array Elements</h2>
+  <pre><code>$colors[1] = "yellow"; // Changes "green" to "yellow"
+$person["age"] = 31;   // Updates age</code></pre>
+
+  <h2>📚 Useful Array Functions</h2>
+  <pre><code>$colors = ["red", "green", "blue"];
+echo count($colors); // Outputs: 3
+
+print_r(array_reverse($colors));</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>arrays.php</code>. Define an indexed array of three animals and print each one using a loop. Then create an associative array for a book (title, author, year) and display its details. Finally, create a multidimensional array for three students and print one student's grade.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_arrays.asp" target="_blank">PHP Arrays – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-arrays/" target="_blank">PHP Arrays – GeeksforGeeks</a></li>
+    <li><a href="https://www.php.net/manual/en/language.types.array.php" target="_blank">PHP Arrays – Official Manual</a></li>
+  </ul>
+
+</body>
+</html>

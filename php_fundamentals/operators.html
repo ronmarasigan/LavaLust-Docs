@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Operators</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #1abc9c;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #1abc9c;
+      padding-left: 15px;
+      background-color: #e8f8f5;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #16a085;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⚙️ PHP Operators</h1>
+
+  <h2>📘 What Are Operators?</h2>
+  <p>Operators are symbols that perform operations on variables and values. PHP supports many types of operators, each designed for specific tasks like math, comparison, logic, and assignment.</p>
+
+  <h2>➕ Arithmetic Operators</h2>
+  <pre><code>$x = 10;
+$y = 3;
+
+echo $x + $y; // Addition → 13
+echo $x - $y; // Subtraction → 7
+echo $x * $y; // Multiplication → 30
+echo $x / $y; // Division → 3.33
+echo $x % $y; // Modulus → 1
+echo $x ** $y; // Exponentiation → 1000</code></pre>
+
+  <h2>📝 Assignment Operators</h2>
+  <pre><code>$x = 5;
+$x += 3; // $x = $x + 3 → 8
+$x -= 2; // $x = $x - 2 → 6
+$x *= 4; // $x = $x * 4 → 24
+$x /= 6; // $x = $x / 6 → 4
+$x %= 3; // $x = $x % 3 → 1</code></pre>
+
+  <h2>🔍 Comparison Operators</h2>
+  <pre><code>$a = 5;
+$b = "5";
+
+var_dump($a == $b);  // true (equal)
+var_dump($a === $b); // false (not identical)
+var_dump($a != $b);  // false
+var_dump($a !== $b); // true
+var_dump($a < 10);   // true
+var_dump($a >= 5);   // true</code></pre>
+
+  <h2>🔗 Logical Operators</h2>
+  <pre><code>$x = true;
+$y = false;
+
+var_dump($x && $y); // false
+var_dump($x || $y); // true
+var_dump(!$x);      // false</code></pre>
+
+  <h2>🧵 String Operators</h2>
+  <pre><code>$first = "Hello";
+$second = "World";
+
+echo $first . " " . $second; // Concatenation → Hello World
+$first .= " PHP";
+echo $first; // → Hello PHP</code></pre>
+
+  <h2>❓ Ternary Operator</h2>
+  <pre><code>$age = 18;
+$status = ($age >= 18) ? "Adult" : "Minor";
+echo $status; // → Adult</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>operators.php</code>. Use each type of operator to manipulate variables and display the results. Try combining logical and comparison operators in an <code>if</code> statement.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_operators.asp" target="_blank">PHP Operators – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/php-operators/" target="_blank">PHP Operators – GeeksforGeeks</a></li>
+    <li><a href="https://www.php.net/manual/en/language.operators.php" target="_blank">PHP Manual – Operators</a></li>
+  </ul>
+
+</body>
+</html>

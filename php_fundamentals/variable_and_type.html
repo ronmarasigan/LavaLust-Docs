@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHP Variables and Data Types</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 25px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #e67e22;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      margin-top: 35px;
+      border-left: 5px solid #e67e22;
+      padding-left: 15px;
+      background-color: #fff6ec;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔢 PHP Variables and Data Types</h1>
+
+  <h2>📘 What Is a Variable?</h2>
+  <p>A <strong>variable</strong> is a container for storing data. In PHP, variables start with a dollar sign (<code>$</code>) followed by the variable name.</p>
+  <pre><code>$name = "Ron";
+$age = 30;</code></pre>
+
+  <h2>🧠 Naming Rules</h2>
+  <ul>
+    <li>Must start with <code>$</code> followed by a letter or underscore</li>
+    <li>Can contain letters, numbers, and underscores</li>
+    <li>Cannot start with a number</li>
+    <li>Are <strong>case-sensitive</strong> (<code>$name</code> ≠ <code>$Name</code>)</li>
+  </ul>
+
+  <h2>🌍 Variable Scope</h2>
+  <ul>
+    <li><strong>Global</strong>: Declared outside functions</li>
+    <li><strong>Local</strong>: Declared inside functions</li>
+    <li><strong>Static</strong>: Retains value across function calls</li>
+  </ul>
+
+  <h2>📦 PHP Data Types</h2>
+
+  <h3>1. String</h3>
+  <p>A sequence of characters enclosed in quotes.</p>
+  <pre><code>$greeting = "Hello, World!";
+$name = 'Ron';</code></pre>
+
+  <h3>2. Integer</h3>
+  <p>Whole numbers, positive or negative.</p>
+  <pre><code>$age = 30;
+$year = -2025;</code></pre>
+
+  <h3>3. Float (Double)</h3>
+  <p>Numbers with decimal points.</p>
+  <pre><code>$price = 19.99;
+$temperature = -5.5;</code></pre>
+
+  <h3>4. Boolean</h3>
+  <p>Represents <code>true</code> or <code>false</code>.</p>
+  <pre><code>$isStudent = true;
+$isAdmin = false;</code></pre>
+
+  <h3>5. Array</h3>
+  <p>Stores multiple values in one variable.</p>
+  <pre><code>$colors = array("red", "green", "blue");
+$person = array("name" => "Ron", "age" => 30);</code></pre>
+
+  <h3>6. Object</h3>
+  <p>Instance of a class containing properties and methods.</p>
+  <pre><code>class Car {
+  public $model;
+  public $color;
+}
+
+$myCar = new Car();
+$myCar->model = "Toyota";
+$myCar->color = "Red";</code></pre>
+
+  <h3>7. NULL</h3>
+  <p>Represents a variable with no value.</p>
+  <pre><code>$data = NULL;</code></pre>
+
+  <h2>🔍 Checking Data Type</h2>
+  <p>Use <code>var_dump()</code> to inspect type and value:</p>
+  <pre><code>$x = "Hello";
+var_dump($x);</code></pre>
+
+  <h2>🧪 Practice Activity</h2>
+  <div class="note">
+    <p>Create a PHP file named <code>types.php</code>. Declare one variable for each data type and use <code>var_dump()</code> to display its type and value.</p>
+  </div>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.w3schools.com/php/php_datatypes.asp" target="_blank">PHP Data Types – W3Schools</a></li>
+    <li><a href="https://www.geeksforgeeks.org/php/variables-and-datatypes-in-php/" target="_blank">Variables and Datatypes – GeeksforGeeks</a></li>
+    <li><a href="https://devsolx.com/php-variables-and-data-types" target="_blank">PHP Variables and Data Types – Devsolx</a></li>
+  </ul>
+
+</body>
+</html>
