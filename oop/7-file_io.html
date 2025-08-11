@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# File I/O and CRUD</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>C# File I/O and CRUD Operations</h1>
+      <p class="subtitle">Read, write, update, and delete files using System.IO</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#modes">File Modes</a></li>
+        <li><a href="#create">Create</a></li>
+        <li><a href="#read">Read</a></li>
+        <li><a href="#update">Update</a></li>
+        <li><a href="#delete">Delete</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+
+      <section id="overview">
+        <h2>📂 Overview</h2>
+        <p><strong>File I/O</strong> (Input/Output) in C# is handled via the <code>System.IO</code> namespace. It allows reading from and writing to files on disk.</p>
+        <p>Common classes include:</p>
+        <ul>
+          <li><code>File</code> – static methods for file operations</li>
+          <li><code>FileStream</code> – low-level stream access</li>
+          <li><code>StreamReader</code> / <code>StreamWriter</code> – text-based file access</li>
+        </ul>
+      </section>
+
+      <section id="modes">
+        <h2>⚙️ File Modes</h2>
+        <p>File modes define how a file is opened or created. Here's a comparison:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Mode</th>
+              <th>Description</th>
+              <th>C# Equivalent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>r</code></td>
+              <td>Read-only. File must exist.</td>
+              <td><code>FileMode.Open</code></td>
+            </tr>
+            <tr>
+              <td><code>w</code></td>
+              <td>Write-only. Creates new or overwrites.</td>
+              <td><code>FileMode.Create</code></td>
+            </tr>
+            <tr>
+              <td><code>w+</code></td>
+              <td>Read and write. Overwrites if exists.</td>
+              <td><code>FileMode.Create</code> + <code>FileAccess.ReadWrite</code></td>
+            </tr>
+            <tr>
+              <td><code>a</code></td>
+              <td>Append. Writes to end of file.</td>
+              <td><code>FileMode.Append</code></td>
+            </tr>
+            <tr>
+              <td><code>a+</code></td>
+              <td>Read and append.</td>
+              <td><code>FileMode.OpenOrCreate</code> + <code>FileAccess.ReadWrite</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="create">
+        <h2>📝 Create</h2>
+        <p>Create and write to a file using <code>StreamWriter</code>:</p>
+        <pre><code>string path = "data.txt";
+using (StreamWriter writer = new StreamWriter(path)) {
+  writer.WriteLine("New file created.");
+  writer.WriteLine("Welcome to File I/O.");
+}</code></pre>
+      </section>
+
+      <section id="read">
+        <h2>📖 Read</h2>
+        <p>Read file contents using <code>StreamReader</code>:</p>
+        <pre><code>string path = "data.txt";
+using (StreamReader reader = new StreamReader(path)) {
+  string line;
+  while ((line = reader.ReadLine()) != null) {
+    Console.WriteLine(line);
+  }
+}</code></pre>
+      </section>
+
+      <section id="update">
+        <h2>✏️ Update</h2>
+        <p>Update a file by reading, modifying, and rewriting:</p>
+        <pre><code>string path = "data.txt";
+
+// Read all lines
+string[] lines = File.ReadAllLines(path);
+
+// Modify content (example: replace a word)
+for (int i = 0; i < lines.Length; i++) {
+  lines[i] = lines[i].Replace("Welcome", "Hello");
+}
+
+// Write back to file
+File.WriteAllLines(path, lines);
+</code></pre>
+        <div class="note">
+          💡 Tip: For large files, use <code>StreamReader</code> and <code>StreamWriter</code> with a temporary file to avoid memory overhead.
+        </div>
+      </section>
+
+      <section id="delete">
+        <h2>🗑️ Delete</h2>
+        <p>Delete a file using <code>File.Delete()</code>:</p>
+        <pre><code>string path = "data.txt";
+
+if (File.Exists(path)) {
+  File.Delete(path);
+  Console.WriteLine("File deleted.");
+} else {
+  Console.WriteLine("File not found.");
+}</code></pre>
+        <div class="note">
+          ⚠️ Warning: <code>File.Delete()</code> is irreversible. Always confirm before deleting user data.
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>📌 Summary</h2>
+        <ul>
+          <li>C# uses <code>System.IO</code> for file operations.</li>
+          <li>File modes like <code>r</code>, <code>w</code>, <code>a</code>, <code>w+</code>, <code>a+</code> map to <code>FileMode</code> and <code>FileAccess</code> enums.</li>
+          <li>CRUD operations modularized:
+            <ul>
+              <li><strong>Create</strong>: <code>StreamWriter</code>, <code>FileMode.Create</code></li>
+              <li><strong>Read</strong>: <code>StreamReader</code>, <code>FileMode.Open</code></li>
+              <li><strong>Update</strong>: Read → Modify → Write</li>
+              <li><strong>Delete</strong>: <code>File.Delete()</code></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="note">
+          ✅ Next Steps: Consider adding interactive quizzes, code challenges, or curriculum-wide navigation to reinforce learning.
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+
+  </div>
+</body>
+</html>

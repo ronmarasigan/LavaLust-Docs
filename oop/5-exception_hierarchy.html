@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# Exception Hierarchy and Assertions</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 { color: var(--primary); margin-bottom: 5px; }
+    .subtitle { color: var(--muted); font-size: 1rem; }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul { list-style: none; padding-left: 0; }
+    nav ul li { margin-bottom: 8px; }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section { margin-bottom: 40px; }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    h3 {
+      margin-top: 20px;
+      color: var(--accent);
+    }
+    ul { margin-left: 20px; }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+      nav { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Exception Hierarchy and Assertions</h1>
+      <p class="subtitle">Understand exception structure, types, and how to validate assumptions</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#hierarchy" class="active">Exception Hierarchy</a></li>
+        <li><a href="#built-in">Built-in Exceptions</a></li>
+        <li><a href="#user-defined">User-Defined Exceptions</a></li>
+        <li><a href="#throwing">Throwing Exceptions</a></li>
+        <li><a href="#assertions">Assertions</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="hierarchy">
+        <h2>🧬 Exception Hierarchy</h2>
+        <p>All exceptions in C# derive from the base class <code>System.Exception</code>. This hierarchy allows structured handling and polymorphism.</p>
+        <ul>
+          <li><strong>System.Object</strong> – Root of all types in .NET</li>
+          <li><strong>System.Exception</strong> – Base class for all exceptions</li>
+          <li><strong>System.SystemException</strong> – Base for runtime exceptions</li>
+          <li><strong>ApplicationException</strong> – Optional base for user-defined exceptions</li>
+        </ul>
+        <p><strong>Note:</strong> You can catch exceptions at any level depending on how specific your handling needs to be.</p>
+      </section>
+
+      <section id="built-in">
+        <h2>📦 Built-in Exceptions</h2>
+        <h3><code>DivideByZeroException</code></h3>
+        <p>Occurs when dividing a number by zero.</p>
+        <pre><code>int x = 10;
+int y = 0;
+int result = x / y; // Throws DivideByZeroException</code></pre>
+
+        <h3><code>NullReferenceException</code></h3>
+        <p>Occurs when accessing a member of a null object.</p>
+        <pre><code>string name = null;
+Console.WriteLine(name.Length); // Throws NullReferenceException</code></pre>
+
+        <h3><code>IndexOutOfRangeException</code></h3>
+        <p>Occurs when accessing an array index that doesn't exist.</p>
+        <pre><code>int[] numbers = {1, 2, 3};
+Console.WriteLine(numbers[5]); // Throws IndexOutOfRangeException</code></pre>
+
+        <h3><code>FileNotFoundException</code></h3>
+        <p>Occurs when trying to access a file that doesn't exist.</p>
+        <pre><code>using System.IO;
+File.ReadAllText("missing.txt"); // Throws FileNotFoundException</code></pre>
+
+        <h3><code>FormatException</code></h3>
+        <p>Occurs when converting a string to a number with invalid format.</p>
+        <pre><code>string input = "abc";
+int number = int.Parse(input); // Throws FormatException</code></pre>
+      </section>
+
+      <section id="user-defined">
+        <h2>🛠️ User-Defined Exceptions</h2>
+        <p>Create custom exceptions by inheriting from <code>Exception</code> or <code>ApplicationException</code>.</p>
+        <pre><code>public class InvalidGradeException : Exception {
+    public InvalidGradeException(string message) : base(message) { }
+}</code></pre>
+        <p><strong>Usage:</strong></p>
+        <pre><code>int grade = -10;
+
+if (grade &lt; 0 || grade &gt; 100) {
+    throw new InvalidGradeException("Grade must be between 0 and 100.");
+}</code></pre>
+      </section>
+
+      <section id="throwing">
+        <h2>🚨 Throwing Exceptions</h2>
+        <p>Use <code>throw</code> to raise an exception manually when a condition violates expected logic.</p>
+        <pre><code>throw new ArgumentException("Invalid argument passed.");</code></pre>
+        <p><strong>Tip:</strong> Always provide meaningful messages and use specific exception types.</p>
+      </section>
+
+      <section id="assertions">
+        <h2>✅ Assertions</h2>
+        <p><strong>Definition:</strong> Assertions are used to validate assumptions during development. They help catch logical errors early.</p>
+        <p><strong>Namespace:</strong> <code>System.Diagnostics</code></p>
+        <pre><code>using System.Diagnostics;</code></pre>
+int age = 25;
+Debug.Assert(age >= 0, "Age cannot be negative.");</code></pre>
+        <p><strong>Use Case:</strong> Assertions are ideal for internal checks during development and debugging. They do not throw exceptions in release builds but help catch logic errors early in debug mode.</p>
+        <p><strong>Note:</strong> Assertions should not replace exception handling—they complement it by verifying conditions that should never fail.</p>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li>All exceptions derive from <code>System.Exception</code>, enabling structured error handling.</li>
+          <li>Common built-in exceptions include <code>DivideByZeroException</code>, <code>NullReferenceException</code>, and <code>FormatException</code>.</li>
+          <li>User-defined exceptions allow domain-specific error signaling.</li>
+          <li><code>throw</code> is used to raise exceptions manually.</li>
+          <li><code>Debug.Assert</code> helps validate assumptions during development.</li>
+        </ul>
+        <div class="note">
+          <strong>Educator Tip:</strong> Assign exercises like validating form input, simulating file access, or building a grading system with custom exceptions and assertions.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

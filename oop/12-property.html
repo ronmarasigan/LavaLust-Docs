@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Properties in C#</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Properties in C#</h1>
+      <p class="subtitle">Definition, purpose, and practical examples</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#types">Types of Properties</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="overview">
+        <h2>🔍 Overview</h2>
+        <p>Properties in C# provide a flexible mechanism to read, write, or compute the value of a private field. They act as public access points while maintaining encapsulation.</p>
+        <p>This lecture covers:</p>
+        <ul>
+          <li>What properties are and why they matter</li>
+          <li>Types of properties</li>
+          <li>Field-backed and computed examples</li>
+        </ul>
+      </section>
+
+      <section id="definition">
+        <h2>📐 Definition</h2>
+        <p>A <strong>property</strong> is a member that provides controlled access to a class field. It typically includes <code>get</code> and <code>set</code> accessors.</p>
+        <pre><code>private string name;
+
+public string Name
+{
+    get { return name; }
+    set { name = value; }
+}</code></pre>
+        <p>Properties can be auto-implemented or manually backed by fields.</p>
+      </section>
+
+      <section id="types">
+        <h2>🔧 Types of Properties</h2>
+        <ul>
+          <li><strong>Auto-Implemented:</strong> Simplified syntax with implicit backing field</li>
+          <li><strong>Read-Only:</strong> Only <code>get</code> accessor</li>
+          <li><strong>Write-Only:</strong> Only <code>set</code> accessor</li>
+          <li><strong>Computed:</strong> No backing field; returns calculated value</li>
+        </ul>
+        <div class="note">
+          💡 Educator Tip: Use computed properties to demonstrate encapsulated logic (e.g., BMI, full name).
+        </div>
+      </section>
+
+      <section id="examples">
+        <h2>💻 Examples</h2>
+
+        <h3>1. Auto-Implemented Property</h3>
+        <pre><code>public class Book
+{
+    public string Title { get; set; }
+    public int Pages { get; set; }
+}
+
+// Usage
+Book b = new Book();
+b.Title = "1984";
+b.Pages = 328;
+Console.WriteLine(b.Title + ", " + b.Pages + " pages");
+</code></pre>
+
+        <h3>2. Field-Backed Property</h3>
+        <pre><code>public class Person
+{
+    private string name;
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+}
+
+// Usage
+Person p = new Person();
+p.Name = "Alice";
+Console.WriteLine("Name: " + p.Name);
+</code></pre>
+
+        <h3>3. Read-Only Property</h3>
+        <pre><code>public class Circle
+{
+    private double radius;
+
+    public Circle(double r)
+    {
+        radius = r;
+    }
+
+    public double Radius
+    {
+        get { return radius; }
+    }
+}
+</code></pre>
+
+        <h3>4. Computed Property</h3>
+        <pre><code>public class Rectangle
+{
+    public int Width { get; set; }
+    public int Height { get; set; }
+
+    public int Area
+    {
+        get { return Width * Height; }
+    }
+}
+
+// Usage
+Rectangle r = new Rectangle { Width = 5, Height = 4 };
+Console.WriteLine("Area: " + r.Area);
+</code></pre>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li>Properties provide controlled access to fields using <code>get</code> and <code>set</code>.</li>
+          <li>They support encapsulation and validation logic.</li>
+          <li>Types include auto-implemented, read-only, write-only, and computed.</li>
+          <li>Examples show how to use properties for both simple and derived values.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+
+  </div>
+</body>
+</html>

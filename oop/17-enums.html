@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enums in C#</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Enums in C#</h1>
+      <p class="subtitle">Named constants for improved readability and safety</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#concept" class="active">Concept</a></li>
+        <li><a href="#declaration">Declaration</a></li>
+        <li><a href="#values">Underlying Values</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="concept">
+        <h2>🧠 Concept</h2>
+        <p><strong>Enums</strong> (enumerations) define a set of named integral constants. They improve code clarity by replacing magic numbers with descriptive names.</p>
+        <ul>
+          <li>Group related constants under one type</li>
+          <li>Enhance type safety compared to raw integers</li>
+          <li>Make switch statements and comparisons more readable</li>
+        </ul>
+      </section>
+
+      <section id="declaration">
+        <h2>📐 Declaration</h2>
+        <p>Use the <code>enum</code> keyword followed by a comma-separated list of identifiers.</p>
+        <pre><code>public enum DayOfWeek
+{
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+}</code></pre>
+        <div class="note">
+          💡 Tip: By default, the first member has value 0, and each subsequent member increments by 1.
+        </div>
+      </section>
+
+      <section id="values">
+        <h2>🔢 Underlying Values</h2>
+        <p>You can specify explicit values or change the underlying integer type.</p>
+        <pre><code>public enum ErrorCode : byte
+{
+    None = 0,
+    NotFound = 1,
+    PermissionDenied = 128,
+    Unknown = 255
+}</code></pre>
+        <ul>
+          <li>Default underlying type is <code>int</code>.</li>
+          <li>Use <code>:</code> to choose another integral type (<code>byte</code>, <code>short</code>, etc.).</li>
+        </ul>
+      </section>
+
+      <section id="example">
+        <h2>💻 Example</h2>
+        <pre><code>// Declare an enum
+public enum TrafficLight
+{
+    Red,
+    Yellow,
+    Green
+}
+
+// Use it in code
+TrafficLight signal = TrafficLight.Red;
+
+switch (signal)
+{
+    case TrafficLight.Red:
+        Console.WriteLine("Stop"); break;
+    case TrafficLight.Yellow:
+        Console.WriteLine("Get Ready"); break;
+    case TrafficLight.Green:
+        Console.WriteLine("Go"); break;
+}
+
+// Output: Stop</code></pre>
+        <div class="note">
+          💡 Tip: Enums can be combined with [Flags] attribute for bitwise operations.
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li>Enums provide named, integral constants for clarity and safety.</li>
+          <li>Default values start at 0 and increment by 1 unless overridden.</li>
+          <li>You can specify an underlying type and explicit values.</li>
+          <li>Ideal for switch statements and representing fixed sets of options.</li>
+        </ul>
+        <div class="note">
+          💡 Educator Tip: Ask students to define enums for month names or permission flags and use them in conditional logic.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

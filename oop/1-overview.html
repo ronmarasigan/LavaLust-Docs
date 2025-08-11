@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Programming Language Overview: C#</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Programming Language Overview: C#</h1>
+      <p class="subtitle">Understanding the evolution, design, and impact of C# in modern software development</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Outline</h3>
+      <ul>
+        <li><a href="#overview">What Is a Programming Language?</a></li>
+        <li><a href="#types">Types of Programming Languages</a></li>
+        <li><a href="#history">History of C#</a></li>
+        <li><a href="#goals">Design Goals</a></li>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#disadvantages">Disadvantages</a></li>
+        <li><a href="#conclusion">Final Conclusion</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="overview">
+        <h2>🧠 What Is a Programming Language?</h2>
+        <p>
+          A programming language is a formal system used to instruct computers to perform tasks. It provides syntax and semantics for writing software applications, ranging from simple scripts to complex systems.
+        </p>
+        <p>
+          Programming languages can be categorized by paradigms (e.g., procedural, object-oriented, functional), level (low-level vs. high-level), and use cases (web, mobile, systems, etc.).
+        </p>
+      </section>
+
+      <section id="types">
+        <h2>🧪 Types of Programming Languages</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Procedural</td>
+              <td>Focuses on step-by-step instructions and procedures.</td>
+              <td><code>C</code>, <code>Pascal</code>, <code>Fortran</code></td>
+            </tr>
+            <tr>
+              <td>Object-Oriented</td>
+              <td>Organizes code into reusable objects with properties and methods.</td>
+              <td><code>C#</code>, <code>Java</code>, <code>Python</code></td>
+            </tr>
+            <tr>
+              <td>Functional</td>
+              <td>Emphasizes pure functions and immutability.</td>
+              <td><code>Haskell</code>, <code>F#</code>, <code>Scala</code></td>
+            </tr>
+            <tr>
+              <td>Scripting</td>
+              <td>Used for automation and lightweight tasks.</td>
+              <td><code>JavaScript</code>, <code>PHP</code>, <code>Ruby</code></td>
+            </tr>
+            <tr>
+              <td>Logic-Based</td>
+              <td>Based on formal logic and rule-based execution.</td>
+              <td><code>Prolog</code>, <code>Mercury</code></td>
+            </tr>
+            <tr>
+              <td>Low-Level</td>
+              <td>Close to machine code, used for system-level programming.</td>
+              <td><code>Assembly</code>, <code>C</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="history">
+        <h2>📜 History of C#</h2>
+        <ul>
+          <li><strong>2000:</strong> Introduced by Microsoft as part of the .NET initiative.</li>
+          <li><strong>Anders Hejlsberg:</strong> Led C# development, previously worked on Turbo Pascal and Delphi.</li>
+          <li><strong>2002:</strong> First release with .NET Framework 1.0.</li>
+          <li><strong>Evolution:</strong> C# has grown through versions (2.0 to 12.0+), adding generics, LINQ, async/await, records, and more.</li>
+        </ul>
+      </section>
+
+      <section id="goals">
+        <h2>🎯 Design Goals of C#</h2>
+        <ul>
+          <li>Modern, simple, and object-oriented syntax.</li>
+          <li>Component-oriented programming support.</li>
+          <li>Robust type safety and memory management.</li>
+          <li>Interoperability with other languages via .NET.</li>
+          <li>Scalability for enterprise-level applications.</li>
+          <li>Support for imperative and declarative styles.</li>
+        </ul>
+      </section>
+
+            <section id="advantages">
+        <h2>✅ Advantages of C#</h2>
+        <ul>
+          <li><strong>Rich Standard Library:</strong> Extensive built-in functionality for I/O, networking, collections, and more.</li>
+          <li><strong>Strong Typing:</strong> Reduces runtime errors and improves code clarity.</li>
+          <li><strong>Garbage Collection:</strong> Automatic memory management improves safety and productivity.</li>
+          <li><strong>Cross-Platform:</strong> With .NET Core and .NET 5+, C# runs on Windows, Linux, and macOS.</li>
+          <li><strong>Tooling Support:</strong> Excellent IDEs like Visual Studio and JetBrains Rider enhance development.</li>
+          <li><strong>Community & Ecosystem:</strong> Large developer community, extensive documentation, and third-party libraries.</li>
+        </ul>
+      </section>
+
+      <section id="disadvantages">
+        <h2>⚠️ Disadvantages of C#</h2>
+        <ul>
+          <li><strong>Performance Overhead:</strong> Managed runtime may be slower than native languages like C++.</li>
+          <li><strong>Platform Dependencies:</strong> Historically tied to Windows (though now mitigated by .NET Core).</li>
+          <li><strong>Verbosity:</strong> More verbose than scripting languages like Python or JavaScript.</li>
+          <li><strong>Learning Curve:</strong> Complex features (e.g., async/await, LINQ) may challenge beginners.</li>
+          <li><strong>Limited Low-Level Access:</strong> Not ideal for systems programming or hardware-level tasks.</li>
+        </ul>
+      </section>
+
+      <section id="conclusion">
+        <h2>🧩 Final Conclusion</h2>
+        <p>
+          C# remains one of the most versatile and powerful programming languages in modern development. Its blend of object-oriented principles, strong typing, and integration with the .NET ecosystem makes it ideal for building robust desktop, web, and cloud applications.
+        </p>
+        <p>
+          While it may not be the best fit for every use case—especially those requiring low-level control or minimal runtime overhead—its continued evolution and cross-platform capabilities ensure its relevance for years to come.
+        </p>
+        <div class="note">
+          <strong>Educator Tip:</strong> Encourage students to explore C# through hands-on projects using Visual Studio or VS Code with .NET SDK. Pair this lecture with interactive demos and quizzes to reinforce key concepts.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

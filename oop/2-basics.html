@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# Basics: Syntax, Data Types, and Operators</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 { color: var(--primary); margin-bottom: 5px; }
+    .subtitle { color: var(--muted); font-size: 1rem; }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul { list-style: none; }
+    nav ul li { margin-bottom: 8px; }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover { background-color: var(--highlight); }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section { margin-bottom: 40px; }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul { margin-left: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+      nav { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Basics: Syntax, Data Types, and Operators</h1>
+      <p class="subtitle">A beginner-friendly guide to writing and understanding C# code</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Outline</h3>
+      <ul>
+        <li><a href="#syntax">Basic Syntax</a></li>
+        <li><a href="#datatypes">Data Types</a></li>
+        <li><a href="#operators">Operators</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="syntax">
+        <h2>🧾 Basic Syntax</h2>
+        <p>C# programs are structured into namespaces, classes, and methods. Here's a simple example:</p>
+        <pre><code>using System;
+
+class Program {
+    static void Main() {
+        Console.WriteLine("Hello, World!");
+    }
+}</code></pre>
+        <ul>
+          <li><code>using System;</code> imports the System namespace.</li>
+          <li><code>Main()</code> is the entry point of the program.</li>
+          <li><code>Console.WriteLine()</code> prints output to the console.</li>
+        </ul>
+      </section>
+
+      <section id="datatypes">
+        <h2>📦 Data Types</h2>
+        <p>C# is statically typed. Common data types include:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>int</code></td>
+              <td>Integer numbers</td>
+              <td><code>int age = 30;</code></td>
+            </tr>
+            <tr>
+              <td><code>double</code></td>
+              <td>Floating-point numbers</td>
+              <td><code>double price = 19.99;</code></td>
+            </tr>
+            <tr>
+              <td><code>char</code></td>
+              <td>Single character</td>
+              <td><code>char grade = 'A';</code></td>
+            </tr>
+            <tr>
+              <td><code>bool</code></td>
+              <td>Boolean value</td>
+              <td><code>bool isActive = true;</code></td>
+            </tr>
+            <tr>
+              <td><code>string</code></td>
+              <td>Text data</td>
+              <td><code>string name = "Ron";</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="operators">
+        <h2>🔧 Operators</h2>
+        <p>C# supports various operators for computation and logic:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Operators</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Arithmetic</td>
+              <td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></td>
+              <td><code>int sum = a + b;</code></td>
+            </tr>
+            <tr>
+              <td>Comparison</td>
+              <td><code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td>
+              <td><code>if (a &gt; b)</code></td>
+            </tr>
+            <tr>
+              <td>Logical</td>
+              <td><code>&&</code>, <code>||</code>, <code>!</code></td>
+              <td><code>if (a &gt; 0 && b &lt; 10)</code></td>
+            </tr>
+            <tr>
+              <td>Assignment</td>
+              <td><code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code></td>
+              <td><code>x += 5;</code></td>
+            </tr>
+          </tbody>
+                 </tbody>
+        </table>
+        <div class="note">
+          <strong>Note:</strong> Operator precedence matters! For example, multiplication and division are evaluated before addition and subtraction unless parentheses are used.
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li>C# syntax is clean, structured, and similar to other C-style languages.</li>
+          <li>It uses a rich set of data types to represent different kinds of values.</li>
+          <li>Operators allow you to perform arithmetic, comparisons, logical decisions, and assignments.</li>
+        </ul>
+        <p>
+          Mastering these basics is essential before moving on to control structures, methods, and object-oriented programming. Encourage students to write small programs that use variables, operators, and console output to reinforce these concepts.
+        </p>
+        <div class="note">
+          <strong>Educator Tip:</strong> Pair this lecture with hands-on exercises like building a simple calculator or a quiz score evaluator using variables and operators.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

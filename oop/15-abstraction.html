@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abstract Classes & Methods in C#</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Abstract Classes &amp; Methods in C#</h1>
+      <p class="subtitle">Defining blueprints with enforced behaviors</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#concept" class="active">Concept</a></li>
+        <li><a href="#benefits">Why Use Abstraction?</a></li>
+        <li><a href="#abstract-classes">Abstract Classes</a></li>
+        <li><a href="#abstract-methods">Abstract Methods</a></li>
+        <li><a href="#examples">Example</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="concept">
+        <h2>🧠 Concept</h2>
+        <p>Abstraction in C# lets you define a simplified model of a complex system. You expose only the essential features and hide implementation details, leading to cleaner, more maintainable code.</p>
+        <ul>
+          <li>Focus on <em>what</em> an object does, not <em>how</em> it does it.</li>
+          <li>Encourages a clear separation between interface and implementation.</li>
+          <li>Implemented via <code>abstract</code> classes and methods.</li>
+        </ul>
+      </section>
+
+      <section id="benefits">
+        <h2>🎯 Why Use Abstraction?</h2>
+        <ul>
+          <li>Reduces complexity by hiding details.</li>
+          <li>Improves reusability—common code in base class.</li>
+          <li>Enforces a contract—derived classes must implement required methods.</li>
+          <li>Enhances extensibility and testability.</li>
+        </ul>
+      </section>
+
+      <section id="abstract-classes">
+        <h2>📐 Abstract Classes</h2>
+        <p>An <code>abstract</code> class acts as a blueprint. It can contain fields, constructors, concrete methods, and abstract members. You cannot instantiate it directly.</p>
+        <pre><code>public abstract class Animal
+{
+    public string Name { get; }
+    public Animal(string name)
+    {
+        Name = name;
+    }
+
+    // Concrete method
+    public void Sleep()
+    {
+        Console.WriteLine($"{Name} is sleeping.");
+    }
+
+    // Abstract member
+    public abstract void Speak();
+}</code></pre>
+        <div class="note">
+          💡 Tip: Use abstract classes when multiple related types share code but also require specific behavior.
+        </div>
+      </section>
+
+      <section id="abstract-methods">
+        <h2>✍️ Abstract Methods</h2>
+        <p>An <code>abstract</code> method has no body. Every subclass <strong>must</strong> override it, ensuring a consistent interface.</p>
+        <pre><code>public class Dog : Animal
+{
+    public Dog(string name) : base(name) { }
+
+    // Required override
+    public override void Speak()
+    {
+        Console.WriteLine($"{Name} says: Woof!");
+    }
+}
+
+public class Cat : Animal
+{
+    public Cat(string name) : base(name) { }
+
+    public override void Speak()
+    {
+        Console.WriteLine($"{Name} says: Meow!");
+    }
+}</code></pre>
+        <div class="note">
+          💡 Tip: The compiler enforces overrides—missing an abstract method causes a compile-time error.
+        </div>
+      </section>
+
+      <section id="examples">
+        <h2>💻 Example</h2>
+        <pre><code>// Cannot do: new Animal("Rex"); // Error: cannot create instance of abstract class
+
+Animal[] pets = {
+    new Dog("Rex"),
+    new Cat("Mittens")
+};
+
+foreach (var pet in pets)
+{
+    pet.Speak(); // Rex says: Woof!  then  Mittens says: Meow!
+    pet.Sleep(); // Rex is sleeping.    then  Mittens is sleeping.
+}</code></pre>
+        <p>This demonstrates:</p>
+        <ul>
+          <li>Abstract base <code>Animal</code> enforces <code>Speak()</code>.</li>
+          <li>Derived classes provide concrete implementations.</li>
+          <li>Shared behavior (<code>Sleep()</code>) lives in base class.</li>
+        </ul>
+        <div class="note">
+          💡 Tip: Ask students to add a new subclass (e.g., <code>Bird</code>) to practice compile-time enforcement.
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li>Abstract classes cannot be instantiated; they define blueprints.</li>
+          <li>They can include both concrete and abstract members.</li>
+          <li>Abstract methods declare required behavior; subclasses must override.</li>
+          <li>Use abstraction to design clear, extensible hierarchies.</li>
+        </ul>
+        <div class="note">
+          💡 Educator Tip: For a mini-project, model a simple drawing app—abstract base for shapes, override <code>Draw()</code> in each shape class.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# Exception Handling</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Exception Handling</h1>
+      <p class="subtitle">Write safer, more resilient code by managing runtime errors</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#definition" class="active">What is an Exception?</a></li>
+        <li><a href="#trycatch">try-catch</a></li>
+        <li><a href="#finally">finally</a></li>
+        <li><a href="#throw">throw</a></li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#quiz">Quick Quiz</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="definition">
+        <h2>💥 What is an Exception?</h2>
+        <p><strong>Definition:</strong> An exception is an unexpected event or error that occurs during program execution, disrupting the normal flow of instructions.</p>
+        <p><strong>Common Causes:</strong></p>
+        <ul>
+          <li>Invalid user input</li>
+          <li>File not found</li>
+          <li>Division by zero</li>
+          <li>Null reference access</li>
+        </ul>
+        <p>Without proper handling, exceptions can crash your program. C# provides structured mechanisms to detect and respond to these errors gracefully.</p>
+      </section>
+
+      <section id="trycatch">
+        <h2>🛡️ try-catch Block</h2>
+        <p><strong>Definition:</strong> The <code>try</code> block contains code that might throw an exception. The <code>catch</code> block handles the error if it occurs.</p>
+        <pre><code>try {
+    int x = 10;
+    int y = 0;
+    int result = x / y; // Division by zero
+} catch (DivideByZeroException ex) {
+    Console.WriteLine("Error: Cannot divide by zero.");
+}</code></pre>
+        <p><strong>Tip:</strong> You can catch specific exceptions or use a general <code>Exception</code> type for broader handling.</p>
+      </section>
+
+      <section id="finally">
+        <h2>🔒 finally Block</h2>
+        <p><strong>Definition:</strong> The <code>finally</code> block runs regardless of whether an exception occurred. It's ideal for cleanup tasks like closing files or releasing resources.</p>
+        <pre><code>try {
+    Console.WriteLine("Opening file...");
+    // Simulate file operation
+} catch (Exception ex) {
+    Console.WriteLine("Something went wrong.");
+} finally {
+    Console.WriteLine("Closing file.");
+}</code></pre>
+      </section>
+
+      <section id="throw">
+        <h2>🚨 throw Statement</h2>
+        <p><strong>Definition:</strong> Use <code>throw</code> to manually raise an exception when a specific condition is met.</p>
+        <pre><code>int age = -5;
+
+if (age &lt; 0) {
+    throw new ArgumentOutOfRangeException("Age cannot be negative.");
+}</code></pre>
+        <p><strong>Use Case:</strong> Input validation, enforcing business rules, signaling illegal states.</p>
+      </section>
+
+      <section id="summary">
+        <h2>📘 Summary</h2>
+        <ul>
+          <li><code>try</code> detects risky code</li>
+          <li><code>catch</code> handles specific or general exceptions</li>
+          <li><code>finally</code> ensures cleanup</li>
+          <li><code>throw</code> lets you raise custom errors</li>
+        </ul>
+        <div class="note">
+          <strong>Educator Tip:</strong> Assign exercises like validating user input, simulating file access, or building a calculator with exception handling.
+        </div>
+      </section>
+
+      <section id="quiz">
+        <div class="quiz">
+          <h4>Quick Quiz</h4>
+          <p>Which block always executes, even if an exception is thrown?</p>
+          <ul>
+            <li><input type="radio" name="q1" id="q1a"><label for="q1a">try</label></li>
+                        <li><input type="radio" name="q1" id="q1b"><label for="q1b">catch</label></li>
+            <li><input type="radio" name="q1" id="q1c"><label for="q1c">finally</label></li>
+            <li><input type="radio" name="q1" id="q1d"><label for="q1d">throw</label></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+    </footer>
+  </div>
+</body>
+</html>

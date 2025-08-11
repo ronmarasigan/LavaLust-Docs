@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# Arrays and Collections</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --background: #fdfdfd;
+      --surface: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #ddd;
+      --highlight: #eaf2ff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    h1 {
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    nav h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      margin-bottom: 8px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: var(--highlight);
+    }
+    main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 30px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--accent);
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #f0c36d;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Arrays and Collections</h1>
+      <p class="subtitle">Store, organize, and manipulate data efficiently in C#</p>
+    </header>
+
+    <nav>
+      <h3>Lecture Navigation</h3>
+      <ul>
+        <li><a href="#arrays" class="active">Arrays</a></li>
+        <li><a href="#list">List&lt;T&gt;</a></li>
+        <li><a href="#dictionary">Dictionary&lt;TKey, TValue&gt;</a></li>
+        <li><a href="#queue">Queue&lt;T&gt;</a></li>
+        <li><a href="#stack">Stack&lt;T&gt;</a></li>
+        <li><a href="#hashset">HashSet&lt;T&gt;</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="arrays">
+        <h2>🧮 Arrays</h2>
+        <p><strong>Definition:</strong> Arrays are fixed-size, indexed collections of elements of the same type.</p>
+        <pre><code>int[] numbers = { 10, 20, 30 };
+        Console.WriteLine(numbers[1]); // Output: 20</code></pre>
+        <p><strong>Limitations:</strong> Fixed size, no built-in methods for dynamic resizing or advanced operations.</p>
+
+        <h3>📐 Types of Arrays</h3>
+        <ul>
+            <li><strong>One-Dimensional Array:</strong> A linear sequence of elements.</li>
+            <pre><code>string[] names = new string[3];
+        names[0] = "Alice";
+        names[1] = "Bob";
+        names[2] = "Charlie";</code></pre>
+
+            <li><strong>Two-Dimensional Array:</strong> A grid or matrix of elements.</li>
+            <pre><code>int[,] matrix = new int[2, 3] {
+        {1, 2, 3},
+        {4, 5, 6}
+        };
+        Console.WriteLine(matrix[1, 2]); // Output: 6</code></pre>
+
+            <li><strong>Jagged Array:</strong> An array of arrays, where each sub-array can have a different length.</li>
+            <pre><code>int[][] jagged = new int[2][];
+        jagged[0] = new int[] { 1, 2 };
+        jagged[1] = new int[] { 3, 4, 5 };
+        Console.WriteLine(jagged[1][2]); // Output: 5</code></pre>
+        </ul>
+        </section>
+
+
+      <section id="list">
+        <h2>📋 List&lt;T&gt;</h2>
+        <p><strong>Definition:</strong> A dynamic array that can grow or shrink. Part of <code>System.Collections.Generic</code>.</p>
+
+        <pre><code>using System.Collections.Generic;
+
+        List&lt;string&gt; fruits = new List&lt;string&gt;();
+
+        // ✅ Add
+        fruits.Add("Apple");
+        fruits.Add("Banana");
+
+        // ✅ Access
+        Console.WriteLine(fruits[0]); // Output: Apple
+
+        // ✅ Update
+        fruits[1] = "Mango"; // Replaces Banana with Mango
+
+        // ✅ Delete
+        fruits.Remove("Apple"); // Removes by value
+        fruits.RemoveAt(0);     // Removes by index
+
+        // ✅ Check
+        Console.WriteLine(fruits.Contains("Mango")); // Output: True
+        </code></pre>
+
+        <p><strong>Use Case:</strong> When you need a resizable array with built-in methods like <code>Add</code>, <code>Remove</code>, <code>Contains</code>.</p>
+    </section>
+
+      <section id="dictionary">
+        <h2>🔑 Dictionary&lt;TKey, TValue&gt;</h2>
+        <p><strong>Definition:</strong> A collection of key-value pairs. Keys must be unique.</p>
+
+        <pre><code>Dictionary&lt;string, int&gt; ages = new Dictionary&lt;string, int&gt;();
+
+        // ✅ Add
+        ages["Alice"] = 30;
+        ages.Add("Bob", 25);
+
+        // ✅ Access
+        Console.WriteLine(ages["Bob"]); // Output: 25
+
+        // ✅ Update
+        ages["Bob"] = 26; // Updates Bob's age
+
+        // ✅ Delete
+        ages.Remove("Alice");
+
+        // ✅ Check
+        Console.WriteLine(ages.ContainsKey("Bob")); // Output: True
+        </code></pre>
+
+        <p><strong>Use Case:</strong> Fast lookup by key, mapping identifiers to values.</p>
+        </section>
+
+      <section id="queue">
+        <h2>🚚 Queue&lt;T&gt;</h2>
+        <p><strong>Definition:</strong> A first-in, first-out (FIFO) collection.</p>
+
+        <pre><code>Queue&lt;string&gt; tasks = new Queue&lt;string&gt;();
+
+        // ✅ Add
+        tasks.Enqueue("Task 1");
+        tasks.Enqueue("Task 2");
+
+        // ✅ Access (Peek without removing)
+        Console.WriteLine(tasks.Peek()); // Output: Task 1
+
+        // ✅ Delete (Dequeue removes front item)
+        string completed = tasks.Dequeue(); // Task 1
+
+        // ✅ Check
+        Console.WriteLine(tasks.Contains("Task 2")); // Output: True
+        </code></pre>
+
+        <p><strong>Use Case:</strong> Processing items in the order they were added.</p>
+        </section>
+
+      <section id="stack">
+        <h2>🗂️ Stack&lt;T&gt;</h2>
+        <p><strong>Definition:</strong> A last-in, first-out (LIFO) collection.</p>
+
+        <pre><code>Stack&lt;string&gt; history = new Stack&lt;string&gt;();
+
+        // ✅ Add
+        history.Push("Page A");
+        history.Push("Page B");
+
+        // ✅ Access (Peek without removing)
+        Console.WriteLine(history.Peek()); // Output: Page B
+
+        // ✅ Delete (Pop removes top item)
+        string lastPage = history.Pop(); // Page B
+
+        // ✅ Check
+        Console.WriteLine(history.Contains("Page A")); // Output: True
+        </code></pre>
+
+        <p><strong>Use Case:</strong> Undo operations, backtracking, nested parsing.</p>
+        </section>
+
+      <section id="hashset">
+        <h2>🧩 HashSet&lt;T&gt;</h2>
+        <p><strong>Definition:</strong> A collection of unique elements. Fast lookup and no duplicates.</p>
+
+        <pre><code>HashSet&lt;int&gt; ids = new HashSet&lt;int&gt;();
+
+        // ✅ Add
+        ids.Add(101);
+        ids.Add(102);
+        ids.Add(101); // Duplicate ignored
+
+        // ✅ Access (Check membership)
+        Console.WriteLine(ids.Contains(102)); // Output: True
+
+        // ✅ Delete
+        ids.Remove(101);
+
+        // ✅ Count
+        Console.WriteLine(ids.Count); // Output: 1
+        </code></pre>
+
+        <p><strong>Use Case:</strong> Membership testing, enforcing uniqueness.</p>
+        </section>
+
+      <section id="summary">
+  <h2>📘 Summary</h2>
+  <ul>
+    <li><strong>Arrays</strong> are fixed-size and best for simple, static data.</li>
+    <li><strong>List&lt;T&gt;</strong> is a dynamic array with rich methods.</li>
+    <li><strong>Dictionary&lt;TKey, TValue&gt;</strong> maps keys to values for fast lookup.</li>
+    <li><strong>Queue&lt;T&gt;</strong> processes items in FIFO order.</li>
+    <li><strong>Stack&lt;T&gt;</strong> processes items in LIFO order.</li>
+    <li><strong>HashSet&lt;T&gt;</strong> stores unique elements with fast membership testing.</li>
+  </ul>
+  <div class="note">
+    <strong>Educator Tip:</strong> Use arrays for fixed-size data and collections for dynamic, flexible structures. Encourage students to choose the right tool based on access patterns, mutability, and performance needs.
+  </div>
+</section>
+
+<footer>
+      &copy; 2025 Object-Oriented Programming. Ronald M. Marasigan
+</footer>

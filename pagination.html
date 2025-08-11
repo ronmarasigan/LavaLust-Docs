@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagination Class Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0d6efd;
+        }
+        code {
+            background: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        th {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Pagination Class Documentation</h1>
+
+<h2>Overview</h2>
+<p>The <code>Pagination</code> class handles server-side pagination for LavaLust-based applications. It generates metadata and styled pagination links using configurable themes like Bootstrap, Tailwind, or custom layouts.</p>
+
+<h2>Properties</h2>
+<table>
+    <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>$page_array</code></td><td>array</td><td>Stores pagination metadata</td></tr>
+    <tr><td><code>$page_num</code></td><td>int</td><td>Current page number</td></tr>
+    <tr><td><code>$rows_per_page</code></td><td>int</td><td>Number of rows per page</td></tr>
+    <tr><td><code>$crumbs</code></td><td>int</td><td>Number of visible pagination links</td></tr>
+    <tr><td><code>$pagination</code></td><td>array</td><td>Stores rendered pagination output</td></tr>
+    <tr><td><code>$first_link</code></td><td>string</td><td>Label for the first page link</td></tr>
+    <tr><td><code>$next_link</code></td><td>string</td><td>Label for the next page link</td></tr>
+    <tr><td><code>$prev_link</code></td><td>string</td><td>Label for the previous page link</td></tr>
+    <tr><td><code>$last_link</code></td><td>string</td><td>Label for the last page link</td></tr>
+    <tr><td><code>$page_delimiter</code></td><td>string</td><td>Delimiter between base URL and page number</td></tr>
+    <tr><td><code>$theme</code></td><td>string</td><td>Pagination theme</td></tr>
+    <tr><td><code>$classes</code></td><td>array</td><td>CSS class map for HTML output</td></tr>
+    <tr><td><code>$LAVA</code></td><td>object</td><td>Reference to the LavaLust instance</td></tr>
+</table>
+
+<h2>Methods</h2>
+
+<h3>__construct()</h3>
+<p>Initializes the class, loads session and language helpers, and sets default theme.</p>
+
+<h3>set_theme(string $theme)</h3>
+<p>Set a theme like <code>'bootstrap'</code>, <code>'tailwind'</code>, or <code>'custom'</code>.</p>
+
+<pre><code>$pagination->set_theme('tailwind');</code></pre>
+
+<h3>set_custom_classes(array $classes)</h3>
+<p>Customize the HTML class names used in rendering.</p>
+
+<pre><code>$this->call->library('pagination');
+    $this->pagination->set_custom_classes([
+    'ul' => 'my-custom-ul',
+    'li' => 'my-custom-li'
+]);</code></pre>
+
+<h3>set_options(array $options)</h3>
+<p>Override labels and delimiters dynamically.</p>
+
+<pre><code>$this->pagination->set_options([
+    'first_link' => 'First Page',
+    'page_delimiter' => '?page='
+]);</code></pre>
+
+<h3>initialize(int $total_rows, int $rows_per_page, int $page_num, string $url, int $crumbs = 5): array</h3>
+<p>Setup and return pagination data.</p>
+
+<pre><code>$data['pagination'] = $this->pagination->initialize($total_rows, 10, $current_page, 'users/page');</code></pre>
+
+<h3>paginate(): string</h3>
+<p>Returns the HTML string for the pagination bar.</p>
+
+<pre><code>echo $this->pagination->paginate();</code></pre>
+
+<h3>build_link(int $page, string $label, string $active_class = ''): string</h3>
+<p>Internal method to generate individual link.</p>
+
+<h3>render_pages(int $page_num, int $last_page): array</h3>
+<p>Internal method to return visible page numbers.</p>
+
+<h2>Example Usage</h2>
+
+<pre><code>$this->call->library('pagination');
+
+$this->pagination->set_theme('bootstrap');
+$this->pagination->set_options([
+    'first_link' => '&lt;&lt; First',
+    'last_link'  => 'Last &gt;&gt;'
+]);
+
+$pagination_data = $this->pagination->initialize($total_rows, 10, $current_page, 'products/page');
+$data['limit'] = $this->pagination_data['limit'];
+$data['pagination'] = $this->pagination->paginate();</code></pre>
+
+<h2>Supported Themes</h2>
+<ul>
+    <li><strong>Bootstrap</strong></li>
+    <li><strong>Tailwind</strong></li>
+    <li><strong>Custom</strong></li>
+</ul>
+
+<h2>Notes</h2>
+<ul>
+    <li>Relies on LavaLust's <code>language</code> and <code>session</code> systems.</li>
+    <li>Use <code>$this->pagination_data['limit']</code> in SQL queries.</li>
+</ul>
+
+</body>
+</html>
