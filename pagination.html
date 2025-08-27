@@ -124,7 +124,7 @@
       </div>
 
       <div class="method">
-        <h3>initialize(array $config)</h3>
+        <h3>initialize($total_rows, $per_page, $current, $link)</h3>
         <p>Initializes or updates pagination settings.</p>
         <table class="info-table">
           <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
@@ -143,34 +143,24 @@
     <section id="usage" class="section">
       <h2>Usage Examples</h2>
 
-      <h3>Default Pagination</h3>
-      <pre><code>$config = [
-  'total_rows' => 100,
-  'per_page' => 10,
-  'current_page' => 1
-];
+    <pre><code>
+$records_per_page = 10;
 
-$pager = new Pagination($config);
-echo $pager->paginate();</code></pre>
-
-      <h3>Bootstrap Theme</h3>
-      <pre><code>$pager = new Pagination([
-  'total_rows' => 50,
-  'per_page' => 5,
-  'current_page' => 2,
-  'theme' => 'bootstrap'
+$all = $this->author_model->page($q, $records_per_page, $page);
+$data['all'] = $all['records'];
+$total_rows = $all['total_rows'];
+$this->pagination->set_options([
+  'first_link'     => '⏮ First',
+  'last_link'      => 'Last ⏭',
+  'next_link'      => 'Next →',
+  'prev_link'      => '← Prev',
+  'page_delimiter' => '&page='
 ]);
-echo $pager->paginate();</code></pre>
-
-      <h3>Tailwind Theme</h3>
-      <pre><code>$pager = new Pagination();
-$pager->initialize([
-  'total_rows' => 75,
-  'per_page' => 15,
-  'current_page' => 3
-]);
-$pager->set_theme('tailwind');
-echo $pager->paginate();</code></pre>
+$this->pagination->set_theme('bootstrap'); // or 'tailwind', or 'custom'
+$this->pagination->initialize($total_rows, $records_per_page, $page, site_url('author').'?q='.$q);
+$data['page'] = $this->pagination->paginate();
+$this->call->view('authors', $data);
+    </code></pre>
     </section>
 
     <!-- Best Practices -->
