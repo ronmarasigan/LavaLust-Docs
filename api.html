@@ -134,8 +134,9 @@
     <p>Generates a signed JWT token.</p>
     <table class="info-table">
       <tr><td><span class="param">$payload</span></td><td>array</td><td>Claims to encode</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">string</span> — Encoded JWT</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><span class="return">string</span> — Encoded JWT</p>
   </div>
 
   <div class="method">
@@ -143,8 +144,9 @@
     <p>Validates and decodes a JWT token.</p>
     <table class="info-table">
       <tr><td><span class="param">$token</span></td><td>string</td><td>JWT string</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">array</span> — Decoded payload</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><span class="return">array</span> — Decoded payload</p>
   </div>
 
   <div class="method">
@@ -152,8 +154,9 @@
     <p>Requires a valid JWT token; otherwise responds with 401 Unauthorized.</p>
     <table class="info-table">
       <tr><td colspan="3">None</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">array</span> — Decoded JWT payload</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><span class="return">array</span> — Decoded JWT payload</p>
   </div>
 </section>
 
@@ -165,8 +168,9 @@
     <p>Issues new access and refresh tokens for a user.</p>
     <table class="info-table">
       <tr><td><span class="param">$user_data</span></td><td>array</td><td>User payload for claims</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">array</span> — Tokens + expiry</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><span class="return">array</span> — Tokens + expiry</p>
     <pre>{
   "access_token": "...",
   "refresh_token": "...",
@@ -179,8 +183,9 @@
     <p>Generates a new access token from a valid refresh token.</p>
     <table class="info-table">
       <tr><td><span class="param">$refresh_token</span></td><td>string</td><td>Refresh token</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">array</span> — New access token</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><td colspan="2"><span class="return">array</span> — New access token</p>
   </div>
 
   <div class="method">
@@ -188,8 +193,9 @@
     <p>Revokes a refresh token from the database.</p>
     <table class="info-table">
       <tr><td><span class="param">$refresh_token</span></td><td>string</td><td>Refresh token</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">bool</span> — True if revoked</td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><td colspan="2"><span class="return">bool</span> — True if revoked</p>
   </div>
 </section>
 
@@ -201,8 +207,9 @@
     <table class="info-table">
       <tr><td><span class="param">$user</span></td><td>string</td><td>Expected username</td></tr>
       <tr><td><span class="param">$pass</span></td><td>string</td><td>Expected password</td></tr>
-      <tr><th>Returns</th><td colspan="2"><span class="return">void</span></td></tr>
     </table>
+    <h4>Return Value</h4>
+    <p><td colspan="2"><span class="return">void</span></p>
   </div>
 </section>
 
