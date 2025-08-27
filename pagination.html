@@ -1,138 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Pagination Class Documentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            padding: 40px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        h1, h2, h3 {
-            color: #0d6efd;
-        }
-        code {
-            background: #f1f1f1;
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        pre {
-            background: #f1f1f1;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
-        th {
-            background: #e9ecef;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Pagination Class Documentation - LavaLust PHP Framework</title>
+  <style>
+    :root {
+      --primary: #3498db;
+      --secondary: #2c3e50;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #f9f9f9;
+      --dark: #333;
+      --gray: #ddd;
+      --purple: #8e44ad;
+    }
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:var(--dark);background:var(--light);padding:20px;}
+    .container {max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:20px;}
+    header {grid-column:1/-1;text-align:center;margin-bottom:30px;padding-bottom:20px;border-bottom:3px solid var(--primary);}
+    h1 {color:var(--secondary);margin-bottom:10px;}
+    .subtitle {color:#777;font-size:1.1rem;}
+    nav.sidebar {background:white;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);padding:20px;align-self:start;position:sticky;top:20px;max-height:90vh;overflow-y:auto;}
+    nav h3 {color:var(--primary);margin-bottom:15px;padding-bottom:5px;border-bottom:1px solid var(--gray);}
+    nav ul {list-style:none;}
+    nav ul li {margin-bottom:5px;}
+    nav ul li a {display:block;padding:8px 10px;color:var(--dark);text-decoration:none;border-radius:4px;transition:all .3s;font-size:0.95rem;}
+    nav ul li a:hover {background:var(--primary);color:white;}
+    .content {background:white;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);padding:30px;}
+    .section {margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid var(--gray);}
+    .section:last-child {border-bottom:none;}
+    h2 {color:var(--secondary);margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--primary);}
+    h3 {color:var(--primary);margin:25px 0 15px;}
+    h4 {color:#555;margin:20px 0 10px;}
+    p {margin-bottom:15px;}
+    code {background:#2d2d2d;padding:2px 6px;border-radius:3px;font-family:'Consolas','Monaco',monospace;font-size:0.95em;}
+    pre {background:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto;font-family:'Consolas','Monaco',monospace;line-height:1.5;margin:20px 0;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    .method {background:#f0f7ff;padding:20px;border-radius:5px;margin-bottom:20px;border-left:4px solid var(--primary);}
+    .param {font-weight:bold;color:var(--primary);font-family:monospace;}
+    .return {font-weight:bold;color:var(--success);}
+    .note {background:#fffde7;padding:15px;border-left:4px solid #ffd600;margin:20px 0;border-radius:4px;}
+    .warning {background:#ffebee;padding:15px;border-left:4px solid var(--danger);margin:20px 0;border-radius:4px;}
+    .info-table {width:100%;border-collapse:collapse;margin:20px 0;}
+    .info-table th,.info-table td {border:1px solid var(--gray);padding:12px;text-align:left;}
+    .info-table th {background:var(--primary);color:white;}
+    .info-table tr:nth-child(even){background:#f2f2f2;}
+    .property {margin-bottom:15px;}
+    .property-name {font-weight:bold;color:var(--purple);}
+    .property-type {color:var(--primary);font-style:italic;}
+    footer {grid-column:1/-1;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--gray);color:#777;}
+  </style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>Pagination Class Documentation</h1>
+    <p class="subtitle">LavaLust PHP Framework</p>
+  </header>
 
-<h1>Pagination Class Documentation</h1>
+  <nav class="sidebar">
+    <h3>Contents</h3>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#methods">Methods</a></li>
+      <li><a href="#usage">Usage Examples</a></li>
+      <li><a href="#best-practices">Best Practices</a></li>
+    </ul>
+  </nav>
 
-<h2>Overview</h2>
-<p>The <code>Pagination</code> class handles server-side pagination for LavaLust-based applications. It generates metadata and styled pagination links using configurable themes like Bootstrap, Tailwind, or custom layouts.</p>
+  <div class="content">
+    <!-- Overview -->
+    <section id="overview" class="section">
+      <h2>Overview</h2>
+      <p>The Pagination class helps generate page links for dividing records into multiple pages. It supports different themes such as Default, Bootstrap, and Tailwind.</p>
+    </section>
 
-<h2>Properties</h2>
-<table>
-    <tr><th>Property</th><th>Type</th><th>Description</th></tr>
-    <tr><td><code>$page_array</code></td><td>array</td><td>Stores pagination metadata</td></tr>
-    <tr><td><code>$page_num</code></td><td>int</td><td>Current page number</td></tr>
-    <tr><td><code>$rows_per_page</code></td><td>int</td><td>Number of rows per page</td></tr>
-    <tr><td><code>$crumbs</code></td><td>int</td><td>Number of visible pagination links</td></tr>
-    <tr><td><code>$pagination</code></td><td>array</td><td>Stores rendered pagination output</td></tr>
-    <tr><td><code>$first_link</code></td><td>string</td><td>Label for the first page link</td></tr>
-    <tr><td><code>$next_link</code></td><td>string</td><td>Label for the next page link</td></tr>
-    <tr><td><code>$prev_link</code></td><td>string</td><td>Label for the previous page link</td></tr>
-    <tr><td><code>$last_link</code></td><td>string</td><td>Label for the last page link</td></tr>
-    <tr><td><code>$page_delimiter</code></td><td>string</td><td>Delimiter between base URL and page number</td></tr>
-    <tr><td><code>$theme</code></td><td>string</td><td>Pagination theme</td></tr>
-    <tr><td><code>$classes</code></td><td>array</td><td>CSS class map for HTML output</td></tr>
-    <tr><td><code>$LAVA</code></td><td>object</td><td>Reference to the LavaLust instance</td></tr>
-</table>
+    <!-- Properties -->
+    <section id="properties" class="section">
+      <h2>Properties</h2>
 
-<h2>Methods</h2>
+      <div class="property">
+        <span class="property-name">$total_rows</span> <span class="property-type">int</span>
+        <p>Total number of records.</p>
+      </div>
 
-<h3>__construct()</h3>
-<p>Initializes the class, loads session and language helpers, and sets default theme.</p>
+      <div class="property">
+        <span class="property-name">$per_page</span> <span class="property-type">int</span>
+        <p>Number of records shown per page.</p>
+      </div>
 
-<h3>set_theme(string $theme)</h3>
-<p>Set a theme like <code>'bootstrap'</code>, <code>'tailwind'</code>, or <code>'custom'</code>.</p>
+      <div class="property">
+        <span class="property-name">$current_page</span> <span class="property-type">int</span>
+        <p>Currently active page.</p>
+      </div>
 
-<pre><code>$pagination->set_theme('tailwind');</code></pre>
+      <div class="property">
+        <span class="property-name">$theme</span> <span class="property-type">string</span>
+        <p>Theme used for pagination links (default, bootstrap, tailwind).</p>
+      </div>
+    </section>
 
-<h3>set_custom_classes(array $classes)</h3>
-<p>Customize the HTML class names used in rendering.</p>
+    <!-- Methods -->
+    <section id="methods" class="section">
+      <h2>Methods</h2>
 
-<pre><code>$this->call->library('pagination');
-    $this->pagination->set_custom_classes([
-    'ul' => 'my-custom-ul',
-    'li' => 'my-custom-li'
-]);</code></pre>
+      <div class="method">
+        <h3>__construct(array $config = [])</h3>
+        <p>Initializes pagination with optional configuration.</p>
+        <table class="info-table">
+          <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+          <tr><td class="param">$config</td><td>array</td><td>Configuration options like total_rows, per_page, theme.</td></tr>
+        </table>
+      </div>
 
-<h3>set_options(array $options)</h3>
-<p>Override labels and delimiters dynamically.</p>
+      <div class="method">
+        <h3>set_theme(string $theme)</h3>
+        <p>Sets the pagination theme.</p>
+        <table class="info-table">
+          <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+          <tr><td class="param">$theme</td><td>string</td><td>Theme name (default, bootstrap, tailwind).</td></tr>
+        </table>
+      </div>
 
-<pre><code>$this->pagination->set_options([
-    'first_link' => 'First Page',
-    'page_delimiter' => '?page='
-]);</code></pre>
+      <div class="method">
+        <h3>initialize(array $config)</h3>
+        <p>Initializes or updates pagination settings.</p>
+        <table class="info-table">
+          <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+          <tr><td class="param">$config</td><td>array</td><td>Settings for total_rows, per_page, current_page, etc.</td></tr>
+        </table>
+      </div>
 
-<h3>initialize(int $total_rows, int $rows_per_page, int $page_num, string $url, int $crumbs = 5): array</h3>
-<p>Setup and return pagination data.</p>
+      <div class="method">
+        <h3>paginate()</h3>
+        <p>Generates and returns pagination links.</p>
+        <p><span class="return">Returns:</span> string</p>
+      </div>
+    </section>
 
-<pre><code>$data['pagination'] = $this->pagination->initialize($total_rows, 10, $current_page, 'users/page');</code></pre>
+    <!-- Usage Examples -->
+    <section id="usage" class="section">
+      <h2>Usage Examples</h2>
 
-<h3>paginate(): string</h3>
-<p>Returns the HTML string for the pagination bar.</p>
+      <h3>Default Pagination</h3>
+      <pre><code>$config = [
+  'total_rows' => 100,
+  'per_page' => 10,
+  'current_page' => 1
+];
 
-<pre><code>echo $this->pagination->paginate();</code></pre>
+$pager = new Pagination($config);
+echo $pager->paginate();</code></pre>
 
-<h3>build_link(int $page, string $label, string $active_class = ''): string</h3>
-<p>Internal method to generate individual link.</p>
-
-<h3>render_pages(int $page_num, int $last_page): array</h3>
-<p>Internal method to return visible page numbers.</p>
-
-<h2>Example Usage</h2>
-
-<pre><code>$this->call->library('pagination');
-
-$this->pagination->set_theme('bootstrap');
-$this->pagination->set_options([
-    'first_link' => '&lt;&lt; First',
-    'last_link'  => 'Last &gt;&gt;'
+      <h3>Bootstrap Theme</h3>
+      <pre><code>$pager = new Pagination([
+  'total_rows' => 50,
+  'per_page' => 5,
+  'current_page' => 2,
+  'theme' => 'bootstrap'
 ]);
+echo $pager->paginate();</code></pre>
 
-$pagination_data = $this->pagination->initialize($total_rows, 10, $current_page, 'products/page');
-$data['limit'] = $this->pagination_data['limit'];
-$data['pagination'] = $this->pagination->paginate();</code></pre>
+      <h3>Tailwind Theme</h3>
+      <pre><code>$pager = new Pagination();
+$pager->initialize([
+  'total_rows' => 75,
+  'per_page' => 15,
+  'current_page' => 3
+]);
+$pager->set_theme('tailwind');
+echo $pager->paginate();</code></pre>
+    </section>
 
-<h2>Supported Themes</h2>
-<ul>
-    <li><strong>Bootstrap</strong></li>
-    <li><strong>Tailwind</strong></li>
-    <li><strong>Custom</strong></li>
-</ul>
+    <!-- Best Practices -->
+    <section id="best-practices" class="section">
+      <h2>Best Practices</h2>
 
-<h2>Notes</h2>
-<ul>
-    <li>Relies on LavaLust's <code>language</code> and <code>session</code> systems.</li>
-    <li>Use <code>$this->pagination_data['limit']</code> in SQL queries.</li>
-</ul>
+      <div class="note">
+        <p>Ensure that <b>$total_rows</b> always matches the actual number of rows from your database query.</p>
+      </div>
 
+      <div class="note">
+        <p>Keep <b>$per_page</b> consistent between your query and pagination setup to avoid mismatched results.</p>
+      </div>
+
+      <div class="warning">
+        <p>Always call <b>initialize()</b> or pass configuration in the constructor before calling <b>paginate()</b>, otherwise pagination may not render correctly.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 LavaLust PHP Framework Documentation
+  </footer>
+</div>
 </body>
 </html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LavaLust Framework - Api Class Documentation</title>
+    <style>
+        /* same style from your provided file */
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #f9f9f9;
+            --dark: #333;
+            --gray: #ddd;
+            --purple: #8e44ad;
+        }
+        * {margin:0;padding:0;box-sizing:border-box;}
+        body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:var(--dark);background:var(--light);padding:20px;}
+        .container {max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:20px;}
+        header {grid-column:1/-1;text-align:center;margin-bottom:30px;padding-bottom:20px;border-bottom:3px solid var(--primary);}
+        h1 {color:var(--secondary);margin-bottom:10px;}
+        .subtitle {color:#777;font-size:1.1rem;}
+        nav.sidebar {background:white;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);padding:20px;align-self:start;position:sticky;top:20px;max-height:90vh;overflow-y:auto;}
+        nav h3 {color:var(--primary);margin-bottom:15px;padding-bottom:5px;border-bottom:1px solid var(--gray);}
+        nav ul {list-style:none;}
+        nav ul li {margin-bottom:5px;}
+        nav ul li a {display:block;padding:8px 10px;color:var(--dark);text-decoration:none;border-radius:4px;transition:all .3s;font-size:0.95rem;}
+        nav ul li a:hover {background:var(--primary);color:white;}
+        .content {background:white;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);padding:30px;}
+        .section {margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid var(--gray);}
+        .section:last-child {border-bottom:none;}
+        h2 {color:var(--secondary);margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--primary);}
+        h3 {color:var(--primary);margin:25px 0 15px;}
+        h4 {color:#555;margin:20px 0 10px;}
+        p {margin-bottom:15px;}
+        code {background:#f5f5f5;padding:2px 6px;border-radius:3px;font-family:'Consolas','Monaco',monospace;font-size:0.95em;}
+        pre {background:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:5px;overflow-x:auto;font-family:'Consolas','Monaco',monospace;line-height:1.5;margin:20px 0;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+        .method {background:#f0f7ff;padding:20px;border-radius:5px;margin-bottom:20px;border-left:4px solid var(--primary);}
+        .param {font-weight:bold;color:var(--primary);font-family:monospace;}
+        .return {font-weight:bold;color:var(--success);}
+        .note {background:#fffde7;padding:15px;border-left:4px solid #ffd600;margin:20px 0;border-radius:4px;}
+        .warning {background:#ffebee;padding:15px;border-left:4px solid var(--danger);margin:20px 0;border-radius:4px;}
+        .info-table {width:100%;border-collapse:collapse;margin:20px 0;}
+        .info-table th,.info-table td {border:1px solid var(--gray);padding:12px;text-align:left;}
+        .info-table th {background:var(--primary);color:white;}
+        .info-table tr:nth-child(even){background:#f2f2f2;}
+        .property {margin-bottom:15px;}
+        .property-name {font-weight:bold;color:var(--purple);}
+        .property-type {color:var(--primary);font-style:italic;}
+        footer {grid-column:1/-1;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--gray);color:#777;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>API Class</h1>
+        <p class="subtitle">RESTful API Utilities for LavaLust Framework</p>
+    </header>
+
+    <nav class="sidebar">
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#overview">Class Overview</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#utilities">Utilities</a></li>
+            <li><a href="#jwt">JWT Authentication</a></li>
+            <li><a href="#tokens">Access & Refresh Tokens</a></li>
+            <li><a href="#basic">Basic Authentication</a></li>
+            <li><a href="#examples">Usage Examples</a></li>
+            <li><a href="#best">Best Practices</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <section id="overview" class="section">
+            <h2>Class Overview</h2>
+            <p>The <code>Api</code> class provides a full set of tools for building secure RESTful APIs in LavaLust Framework. It supports:</p>
+            <ul>
+                <li>CORS handling</li>
+                <li>JSON body parsing</li>
+                <li>JWT access tokens</li>
+                <li>Refresh token management</li>
+                <li>Basic Authentication</li>
+            </ul>
+        </section>
+
+        <section id="properties" class="section">
+            <h2>Properties</h2>
+
+            <div class="property">
+                <div class="property-name">refresh_token_table</div>
+                <div class="property-type">string</div>
+                <p>Database table for storing refresh tokens.</p>
+            </div>
+            <div class="property">
+                <div class="property-name">payload_token_expiration</div>
+                <div class="property-type">int</div>
+                <p>Access token validity in seconds (default: 900 = 15 min).</p>
+            </div>
+            <div class="property">
+                <div class="property-name">refresh_token_expiration</div>
+                <div class="property-type">int</div>
+                <p>Refresh token validity in seconds (default: 604800 = 7 days).</p>
+            </div>
+            <div class="property">
+                <div class="property-name">allow_origin</div>
+                <div class="property-type">string</div>
+                <p>Allowed CORS origin.</p>
+            </div>
+            <div class="property">
+                <div class="property-name">jwt_secret</div>
+                <div class="property-type">string</div>
+                <p>Secret key for JWT signing.</p>
+            </div>
+        </section>
+
+        <section id="utilities" class="section">
+            <h2>Utility Methods</h2>
+            <div class="method">
+                <h3>body()</h3>
+                <p>Parses request body into an array (supports JSON, POST, raw input).</p>
+            </div>
+            <div class="method">
+                <h3>get_query_params()</h3>
+                <p>Returns query parameters (<code>$_GET</code>).</p>
+            </div>
+            <div class="method">
+                <h3>require_method($method)</h3>
+                <p>Ensures the request method matches, else sends 405 error.</p>
+            </div>
+            <div class="method">
+                <h3>respond($data, $code=200)</h3>
+                <p>Send a JSON response with HTTP status code.</p>
+            </div>
+        </section>
+
+        <section id="jwt" class="section">
+            <h2>JWT Authentication</h2>
+            <div class="method">
+                <h3>encode_jwt($payload)</h3>
+                <p>Creates a signed JWT token.</p>
+            </div>
+            <div class="method">
+                <h3>decode_jwt($token)</h3>
+                <p>Validates and decodes a JWT token.</p>
+            </div>
+            <div class="method">
+                <h3>require_jwt()</h3>
+                <p>Requires a valid JWT or sends <code>401 Unauthorized</code>.</p>
+            </div>
+        </section>
+
+        <section id="tokens" class="section">
+            <h2>Access & Refresh Tokens</h2>
+            <div class="method">
+                <h3>issue_tokens($user_data)</h3>
+                <p>Issues access and refresh tokens for a user.</p>
+                <pre>{
+  "access_token": "...",
+  "refresh_token": "...",
+  "expires_in": 900
+}</pre>
+            </div>
+            <div class="method">
+                <h3>refresh_access_token($refresh_token)</h3>
+                <p>Generates new access token using refresh token.</p>
+            </div>
+            <div class="method">
+                <h3>revoke_refresh_token($refresh_token)</h3>
+                <p>Revokes refresh token from DB.</p>
+            </div>
+        </section>
+
+        <section id="basic" class="section">
+            <h2>Basic Authentication</h2>
+            <div class="method">
+                <h3>require_basic_auth($user,$pass)</h3>
+                <p>Forces Basic Auth, else <code>401 Unauthorized</code>.</p>
+            </div>
+        </section>
+
+        <!-- Sample Usage -->
+    <section id="examples" class="section">
+      <h2 class="text-2xl font-bold text-blue-700 mb-3">🧑‍💻 Sample Usage</h2>
+
+      <h3 class="text-xl font-semibold text-blue-600 mt-4">Example 1: Public Endpoint</h3>
+      <pre>
+class HelloController extends Controller {
+    public function world() {
+        $this->call->library('api');
+        $api->respond(['message' => 'Hello World']);
+    }
+}
+      </pre>
+
+      <h3 class="text-xl font-semibold text-blue-600 mt-4">Example 2: Secure Endpoint (JWT)</h3>
+      <pre>
+class UserController extends Controller {
+    public function profile() {
+        $this->call->library('api');
+        $payload = $api->require_jwt();
+        $api->respond([
+            'user_id' => $payload['sub'],
+            'role' => $payload['role']
+        ]);
+    }
+}
+      </pre>
+
+      <h3 class="text-xl font-semibold text-blue-600 mt-4">Example 3: Login & Issue Tokens</h3>
+      <pre>
+class AuthController extends Controller {
+    public function login() {
+        $this->call->library('api');
+        $data = $api->body();
+        if ($data['username']==='admin' && $data['password']==='secret') {
+            $tokens = $api->issue_tokens(['id'=>1,'role'=>'admin']);
+            $api->respond($tokens);
+        }
+        $api->respond_error('Invalid credentials',401);
+    }
+}
+      </pre>
+
+      <h3 class="text-xl font-semibold text-blue-600 mt-4">Example 4: Refresh Token</h3>
+      <pre>
+class AuthController extends Controller {
+    public function refresh() {
+        $this->call->library('api');
+        $data = $api->body();
+        if (!isset($data['refresh_token'])) {
+            $api->respond_error('Missing refresh token',400);
+        }
+        $api->refresh_access_token($data['refresh_token']);
+    }
+}
+      </pre>
+
+      <h3 class="text-xl font-semibold text-blue-600 mt-4">Example 5: Basic Auth</h3>
+      <pre>
+class AdminController extends Controller {
+    public function dashboard() {
+        $api = new Api();
+        $api->require_basic_auth('admin','1234');
+        $api->respond(['message'=>'Welcome to admin dashboard']);
+    }
+}
+      </pre>
+    </section>
+
+        <section id="best" class="section">
+            <h2>Best Practices</h2>
+            <div class="note">
+                <p>Always store <code>jwt_secret</code> securely and rotate periodically.</p>
+            </div>
+            <div class="warning">
+                <p>Do not expose refresh tokens to client-side JS; keep them HttpOnly cookies.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        LavaLust Framework - API Class Documentation
+    </footer>
+</div>
+</body>
+</html>

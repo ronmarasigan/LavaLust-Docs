@@ -105,6 +105,7 @@
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-9">Config Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-10">Encryption Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-11">Migration Class</a></li>
+					<li class="nav-item"><a class="nav-link" href="pagination.html">Pagination Class</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-5-12">Restful API</a></li>
 					<li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-6"><span class="theme-icon-holder me-2"><i class="fas fa-database"></i></span>Database Reference</a></li>
 					<li class="nav-item"><a class="nav-link scrollto" href="#item-6-1">Database Configuration</a></li>
@@ -189,7 +190,7 @@ define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 					</section><!--//section-->
 					<section class="docs-section" id="item-2-3">
 						<h2 class="section-heading">Upgrading Version</h2>
-						<h4>Upgrading from 3.* to 4.0</h4>
+						<h4>Upgrading from 3.* to >=4.0 </h4>
 						<p>Replace all files and directories in your scheme/ directory.</p>
 						<div class="callout-block callout-block-info">
                             <div class="content">
@@ -1000,10 +1001,10 @@ class Page extends Controller {
 	public function index()
 	{
 		$data['page_title'] = 'Your title';
-		$this->load->view('header');
-		$this->load->view('menu');
-		$this->load->view('content', $data);
-		$this->load->view('footer');
+		$this->call->view('header');
+		$this->call->view('menu');
+		$this->call->view('content', $data);
+		$this->call->view('footer');
 	}
 
 }
@@ -1040,7 +1041,7 @@ $this->call->view('blogview', $data);
 							<pre>
 								<code class="language-php">
 $data = new Someclass();
-$this->load->view('blogview', $data);
+$this->call->view('blogview', $data);
 								</code>
 							</pre>
 						</div>
@@ -1064,10 +1065,10 @@ class Blog extends Controller {
 
 	public function index()
 	{
-			$data['title'] = "My Real Title";
-			$data['heading'] = "My Real Heading";
+		$data['title'] = "My Real Title";
+		$data['heading'] = "My Real Heading";
 
-			$this->call->view('blogview', $data);
+		$this->call->view('blogview', $data);
 	}
 }
 								</code>
@@ -1076,15 +1077,15 @@ class Blog extends Controller {
 						<p>Now open your view file and change the text to variables that correspond to the array keys in your data:</p>
 						<div class="docs-code-block">
 							<pre>
-								<code class="language-html">
-<html>
-<head>
-		<title><?php echo $title;?></title>
-</head>
-<body>
-		<h1><?php echo $heading;?></h1>
-</body>
-</html>
+								<code class="language-php">
+&lt;html>
+&lt;head>
+	&lt;title>&lt;?php echo $title;?>&lt;/title>
+&lt;/head>
+&lt;body>
+	&lt;h1>&lt;?php echo $title;?>&lt;/h1>
+&lt;/body>
+&lt;/html>
 								</code>
 							</pre>
 						</div>
@@ -1100,12 +1101,12 @@ class Blog extends Controller {
 
 	public function index()
 	{
-			$data['todo_list'] = array('Clean House', 'Call Mom', 'Run Errands');
+		$data['todo_list'] = array('Clean House', 'Call Mom', 'Run Errands');
 
-			$data['title'] = "My Real Title";
-			$data['heading'] = "My Real Heading";
+		$data['title'] = "My Real Title";
+		$data['heading'] = "My Real Heading";
 
-			$this->call->view('blogview', $data);
+		$this->call->view('blogview', $data);
 	}
 }
 								</code>
@@ -1114,26 +1115,26 @@ class Blog extends Controller {
 						<p>Now open your view file and create a loop:</p>
 						<div class="docs-code-block">
 							<pre>
-								<code class="language-html">
-<html>
-<head>
-	<title><?php echo $title;?></title>
-</head>
-<body>
-	<h1><?php echo $heading;?></h1>
+								<code class="language-php">
+&lt;html>
+&lt;head>
+	&lt;title>&lt;?php echo $title;?>&lt;/title>
+&lt;/head>
+&lt;body>
+	&lt;h1>&lt;?php echo $heading;?>&lt;/h1>
 
-	<h3>My Todo List</h3>
+	&lt;h3>My Todo List&lt;/h3>
 
-	<ul>
-	<?php foreach ($todo_list as $item):?>
+	&lt;ul>
+	&lt;?php foreach ($todo_list as $item):?>
 
-			<li><?php echo $item;?></li>
+		&lt;li>&lt;?php echo $item;?>&lt;/li>
 
-	<?php endforeach;?>
-	</ul>
+	&lt;?php endforeach;?>
+	&lt;/ul>
 
-</body>
-</html>
+&lt;/body>
+&lt;/html>
 								</code>
 							</pre>
 						</div>
@@ -1231,7 +1232,7 @@ class Model_name extends Model {
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-class User_name extends Model {
+class User_model extends Model {
 
 }
 								</code>
@@ -1258,7 +1259,7 @@ $this->call->model('model_name');
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->load->model('blog/queries');
+$this->call->model('blog/queries');
 								</code>
 							</pre>
 						</div>
@@ -1312,7 +1313,7 @@ class Blog_controller extends Controller {
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->load->database();
+$this->call->database();
 								</code>
 							</pre>
 							
@@ -1586,6 +1587,17 @@ $this->User_model->rollback();
 								</code>
 							</pre>
 						</div>
+						<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>For more ORM documentation check <a href="orm.html">ORM Documentation</a></p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
 					</section><!--//section-->
 					<section class="docs-section" id="item-4-5">
 						<h2 class="section-heading">Helpers</h2>
@@ -1746,7 +1758,7 @@ $this->call->library('someclass');
 						<div class="docs-code-block">
 							<pre>
 								<code class="language-php">
-$this->someclass->some_method();  // Object instances will always be lower case
+$this->someclass->some_method();
 								</code>
 							</pre>
 						</div>
@@ -1771,7 +1783,7 @@ class Someclass {
 
 	public function __construct($params)
 	{
-			// Do something with $params
+		// Do something with $params
 	}
 }
 								</code>
@@ -2765,19 +2777,10 @@ $this->upload
 								<code class="language-php">
 return array(
 	/**
-	* Pagination
-	*/
-	'first_link' => '&lsaquo; First',
-	'next_link' => '&gt;',
-	'prev_link' => '&lt;',
-	'last_link' => 'Last &rsaquo;',
-	'page_delimiter' => '/?page=',//if query string is enabled in your config, you can use something like `/?page=` to this
-	'classes' => array('nav' => '', 'ul' => 'pagination', 'li' => 'page-item', 'a' => 'page-link'),//default for bootstrap 4. You can change the value according to your choice.
-
-	/**
 	* Other String to be translated here
 	*/
 	'welcome' => 'Hello {username} {type}',
+	'first_link' => '&lsaquo; First',
 								</code>
 							</pre>
 						</div>
@@ -2788,19 +2791,10 @@ return array(
 							<code class="language-php">
 return array(
 /**
-* Pagination
-*/
-'first_link' => '&lsaquo; Una',
-'next_link' => '&gt;',
-'prev_link' => '&lt;',
-'last_link' => 'Huli &rsaquo;',
-'page_delimiter' => '/?page=',//if query string is enabled in your config, you can use something like `/?page=` to this
-'classes' => array('nav' => '', 'ul' => 'pagination', 'li' => 'page-item', 'a' => 'page-link'),//default for bootstrap 4. You can change the value according to your choice.
-
-/**
 * Other String to be translated here
 */
 'welcome' => 'Hello {username} {type}',
+'first_link' => '&lsaquo; Una',
 							</code>
 						</pre>
 					</div>
@@ -2811,11 +2805,10 @@ return array(
 $this->call->helper('language');
 language('tl-PH');
 lang('first_link');
-lang('last_link');
 							</code>
 						</pre>
 					</div>
-					<p>In the example, you will see "&lsaquo; Una" and "Huli &rsaquo; instead of the "&lsaquo; First" and "Last &rsaquo;" because you chose tl-PH upon using <span class="code_red">language()</span> function.</p>
+					<p>In the example, you will see "&lsaquo; Una" instead of the "&lsaquo; First" because you chose tl-PH upon using <span class="code_red">language()</span> function.</p>
 					</section><!--//section-->
 					<section class="docs-section" id="item-5-7">
 						<h2 class="section-heading">Session Library</h2>
@@ -2848,7 +2841,7 @@ $this->session;
 									</span><!--//icon-holder-->
 									Important
 								</h4>
-								<p>Because the Loader Class is instantiated by LavaLust base controller, make sure to call parent::__construct() before trying to load a library from inside a controller constructor.</p>
+								<p>Because the Invoker Class is instantiated by LavaLust base controller, make sure to call parent::__construct() before trying to load a library from inside a controller constructor.</p>
 							</div><!--//content-->
 						</div><!--//callout-block-->
 						<h5>How do Sessions work?</h5>
@@ -2992,7 +2985,7 @@ $this->session->unset_userdata($array_items);
 						<h5>Flashdata</h5>
 						<p>LavaLust supports “flashdata”, or session data that will only be available for the next request, and is then automatically cleared.</p>
 						<p>This can be very useful, especially for one-time informational, error or status messages (for example: “Record 2 deleted”).</p>
-						<p>It should be noted that flashdata variables are regular session vars, only marked in a specific way under the ‘__ci_vars’ key (please don’t touch that one, you’ve been warned).</p>
+						<p>It should be noted that flashdata variables are regular session vars, only marked in a specific way under the ‘__lava_vars’ key (please don’t touch that one, you’ve been warned).</p>
 						<p>To mark an existing item as “flashdata”:</p>
 						<div class="docs-code-block">
 							<pre>
@@ -3716,6 +3709,17 @@ $this->api->respond(['message' => 'Logged out']);
 									</code>
 								</pre>
 							</div>
+							<div class="callout-block callout-block-info">
+							<div class="content">
+								<h4 class="callout-title">
+									<span class="callout-icon-holder me-1">
+										<i class="fas fa-info-circle"></i>
+									</span><!--//icon-holder-->
+									Note
+								</h4>
+								<p>For more Restful API documentation check <a href="api.html">Restful API Documentation</a></p>
+							</div><!--//content-->
+						</div><!--//callout-block-->
 					</section>
 				</article>
 				<article class="docs-article" id="section-6">
@@ -4285,14 +4289,24 @@ $this->db->rollBack();
 								</code>
 							</pre>
 						</div>
-
+<div class="callout-block callout-block-info">
+                            <div class="content">
+                                <h4 class="callout-title">
+	                                <span class="callout-icon-holder me-1">
+		                                <i class="fas fa-info-circle"></i>
+		                            </span><!--//icon-holder-->
+	                                Note
+	                            </h4>
+                                <p>For full Query Builder Documentaion check <a href="query_builder.html">Query Builder Documentation</a>.</p>
+                            </div><!--//content-->
+                        </div><!--//callout-block-->
 					</section>
 				</article>
 				<article class="docs-article" id="section-7">
 				    <header class="docs-header">
 					    <h1 class="docs-heading">Helpers</h1>
 					    <section class="docs-intro">
-							<p>LavaLust has Helper files for faster development.</p>
+							<p>LavaLust has Helper files for faster development. Check the list of all helpers.</p>
 						</section><!--//docs-intro-->
 				    </header>
 					<section class="docs-section" id="item-7-1">
