@@ -1,226 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PHP Lecture Notes — What is OOP?</title>
+  <meta charset="UTF-8">
+  <title>PHP OOP Lecture — What is OOP?</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f9f9f9;
       color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5em;
-    }
-    header p {
-      font-size: 1.2em;
-      margin-top: 10px;
-      color: #ecf0f1;
-    }
-    main {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 25px;
+      line-height: 1.6;
     }
-    section {
-      margin-bottom: 40px;
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
     }
     h2 {
-      color: #34495e;
+      margin-top: 35px;
       border-left: 5px solid #3498db;
       padding-left: 15px;
-      background-color: #eef6fc;
+      background-color: #eaf4fc;
       padding: 10px 15px;
       border-radius: 4px;
     }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      background-color: #fff;
-      margin: 10px 0;
-      padding: 15px 20px;
-      border-left: 5px solid #3498db;
-      border-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
-    }
-    li:hover {
-      transform: translateX(5px);
-    }
-    a {
-      text-decoration: none;
-      color: #2c3e50;
-      font-weight: 600;
-    }
-    a:hover {
+    h3 {
+      margin-top: 25px;
       color: #2980b9;
     }
-    .cta {
-      text-align: center;
-      margin-top: 60px;
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
     }
-    .cta a {
-      display: inline-block;
-      background-color: #3498db;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 4px;
-      font-size: 1em;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-    .cta a:hover {
-      background-color: #2980b9;
-    }
-    /* Optional: light styling for code blocks (doesn't alter your palette) */
     pre {
-      background: #fff;
-      border-left: 5px solid #3498db;
-      border-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      background-color: #f5f5f5;
       padding: 15px 20px;
+      border-radius: 5px;
       overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
     }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    nav ul li { border-left-color: transparent; }
+    pre::before {
+      content: "PHP";
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      font-size: 0.75em;
+      color: #888;
+    }
+    .note {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    ul { margin-left: 1.1rem; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>PHP — Introduction to Object-Oriented Programming (OOP)</h1>
-    <p>From PHP 5 onward, you can write PHP in a modern, object-oriented style.</p>
-  </header>
+  <h1>🧩 PHP — Introduction to Object-Oriented Programming (OOP)</h1>
 
-  <main>
-    <nav aria-label="Table of Contents">
-      <h2>Overview</h2>
-      <ul>
-        <li><a href="#what-is-oop">What is OOP?</a></li>
-        <li><a href="#why-oop">Why Use OOP in PHP?</a></li>
-        <li><a href="#dry">Tip: DRY Principle</a></li>
-        <li><a href="#classes-objects">Classes and Objects</a></li>
-        <li><a href="#examples">Examples</a></li>
-        <li><a href="#key-points">Key Points to Remember</a></li>
-        <li><a href="#next-steps">Next Steps</a></li>
-      </ul>
-    </nav>
+  <h2>📘 What is OOP?</h2>
+  <p><strong>Object-Oriented Programming (OOP)</strong> is a programming paradigm that models real-world entities as <em>objects</em>. Each object bundles <strong>data (properties)</strong> and <strong>behavior (methods)</strong>. Starting with <strong>PHP 5</strong>, PHP provides full support for writing object-oriented code.</p>
 
-    <section id="what-is-oop">
-      <h2>What is OOP?</h2>
-      <ul>
-        <li><strong>OOP</strong> stands for <strong>Object-Oriented Programming</strong>.</li>
-        <li><strong>Procedural programming</strong> focuses on functions that operate on data.</li>
-        <li><strong>Object-oriented programming</strong> focuses on <em>objects</em> that bundle <strong>data (properties)</strong> and <strong>functions (methods)</strong>.</li>
-      </ul>
-    </section>
+  <h2>⚖️ Procedural vs Object-Oriented</h2>
+  <ul>
+    <li><strong>Procedural:</strong> Write functions and procedures that operate on global or passed data.</li>
+    <li><strong>Object-Oriented:</strong> Create classes (templates) and instantiate objects that encapsulate state and behavior.</li>
+  </ul>
 
-    <section id="why-oop">
-      <h2>Why Use OOP in PHP?</h2>
-      <ul>
-        <li><strong>Faster and easier to execute</strong> than sprawling procedural codebases.</li>
-        <li>Provides a <strong>clear structure</strong> for programs.</li>
-        <li>Encourages the <strong>DRY</strong> principle (Don’t Repeat Yourself) for better reusability.</li>
-        <li><strong>Easier to maintain, modify, and debug</strong>.</li>
-        <li>Enables <strong>reusable applications</strong> with less code and shorter development time.</li>
-      </ul>
-    </section>
+  <h2>🛠 Why use OOP in PHP?</h2>
+  <ul>
+    <li><strong>Clear structure:</strong> organizes code into logical components (classes).</li>
+    <li><strong>Reusability:</strong> classes can be reused across projects.</li>
+    <li><strong>DRY (Don't Repeat Yourself):</strong> reduces duplication by centralizing functionality.</li>
+    <li><strong>Maintainability:</strong> easier to modify and debug smaller, focused classes.</li>
+    <li><strong>Extensibility:</strong> inheritance and interfaces allow expanding behavior without altering existing code.</li>
+  </ul>
 
-    <section id="dry">
-      <h2>Tip: The DRY Principle</h2>
-      <ul>
-        <li>Reduce repetition by extracting common logic into <strong>single, reusable</strong> classes or methods.</li>
-        <li>Reference that shared code instead of copying the same blocks across your application.</li>
-      </ul>
-    </section>
+  <h2>📚 Basic OOP Concepts</h2>
+  <h3>Class</h3>
+  <p>A <strong>class</strong> is a blueprint that defines properties and methods.</p>
 
-    <section id="classes-objects">
-      <h2>PHP — What are Classes and Objects?</h2>
-      <ul>
-        <li><strong>Class</strong>: A <em>template/blueprint</em> describing properties and methods.</li>
-        <li><strong>Object</strong>: An <em>instance</em> of a class created at runtime.</li>
-        <li>Objects inherit the structure (properties/methods) from their class, but can hold <strong>different values</strong>.</li>
-      </ul>
-    </section>
+  <h3>Object</h3>
+  <p>An <strong>object</strong> is an instance of a class with its own property values.</p>
 
-    <section id="examples">
-      <h2>Examples</h2>
+  <h3>Property & Method</h3>
+  <p><strong>Property:</strong> a variable that holds the object's state. <br>
+     <strong>Method:</strong> a function that defines the object's behavior.</p>
 
-<pre><code>&lt;?php
-// Example 1: Fruit (Class: Fruit; Objects: Apple, Banana, Mango)
-class Fruit {
-    public $name;
-}
-
-$apple = new Fruit();
-$apple-&gt;name = "Apple";
-
-$banana = new Fruit();
-$banana-&gt;name = "Banana";
-
-$mango = new Fruit();
-$mango-&gt;name = "Mango";
-
-echo $apple-&gt;name;   // Apple
-echo $banana-&gt;name;  // Banana
-echo $mango-&gt;name;   // Mango
-</code></pre>
-
-<pre><code>&lt;?php
-// Example 2: Car (Class: Car; Objects: Volvo, Audi, Toyota)
+  <h2>🔧 Simple Example</h2>
+  <pre><code>&lt;?php
 class Car {
     public $brand;
+    public $year;
+
+    public function __construct($brand, $year) {
+        $this->brand = $brand;
+        $this->year = $year;
+    }
+
+    public function getInfo() {
+        return "{$this->brand} ({$this->year})";
+    }
 }
 
-$volvo = new Car();
-$volvo-&gt;brand = "Volvo";
+// Create objects (instances)
+$toyota = new Car("Toyota", 2020);
+$audi   = new Car("Audi", 2022);
 
-$audi = new Car();
-$audi-&gt;brand = "Audi";
+echo $toyota->getInfo(); // Toyota (2020)
+echo $audi->getInfo();   // Audi (2022)
+?&gt;</code></pre>
 
-$toyota = new Car();
-$toyota-&gt;brand = "Toyota";
+  <h2>🏷 Access Modifiers</h2>
+  <p>Control visibility of properties and methods:</p>
+  <ul>
+    <li><code>public</code> — accessible anywhere.</li>
+    <li><code>protected</code> — accessible in the class and subclasses.</li>
+    <li><code>private</code> — accessible only inside the class.</li>
+  </ul>
 
-echo $volvo-&gt;brand; // Volvo
-echo $audi-&gt;brand;  // Audi
-echo $toyota-&gt;brand;// Toyota
-</code></pre>
-    </section>
+  <h2>🧭 Encapsulation</h2>
+  <p>Encapsulation means bundling data and methods while hiding internal state. Use getters/setters to control access.</p>
 
-    <section id="key-points">
-      <h2>Key Points to Remember</h2>
-      <ul>
-        <li>A <strong>class</strong> defines <em>properties</em> (data) and <em>methods</em> (functions).</li>
-        <li>An <strong>object</strong> is created from a class and can store its own values.</li>
-        <li>OOP helps you write <strong>modular, reusable, and scalable</strong> PHP code.</li>
-      </ul>
-    </section>
+  <h2>🔁 Inheritance</h2>
+  <p>Inheritance allows a class to extend another class and reuse or override its functionality.</p>
+  <pre><code>class Vehicle {
+    public function start() {
+        return "Vehicle started";
+    }
+}
 
-    <section id="next-steps">
-      <h2>Next Steps</h2>
-      <ul>
-        <li>Explore <strong>properties</strong>, <strong>methods</strong>, and <strong>constructors</strong>.</li>
-        <li>Learn <strong>encapsulation</strong>, <strong>inheritance</strong>, and <strong>polymorphism</strong>.</li>
-        <li>Practice designing small classes and composing them into larger applications.</li>
-      </ul>
-    </section>
+class Motorcycle extends Vehicle {
+    public function start() {
+        return "Motorcycle started";
+    }
+}
 
-    <div class="cta">
-      <a href="#next-steps" title="Continue Learning">Continue to OOP Fundamentals →</a>
-    </div>
-  </main>
+$m = new Motorcycle();
+echo $m->start(); // Motorcycle started</code></pre>
+
+  <h2>🔀 Polymorphism</h2>
+  <p>Polymorphism lets different classes be treated through a common interface or base class. Methods with the same name behave differently depending on the object type.</p>
+
+  <h2>📌 DRY — Don't Repeat Yourself</h2>
+  <div class="note">
+    <p>Extract repeated logic into a single class or method and reuse it across your application. This reduces bugs and keeps code maintainable.</p>
+  </div>
+
+  <h2>🧪 Practice Activities</h2>
+  <div class="note">
+    <ol>
+      <li>Create a <code>Person</code> class with <code>firstName</code>, <code>lastName</code> and a method <code>getFullName()</code>. Instantiate two people and print their full names.</li>
+      <li>Create an abstract <code>Shape</code> class with an abstract method <code>area()</code>. Implement <code>Circle</code> and <code>Rectangle</code> and compute areas.</li>
+      <li>Create an <code>Auth</code> class with protected property <code>$isLoggedIn</code> and public methods <code>login()</code> and <code>logout()</code>. Use encapsulation to control access.</li>
+    </ol>
+  </div>
+
+  <h2>📌 Quick Summary</h2>
+  <ul>
+    <li>OOP = classes + objects.</li>
+    <li>Use <code>public</code>, <code>protected</code>, <code>private</code> to control visibility.</li>
+    <li>Encapsulation, Inheritance, Polymorphism are core OOP principles.</li>
+    <li>OOP helps create modular, reusable, maintainable PHP applications.</li>
+  </ul>
+
+  <h2>📚 Further Reading</h2>
+  <ul>
+    <li><a href="https://www.php.net/manual/en/language.oop5.php" target="_blank">PHP Manual — OOP Features</a></li>
+    <li><a href="https://www.w3schools.com/php/php_oop.asp" target="_blank">W3Schools — PHP OOP Tutorial</a></li>
+  </ul>
 
 </body>
 </html>
