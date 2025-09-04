@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PHP Lecture Notes — What is OOP?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #ecf0f1;
+    }
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #34495e;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      background-color: #eef6fc;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background-color: #fff;
+      margin: 10px 0;
+      padding: 15px 20px;
+      border-left: 5px solid #3498db;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    li:hover {
+      transform: translateX(5px);
+    }
+    a {
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    a:hover {
+      color: #2980b9;
+    }
+    .cta {
+      text-align: center;
+      margin-top: 60px;
+    }
+    .cta a {
+      display: inline-block;
+      background-color: #3498db;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 4px;
+      font-size: 1em;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .cta a:hover {
+      background-color: #2980b9;
+    }
+    /* Optional: light styling for code blocks (doesn't alter your palette) */
+    pre {
+      background: #fff;
+      border-left: 5px solid #3498db;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      overflow-x: auto;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    nav ul li { border-left-color: transparent; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>PHP — Introduction to Object-Oriented Programming (OOP)</h1>
+    <p>From PHP 5 onward, you can write PHP in a modern, object-oriented style.</p>
+  </header>
+
+  <main>
+    <nav aria-label="Table of Contents">
+      <h2>Overview</h2>
+      <ul>
+        <li><a href="#what-is-oop">What is OOP?</a></li>
+        <li><a href="#why-oop">Why Use OOP in PHP?</a></li>
+        <li><a href="#dry">Tip: DRY Principle</a></li>
+        <li><a href="#classes-objects">Classes and Objects</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#key-points">Key Points to Remember</a></li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </nav>
+
+    <section id="what-is-oop">
+      <h2>What is OOP?</h2>
+      <ul>
+        <li><strong>OOP</strong> stands for <strong>Object-Oriented Programming</strong>.</li>
+        <li><strong>Procedural programming</strong> focuses on functions that operate on data.</li>
+        <li><strong>Object-oriented programming</strong> focuses on <em>objects</em> that bundle <strong>data (properties)</strong> and <strong>functions (methods)</strong>.</li>
+      </ul>
+    </section>
+
+    <section id="why-oop">
+      <h2>Why Use OOP in PHP?</h2>
+      <ul>
+        <li><strong>Faster and easier to execute</strong> than sprawling procedural codebases.</li>
+        <li>Provides a <strong>clear structure</strong> for programs.</li>
+        <li>Encourages the <strong>DRY</strong> principle (Don’t Repeat Yourself) for better reusability.</li>
+        <li><strong>Easier to maintain, modify, and debug</strong>.</li>
+        <li>Enables <strong>reusable applications</strong> with less code and shorter development time.</li>
+      </ul>
+    </section>
+
+    <section id="dry">
+      <h2>Tip: The DRY Principle</h2>
+      <ul>
+        <li>Reduce repetition by extracting common logic into <strong>single, reusable</strong> classes or methods.</li>
+        <li>Reference that shared code instead of copying the same blocks across your application.</li>
+      </ul>
+    </section>
+
+    <section id="classes-objects">
+      <h2>PHP — What are Classes and Objects?</h2>
+      <ul>
+        <li><strong>Class</strong>: A <em>template/blueprint</em> describing properties and methods.</li>
+        <li><strong>Object</strong>: An <em>instance</em> of a class created at runtime.</li>
+        <li>Objects inherit the structure (properties/methods) from their class, but can hold <strong>different values</strong>.</li>
+      </ul>
+    </section>
+
+    <section id="examples">
+      <h2>Examples</h2>
+
+<pre><code>&lt;?php
+// Example 1: Fruit (Class: Fruit; Objects: Apple, Banana, Mango)
+class Fruit {
+    public $name;
+}
+
+$apple = new Fruit();
+$apple-&gt;name = "Apple";
+
+$banana = new Fruit();
+$banana-&gt;name = "Banana";
+
+$mango = new Fruit();
+$mango-&gt;name = "Mango";
+
+echo $apple-&gt;name;   // Apple
+echo $banana-&gt;name;  // Banana
+echo $mango-&gt;name;   // Mango
+</code></pre>
+
+<pre><code>&lt;?php
+// Example 2: Car (Class: Car; Objects: Volvo, Audi, Toyota)
+class Car {
+    public $brand;
+}
+
+$volvo = new Car();
+$volvo-&gt;brand = "Volvo";
+
+$audi = new Car();
+$audi-&gt;brand = "Audi";
+
+$toyota = new Car();
+$toyota-&gt;brand = "Toyota";
+
+echo $volvo-&gt;brand; // Volvo
+echo $audi-&gt;brand;  // Audi
+echo $toyota-&gt;brand;// Toyota
+</code></pre>
+    </section>
+
+    <section id="key-points">
+      <h2>Key Points to Remember</h2>
+      <ul>
+        <li>A <strong>class</strong> defines <em>properties</em> (data) and <em>methods</em> (functions).</li>
+        <li>An <strong>object</strong> is created from a class and can store its own values.</li>
+        <li>OOP helps you write <strong>modular, reusable, and scalable</strong> PHP code.</li>
+      </ul>
+    </section>
+
+    <section id="next-steps">
+      <h2>Next Steps</h2>
+      <ul>
+        <li>Explore <strong>properties</strong>, <strong>methods</strong>, and <strong>constructors</strong>.</li>
+        <li>Learn <strong>encapsulation</strong>, <strong>inheritance</strong>, and <strong>polymorphism</strong>.</li>
+        <li>Practice designing small classes and composing them into larger applications.</li>
+      </ul>
+    </section>
+
+    <div class="cta">
+      <a href="#next-steps" title="Continue Learning">Continue to OOP Fundamentals →</a>
+    </div>
+  </main>
+
+</body>
+</html>
