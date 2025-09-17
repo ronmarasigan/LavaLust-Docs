@@ -1,0 +1,11 @@
+LavaLust Documentation
+=======================
+
+.. toctree::
+   :maxdepth: 2
+
+   welcome
+   license
+   changelog
+    
+

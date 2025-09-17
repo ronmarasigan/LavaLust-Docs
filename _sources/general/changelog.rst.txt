@@ -1,0 +1,118 @@
+LavaLust Changelog
+==================
+
+LavaLust 4.2.5
+--------------
+
+1. Fixed bug in API class that strips authorization in render.com
+
+LavaLust 4.2.4
+--------------
+
+1. Updated the error_php.php from app/views/errors. Add content.
+2. Secure .htaccess for some points.
+3. Fixed Pagination bugs in tailwind theme.
+
+LavaLust 4.2.3
+--------------
+
+1. Updated the error_404.php from app/views/errors. Modern design.
+
+LavaLust 4.2.2
+--------------
+
+1. Updated the CLI. Added command to create view file, library, language file and helper.
+
+LavaLust 4.2.1
+--------------
+
+1. Added support to other database drivers (postgre, sqlite, sqlsrv, etc).
+2. Re-designed welcome_page (landing page) and error pages.
+
+LavaLust 4.2.0
+--------------
+
+1. Fixed bugs and improved stability.
+
+LavaLust 4.1
+------------
+
+1. Added ORM Model for faster development.
+2. Added Migration Class.
+3. Added Restful API class.
+4. Added Encryption Class.
+
+LavaLust 4.0
+------------
+
+1. Database raw function was updated. It now returns executed SQL statement.
+2. Routing is different from version 3.
+3. Config and Logger classes were added in kernel directory; Encryption class in libraries.
+
+LavaLust 3.1.5
+---------------
+
+1. Database class updated with offset and pagination method.
+2. csrf_field() function now echoes output.
+3. Form_validation class updated with valid_name() method.
+4. Pagination class updated with initiate() method:
+   ``initiate($table, $rows_per_page, $page_num, $url, $crumbs = 5)``
+
+LavaLust 3.1.4
+---------------
+
+1. Fixed dynamic property creation deprecation notice (PHP 8.2+)
+
+LavaLust 3.1.0
+---------------
+
+1. Fixed known bugs.
+2. Fixed kernel classes, libraries, and helpers bugs.
+
+LavaLust 3.0.1+
+---------------
+
+1. Requires PHP version >= 7.4
+
+LavaLust 3
+----------
+
+1. Removed xss_clean() using Escaper class.
+2. Multiple database instances supported.
+3. Pass $data array to views.
+4. Models no longer require exec() for insert(), update(), delete().
+5. Support for models in subdirectories.
+6. HTTP verb routing supported.
+
+Todo:
+-----
+
+- Clean the scheme folder files.
+
+LavaLust 2
+----------
+
+Security
+~~~~~~~~
+
+1. Index file and .htaccess setup for public folder.
+2. Optional mod_rewrite usage.
+3. Fixed Cookie SameSite error in PHP < 7.3.
+4. Fixed Session flashdata() problem with PHP 8.
+5. Model methods updated; optional second parameter for object name.
+6. Pagination Class added (2.0.3).
+7. exec() added again for some technical reasons (2.0.2).
+8. Query builder no longer requires ->exec() (2.0.1).
+9. Query string option added (2.0.0).
+
+Library Updates
+~~~~~~~~~~~~~~~
+
+- Upload class added (1.0.2)
+- Auth library fixed bugs and added methods (1.0.1)
+- Form_helper updated for error_validation() (1.0.1)
+- Session library: get_userdata() renamed to userdata() (1.0.0)
+- Form_validation library bug fixes (1.0.0)
+- Language class simplified; Locale class no longer required (1.0.0)
+
+Minor fixes and improvements.

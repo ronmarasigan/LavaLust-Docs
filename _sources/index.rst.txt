@@ -5,7 +5,7 @@ LavaLust's User Guide
    :maxdepth: 2
 
 
-   general/welcome
+   general/index
    installation/index
    overview/index
    core_topics/index
