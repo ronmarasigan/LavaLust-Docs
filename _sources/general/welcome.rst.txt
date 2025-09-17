@@ -1,4 +1,4 @@
-Welcome to LavaLust
+What is LavaLust?
 ===========================
 
 LavaLust is a lightweight Web Framework - (using MVC pattern) - for

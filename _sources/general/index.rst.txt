@@ -1,5 +1,5 @@
-LavaLust Documentation
-=======================
+Welcome to LavaLust
+====================
 
 .. toctree::
    :maxdepth: 2
