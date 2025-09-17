@@ -169,8 +169,7 @@
 <span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
     <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;blog&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$primaryKey</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$timestamps</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span> <span class="c1">// auto handles created_at &amp; updated_at</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_all_posts</span><span class="p">()</span>
     <span class="p">{</span>

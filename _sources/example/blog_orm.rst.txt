@@ -67,8 +67,7 @@ Model
     class BlogModel extends Model
     {
         protected $table = 'blog';
-        protected $primaryKey = 'id';
-        protected $timestamps = TRUE; // auto handles created_at & updated_at
+        protected $primary_key = 'id';
 
         public function get_all_posts()
         {
