@@ -81,7 +81,7 @@ Model: BlogModel.php
          */
         public function getAll()
         {
-            return $this->db->table($this->table)->get()->result();
+            return $this->db->table($this->table)->get_all();
         }
 
         /**
@@ -92,7 +92,7 @@ Model: BlogModel.php
          */
         public function getById($id)
         {
-            return $this->db->table($this->table)->where('id', $id)->get()->row();
+            return $this->db->table($this->table)->where('id', $id)->get();
         }
 
         /**

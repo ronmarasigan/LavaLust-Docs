@@ -182,7 +182,7 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">getAll</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -193,7 +193,7 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">row</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>

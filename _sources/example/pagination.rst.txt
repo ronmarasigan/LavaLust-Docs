@@ -126,7 +126,7 @@ Model
 
         public function get_paginated($limit_clause)
         {
-            return $this->db->raw("SELECT * FROM {$this->table} {$limit_clause}")->fetch_all();
+            return $this->db->raw("SELECT * FROM {$this->table} {$limit_clause}")->get_all();
         }
     }
     ?>

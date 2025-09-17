@@ -127,8 +127,8 @@ Controller
         {
             if ($_POST) {
                 $this->BlogModel->create_post([
-                    'title'      => filter_io('string', $_POST['title']),
-                    'content'    => filter_io('string', $_POST['content']),
+                    'title'      => filter_io('string', $this->io->post('title')),
+                    'content'    => filter_io('string', $this->io->post('content')),
                     'author'     => 'Admin',
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
@@ -142,8 +142,8 @@ Controller
         {
             if ($_POST) {
                 $this->BlogModel->update_post($id, [
-                    'title'      => filter_io('string', $_POST['title']),
-                    'content'    => filter_io('string', $_POST['content']),
+                    'title'      => filter_io('string', $this->io->post('title')),
+                    'content'    => filter_io('string', $this->io->post('content')),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 redirect('blog');
@@ -168,7 +168,7 @@ Views
 
 .. code-block:: php
 
-    <?php foreach($posts as $post): ?>
+    <?php foreach(html_escape($posts) as $post): ?>
         <h2><?= $post->title ?></h2>
         <p><?= str_limitwords($post->content, 20) ?></p>
         <a href="<?= site_url('blog/view/' . $post->id) ?>">Read More</a>
@@ -181,9 +181,9 @@ Views
 
 .. code-block:: php
 
-    <h1><?= $post->title ?></h1>
-    <p><?= $post->content ?></p>
-    <p>Author: <?= $post->author ?></p>
+    <h1><?= html_escape($post->title) ?></h1>
+    <p><?= html_escape($post->content) ?></p>
+    <p>Author: <?= html_escape($post->author) ?></p>
 
 
 **Create/Edit Form**
@@ -203,6 +203,7 @@ Notes
 -----
 
 - Always sanitize input using `filter_io()` or LavaLust's security helpers.
+- Always sanitize output using `html_escape()`.
 - The **Model** handles database interaction.
 - The **Controller** handles request logic.
 - The **View** displays data to the user.

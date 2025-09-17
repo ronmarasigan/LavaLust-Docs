@@ -222,7 +222,7 @@
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">fetch_all</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>

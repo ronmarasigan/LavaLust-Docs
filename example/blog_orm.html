@@ -227,8 +227,8 @@
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">create_post</span><span class="p">([</span>
-                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]),</span>
-                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]),</span>
+                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)),</span>
+                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)),</span>
                 <span class="s1">&#39;author&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Admin&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
             <span class="p">]);</span>
@@ -242,8 +242,8 @@
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">update_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="p">[</span>
-                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]),</span>
-                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]),</span>
+                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)),</span>
+                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)),</span>
                 <span class="s1">&#39;updated_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
             <span class="p">]);</span>
             <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
@@ -265,7 +265,7 @@
 <section id="views">
 <h2>Views<a class="headerlink" href="#views" title="Link to this heading"></a></h2>
 <p><strong>Index View - List all posts</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$posts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nx">html_escape</span><span class="p">(</span><span class="nv">$posts</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
 <span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="o">-&gt;</span><span class="na">title</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
 <span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">str_limitwords</span><span class="p">(</span><span class="nv">$post</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 <span class="x">    &lt;a href=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/view/&#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Read More&lt;/a&gt;</span>
@@ -275,9 +275,9 @@
 </pre></div>
 </div>
 <p><strong>View Single Post</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="o">-&gt;</span><span class="na">title</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
-<span class="x">&lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="o">-&gt;</span><span class="na">content</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">&lt;p&gt;Author: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="o">-&gt;</span><span class="na">author</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Author: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="o">-&gt;</span><span class="na">author</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 </pre></div>
 </div>
 <p><strong>Create/Edit Form</strong></p>
@@ -295,6 +295,7 @@
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Always sanitize input using <cite>filter_io()</cite> or LavaLust’s security helpers.</p></li>
+<li><p>Always sanitize output using <cite>html_escape()</cite>.</p></li>
 <li><p>The <strong>Model</strong> handles database interaction.</p></li>
 <li><p>The <strong>Controller</strong> handles request logic.</p></li>
 <li><p>The <strong>View</strong> displays data to the user.</p></li>
