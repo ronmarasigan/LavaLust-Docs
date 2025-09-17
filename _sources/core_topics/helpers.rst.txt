@@ -1,0 +1,137 @@
+Helpers
+=======
+
+**Helpers** are collections of standalone functions designed to make common tasks easier.  
+They are not classes — just plain PHP functions you can call anywhere in your application once the helper is loaded.
+
+Helpers are useful for things like string manipulation, URL handling, file operations, date formatting, etc.
+
+Loading a Helper
+-----------------
+
+To load a helper, use the ``$this->call->helper()`` method inside your **controller** or **model**:
+
+.. code-block:: php
+
+   <?php
+   class UserController extends Controller
+   {
+       public function __construct()
+       {
+           parent::__construct();
+
+           // Load the 'url' helper
+           $this->call->helper('url');
+       }
+
+       public function profile()
+       {
+           $profileUrl = site_url('profile/view');
+           echo "Profile URL: " . $profileUrl;
+       }
+   }
+
+This will load the file:
+
+::
+
+   app/helpers/url_helper.php
+
+and make all functions inside it available globally.
+
+.. note::
+
+   Helpers are loaded only once. If the helper is already loaded, it will not be loaded again.
+
+Using Helper Functions
+------------------------
+
+Once a helper is loaded, you can use any of its functions **directly**, without referencing a class or object.
+
+**Example:**
+
+.. code-block:: php
+
+    // From url_helper.php
+    function base_url()
+	{
+		return  filter_var(BASE_URL, FILTER_SANITIZE_URL);
+	}
+
+   // Use inside a controller or view
+   echo base_url().'assets/css/style.css';
+
+**Output:**
+
+::
+
+   http://localhost/assets/css/style.css
+
+.. tip::
+
+   You can also load multiple helpers at once:
+
+   .. code-block:: php
+
+      $this->call->helper(['url', 'form', 'string']);
+
+Auto-loading Helpers
+---------------------
+
+If you want certain helpers to always be available in your app (without manually loading them every time),  
+you can **auto-load** them in the configuration:
+
+1. Open ``app/config/autoload.php``.
+2. Add your helper names in the ``$autoload['helpers']`` array.
+
+**Example:**
+
+.. code-block:: php
+
+   $autoload['helpers'] = ['url', 'form'];
+
+These helpers will now be loaded automatically for every request.
+
+Creating a Custom Helper
+-------------------------
+
+You can create your own helper by placing a file inside ``app/helpers``.
+
+**Example:**
+
+**File:** ``app/helpers/str_helper.php``
+
+.. code-block:: php
+
+   <?php
+   if (!function_exists('greet')) {
+       function greet($name)
+       {
+           return "Hello, " . ucfirst($name) . "!";
+       }
+   }
+
+**Usage:**
+
+.. code-block:: php
+
+   $this->call->helper('str');
+   echo greet('lavalust'); // Output: Hello, Lavalust!
+
+.. important::
+
+   Always wrap your functions in ``if (!function_exists())``  
+   to prevent errors if the helper is loaded more than once.
+
+Best Practices
+---------------
+
+- Use helpers for **general-purpose, reusable functions**.
+- Avoid adding **business logic** inside helpers — keep them simple.
+- Group related functions into one helper file (e.g., `string_helper`, `security_helper`, etc.).
+- Use **autoloading** for frequently used helpers.
+
+.. note::
+
+   Helpers are **not classes** and **do not have properties or state**.  
+   If you need state or logic tied to data, use a **library** or **model** instead.

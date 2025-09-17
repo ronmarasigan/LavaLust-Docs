@@ -1,0 +1,59 @@
+Email Class
+===========
+
+The Email class makes sending email **simple and easy**.  
+It uses PHP’s built-in ``mail()`` function under the hood.  
+
+If you are planning to use more advanced features (SMTP, authentication, HTML templates, etc.),  
+you may integrate third-party libraries such as **PHPMailer** instead.
+
+Basic Usage
+------------
+
+Here is a basic example demonstrating how you might send email.  
+**Note:** This example assumes you are sending the email from one of your controllers.
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('email');
+
+   $this->email->sender('your@example.com', 'Your Name');
+   $this->email->recipient('someone@example.com');
+
+   $this->email->subject('Email Test');
+   $this->email->email_content('Testing the email class.');
+
+   $this->email->send();
+
+Available Methods
+-------------------
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+   :class: longtable
+
+   * - **Method**
+     - **Description**
+   * - ``sender($sender_email, $sender_name)``
+     - **$sender_email** *(required)* — Email address of the sender  
+       **$sender_name** *(optional)* — Name of the sender
+   * - ``reply_to($sender_email)``
+     - **$sender_email** — Email address where replies should go
+   * - ``recipient($receiver_email)``
+     - **$receiver_email** *(required)* — Email address of the recipient
+   * - ``subject($subject)``
+     - **$subject** *(required)* — The subject that will appear in the email
+   * - ``email_content($content, $email_type = 'plain')``
+     - **$content** *(required)* — Content of the email  
+       **$email_type** *(optional)* — Defaults to ``plain``. Use ``html`` for HTML content
+   * - ``attachment($path)``
+     - **$path** *(required)* — Path where your attachment file is located
+   * - ``send()``
+     - Sends the composed email. Must be called last to actually send the email.
+
+.. note::
+
+   You must call ``$this->email->send()`` at the end to actually send the email.  
+   All other methods just prepare the email before sending.

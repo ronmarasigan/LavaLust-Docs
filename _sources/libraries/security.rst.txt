@@ -1,0 +1,102 @@
+Security Class
+==============
+
+The **Security Class** provides security-related utilities for the LavaLust framework, including **CSRF protection**, **hash generation**, and **filename sanitization**.
+
+Overview
+---------
+
+- Implements **Cross-Site Request Forgery (CSRF)** protection via secure tokens.
+- Provides methods to **generate and validate CSRF tokens**.
+- Automatically manages CSRF cookies.
+- Includes a helper to **sanitize filenames** for safe file uploads.
+
+Initialization
+---------------
+
+This class is **automatically initialized** by the framework if CSRF protection is enabled in your ``config/config.php`` file.
+
+.. code-block:: php
+
+   <?php
+   // In config/config.php
+   $config['csrf_protection'] = TRUE;
+   $config['csrf_token_name'] = 'lava_csrf_token';
+   $config['csrf_cookie_name'] = 'lava_csrf_token';
+   $config['csrf_expire'] = 7200; // seconds
+   $config['csrf_regenerate'] = TRUE; // regenerate token after each POST
+   $config['csrf_exclude_uris'] = ['api/webhook']; // optional URIs to ignore CSRF
+
+Once enabled, CSRF protection will be automatically enforced on all POST requests.
+
+Available Methods
+-----------------
+
+**CSRF Token Management**
+--------------------------
+
+.. code-block:: php
+
+   <?php
+   // Validate CSRF token on POST requests
+   $this->security->csrf_validate();
+
+   // Get CSRF token hash (value to embed in forms)
+   $this->security->get_csrf_hash();
+
+   // Get CSRF token name (hidden input name to use in forms)
+   $this->security->get_csrf_token_name();
+
+   // Set CSRF cookie manually (usually called automatically)
+   $this->security->csrf_set_cookie();
+
+**Example form with CSRF token:**
+
+.. code-block:: php
+
+   <form method="POST" action="/submit">
+       <input type="hidden" 
+              name="<?= $this->security->get_csrf_token_name(); ?>"
+              value="<?= $this->security->get_csrf_hash(); ?>">
+       <input type="text" name="username">
+       <button type="submit">Submit</button>
+   </form>
+
+**Hash HMAC Utility**
+-----------------------
+.. code-block:: php
+
+   <?php
+   // Generate a secure HMAC hash
+   $token = 'my-secret-token';
+   $hash = $this->security->_hash_hmac($token);
+
+**Filename Sanitization**
+--------------------------
+.. code-block:: php
+
+   <?php
+   // Sanitize a filename before saving
+   $safe = $this->security->sanitize_filename('my<inva|id>:file?.txt');
+   // Result: myinvalidfile.txt
+
+CSRF Workflow
+-------------
+
+1. On the first request, a CSRF token is generated and stored as a cookie.
+2. Each POST request must include this token as a hidden form field.
+3. The ``csrf_validate()`` method checks that:
+   
+   - The POSTed token matches the cookie token.
+   - The request URI is not in the ``csrf_exclude_uris`` list.
+
+4. If validation fails, a **403 Forbidden Error** is shown.
+5. If ``csrf_regenerate`` is enabled, a new token is generated after each successful POST.
+
+Notes
+-----
+
+- Only POST requests are checked for CSRF by default.
+- CSRF protection can be selectively disabled for certain URIs via ``csrf_exclude_uris``.
+- This class is automatically loaded when CSRF is enabled in config.
+

@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Performance Class" href="performance.html" />
+    <link rel="prev" title="Security Class" href="security.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Session Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setting-session-data"><strong>Setting Session Data</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieving-session-data"><strong>Retrieving Session Data</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#checking-and-removing-data"><strong>Checking and Removing Data</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#flashdata">Flashdata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setting-flashdata"><strong>Setting Flashdata</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieving-flashdata"><strong>Retrieving Flashdata</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preserving-flashdata-for-another-request"><strong>Preserving Flashdata for Another Request</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mark-existing-data-as-flashdata"><strong>Mark Existing Data as Flashdata</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#session-management">Session Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#regenerate-session-id"><strong>Regenerate Session ID</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#destroy-session"><strong>Destroy Session</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-features">Security Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference-available-methods">Reference: Available Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#session-data-methods"><strong>Session Data Methods</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flashdata-methods"><strong>Flashdata Methods</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#session-control-methods"><strong>Session Control Methods</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-full-login-session-flow">Example: Full Login Session Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Session Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="session-class">
+<h1>Session Class<a class="headerlink" href="#session-class" title="Link to this heading"></a></h1>
+<p>The <strong>Session Class</strong> manages user sessions, flash data, and security features such as session regeneration and hijacking protection.
+It uses PHP’s native session handling with optional custom handlers (<cite>file</cite> or <cite>database</cite>) configured via your app configuration.</p>
+<p>This library is automatically initialized and accessible as <code class="docutils literal notranslate"><span class="pre">$this-&gt;session</span></code> in your controllers.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Configure session settings in <strong>``config/config.php``</strong>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
+<span class="linenos"> 2</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_driver&#39;</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">&#39;file&#39;</span><span class="p">;</span>              <span class="c1">// or &#39;database&#39;</span>
+<span class="linenos"> 3</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_cookie_name&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;lava_session&#39;</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_expiration&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="mi">7200</span><span class="p">;</span>                 <span class="c1">// Session lifetime (seconds)</span>
+<span class="linenos"> 5</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_time_to_update&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>                  <span class="c1">// Regenerate ID interval</span>
+<span class="linenos"> 6</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_match_ip&#39;</span><span class="p">]</span>            <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_match_fingerprint&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_regenerate_destroy&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_expire_on_close&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_prefix&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="linenos">12</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_path&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+<span class="linenos">13</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_domain&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="linenos">14</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_secure&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos">15</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_httponly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos">16</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_samesite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Lax&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>You do <strong>not</strong> need to load the session class manually.
+It is available globally as:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="setting-session-data">
+<h3><strong>Setting Session Data</strong><a class="headerlink" href="#setting-session-data" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Set a single key</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john_doe&#39;</span><span class="p">);</span>
+
+<span class="c1">// Set multiple keys</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
+    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john_doe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;role&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;logged_in&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="retrieving-session-data">
+<h3><strong>Retrieving Session Data</strong><a class="headerlink" href="#retrieving-session-data" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Get a specific value</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+
+<span class="c1">// Get all session data</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="checking-and-removing-data">
+<h3><strong>Checking and Removing Data</strong><a class="headerlink" href="#checking-and-removing-data" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">has_userdata</span><span class="p">(</span><span class="s1">&#39;logged_in&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;User is logged in!&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Remove one or more keys</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">([</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="flashdata">
+<h2>Flashdata<a class="headerlink" href="#flashdata" title="Link to this heading"></a></h2>
+<p><strong>Flashdata</strong> are session values available <strong>only for the next request</strong>.
+Useful for showing success/error messages after form submissions or redirects.</p>
+<section id="setting-flashdata">
+<h3><strong>Setting Flashdata</strong><a class="headerlink" href="#setting-flashdata" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;Account created successfully!&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="retrieving-flashdata">
+<h3><strong>Retrieving Flashdata</strong><a class="headerlink" href="#retrieving-flashdata" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="preserving-flashdata-for-another-request">
+<h3><strong>Preserving Flashdata for Another Request</strong><a class="headerlink" href="#preserving-flashdata-for-another-request" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Keep flashdata for one more request</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">keep_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="mark-existing-data-as-flashdata">
+<h3><strong>Mark Existing Data as Flashdata</strong><a class="headerlink" href="#mark-existing-data-as-flashdata" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_flash</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="session-management">
+<h2>Session Management<a class="headerlink" href="#session-management" title="Link to this heading"></a></h2>
+<section id="regenerate-session-id">
+<h3><strong>Regenerate Session ID</strong><a class="headerlink" href="#regenerate-session-id" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Regenerate session ID (destroys old session if TRUE)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">sess_regenerate</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="destroy-session">
+<h3><strong>Destroy Session</strong><a class="headerlink" href="#destroy-session" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">sess_destroy</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-features">
+<h2>Security Features<a class="headerlink" href="#security-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>IP Matching</strong>: If enabled, blocks the session when the client IP changes.</p></li>
+<li><p><strong>Fingerprint Matching</strong>: Creates a browser fingerprint from request headers and validates it every request.</p></li>
+<li><p><strong>Session Regeneration</strong>: Automatically regenerates the session ID periodically to prevent session fixation attacks.</p></li>
+<li><p><strong>Cookie Security</strong>: Cookies are sent with <code class="docutils literal notranslate"><span class="pre">HttpOnly</span></code> and <code class="docutils literal notranslate"><span class="pre">SameSite</span></code> flags to prevent theft.</p></li>
+</ul>
+</section>
+<section id="reference-available-methods">
+<h2>Reference: Available Methods<a class="headerlink" href="#reference-available-methods" title="Link to this heading"></a></h2>
+<section id="session-data-methods">
+<h3><strong>Session Data Methods</strong><a class="headerlink" href="#session-data-methods" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set_userdata($key,</span> <span class="pre">$value</span> <span class="pre">=</span> <span class="pre">NULL)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">userdata($key</span> <span class="pre">=</span> <span class="pre">NULL)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_userdata($key)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unset_userdata($key)</span></code></p></li>
+</ul>
+</section>
+<section id="flashdata-methods">
+<h3><strong>Flashdata Methods</strong><a class="headerlink" href="#flashdata-methods" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set_flashdata($key,</span> <span class="pre">$value)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flashdata($key</span> <span class="pre">=</span> <span class="pre">NULL)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_flashdata($key)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mark_as_flash($key)</span></code></p></li>
+</ul>
+</section>
+<section id="session-control-methods">
+<h3><strong>Session Control Methods</strong><a class="headerlink" href="#session-control-methods" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sess_regenerate($destroy</span> <span class="pre">=</span> <span class="pre">FALSE)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sess_destroy()</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="example-full-login-session-flow">
+<h2>Example: Full Login Session Flow<a class="headerlink" href="#example-full-login-session-flow" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
+<span class="linenos"> 2</span><span class="k">class</span> <span class="nc">Auth</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+<span class="linenos"> 3</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span> <span class="p">{</span>
+<span class="linenos"> 4</span>        <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="linenos"> 5</span>        <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_model</span><span class="o">-&gt;</span><span class="na">validate</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">))</span> <span class="p">{</span>
+<span class="linenos"> 8</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
+<span class="linenos"> 9</span>                <span class="s1">&#39;username&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$username</span><span class="p">,</span>
+<span class="linenos">10</span>                <span class="s1">&#39;logged_in&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
+<span class="linenos">11</span>            <span class="p">]);</span>
+<span class="linenos">12</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;Welcome back, &#39;</span><span class="o">.</span><span class="nv">$username</span><span class="o">.</span><span class="s1">&#39;!&#39;</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+<span class="linenos">14</span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="linenos">15</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Invalid credentials.&#39;</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="linenos">17</span>        <span class="p">}</span>
+<span class="linenos">18</span>    <span class="p">}</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span> <span class="p">{</span>
+<span class="linenos">21</span>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">sess_destroy</span><span class="p">();</span>
+<span class="linenos">22</span>        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="linenos">23</span>    <span class="p">}</span>
+<span class="linenos">24</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">userdata()</span></code> will <strong>exclude flashdata</strong> keys.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flashdata()</span></code> values are <strong>removed automatically</strong> after retrieval.</p></li>
+<li><p>The default session driver is <strong>file-based</strong>. Database driver is reserved for future implementation.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="security.html" class="btn btn-neutral float-left" title="Security Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="performance.html" class="btn btn-neutral float-right" title="Performance Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+String Helper
+=============
+
+The **String Helper** provides a collection of functions to manipulate, format, and sanitize strings in LavaLust applications.  
+These helpers cover tasks such as limiting words, removing quotes, generating random strings, and performing string replacements.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``str_insert()``
+     - Replaces placeholders in a string using an associative array of key-value pairs.
+   * - ``str_between()``
+     - Extracts substrings located between two delimiters.
+   * - ``str_after()``
+     - Returns the part of a string after a given search string.
+   * - ``str_before()``
+     - Returns the part of a string before a given search string.
+   * - ``str_limitwords()``
+     - Limits a string to a certain number of words.
+   * - ``str_limitchars()``
+     - Limits a string to a certain number of characters.
+   * - ``strip_slashes()``
+     - Removes slashes from a string or array recursively.
+   * - ``strip_quotes()``
+     - Removes single and double quotes from a string.
+   * - ``quotes_to_entities()``
+     - Converts quotes to HTML entities.
+   * - ``reduce_double_slashes()``
+     - Converts double slashes to single slashes except in URLs.
+   * - ``reduce_multiples()``
+     - Reduces multiple instances of a character to a single instance.
+   * - ``random_string()``
+     - Generates a random string of a specified type and length.
+   * - ``increment_string()``
+     - Appends or increments a number at the end of a string.
+   * - ``alternator()``
+     - Alternates between multiple strings on successive calls.
+   * - ``repeater()``
+     - Repeats a string a given number of times.
+
+Available Functions
+--------------------
+
+.. php:function:: str_insert(array $keyValue, string $string)
+
+    Replaces placeholders in a string using an associative array.
+
+    :param array $keyValue: Key-value pairs to replace in the string.
+    :param string $string: The string containing placeholders.
+    :returns: string — The modified string.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $text = str_insert(['{name}' => 'John'], 'Hello {name}!');
+        echo $text; // Output: Hello John!
+
+
+.. php:function:: str_between(string $left, string $right, string $string)
+
+    Returns all substrings between two delimiters.
+
+    :param string $left: Left delimiter.
+    :param string $right: Right delimiter.
+    :param string $string: The string to search in.
+    :returns: array — Array of matched substrings.
+
+
+.. php:function:: str_after(string $search, string $string)
+
+    Returns the part of a string after a given search string.
+
+    :param string $search: Search string.
+    :param string $string: Input string.
+    :returns: string — Portion after the search string.
+
+
+.. php:function:: str_before(string $search, string $string)
+
+    Returns the part of a string before a given search string.
+
+    :param string $search: Search string.
+    :param string $string: Input string.
+    :returns: string — Portion before the search string.
+
+
+.. php:function:: str_limitwords(string $string, int $limit = 10, string $end = '...')
+
+    Limits a string to a specified number of words.
+
+    :param string $string: Input string.
+    :param int $limit: Maximum number of words (default 10).
+    :param string $end: Suffix to append if truncated (default '...').
+    :returns: string — Truncated string.
+
+
+.. php:function:: str_limitchars(string $string, int $limit = 100, string $end = '...')
+
+    Limits a string to a specified number of characters.
+
+    :param string $string: Input string.
+    :param int $limit: Maximum number of characters (default 100).
+    :param string $end: Suffix to append if truncated (default '...').
+    :returns: string — Truncated string.
+
+
+.. php:function:: strip_slashes(mixed $str)
+
+    Removes slashes from a string or recursively from an array.
+
+    :param mixed $str: String or array.
+    :returns: mixed — Cleaned string or array.
+
+
+.. php:function:: strip_quotes(string $str)
+
+    Removes single and double quotes from a string.
+
+    :param string $str: Input string.
+    :returns: string — String without quotes.
+
+
+.. php:function:: quotes_to_entities(string $str)
+
+    Converts single and double quotes to HTML entities.
+
+    :param string $str: Input string.
+    :returns: string — String with quotes converted to entities.
+
+
+.. php:function:: reduce_double_slashes(string $str)
+
+    Converts double slashes to single slashes except in URLs.
+
+    :param string $str: Input string.
+    :returns: string — String with reduced slashes.
+
+
+.. php:function:: reduce_multiples(string $str, string $character = ',', bool $trim = FALSE)
+
+    Reduces multiple instances of a character to a single instance.
+
+    :param string $str: Input string.
+    :param string $character: Character to reduce (default ',').
+    :param bool $trim: Trim the character from start/end (default FALSE).
+    :returns: string — String with reduced multiples.
+
+
+.. php:function:: random_string(string $type = 'alnum', int $len = 8)
+
+    Generates a random string.
+
+    :param string $type: Type of string: basic, alpha, alnum, numeric, nozero, md5, sha1.
+    :param int $len: Number of characters (default 8).
+    :returns: string — Random string.
+
+
+.. php:function:: increment_string(string $str, string $separator = '_', int $first = 1)
+
+    Appends or increments a number at the end of a string.
+
+    :param string $str: Input string.
+    :param string $separator: Separator before the number (default '_').
+    :param int $first: Number to start incrementing from (default 1).
+    :returns: string — Incremented string.
+
+
+.. php:function:: alternator()
+
+    Alternates between multiple strings on successive calls.
+
+    :returns: string — Alternated string.
+
+
+.. php:function:: repeater(string $data, int $num = 1)
+
+    Repeats a string a specified number of times.
+
+    :param string $data: String to repeat.
+    :param int $num: Number of repeats (default 1).
+    :returns: string — Repeated string.

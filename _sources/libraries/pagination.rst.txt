@@ -1,0 +1,133 @@
+Pagination Class
+================
+
+The **Pagination** class provides pagination logic and customizable rendering for different frontend styles (Bootstrap, Tailwind, or custom themes).  
+It generates page navigation links and calculates metadata like current page, previous/next pages, and SQL limits.
+
+.. note::
+
+   This library requires the `session` and `language` helpers to be available.
+
+Initialization
+---------------
+
+Like most other classes in LavaLust, load the library in your controller using:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('pagination');
+
+Once loaded, the Pagination library will be available as:
+
+.. code-block:: php
+
+   <?php
+   $this->pagination;
+
+Usage Example
+--------------
+
+Here's a simple example showing how to initialize pagination and render it:
+
+.. code-block:: php
+
+   <?php
+   $total_rows = 120;
+   $rows_per_page = 10;
+   $current_page = $this->io->get('page'); // Get current page from URL or $_GET['page'] is not using segments
+   $url = 'products/page';
+
+   $meta = $this->pagination->initialize($total_rows, $rows_per_page, $current_page, $url);
+
+   // Use $meta['limit'] in your database query
+   $data['products'] = $this->product_model->get_products($meta['limit']);
+
+   // Render pagination
+   echo $this->pagination->paginate();
+
+Configuration
+--------------
+
+You can customize labels, delimiters, and other settings using the ``set_options()`` method:
+
+.. code-block:: php
+
+   <?php
+   $this->pagination->set_options([
+       'first_link' => '<< First',
+       'last_link'  => 'Last >>',
+       'page_delimiter' => '?page=',
+   ]);
+
+Themes
+-------
+
+You can choose a layout theme using ``set_theme()``. Available themes are:
+
+- ``bootstrap`` (default)
+- ``tailwind``
+- ``custom``
+
+.. code-block:: php
+
+   <?php
+   $this->pagination->set_theme('tailwind');
+
+If using the ``custom`` theme, you can override the HTML classes:
+
+.. code-block:: php
+
+   <?php
+   $this->pagination->set_custom_classes([
+       'nav'    => 'my-nav',
+       'ul'     => 'my-list',
+       'li'     => 'my-item',
+       'a'      => 'my-link',
+       'active' => 'my-active'
+   ]);
+
+Available Methods
+------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Method
+     - Description
+   * - ``set_theme($theme)``
+     - Sets the pagination theme (``bootstrap``, ``tailwind``, or ``custom``).
+   * - ``set_custom_classes(array $classes)``
+     - Overrides default CSS classes used in the HTML output.
+   * - ``set_options(array $options)``
+     - Allows setting custom labels, delimiter, and other pagination options.
+   * - ``initialize($total_rows, $rows_per_page, $page_num, $url, $crumbs = 5)``
+     - Calculates page numbers, SQL limits, and metadata.
+   * - ``paginate()``
+     - Renders and returns the pagination HTML.
+   * - ``build_link($page, $label, $active_class = '')``
+     - Generates individual pagination link HTML. (Used internally.)
+
+Returned Metadata
+------------------
+
+The ``initialize()`` method returns an array like:
+
+.. code-block:: php
+
+   Array
+   (
+       [limit] => "LIMIT 0, 10"
+       [current] => 1
+       [previous] => 1
+       [next] => 2
+       [last] => 12
+       [info] => "Page (1 of 12)"
+       [pages] => [1,2,3,4,5]
+       [url] => "products/page"
+   )
+
+
+``paginate()`` will use this metadata to build the pagination navigation HTML.
+

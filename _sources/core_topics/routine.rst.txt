@@ -1,0 +1,238 @@
+Common Functions and Error Handling
+====================================
+
+LavaLust comes with several core functions to handle class loading, configuration, error handling, and environment checks. These functions are globally available and form the backbone of the framework.
+
+Class Loader
+-------------
+
+.. function:: load_class(string $class, string $directory = '', array $params = NULL, string $object_name = NULL) -> object
+
+    Loads a class from the specified directory and stores an instance in the Registry.
+
+    :param string $class: The class name to load
+    :param string $directory: Directory to search in (relative to app/system)
+    :param array|null $params: Constructor parameters (if any)
+    :param string|null $object_name: Optional object key for Registry storage
+    :return object: The loaded class instance
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $logger = load_class('Logger', 'kernel');
+        $logger->log('info', 'This is a test message.');
+
+.. function:: loaded_class(string $class = '', string $object_name = '') -> array
+
+    Keeps track of loaded libraries and classes.
+
+    :param string $class: Class name
+    :param string $object_name: Object key used in Registry
+    :return array: Array of loaded class names
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $loaded = loaded_class();
+        print_r($loaded);
+
+Error Handling
+---------------
+
+.. function:: show_404(string $heading = '', string $message = '', string $template = '') -> string
+
+    Displays a 404 Page Not Found error page.
+
+    :param string $heading: Optional heading text
+    :param string $message: Optional detailed message
+    :param string $template: Optional template name
+    :return string: HTML of the 404 page
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        show_404('Page Not Found', 'The requested page does not exist.');
+
+.. function:: show_error(string $heading = '', string $message = '', string $template = 'error_general', int $code = 500) -> string
+
+    Displays an error page for debugging purposes.
+
+    :param string $heading: Error heading
+    :param string $message: Error message
+    :param string $template: Template file to use
+    :param int $code: HTTP status code
+    :return string: HTML of the error page
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        show_error('Database Error', 'Unable to connect to the database', 'error_db', 500);
+
+Configuration Access
+---------------------
+
+.. function:: get_config() -> array
+
+    Loads the global configuration file ``app/config/config.php`` and returns its array.
+
+    :return array: Associative array of configuration items
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $config = get_config();
+        echo $config['base_url'];
+
+.. function:: config_item(string $item) -> mixed
+
+    Returns a single configuration value from the loaded config.
+
+    :param string $item: Config item key
+    :return mixed: Config value or NULL if not set
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        echo config_item('base_url');
+
+.. function:: autoload_config() -> array
+
+    Loads the ``app/config/autoload.php`` file for auto-loading resources.
+
+    :return array: Array of resources to autoload
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $autoload = autoload_config();
+        print_r($autoload['libraries']);
+
+.. function:: database_config() -> array
+
+    Loads the database configuration file ``app/config/database.php``.
+
+    :return array: Database configuration array
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $db_config = database_config();
+        echo $db_config['default']['hostname'];
+
+.. function:: route_config() -> array
+
+    Loads the routing configuration file ``app/config/routes.php``.
+
+    :return array: Routing configuration array
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        $routes = route_config();
+        echo $routes['default_controller'];
+
+Utilities
+----------
+
+.. function:: html_escape(mixed $var, bool $double_encode = TRUE) -> mixed
+
+    Escapes HTML entities in a string or array recursively.
+
+    :param mixed $var: String or array to escape
+    :param bool $double_encode: Prevents double-encoding if FALSE
+    :return mixed: Escaped string or array
+
+    **Example:**
+
+    .. code-block:: php
+        
+        <?php
+
+        echo html_escape('<script>alert(1)</script>');
+
+.. function:: is_php(string $version) -> bool
+
+    Checks if the current PHP version is greater than or equal to the specified version.
+
+    :param string $version: PHP version to check
+    :return bool: TRUE if current PHP version is >= $version
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+
+        if (is_php('8.0')) {
+            echo 'Running PHP 8+';
+        }
+
+.. function:: is_https() -> bool
+
+    Determines whether the application is accessed via HTTPS.
+
+    :return bool: TRUE if HTTPS, FALSE otherwise
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        
+        if (is_https()) {
+            echo 'Secure connection';
+        }
+
+Framework Instance Access
+---------------------------
+
+.. function:: lava_instance() -> object
+
+    Returns the main LavaLust framework instance. This instance allows access to core components such as `db`, `security`, `call`, and other libraries loaded into the framework.
+
+    :return object: The main LavaLust instance
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        
+        // Get the main instance
+        $LAVA = lava_instance();
+
+        // Access the database
+        $users = $LAVA->db->table('users')->get();
+
+        // Access security methods
+        $csrf_token = $LAVA->security->get_csrf_hash();
+
+        // Load a library
+        $logger = $LAVA->load->library('logger');

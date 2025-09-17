@@ -1,0 +1,229 @@
+Session Class
+==============
+
+The **Session Class** manages user sessions, flash data, and security features such as session regeneration and hijacking protection.  
+It uses PHP's native session handling with optional custom handlers (`file` or `database`) configured via your app configuration.
+
+This library is automatically initialized and accessible as ``$this->session`` in your controllers.
+
+
+Configuration
+--------------
+
+Configure session settings in **``config/config.php``**:
+
+.. code-block:: php
+   :linenos:
+
+   <?php
+   $config['sess_driver']             = 'file';              // or 'database'
+   $config['sess_cookie_name']        = 'lava_session';
+   $config['sess_expiration']         = 7200;                 // Session lifetime (seconds)
+   $config['sess_time_to_update']     = 300;                  // Regenerate ID interval
+   $config['sess_match_ip']            = FALSE;
+   $config['sess_match_fingerprint']   = TRUE;
+   $config['sess_regenerate_destroy']  = TRUE;
+   $config['sess_expire_on_close']     = FALSE;
+
+   $config['cookie_prefix']   = '';
+   $config['cookie_path']     = '/';
+   $config['cookie_domain']   = '';
+   $config['cookie_secure']   = FALSE;
+   $config['cookie_httponly'] = TRUE;
+   $config['cookie_samesite'] = 'Lax';
+
+
+
+Initialization
+---------------
+
+You do **not** need to load the session class manually.  
+It is available globally as:
+
+.. code-block:: php
+
+   <?php
+   $this->session;
+
+
+Basic Usage
+------------
+
+**Setting Session Data**
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Set a single key
+   $this->session->set_userdata('username', 'john_doe');
+
+   // Set multiple keys
+   $this->session->set_userdata([
+       'username' => 'john_doe',
+       'role'     => 'admin',
+       'logged_in' => TRUE
+   ]);
+
+**Retrieving Session Data**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Get a specific value
+   echo $this->session->userdata('username');
+
+   // Get all session data
+   print_r($this->session->userdata());
+
+**Checking and Removing Data**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   if ($this->session->has_userdata('logged_in')) {
+       echo "User is logged in!";
+   }
+
+   // Remove one or more keys
+   $this->session->unset_userdata('username');
+   $this->session->unset_userdata(['username', 'role']);
+
+
+Flashdata
+----------
+
+**Flashdata** are session values available **only for the next request**.  
+Useful for showing success/error messages after form submissions or redirects.
+
+**Setting Flashdata**
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   $this->session->set_flashdata('message', 'Account created successfully!');
+
+**Retrieving Flashdata**
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   echo $this->session->flashdata('message');
+
+**Preserving Flashdata for Another Request**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Keep flashdata for one more request
+   $this->session->keep_flashdata('message');
+
+**Mark Existing Data as Flashdata**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   $this->session->mark_as_flash('username');
+
+
+Session Management
+-------------------
+
+**Regenerate Session ID**
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Regenerate session ID (destroys old session if TRUE)
+   $this->session->sess_regenerate(TRUE);
+
+**Destroy Session**
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   $this->session->sess_destroy();
+
+
+Security Features
+------------------
+
+- **IP Matching**: If enabled, blocks the session when the client IP changes.
+- **Fingerprint Matching**: Creates a browser fingerprint from request headers and validates it every request.
+- **Session Regeneration**: Automatically regenerates the session ID periodically to prevent session fixation attacks.
+- **Cookie Security**: Cookies are sent with ``HttpOnly`` and ``SameSite`` flags to prevent theft.
+
+
+Reference: Available Methods
+-----------------------------
+
+**Session Data Methods**
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``set_userdata($key, $value = NULL)``  
+- ``userdata($key = NULL)``  
+- ``has_userdata($key)``  
+- ``unset_userdata($key)``  
+
+**Flashdata Methods**
+~~~~~~~~~~~~~~~~~~~~~
+
+- ``set_flashdata($key, $value)``  
+- ``flashdata($key = NULL)``  
+- ``keep_flashdata($key)``  
+- ``mark_as_flash($key)``  
+
+**Session Control Methods**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``sess_regenerate($destroy = FALSE)``  
+- ``sess_destroy()``  
+
+
+Example: Full Login Session Flow
+---------------------------------
+
+.. code-block:: php
+   :linenos:
+
+   <?php
+   class Auth extends Controller {
+       public function login() {
+           $username = $this->io->post('username');
+           $password = $this->io->post('password');
+
+           if ($this->user_model->validate($username, $password)) {
+               $this->session->set_userdata([
+                   'username'  => $username,
+                   'logged_in' => TRUE
+               ]);
+               $this->session->set_flashdata('message', 'Welcome back, '.$username.'!');
+               redirect('dashboard');
+           } else {
+               $this->session->set_flashdata('error', 'Invalid credentials.');
+               redirect('login');
+           }
+       }
+
+       public function logout() {
+           $this->session->sess_destroy();
+           redirect('login');
+       }
+   }
+
+
+Notes
+------
+
+- ``userdata()`` will **exclude flashdata** keys.
+- ``flashdata()`` values are **removed automatically** after retrieval.
+- The default session driver is **file-based**. Database driver is reserved for future implementation.
+

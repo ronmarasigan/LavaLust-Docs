@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto-loading Resources &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Common Functions and Error Handling" href="routine.html" />
+    <link rel="prev" title="Libraries" href="libraries.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Auto-loading Resources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#resources-that-can-be-auto-loaded">Resources That Can Be Auto-loaded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-auto-loading">Configuring Auto-loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#composer-auto-loading">Composer Auto-loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#note">Note</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">General Topics</a></li>
+      <li class="breadcrumb-item active">Auto-loading Resources</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="auto-loading-resources">
+<h1>Auto-loading Resources<a class="headerlink" href="#auto-loading-resources" title="Link to this heading"></a></h1>
+<p>Frameworks like CodeIgniter and LavaLust support an <strong>auto-load</strong> feature that automatically initializes certain resources every time the system runs. This is especially useful for resources that are used globally across the application.</p>
+<section id="resources-that-can-be-auto-loaded">
+<h2>Resources That Can Be Auto-loaded<a class="headerlink" href="#resources-that-can-be-auto-loaded" title="Link to this heading"></a></h2>
+<p>The following items can be loaded automatically:</p>
+<ul class="simple">
+<li><p><strong>Libraries</strong>: Classes located in the <cite>libraries/</cite> directory.</p></li>
+<li><p><strong>Helpers</strong>: Files located in the <cite>helpers/</cite> directory.</p></li>
+<li><p><strong>Config files</strong>: Custom configuration files in the <cite>config/</cite> directory.</p></li>
+<li><p><strong>Models</strong>: Files located in the <cite>models/</cite> directory.</p></li>
+</ul>
+</section>
+<section id="configuring-auto-loading">
+<h2>Configuring Auto-loading<a class="headerlink" href="#configuring-auto-loading" title="Link to this heading"></a></h2>
+<p>To enable auto-loading:</p>
+<ol class="arabic simple">
+<li><p>Open the file: <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code>.</p></li>
+<li><p>Add the resources you want to auto-load to the corresponding array for each type of resource.</p></li>
+<li><p>Do <strong>not</strong> include the file extension (e.g., <code class="docutils literal notranslate"><span class="pre">.php</span></code>) when specifying items in the array.</p></li>
+</ol>
+<p>For example, in <code class="docutils literal notranslate"><span class="pre">autoload.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;libraries&#39;] = [&#39;database&#39;, &#39;session&#39;];</span>
+<span class="x">$autoload[&#39;helper&#39;] = [&#39;url&#39;, &#39;form&#39;];</span>
+<span class="x">$autoload[&#39;model&#39;] = [&#39;BlogModel&#39;];</span>
+</pre></div>
+</div>
+</section>
+<section id="composer-auto-loading">
+<h2>Composer Auto-loading<a class="headerlink" href="#composer-auto-loading" title="Link to this heading"></a></h2>
+<p>If your project uses Composer, you can enable Composer’s auto-loader:</p>
+<ol class="arabic simple">
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>.</p></li>
+<li><p>Set the configuration variable <code class="docutils literal notranslate"><span class="pre">$config['composer_autoload']</span></code> to:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to use the default Composer auto-loader.</p></li>
+<li><p>A custom path to your Composer <code class="docutils literal notranslate"><span class="pre">vendor/autoload.php</span></code> if needed.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="note">
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Auto-loading should be used sparingly for resources that are required globally.</p></li>
+<li><p>Overloading unnecessary resources can slow down application performance.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="libraries.html" class="btn btn-neutral float-left" title="Libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="routine.html" class="btn btn-neutral float-right" title="Common Functions and Error Handling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

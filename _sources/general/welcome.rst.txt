@@ -1,0 +1,31 @@
+Welcome to LavaLust
+===========================
+
+LavaLust is a lightweight Web Framework - (using MVC pattern) - for
+people who are developing web sites using PHP. It helps you write
+code easily using Object-Oriented Approach. It also provides set of
+libraries for commonly needed tasks, as well as a helper functions to
+minimize the amount of time coding.
+
+Lavalust uses MVC pattern. MVC is short for Model, View, and Controller.
+MVC is a popular way of organizing your code. The big idea behind MVC 
+is that each section of your code has a purpose, and those purposes
+are different. Some of your code holds the data of your app, some
+of your code makes your app look nice, and some of your code controls
+how your app functions.
+
+Who is LavaLust For?
+---------------------
+
+LavaLust is right for you if:
+
+- You’re looking for a framework that is lightweight and minimal.
+- You need a framework that delivers excellent performance.
+- You want broad support across different PHP versions and typical hosting setups.
+- You prefer something that works out of the box with almost no setup.
+- You want a framework that doesn’t depend on command-line usage.
+- You like having the freedom to code without being bound by rigid rules.
+- You avoid large, all-in-one libraries such as PEAR.
+- You don’t want to be forced to use a templating engine (though having one as an option is fine).
+- You favor straightforward and simple solutions over complex ones.
+- You value clear, complete, and easy-to-follow documentation.

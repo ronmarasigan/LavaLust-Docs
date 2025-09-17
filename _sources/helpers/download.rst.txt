@@ -1,0 +1,62 @@
+Download Helper
+====================
+
+The **Download Helper** allows you to force a file to be downloaded by the user's browser.  
+It generates the appropriate headers and streams the file content in chunks, supporting partial downloads via HTTP range requests.
+
+.. note::
+
+   This helper relies on PHP's native file functions such as ``fopen()``, ``fread()``, ``filesize()``, and ``mime_content_type()``.  
+   Make sure your server has proper read permissions for the files you intend to download.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``force_download()``
+     - Sends headers and streams a file to the browser for download.
+
+Available Functions
+--------------------
+
+.. php:function:: force_download($file, $name, $mime_type = '')
+
+    Forces a download of a specified file by sending appropriate HTTP headers.
+
+    :param string $file: The full path to the file to be downloaded.
+    :param string $name: The filename to display in the browser download dialog.
+    :param string $mime_type: Optional. MIME type to send (default: auto-detected from the file).
+    :returns: void — The function outputs file content directly and does not return a value.
+    :raises: Exception — Throws an exception if the file cannot be read.
+
+    **Behavior:**
+
+    - Checks if the file exists and is readable; if not, execution stops with an error.
+    - Detects MIME type if none is provided.
+    - Handles output buffering and disables ``zlib.output_compression`` to prevent corruption.
+    - Supports HTTP range requests for partial content download.
+    - Streams the file in 1 MB chunks to manage memory usage efficiently.
+
+    **Example Usage:**
+
+    .. code-block:: php
+
+        <?php
+        try {
+            // Force the download of a file
+            force_download('/path/to/file.zip', 'myfile.zip');
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
+Additional Notes
+-----------------
+
+- This function automatically cleans any output buffer to avoid corrupting the downloaded file.
+- Partial download support is implemented using HTTP ``Range`` headers, allowing resume of interrupted downloads.
+- Ensure that your PHP script has sufficient memory and execution time limits for large file downloads.

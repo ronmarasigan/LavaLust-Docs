@@ -1,0 +1,12 @@
+Getting Started
+==================
+
+This documentation is designed to be as simple and clear as possible.
+
+To begin:
+
+1. **Install LavaLust** by following the :doc:`../installation/guide`.
+2. **Read through the topics** one by one to understand the framework’s structure and concepts.
+3. **Try out the provided examples** to get hands-on experience.
+
+Once you become familiar with the overall flow, you can move on to exploring the various **libraries** and **helpers** available in the framework.

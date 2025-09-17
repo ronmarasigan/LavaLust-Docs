@@ -1,0 +1,175 @@
+Upload Class
+============
+
+The **Upload** class allows you to **upload files** safely in LavaLust.  
+You can define various preferences, such as allowed file types, size restrictions, and automatic filename encryption.
+
+The Process
+------------
+
+Uploading a file involves the following general process:
+
+1. An upload form is displayed, allowing the user to select a file.
+2. When the form is submitted, the file is uploaded to the destination directory.
+3. The file is validated based on the preferences you set.
+4. On success, a confirmation is displayed. Otherwise, errors are shown.
+
+Creating the Upload Form
+-------------------------
+
+Create a view file called ``upload_form.php`` inside your ``app/views/`` directory:
+
+.. code-block:: php
+
+   <?php
+   <html>
+   <head>
+      <title>Upload Form</title>
+   </head>
+   <body>
+
+   <?php foreach($errors as $error) { echo $error; } ?>
+
+   <form action="<?php echo site_url('upload/do_upload');?>" method="post" enctype="multipart/form-data">
+      <input type="file" name="userfile" size="20" />
+      <br><br>
+      <input type="submit" value="upload" />
+   </form>
+
+   </body>
+   </html>
+
+The Success Page
+-----------------
+
+Create another view file called ``upload_success.php`` in the same folder:
+
+.. code-block:: php
+
+   <?php
+   <html>
+   <head>
+      <title>Upload Success</title>
+   </head>
+   <body>
+
+   <h3>Your file was successfully uploaded!</h3>
+
+   <?php echo $filename; ?>
+
+   </body>
+   </html>
+
+The Controller
+---------------
+
+Create a controller called ``Upload.php`` inside your ``app/controllers/`` directory:
+
+.. code-block:: php
+
+   <?php
+   class Upload extends Controller {
+
+      public function upload() {
+         $this->call->library('upload', $_FILES["userfile"]);
+
+         $this->upload
+            ->max_size(5)
+            ->min_size(1)
+            ->set_dir('public')
+            ->allowed_extensions(['jpg'])
+            ->allowed_mimes(['image/jpeg'])
+            ->is_image()
+            ->encrypt_name();
+
+         if ($this->upload->do_upload()) {
+            $data['filename'] = $this->upload->get_filename();
+            $this->call->view('upload_success', $data);
+         } else {
+            $data['errors'] = $this->upload->get_errors();
+            $this->call->view('upload_form', $data);
+         }
+      }
+   }
+
+The Upload Directory
+---------------------
+
+You will need a destination directory for your uploaded files.  
+Create a directory called ``uploads`` in the root of your LavaLust installation and set its permissions to **777**.
+
+Initialization
+---------------
+
+Like most other classes in LavaLust, the Upload class is initialized in your controller using:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('upload');
+
+Once the Upload class is loaded, you can access it via:
+
+.. code-block:: php
+
+   <?php
+   $this->upload;
+
+Setting Preferences
+--------------------
+
+You control what is allowed to be uploaded through various preference methods.  
+Example:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('upload', $_FILES["userfile"]);
+   $this->upload
+      ->max_size(5)
+      ->min_size(1)
+      ->set_dir('public')
+      ->allowed_extensions(['jpg'])
+      ->allowed_mimes(['image/jpeg'])
+      ->is_image()
+      ->encrypt_name();
+
+Available Methods
+------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+   :class: longtable
+
+   * - **Method**
+     - **Description**
+   * - ``allowed_extensions(array $exts)``
+     - Set allowed file extensions. Default: ``['gif','jpg','jpeg','png']``
+   * - ``allowed_mimes(array $mimes)``
+     - Set allowed MIME types. Default: ``['image/gif','image/jpg','image/jpeg','image/png']``
+   * - ``set_dir(string $path)``
+     - Directory where files will be saved.
+   * - ``max_size(int $mb)``
+     - Maximum file size in MB.
+   * - ``min_size(int $mb)``
+     - Minimum file size in MB.
+   * - ``is_image()``
+     - Restricts uploads to image files only.
+   * - ``encrypt_name()``
+     - Automatically rename uploaded file to a random encrypted filename.
+   * - ``do_upload()``
+     - Performs the upload process. Returns **true** on success.
+   * - ``get_errors()``
+     - Returns an array of error messages.
+   * - ``get_filename()``
+     - Returns the final uploaded filename.
+   * - ``get_size()``
+     - Returns the size of the uploaded file.
+   * - ``get_extension()``
+     - Returns the file extension of the uploaded file.
+
+.. note::
+
+   Always validate the uploaded file’s extension and MIME type to ensure security.  
+   Avoid allowing executable file types (e.g. ``.php``, ``.exe``) to be uploaded.

@@ -1,0 +1,78 @@
+Language Class
+==============
+
+The **Language Class** provides functions to retrieve language files and lines of text for internationalization (i18n).
+
+Location of Language Files
+---------------------------
+
+In your LavaLust framework folder, you will find a ``language/`` sub-directory containing sample language files (such as ``en-US.php``).
+
+Example of a language file:
+
+.. code-block:: php
+
+   <?php
+   return array(
+       /**
+        * Other strings to be translated
+        */
+       'welcome'     => 'Hello {username} {type}',
+       'first_link'  => '‹ First',
+   );
+
+Adding a New Language
+----------------------
+
+You can create new language files inside ``app/language``.  
+For example, to create a Filipino (Tagalog) translation file, create ``tl-PH.php``:
+
+.. code-block:: php
+
+   <?php
+   return array(
+       /**
+        * Other strings to be translated
+        */
+       'welcome'     => 'Hello {username} {type}',
+       'first_link'  => '‹ Una',
+   );
+
+Switching Languages
+--------------------
+
+Use the ``language`` helper functions ``language()`` and ``lang()`` to load and fetch translations.
+
+.. code-block:: php
+
+   <?php
+   $this->call->helper('language');
+   
+   // Set the current language
+   language('tl-PH');
+   
+   // Get the translated value of a key
+   echo lang('first_link'); 
+   // Output: ‹ Una
+
+How It Works
+-------------
+
+- ``language($locale)``  
+  Loads the specified language file and sets it as the active language.
+
+- ``lang($key)``  
+  Retrieves the translated string value from the active language file.
+
+.. note::
+
+   If a key is missing in the chosen language file, LavaLust will try to fall back to the default language configured in ``config/config.php`` under ``$config['language']``.
+
+Summary
+--------
+
+- Place language files in ``app/language/``.
+- Use associative arrays to define key-value pairs.
+- Use ``language('locale')`` to switch languages at runtime.
+- Use ``lang('key')`` to retrieve translated strings.
+

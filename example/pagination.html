@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagination &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Authentication &amp; Authorization" href="auth.html" />
+    <link rel="prev" title="Blog CRUD using Query Builder" href="blog_query_builder.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pagination</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#folder-structure">Folder Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-table-structure">Database Table Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#controller">Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view">View</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth.html">User Authentication &amp; Authorization</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Pagination</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pagination">
+<h1>Pagination<a class="headerlink" href="#pagination" title="Link to this heading"></a></h1>
+<p>This example demonstrates how to use the <cite>Pagination</cite> class to paginate database results in a LavaLust application.</p>
+<section id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/
+├── controllers/
+│   └── BlogController.php
+│
+├── models/
+│   └── BlogModel.php
+│
+└── views/
+    └── blog/
+        └── index.php
+</pre></div>
+</div>
+</section>
+<section id="database-table-structure">
+<h2>Database Table Structure<a class="headerlink" href="#database-table-structure" title="Link to this heading"></a></h2>
+<p><strong>Table: blog_posts</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>INT PK AI</p></td>
+<td><p>Post ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p>VARCHAR(255)</p></td>
+<td><p>Post title</p></td>
+</tr>
+<tr class="row-even"><td><p>content</p></td>
+<td><p>TEXT</p></td>
+<td><p>Post content</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DATETIME</p></td>
+<td><p>Created date</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="controller">
+<h2>Controller<a class="headerlink" href="#controller" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">BlogController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Load pagination library</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;pagination&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Current page from URL segment</span>
+        <span class="nv">$current_page</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nx">segment</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">?:</span> <span class="mi">1</span><span class="p">;</span><span class="c1">// or use segment(3) if your URL is like /blog/index/2</span>
+
+        <span class="c1">// Total rows</span>
+        <span class="nv">$total_rows</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">count_all</span><span class="p">();</span>
+
+        <span class="c1">// Rows per page</span>
+        <span class="nv">$rows_per_page</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+
+        <span class="c1">// Base URL for pagination links</span>
+        <span class="nv">$base_url</span> <span class="o">=</span> <span class="s1">&#39;blog/index&#39;</span><span class="p">;</span>
+
+        <span class="c1">// Initialize pagination with options</span>
+        <span class="nv">$page_data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">initialize</span><span class="p">(</span>
+            <span class="nv">$total_rows</span><span class="p">,</span>
+            <span class="nv">$rows_per_page</span><span class="p">,</span>
+            <span class="nv">$current_page</span><span class="p">,</span>
+            <span class="nv">$base_url</span><span class="p">,</span>
+            <span class="mi">5</span> <span class="c1">// number of visible page links</span>
+        <span class="p">);</span>
+
+        <span class="c1">// Optional: set a custom theme</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_theme</span><span class="p">(</span><span class="s1">&#39;tailwind&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Optional: set custom CSS classes</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_custom_classes</span><span class="p">([</span>
+            <span class="s1">&#39;ul&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;flex space-x-2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;li&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;px-1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;a&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;px-3 py-1 rounded bg-gray-100 hover:bg-gray-200&#39;</span>
+        <span class="p">]);</span>
+
+        <span class="c1">// Optional: override text options</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_options</span><span class="p">([</span>
+            <span class="s1">&#39;first_link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&lt;&lt; First&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;last_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Last &gt;&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;next_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Next &gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;prev_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&lt; Prev&#39;</span>
+        <span class="p">]);</span>
+
+        <span class="c1">// Get paginated blog posts</span>
+        <span class="nv">$limit_clause</span> <span class="o">=</span> <span class="nv">$page_data</span><span class="p">[</span><span class="s1">&#39;limit&#39;</span><span class="p">];</span>
+        <span class="nv">$blogs</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">blogmodel</span><span class="o">-&gt;</span><span class="na">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">);</span>
+
+        <span class="c1">// Pass data to view</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/index&#39;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="s1">&#39;blogs&#39;</span> <span class="o">=&gt;</span> <span class="nv">$blogs</span><span class="p">,</span>
+            <span class="s1">&#39;pagination&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(),</span>
+        <span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="model">
+<h2>Model<a class="headerlink" href="#model" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;blog_posts&#39;</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">count_all</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">fetch_all</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="view">
+<h2>View<a class="headerlink" href="#view" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$blogs</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+
+<span class="x">&lt;div class=&quot;pagination&quot;&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$pagination</span> <span class="cp">?&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blog_query_builder.html" class="btn btn-neutral float-left" title="Blog CRUD using Query Builder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="auth.html" class="btn btn-neutral float-right" title="User Authentication &amp; Authorization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

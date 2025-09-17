@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Helper &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="String Helper" href="string.html" />
+    <link rel="prev" title="Language Helper" href="language.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Helpers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Helper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Security Helper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#function-summary">Function Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-functions">Available Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filter_io"><code class="docutils literal notranslate"><span class="pre">filter_io()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sanitize_filename"><code class="docutils literal notranslate"><span class="pre">sanitize_filename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csrf_field"><code class="docutils literal notranslate"><span class="pre">csrf_field()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-notes">Additional Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Helpers</a></li>
+      <li class="breadcrumb-item active">Security Helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="security-helper">
+<h1>Security Helper<a class="headerlink" href="#security-helper" title="Link to this heading"></a></h1>
+<p>The <strong>Security Helper</strong> provides utility functions to sanitize user input, filenames, and handle CSRF tokens in LavaLust applications.
+These helpers improve security by filtering input, preventing malicious filenames, and protecting forms against CSRF attacks.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These helper functions rely on PHP’s built-in filtering and LavaLust’s internal <code class="docutils literal notranslate"><span class="pre">Security</span></code> class.
+Always ensure user input is properly validated and sanitized when using these helpers.</p>
+</div>
+<section id="function-summary">
+<h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filter_io()</span></code></p></td>
+<td><p>Sanitizes and filters a variable according to its type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sanitize_filename()</span></code></p></td>
+<td><p>Sanitizes filenames to prevent unsafe characters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">csrf_field()</span></code></p></td>
+<td><p>Outputs a hidden input field containing the CSRF token for forms.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="available-functions">
+<h2>Available Functions<a class="headerlink" href="#available-functions" title="Link to this heading"></a></h2>
+<dl class="php function">
+<dt class="sig sig-object php" id="filter_io">
+<span class="sig-name descname"><span class="pre">filter_io</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$type</span></em>, <em class="sig-param"><span class="pre">$var</span></em><span class="sig-paren">)</span><a class="headerlink" href="#filter_io" title="Link to this definition"></a></dt>
+<dd><p>Filters a variable based on the specified type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$type</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The type of filter to apply (<code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>).</p></li>
+<li><p><strong>$var</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – The variable to filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed — The filtered value.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$email</span> <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$id</span>    <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;123abc&#39;</span><span class="p">);</span> <span class="c1">// returns 123</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="sanitize_filename">
+<span class="sig-name descname"><span class="pre">sanitize_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sanitize_filename" title="Link to this definition"></a></dt>
+<dd><p>Sanitizes a filename to remove unsafe or special characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$filename</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The filename to sanitize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — A sanitized version of the filename safe for storage or upload.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$safe_name</span> <span class="o">=</span> <span class="nx">sanitize_filename</span><span class="p">(</span><span class="s1">&#39;my file&lt;&gt;.txt&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$safe_name</span><span class="p">;</span> <span class="c1">// Output: my_file.txt</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="csrf_field">
+<span class="sig-name descname"><span class="pre">csrf_field</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csrf_field" title="Link to this definition"></a></dt>
+<dd><p>Outputs a hidden input field containing the CSRF token to protect HTML forms against CSRF attacks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>void — Directly echoes the HTML input field.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">echo</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; action=&quot;/submit&quot;&gt;&#39;</span><span class="p">;</span>
+<span class="nx">csrf_field</span><span class="p">();</span>
+<span class="k">echo</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filter_io()</span></code> uses PHP’s <code class="docutils literal notranslate"><span class="pre">filter_var()</span></code> for sanitization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sanitize_filename()</span></code> leverages LavaLust’s internal security class to ensure safe filenames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">csrf_field()</span></code> automatically generates a token and echoes a hidden input field; include it in every POST form for CSRF protection.</p></li>
+<li><p>Use these helpers consistently to enhance application security and prevent common attacks.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="language.html" class="btn btn-neutral float-left" title="Language Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="string.html" class="btn btn-neutral float-right" title="String Helper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+User Authentication & Authorization
+===========================================
+
+This example demonstrates how to implement a simple user registration, login, and role-based access control in LavaLust.
+
+Folder Structure
+----------------
+
+.. code-block:: text
+
+    app/
+    ├── controllers/
+    │   └── AuthController.php
+    │
+    ├── libraries/
+    │   └── Lauth.php
+    │
+    └── views/
+        └── auth/
+            ├── register.php
+            ├── login.php
+            └── dashboard.php
+
+Database Table Structure
+-------------------------
+
+**Table: users**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 15 15 15 40
+
+   * - Column
+     - Type
+     - Null
+     - Key
+     - Description
+   * - id
+     - INT
+     - NO
+     - PK AI
+     - User ID
+   * - username
+     - VARCHAR(50)
+     - NO
+     - UNI
+     - Username
+   * - password
+     - VARCHAR(255)
+     - NO
+     - 
+     - Hashed password
+   * - role
+     - ENUM('admin','user')
+     - NO
+     - 
+     - User role
+   * - created_at
+     - DATETIME
+     - NO
+     - 
+     - Account creation timestamp
+
+Library Example
+---------------
+
+.. code-block:: php
+
+    <?php
+    class Auth
+    {
+        protected $_lava;
+
+        public function __construct()
+        {
+            $this->_lava = lava_instance();
+            $this->_lava->call->database();
+            $this->_lava->call->library('session');
+        }
+
+        /**
+         * Register a new user
+         *
+         * @param string $username
+         * @param string $password
+         * @param string $role
+         * @return bool
+         */
+        public function register($username, $password, $role = 'user')
+        {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            return $this->db->table('users')->insert([
+                'username' => $username,
+                'password' => $hash,
+                'role' => $role,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        /**
+         * Login user
+         *
+         * @param string $username
+         * @param string $password
+         * @return bool
+         */
+        public function login($username, $password)
+        {
+            $user = $this->db->table('users')
+                             ->where('username', $username)
+                             ->get();
+
+            if ($user && password_verify($password, $user['password'])) {
+                $this->session->set_userdata([
+                    'user_id' => $user['id'],
+                    'username' => $user['username'],
+                    'role' => $user['role'],
+                    'logged_in' => true
+                ]);
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * Check if user is logged in
+         *
+         * @return bool
+         */
+        public function is_logged_in()
+        {
+            return (bool) $this->session->userdata('logged_in');
+        }
+
+        /**
+         * Check user role
+         *
+         * @param string $role
+         * @return bool
+         */
+        public function has_role($role)
+        {
+            return $this->session->userdata('role') === $role;
+        }
+
+        /**
+         * Logout user
+         *
+         * @return void
+         */
+        public function logout()
+        {
+            $this->session->unset_userdata(['user_id','username','role','logged_in']);
+        }
+    }
+    ?>
+
+Model Example
+-------------
+
+.. code-block:: php
+
+    <?php
+    class UserModel extends Model
+    {
+        protected $table = 'users';
+
+        public function get_user_by_id($id)
+        {
+            return $this->db->table($this->table)
+                            ->where('id', $id)
+                            ->get();
+        }
+
+        public function get_all_users()
+        {
+            return $this->db->table($this->table)->get_all();
+        }
+    }
+    ?>
+
+Controller Example
+------------------
+
+.. code-block:: php
+
+    <?php
+    class AuthController extends Controller
+    {
+        public function register()
+        {
+            $this->call->library('auth');
+
+            if ($this->io->method() == 'post') {
+                $username = $this->io->post('username');
+                $password = $this->io->post('password');
+                $role = $this->io->post('role') ?? 'user';
+
+                if ($this->auth->register($username, $password, $role)) {
+                    redirect('auth/login');
+                }
+            }
+
+            $this->call->view('auth/register');
+        }
+
+        public function login()
+        {
+            $this->call->library('auth');
+
+            if ($this->io->method() == 'post') {
+                $username = $this->io->post('username');
+                $password = $this->io->post('password');
+
+                if ($this->auth->login($username, $password)) {
+                    redirect('auth/dashboard');
+                } else {
+                    echo 'Login failed!';
+                }
+            }
+
+            $this->call->view('auth/login');
+        }
+
+        public function dashboard()
+        {
+            $this->call->library('auth');
+
+            if (!$this->auth->is_logged_in()) {
+                redirect('auth/login');
+            }
+
+            if (!$this->auth->has_role('admin')) {
+                echo 'Access denied!';
+                exit;
+            }
+
+            $this->call->view('auth/dashboard');
+        }
+
+        public function logout()
+        {
+            $this->call->library('auth');
+            $this->auth->logout();
+            redirect('auth/login');
+        }
+    }
+    ?>
+
+View Example
+------------
+
+.. code-block:: php
+
+    <!-- register.php -->
+    <form method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <select name="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- login.php -->
+    <form method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- dashboard.php -->
+    <h1>Welcome, <?= session('username') ?>!</h1>
+    <p>Role: <?= session('role') ?></p>
+    <a href="<?= site_url('auth/logout') ?>">Logout</a>

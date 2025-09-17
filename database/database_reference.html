@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Reference &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database Query Reference" href="query_builder.html" />
+    <link rel="prev" title="Database Reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Database Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-configuration">Database Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-values">Configuration values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-to-your-database">Connecting to your database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automatically-connecting">Automatically connecting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manually-connecting">Manually connecting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-to-a-specific-group">Connecting to a specific group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-to-multiple-databases">Connecting to multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-multiple-database-instances">Using multiple database instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best practices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html">Database Query Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Database Reference</a></li>
+      <li class="breadcrumb-item active">Database Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-reference">
+<h1>Database Reference<a class="headerlink" href="#database-reference" title="Link to this heading"></a></h1>
+<p>LavaLust includes a Database class that supports both <strong>semi-traditional SQL usage</strong>
+and a <strong>Query Builder</strong> pattern, allowing you to write safe and readable database code.</p>
+<section id="database-configuration">
+<h2>Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
+<p>Database connection values live in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code></p>
+<p>Example configuration group:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;driver&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;mysqli&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hostname&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;port&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;3306&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;username&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;database&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;charset&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;utf8mb4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dbprefix&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-values">
+<h2>Configuration values<a class="headerlink" href="#configuration-values" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>driver</dt><dd><p>The database driver/type (for example <code class="docutils literal notranslate"><span class="pre">mysqli</span></code>, <code class="docutils literal notranslate"><span class="pre">postgre</span></code>, <code class="docutils literal notranslate"><span class="pre">odbc</span></code>).
+Must be specified in lowercase.</p>
+</dd>
+<dt>hostname</dt><dd><p>Hostname of the database server (commonly <code class="docutils literal notranslate"><span class="pre">localhost</span></code>).</p>
+</dd>
+<dt>port</dt><dd><p>The database port number (optional; e.g. <code class="docutils literal notranslate"><span class="pre">3306</span></code> for MySQL).</p>
+</dd>
+<dt>username</dt><dd><p>The username used to connect to the database.</p>
+</dd>
+<dt>password</dt><dd><p>The password used to connect to the database.</p>
+</dd>
+<dt>database</dt><dd><p>The name of the database to connect to.</p>
+</dd>
+<dt>dbprefix</dt><dd><p>Optional table prefix that Query Builder will prepend to table names.
+Useful when multiple apps share the same DB.</p>
+</dd>
+<dt>charset</dt><dd><p>Character set used by the connection (e.g. <code class="docutils literal notranslate"><span class="pre">utf8mb4</span></code>).</p>
+</dd>
+</dl>
+</section>
+<section id="connecting-to-your-database">
+<h2>Connecting to your database<a class="headerlink" href="#connecting-to-your-database" title="Link to this heading"></a></h2>
+<p>There are two main ways to initialize the database class: <strong>auto-connect</strong> and <strong>manual connect</strong>.</p>
+</section>
+<section id="automatically-connecting">
+<h2>Automatically connecting<a class="headerlink" href="#automatically-connecting" title="Link to this heading"></a></h2>
+<p>To auto-load the database on every request, add <code class="docutils literal notranslate"><span class="pre">'database'</span></code> to the libraries array in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;libraries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;database&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>This will instantiate the DB class for every request.</p>
+</section>
+<section id="manually-connecting">
+<h2>Manually connecting<a class="headerlink" href="#manually-connecting" title="Link to this heading"></a></h2>
+<p>When only some pages need DB access, connect manually where needed:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;database();</span>
+</pre></div>
+</div>
+<p>With no argument this connects to the default group from your config and assigns the instance to <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code>.</p>
+</section>
+<section id="connecting-to-a-specific-group">
+<h2>Connecting to a specific group<a class="headerlink" href="#connecting-to-a-specific-group" title="Link to this heading"></a></h2>
+<p>To connect to a specific group defined in your database config:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;database(&#39;group_name&#39;);</span>
+</pre></div>
+</div>
+<p>That instance will be assigned to <code class="docutils literal notranslate"><span class="pre">$this-&gt;group_name</span></code>.</p>
+</section>
+<section id="connecting-to-multiple-databases">
+<h2>Connecting to multiple databases<a class="headerlink" href="#connecting-to-multiple-databases" title="Link to this heading"></a></h2>
+<p>You can open multiple database connections in the same request:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;database();               # assigned to $this-&gt;db (default)</span>
+<span class="x">$this-&gt;call-&gt;database(&#39;group_one&#39;);    # assigned to $this-&gt;group_one</span>
+<span class="x">$this-&gt;call-&gt;database(&#39;group_two&#39;);    # assigned to $this-&gt;group_two</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">group_one</span></code>/<code class="docutils literal notranslate"><span class="pre">group_two</span></code> with the actual group names defined in your config.
+If you omit a group name the instance is assigned to <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code>.</p>
+</div>
+</section>
+<section id="using-multiple-database-instances">
+<h2>Using multiple database instances<a class="headerlink" href="#using-multiple-database-instances" title="Link to this heading"></a></h2>
+<p>After connecting, query each instance like so:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;db-&gt;table(&#39;users&#39;)-&gt;get_all();</span>
+<span class="x">$this-&gt;group_one-&gt;table(&#39;posts&#39;)-&gt;get_all();</span>
+<span class="x">$this-&gt;group_two-&gt;table(&#39;comments&#39;)-&gt;get_all();</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Keep DB credentials out of version control (use environment variables if possible).</p></li>
+<li><p>Use the Query Builder for safer and readable queries.</p></li>
+<li><p>Wrap DB access inside models for a clean separation of concerns.</p></li>
+<li><p>Use multiple database connections only when necessary.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Database Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="query_builder.html" class="btn btn-neutral float-right" title="Database Query Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

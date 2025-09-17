@@ -1,0 +1,78 @@
+Encryption Class
+================
+
+The **Encryption** library provides **two-way data encryption** in a cryptographically secure way.  
+It utilizes the PHP **OpenSSL** extension under the hood.
+
+Initializing the Class
+-----------------------
+
+Like most other classes in LavaLust, the Encryption library is initialized in your controller using the ``$this->call->library()`` method:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('encryption');
+
+You may also optionally specify the cipher type:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('encryption', 'cipher type');
+
+.. note::
+
+   If the cipher type is not specified, it will default to ``AES-256-CBC``.
+
+Once loaded, the Encryption library object will be available as:
+
+.. code-block:: php
+
+   <?php
+   $this->encryption;
+
+By default, the Encryption library will use the **AES-256 cipher in CBC mode**, using your configured ``encryption_key``.
+
+Encrypting and Decrypting Data
+-------------------------------
+
+Encrypting and decrypting data with the already configured library settings is simple.  
+You just pass the string to the ``encrypt()`` and/or ``decrypt()`` methods:
+
+.. code-block:: php
+
+   <?php
+   $plain_text = 'This is a plain-text message!';
+   $ciphertext = $this->encryption->encrypt($plain_text);
+
+   // Outputs: This is a plain-text message!
+   echo $this->encryption->decrypt($ciphertext);
+
+Available Methods
+------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+   :class: longtable
+
+   * - **Method**
+     - **Description**
+   * - ``encrypt($data)``
+     - Encrypts the given plain text string using the configured cipher and key.  
+       **$data** *(required)* — The plain text to encrypt.
+   * - ``decrypt($ciphertext)``
+     - Decrypts the given encrypted string back to its original form.  
+       **$ciphertext** *(required)* — The encrypted text to decrypt.
+   * - ``set_cipher($cipher)``
+     - Sets the cipher algorithm to be used.  
+       **$cipher** *(required)* — Example: ``AES-256-CBC``
+   * - ``set_key($key)``
+     - Sets the encryption key to be used.  
+       **$key** *(required)* — The secret key for encryption/decryption.
+
+.. note::
+
+   The encryption key is normally configured in ``app/config/config.php``  
+   using the ``$config['encryption_key']`` setting.

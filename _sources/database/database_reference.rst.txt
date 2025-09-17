@@ -1,0 +1,134 @@
+Database Reference
+==================
+
+LavaLust includes a Database class that supports both **semi-traditional SQL usage**
+and a **Query Builder** pattern, allowing you to write safe and readable database code.
+
+Database Configuration
+----------------------
+
+Database connection values live in:
+
+``app/config/database.php``
+
+Example configuration group:
+
+.. code-block:: php
+
+   <?php
+
+   $database['main'] = [
+       'driver'    => 'mysqli',
+       'hostname'  => 'localhost',
+       'port'      => '3306',
+       'username'  => 'root',
+       'password'  => '',
+       'database'  => 'my_database',
+       'charset'   => 'utf8mb4',
+       'dbprefix'  => '',
+   ];
+
+Configuration values
+--------------------
+
+driver
+    The database driver/type (for example ``mysqli``, ``postgre``, ``odbc``).
+    Must be specified in lowercase.
+
+hostname
+    Hostname of the database server (commonly ``localhost``).
+
+port
+    The database port number (optional; e.g. ``3306`` for MySQL).
+
+username
+    The username used to connect to the database.
+
+password
+    The password used to connect to the database.
+
+database
+    The name of the database to connect to.
+
+dbprefix
+    Optional table prefix that Query Builder will prepend to table names.
+    Useful when multiple apps share the same DB.
+
+charset
+    Character set used by the connection (e.g. ``utf8mb4``).
+
+Connecting to your database
+----------------------------
+
+There are two main ways to initialize the database class: **auto-connect** and **manual connect**.
+
+Automatically connecting
+-------------------------
+
+To auto-load the database on every request, add ``'database'`` to the libraries array in:
+
+``app/config/autoload.php``
+
+.. code-block:: php
+
+   <?php
+   $autoload['libraries'] = ['database'];
+
+This will instantiate the DB class for every request.
+
+Manually connecting
+-------------------------
+
+When only some pages need DB access, connect manually where needed:
+
+.. code-block:: php
+
+   $this->call->database();
+
+With no argument this connects to the default group from your config and assigns the instance to ``$this->db``.
+
+Connecting to a specific group
+--------------------------------
+
+To connect to a specific group defined in your database config:
+
+.. code-block:: php
+
+   $this->call->database('group_name');
+
+That instance will be assigned to ``$this->group_name``.
+
+Connecting to multiple databases
+----------------------------------
+
+You can open multiple database connections in the same request:
+
+.. code-block:: php
+
+   $this->call->database();               # assigned to $this->db (default)
+   $this->call->database('group_one');    # assigned to $this->group_one
+   $this->call->database('group_two');    # assigned to $this->group_two
+
+.. note::
+
+   Replace ``group_one``/``group_two`` with the actual group names defined in your config.
+   If you omit a group name the instance is assigned to ``$this->db``.
+
+Using multiple database instances
+----------------------------------
+
+After connecting, query each instance like so:
+
+.. code-block:: php
+
+   $this->db->table('users')->get_all();
+   $this->group_one->table('posts')->get_all();
+   $this->group_two->table('comments')->get_all();
+
+Best practices
+--------------
+
+- Keep DB credentials out of version control (use environment variables if possible).  
+- Use the Query Builder for safer and readable queries.  
+- Wrap DB access inside models for a clean separation of concerns.  
+- Use multiple database connections only when necessary.

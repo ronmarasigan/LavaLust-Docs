@@ -1,0 +1,177 @@
+Views
+=====
+
+**Views** are the part of your application responsible for presenting data to the user.  
+They are typically plain HTML files but can also include PHP code to dynamically display content passed from controllers.
+
+Separating your logic (controllers/models) from your presentation (views) makes your code more organized, reusable, and maintainable.
+
+Loading a View
+---------------
+
+You can load a view file from a **controller** using the ``$this->call->view()`` method.  
+This tells LavaLust to include the view file and optionally send data to it.
+
+**Example:**
+
+.. code-block:: php
+
+   <?php
+
+   class HomeController extends Controller
+   {
+       public function index()
+       {
+           $data = [
+               'title' => 'Welcome to LavaLust',
+               'message' => 'Hello, World!'
+           ];
+
+           // Load the 'home' view and pass the $data array
+           $this->call->view('home', $data);
+       }
+   }
+
+In this example, LavaLust will look for the file:
+
+::
+
+   app/views/home.php
+
+If found, it will be included and rendered as the response.
+
+.. note::
+
+   The first parameter is the **view name without the `.php` extension**.  
+   The second parameter is an **optional array** of data to make available inside the view.
+
+Passing Data to Views
+----------------------
+
+Data passed as an associative array from the controller becomes **variables** inside the view file.
+
+**Example view file:**
+
+.. code-block:: php
+
+   <!-- app/views/home.php -->
+
+   <html>
+     <head>
+       <title><?= $title ?></title>
+     </head>
+     <body>
+       <h1><?= $message ?></h1>
+     </body>
+   </html>
+
+The variables ``$title`` and ``$message`` are automatically available inside the view  
+because they were passed from the controller when calling ``$this->call->view('home', $data)``.
+
+This approach keeps logic in the controller and presentation in the view.
+
+Loading Partial Views
+----------------------
+
+Often, you will want to **reuse view fragments** like headers, navigation bars, or footers on multiple pages.  
+LavaLust allows you to load as many views as you want within a single request.
+
+**Example:**
+
+.. code-block:: php
+
+   <?php
+
+   class PageController extends Controller
+   {
+       public function about()
+       {
+           $this->call->view('partials/header');
+           $this->call->view('about');
+           $this->call->view('partials/footer');
+       }
+   }
+
+This will render the following files in order:
+
+::
+
+   app/views/partials/header.php
+   app/views/about.php
+   app/views/partials/footer.php
+
+This helps you **avoid repeating the same HTML structure** in every view.
+
+Organizing Views into Subfolders
+---------------------------------
+
+You can organize views inside subfolders.  
+To load a view inside a folder, use the **folder name and file name separated by a slash**:
+
+.. code-block:: php
+
+   $this->call->view('users/profile');
+
+This will load:
+
+::
+
+   app/views/users/profile.php
+
+This helps keep your views well-structured as your project grows.
+
+View Nesting (Layouts)
+-----------------------
+
+You can also build reusable **layout templates** by nesting views.  
+This is useful when you want to apply a consistent layout (like a master page) to multiple pages.
+
+**Example:**
+
+.. code-block:: php
+
+   <!-- app/views/layout.php -->
+
+   <html>
+     <head>
+       <title><?= $title ?></title>
+     </head>
+     <body>
+       <?= $this->call->view('partials/navbar') ?>
+       <div class="container">
+         <?= $content ?>
+       </div>
+     </body>
+   </html>
+
+
+   <!-- app/views/home.php -->
+
+   <?php
+   $content = "<h1>Welcome!</h1>";
+   $this->call->view('layout', [
+       'title' => 'Home',
+       'content' => $content
+   ]);
+   ?>
+
+This method allows you to:
+
+- Centralize your main layout in one place.
+- Reuse the same layout for multiple pages.
+- Change the layout structure once and affect all pages using it.
+
+Best Practices
+---------------
+
+- Keep **business logic** out of your views. Only display data.
+- Use **controllers** to gather data from models and pass it to views.
+- Store your views inside ``app/views`` and organize them in subfolders.
+- Use **partial views** (headers, footers, navbars) for reusable page sections.
+- Use **layout templates** to keep your design consistent across pages.
+
+.. note::
+
+   Views should **only handle output**, never input or data processing.  
+   Keeping your views simple makes your application easier to maintain.
+

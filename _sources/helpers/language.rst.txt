@@ -1,0 +1,76 @@
+Language Helper
+===============
+
+The **Language Helper** provides functions to handle translation and language selection in LavaLust applications.  
+It simplifies retrieving translated text and switching the active language dynamically.
+
+.. note::
+
+   This helper relies on LavaLust's internal ``Lang`` class, accessed via ``lava_instance()->lang``.  
+   Ensure that the language files for your supported locales are properly loaded.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``lang()``
+     - Retrieves a translated string for a given key, with optional parameter replacement and HTML escaping.
+   * - ``language()``
+     - Sets or retrieves the active language object.
+
+Available Functions
+--------------------
+
+.. php:function:: lang($key, $params = array(), $escape = FALSE)
+
+    Translates a string using the language key provided.
+
+    :param string $key: The key of the text to translate.
+    :param array $params: Optional array of parameters to replace in the translated string.
+    :param bool $escape: Whether to apply HTML escaping to the translated text (default: FALSE).
+    :returns: string — The translated string.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Basic translation
+        echo lang('welcome_message');
+
+        // Translation with parameters
+        echo lang('greeting_user', ['name' => 'Ronald']);
+
+        // Escaped translation for HTML output
+        echo lang('html_content', [], TRUE);
+
+
+.. php:function:: language($lang)
+
+    Sets or retrieves the current active language object.
+
+    :param string $lang: The language code to activate (e.g., ``en``, ``fr``, ``es``).
+    :returns: object — The language object representing the selected language.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Switch application language to French
+        $fr = language('fr');
+
+        // Retrieve translated text in French
+        echo $fr->translate('welcome_message');
+
+Additional Notes
+-----------------
+
+- ``lang()`` is a shortcut to fetch translated text without directly interacting with the language object.
+- ``language()`` allows you to switch the current language context and retrieve the language object for advanced operations.
+- Use ``$params`` in ``lang()`` for dynamic replacement of placeholders in translation strings.

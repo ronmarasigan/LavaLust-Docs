@@ -1,0 +1,99 @@
+File Helper
+===========
+
+The **File Helper** provides utility functions for writing, deleting, and copying files in LavaLust.  
+It simplifies file system operations while handling proper locking, directory traversal, and optional behaviors.
+
+.. note::
+
+   These helper functions rely on PHP's native file system functions like ``fopen()``, ``fwrite()``, ``unlink()``, ``scandir()``, and ``copy()``.  
+   Ensure your PHP scripts have proper file and directory permissions to perform these operations safely.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``write_file()``
+     - Writes data to a file with exclusive locking.
+   * - ``delete_files()``
+     - Deletes files in a directory, optionally removing the directory itself.
+   * - ``copy_file()``
+     - Copies or moves a file to a new location.
+
+Available Functions
+--------------------
+
+.. php:function:: write_file($file, $content, $mode = 'w')
+
+    Writes the given content to a file using exclusive locking to prevent race conditions.
+
+    :param string $file: Full path to the file to write.
+    :param string $content: The content to write to the file.
+    :param string $mode: File mode for writing (default: ``w``).
+    :returns: int|false — Number of bytes written, or FALSE on failure.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $result = write_file('/path/to/file.txt', "Hello, LavaLust!");
+        if ($result !== false) {
+            echo "File written successfully!";
+        }
+
+
+.. php:function:: delete_files($dir_path, $del_dir = FALSE, $htdocs = FALSE)
+
+    Deletes all files in a directory, optionally removing subdirectories and the directory itself.  
+    Can preserve common web files like ``.htaccess`` or ``index.php`` if ``$htdocs`` is TRUE.
+
+    :param string $dir_path: Path to the directory to delete files from.
+    :param bool $del_dir: Whether to delete the directory itself (default: FALSE).
+    :param bool $htdocs: Whether to preserve web files like ``.htaccess`` or ``index.php`` (default: FALSE).
+    :returns: bool — TRUE on success, FALSE on failure.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Delete all files but keep the directory
+        delete_files('/path/to/directory');
+
+        // Delete all files and the directory itself
+        delete_files('/path/to/directory', TRUE);
+
+
+.. php:function:: copy_file($path, $copy_path, $remove_original = FALSE)
+
+    Copies a file to a new location, or moves it if ``$remove_original`` is TRUE.
+
+    :param string $path: Path to the source file.
+    :param string $copy_path: Path to the destination file.
+    :param bool $remove_original: If TRUE, the file is moved instead of copied.
+    :returns: bool — TRUE on success, FALSE on failure.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Copy a file
+        copy_file('/path/to/file.txt', '/new/path/file.txt');
+
+        // Move a file
+        copy_file('/path/to/file.txt', '/new/path/file.txt', TRUE);
+
+Additional Notes
+-----------------
+
+- ``write_file()`` uses **exclusive locking** via ``flock()`` to prevent concurrent write issues.
+- ``delete_files()`` can skip important web files if ``$htdocs`` is TRUE.
+- ``copy_file()`` is a simple wrapper for ``copy()`` or ``rename()`` depending on whether you want to move or copy the file.
+- Always ensure that your PHP process has **sufficient permissions** for the directories and files involved.

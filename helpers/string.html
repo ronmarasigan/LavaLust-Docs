@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Helper &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="URL &amp; Asset Helper" href="url.html" />
+    <link rel="prev" title="Security Helper" href="security.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Helpers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Helper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">String Helper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#function-summary">Function Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-functions">Available Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#str_insert"><code class="docutils literal notranslate"><span class="pre">str_insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#str_between"><code class="docutils literal notranslate"><span class="pre">str_between()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#str_after"><code class="docutils literal notranslate"><span class="pre">str_after()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#str_before"><code class="docutils literal notranslate"><span class="pre">str_before()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#str_limitwords"><code class="docutils literal notranslate"><span class="pre">str_limitwords()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#str_limitchars"><code class="docutils literal notranslate"><span class="pre">str_limitchars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strip_slashes"><code class="docutils literal notranslate"><span class="pre">strip_slashes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strip_quotes"><code class="docutils literal notranslate"><span class="pre">strip_quotes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quotes_to_entities"><code class="docutils literal notranslate"><span class="pre">quotes_to_entities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reduce_double_slashes"><code class="docutils literal notranslate"><span class="pre">reduce_double_slashes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reduce_multiples"><code class="docutils literal notranslate"><span class="pre">reduce_multiples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#random_string"><code class="docutils literal notranslate"><span class="pre">random_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#increment_string"><code class="docutils literal notranslate"><span class="pre">increment_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alternator"><code class="docutils literal notranslate"><span class="pre">alternator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#repeater"><code class="docutils literal notranslate"><span class="pre">repeater()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Helpers</a></li>
+      <li class="breadcrumb-item active">String Helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="string-helper">
+<h1>String Helper<a class="headerlink" href="#string-helper" title="Link to this heading"></a></h1>
+<p>The <strong>String Helper</strong> provides a collection of functions to manipulate, format, and sanitize strings in LavaLust applications.
+These helpers cover tasks such as limiting words, removing quotes, generating random strings, and performing string replacements.</p>
+<section id="function-summary">
+<h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str_insert()</span></code></p></td>
+<td><p>Replaces placeholders in a string using an associative array of key-value pairs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str_between()</span></code></p></td>
+<td><p>Extracts substrings located between two delimiters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str_after()</span></code></p></td>
+<td><p>Returns the part of a string after a given search string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str_before()</span></code></p></td>
+<td><p>Returns the part of a string before a given search string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str_limitwords()</span></code></p></td>
+<td><p>Limits a string to a certain number of words.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str_limitchars()</span></code></p></td>
+<td><p>Limits a string to a certain number of characters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">strip_slashes()</span></code></p></td>
+<td><p>Removes slashes from a string or array recursively.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">strip_quotes()</span></code></p></td>
+<td><p>Removes single and double quotes from a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quotes_to_entities()</span></code></p></td>
+<td><p>Converts quotes to HTML entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reduce_double_slashes()</span></code></p></td>
+<td><p>Converts double slashes to single slashes except in URLs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reduce_multiples()</span></code></p></td>
+<td><p>Reduces multiple instances of a character to a single instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">random_string()</span></code></p></td>
+<td><p>Generates a random string of a specified type and length.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">increment_string()</span></code></p></td>
+<td><p>Appends or increments a number at the end of a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alternator()</span></code></p></td>
+<td><p>Alternates between multiple strings on successive calls.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">repeater()</span></code></p></td>
+<td><p>Repeats a string a given number of times.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="available-functions">
+<h2>Available Functions<a class="headerlink" href="#available-functions" title="Link to this heading"></a></h2>
+<dl class="php function">
+<dt class="sig sig-object php" id="str_insert">
+<span class="sig-name descname"><span class="pre">str_insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">array</span> <span class="pre">$keyValue</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_insert" title="Link to this definition"></a></dt>
+<dd><p>Replaces placeholders in a string using an associative array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$keyValue</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array</span></code></span>) – Key-value pairs to replace in the string.</p></li>
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The string containing placeholders.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — The modified string.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$text</span> <span class="o">=</span> <span class="nx">str_insert</span><span class="p">([</span><span class="s1">&#39;{name}&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">],</span> <span class="s1">&#39;Hello {name}!&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$text</span><span class="p">;</span> <span class="c1">// Output: Hello John!</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="str_between">
+<span class="sig-name descname"><span class="pre">str_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$left</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$right</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_between" title="Link to this definition"></a></dt>
+<dd><p>Returns all substrings between two delimiters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$left</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Left delimiter.</p></li>
+<li><p><strong>$right</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Right delimiter.</p></li>
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The string to search in.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array — Array of matched substrings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="str_after">
+<span class="sig-name descname"><span class="pre">str_after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$search</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_after" title="Link to this definition"></a></dt>
+<dd><p>Returns the part of a string after a given search string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$search</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Search string.</p></li>
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Portion after the search string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="str_before">
+<span class="sig-name descname"><span class="pre">str_before</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$search</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_before" title="Link to this definition"></a></dt>
+<dd><p>Returns the part of a string before a given search string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$search</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Search string.</p></li>
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Portion before the search string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="str_limitwords">
+<span class="sig-name descname"><span class="pre">str_limitwords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em>, <em class="sig-param"><span class="pre">int</span> <span class="pre">$limit</span> <span class="pre">=</span> <span class="pre">10</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$end</span> <span class="pre">=</span> <span class="pre">'...'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_limitwords" title="Link to this definition"></a></dt>
+<dd><p>Limits a string to a specified number of words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+<li><p><strong>$limit</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Maximum number of words (default 10).</p></li>
+<li><p><strong>$end</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Suffix to append if truncated (default ‘…’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Truncated string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="str_limitchars">
+<span class="sig-name descname"><span class="pre">str_limitchars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$string</span></em>, <em class="sig-param"><span class="pre">int</span> <span class="pre">$limit</span> <span class="pre">=</span> <span class="pre">100</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$end</span> <span class="pre">=</span> <span class="pre">'...'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#str_limitchars" title="Link to this definition"></a></dt>
+<dd><p>Limits a string to a specified number of characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$string</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+<li><p><strong>$limit</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Maximum number of characters (default 100).</p></li>
+<li><p><strong>$end</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Suffix to append if truncated (default ‘…’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Truncated string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="strip_slashes">
+<span class="sig-name descname"><span class="pre">strip_slashes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mixed</span> <span class="pre">$str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#strip_slashes" title="Link to this definition"></a></dt>
+<dd><p>Removes slashes from a string or recursively from an array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – String or array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed — Cleaned string or array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="strip_quotes">
+<span class="sig-name descname"><span class="pre">strip_quotes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#strip_quotes" title="Link to this definition"></a></dt>
+<dd><p>Removes single and double quotes from a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — String without quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="quotes_to_entities">
+<span class="sig-name descname"><span class="pre">quotes_to_entities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quotes_to_entities" title="Link to this definition"></a></dt>
+<dd><p>Converts single and double quotes to HTML entities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — String with quotes converted to entities.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="reduce_double_slashes">
+<span class="sig-name descname"><span class="pre">reduce_double_slashes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#reduce_double_slashes" title="Link to this definition"></a></dt>
+<dd><p>Converts double slashes to single slashes except in URLs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — String with reduced slashes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="reduce_multiples">
+<span class="sig-name descname"><span class="pre">reduce_multiples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$str</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$character</span> <span class="pre">=</span> <span class="pre">'</span></em>, <em class="sig-param"><span class="pre">'</span></em>, <em class="sig-param"><span class="pre">bool</span> <span class="pre">$trim</span> <span class="pre">=</span> <span class="pre">FALSE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#reduce_multiples" title="Link to this definition"></a></dt>
+<dd><p>Reduces multiple instances of a character to a single instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+<li><p><strong>$character</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Character to reduce (default ‘,’).</p></li>
+<li><p><strong>$trim</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – Trim the character from start/end (default FALSE).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — String with reduced multiples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="random_string">
+<span class="sig-name descname"><span class="pre">random_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$type</span> <span class="pre">=</span> <span class="pre">'alnum'</span></em>, <em class="sig-param"><span class="pre">int</span> <span class="pre">$len</span> <span class="pre">=</span> <span class="pre">8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#random_string" title="Link to this definition"></a></dt>
+<dd><p>Generates a random string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$type</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Type of string: basic, alpha, alnum, numeric, nozero, md5, sha1.</p></li>
+<li><p><strong>$len</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Number of characters (default 8).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Random string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="increment_string">
+<span class="sig-name descname"><span class="pre">increment_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$str</span></em>, <em class="sig-param"><span class="pre">string</span> <span class="pre">$separator</span> <span class="pre">=</span> <span class="pre">'_'</span></em>, <em class="sig-param"><span class="pre">int</span> <span class="pre">$first</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#increment_string" title="Link to this definition"></a></dt>
+<dd><p>Appends or increments a number at the end of a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$str</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Input string.</p></li>
+<li><p><strong>$separator</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Separator before the number (default ‘_’).</p></li>
+<li><p><strong>$first</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Number to start incrementing from (default 1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Incremented string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="alternator">
+<span class="sig-name descname"><span class="pre">alternator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#alternator" title="Link to this definition"></a></dt>
+<dd><p>Alternates between multiple strings on successive calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string — Alternated string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="repeater">
+<span class="sig-name descname"><span class="pre">repeater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span> <span class="pre">$data</span></em>, <em class="sig-param"><span class="pre">int</span> <span class="pre">$num</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#repeater" title="Link to this definition"></a></dt>
+<dd><p>Repeats a string a specified number of times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$data</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – String to repeat.</p></li>
+<li><p><strong>$num</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Number of repeats (default 1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string — Repeated string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="security.html" class="btn btn-neutral float-left" title="Security Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="url.html" class="btn btn-neutral float-right" title="URL &amp; Asset Helper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+Libraries
+=========
+
+**Libraries** are classes that provide reusable functionality for your application.  
+Unlike **helpers** (which are just standalone functions), **libraries are full PHP classes** that can maintain their own properties and state.
+
+LavaLust comes with several built-in libraries (e.g., ``session``, ``form_validation``, ``email``, etc.), and you can also create your own.
+
+Loading a Library
+------------------
+
+To load a library, use the ``$this->call->library()`` method inside your **controller** or **model**:
+
+.. code-block:: php
+
+   <?php
+   class AuthController extends Controller
+   {
+       public function __construct()
+       {
+           parent::__construct();
+
+           // Load the 'session' library
+           $this->call->library('session');
+       }
+
+       public function login()
+       {
+           // Use the session library
+           $this->session->set('user_id', 123);
+
+           echo "Logged in as user 123";
+       }
+   }
+
+.. note::
+
+   The loaded library is available as a property on the controller (e.g., ``$this->session``).
+
+Using a Library
+----------------
+
+Once loaded, you can use the library just like any other PHP object.
+
+**Example using the ``session`` library:**
+
+.. code-block:: php
+
+   // Set a value
+   $this->session->set('username', 'LavaUser');
+
+   // Get a value
+   echo $this->session->get('username');
+
+   // Remove a value
+   $this->session->remove('username');
+
+   // Destroy session
+   $this->session->destroy();
+
+Loading Multiple Libraries
+---------------------------
+
+You can also load multiple libraries at once:
+
+.. code-block:: php
+
+   $this->call->library(['session', 'form_validation', 'email']);
+
+All of these libraries will then be available as:
+
+.. code-block:: php
+
+   $this->session
+   $this->form_validation
+   $this->email
+
+Auto-loading Libraries
+-----------------------
+
+If you want certain libraries to always be available in your app (without loading them every time),  
+you can **auto-load** them in the configuration file:
+
+1. Open ``app/config/autoload.php``.
+2. Add your library names in the ``$autoload['libraries']`` array.
+
+**Example:**
+
+.. code-block:: php
+
+   $autoload['libraries'] = ['session', 'form_validation'];
+
+These libraries will now be loaded automatically for every request.
+
+Creating a Custom Library
+--------------------------
+
+You can create your own library by placing a PHP class file inside ``app/libraries``.
+
+**Example:**
+
+**File:** ``app/libraries/Greeter.php``
+
+.. code-block:: php
+
+   <?php
+   class Greeter
+   {
+       public function hello($name)
+       {
+           return "Hello, " . ucfirst($name) . "!";
+       }
+   }
+
+**Usage in a controller:**
+
+.. code-block:: php
+
+   <?php
+   class WelcomeController extends Controller
+   {
+       public function index()
+       {
+           $this->call->library('greeter');
+
+           echo $this->greeter->hello('lavalust');
+           // Output: Hello, Lavalust!
+       }
+   }
+
+.. important::
+
+   - The file name must match the class name (``Greeter.php`` -> ``class Greeter``).
+   - The class name should use **PascalCase**, and you load it using lowercase (``greeter``).
+
+Best Practices
+---------------
+
+- Use libraries for **stateful or complex logic** that involves multiple steps.
+- Place **reusable, general-purpose classes** in the ``app/libraries`` folder.
+- Autoload only the libraries that are used on almost every page (like ``session``).
+- Keep library classes **focused on a single responsibility**.
+
+.. note::
+
+   Libraries are ideal when you need **object-oriented, reusable logic**  
+   that goes beyond simple functions (which are better suited for helpers).

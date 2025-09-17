@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Views &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Helpers" href="helpers.html" />
+    <link rel="prev" title="Models" href="models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#loading-a-view">Loading a View</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#passing-data-to-views">Passing Data to Views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-partial-views">Loading Partial Views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#organizing-views-into-subfolders">Organizing Views into Subfolders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-nesting-layouts">View Nesting (Layouts)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">General Topics</a></li>
+      <li class="breadcrumb-item active">Views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="views">
+<h1>Views<a class="headerlink" href="#views" title="Link to this heading"></a></h1>
+<p><strong>Views</strong> are the part of your application responsible for presenting data to the user.
+They are typically plain HTML files but can also include PHP code to dynamically display content passed from controllers.</p>
+<p>Separating your logic (controllers/models) from your presentation (views) makes your code more organized, reusable, and maintainable.</p>
+<section id="loading-a-view">
+<h2>Loading a View<a class="headerlink" href="#loading-a-view" title="Link to this heading"></a></h2>
+<p>You can load a view file from a <strong>controller</strong> using the <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;view()</span></code> method.
+This tells LavaLust to include the view file and optionally send data to it.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">HomeController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Welcome to LavaLust&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello, World!&#39;</span>
+        <span class="p">];</span>
+
+        <span class="c1">// Load the &#39;home&#39; view and pass the $data array</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this example, LavaLust will look for the file:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">app/views/home.php</span>
+</pre></div>
+</div>
+<p>If found, it will be included and rendered as the response.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first parameter is the <strong>view name without the `.php` extension</strong>.
+The second parameter is an <strong>optional array</strong> of data to make available inside the view.</p>
+</div>
+</section>
+<section id="passing-data-to-views">
+<h2>Passing Data to Views<a class="headerlink" href="#passing-data-to-views" title="Link to this heading"></a></h2>
+<p>Data passed as an associative array from the controller becomes <strong>variables</strong> inside the view file.</p>
+<p><strong>Example view file:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;!-- app/views/home.php --&gt;</span>
+
+<span class="x">&lt;html&gt;</span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$title</span> <span class="cp">?&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    &lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$message</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">  &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+<p>The variables <code class="docutils literal notranslate"><span class="pre">$title</span></code> and <code class="docutils literal notranslate"><span class="pre">$message</span></code> are automatically available inside the view
+because they were passed from the controller when calling <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;view('home',</span> <span class="pre">$data)</span></code>.</p>
+<p>This approach keeps logic in the controller and presentation in the view.</p>
+</section>
+<section id="loading-partial-views">
+<h2>Loading Partial Views<a class="headerlink" href="#loading-partial-views" title="Link to this heading"></a></h2>
+<p>Often, you will want to <strong>reuse view fragments</strong> like headers, navigation bars, or footers on multiple pages.
+LavaLust allows you to load as many views as you want within a single request.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">PageController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">about</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;partials/header&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;about&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;partials/footer&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will render the following files in order:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">app/views/partials/header.php</span>
+<span class="x">app/views/about.php</span>
+<span class="x">app/views/partials/footer.php</span>
+</pre></div>
+</div>
+<p>This helps you <strong>avoid repeating the same HTML structure</strong> in every view.</p>
+</section>
+<section id="organizing-views-into-subfolders">
+<h2>Organizing Views into Subfolders<a class="headerlink" href="#organizing-views-into-subfolders" title="Link to this heading"></a></h2>
+<p>You can organize views inside subfolders.
+To load a view inside a folder, use the <strong>folder name and file name separated by a slash</strong>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;view(&#39;users/profile&#39;);</span>
+</pre></div>
+</div>
+<p>This will load:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">app/views/users/profile.php</span>
+</pre></div>
+</div>
+<p>This helps keep your views well-structured as your project grows.</p>
+</section>
+<section id="view-nesting-layouts">
+<h2>View Nesting (Layouts)<a class="headerlink" href="#view-nesting-layouts" title="Link to this heading"></a></h2>
+<p>You can also build reusable <strong>layout templates</strong> by nesting views.
+This is useful when you want to apply a consistent layout (like a master page) to multiple pages.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;!-- app/views/layout.php --&gt;</span>
+
+<span class="x">&lt;html&gt;</span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$title</span> <span class="cp">?&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;partials/navbar&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span>
+<span class="x">    &lt;div class=&quot;container&quot;&gt;</span>
+<span class="x">      </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$content</span> <span class="cp">?&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">  &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+
+
+<span class="x">&lt;!-- app/views/home.php --&gt;</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$content</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Welcome!&lt;/h1&gt;&quot;</span><span class="p">;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Home&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$content</span>
+<span class="p">]);</span>
+<span class="cp">?&gt;</span>
+</pre></div>
+</div>
+<p>This method allows you to:</p>
+<ul class="simple">
+<li><p>Centralize your main layout in one place.</p></li>
+<li><p>Reuse the same layout for multiple pages.</p></li>
+<li><p>Change the layout structure once and affect all pages using it.</p></li>
+</ul>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Keep <strong>business logic</strong> out of your views. Only display data.</p></li>
+<li><p>Use <strong>controllers</strong> to gather data from models and pass it to views.</p></li>
+<li><p>Store your views inside <code class="docutils literal notranslate"><span class="pre">app/views</span></code> and organize them in subfolders.</p></li>
+<li><p>Use <strong>partial views</strong> (headers, footers, navbars) for reusable page sections.</p></li>
+<li><p>Use <strong>layout templates</strong> to keep your design consistent across pages.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Views should <strong>only handle output</strong>, never input or data processing.
+Keeping your views simple makes your application easier to maintain.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="models.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="helpers.html" class="btn btn-neutral float-right" title="Helpers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

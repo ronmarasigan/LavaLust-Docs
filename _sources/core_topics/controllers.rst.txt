@@ -1,0 +1,93 @@
+Controllers
+============
+
+Controllers are classes that handle HTTP requests, interact with models, and return responses or views.  
+They provide better organization than defining all logic in route closures, especially for larger applications.
+
+
+Creating a Controller
+----------------------
+
+A basic controller class should extend the base `Controller` class:
+
+.. code-block:: php
+
+    <?php
+    class UserController extends Controller
+    {
+        // Method to show a user profile
+        public function profile($id)
+        {
+            echo "User Profile ID: " . $id;
+        }
+    }
+
+**Explanation:**
+
+- The class must extend `Controller`.  
+- Each **public method** can be mapped to a route.  
+- Parameters in the method correspond to route dynamic segments.
+
+
+Mapping Routes to Controller Methods
+-------------------------------------
+
+You can map a route to a controller method instead of a closure: Navigate to ``app/config/routes``
+
+.. code-block:: php
+    
+    <?php
+    $router->get('/user/{id}', 'UserController::profile');
+
+> The ```::``` symbol separates the controller class and the method name.
+
+
+Controller Constructor
+-----------------------
+
+Controllers can have a constructor to initialize shared resources:
+
+.. code-block:: php
+
+    <?php
+    class UserController extends Controller
+    {
+        public function __construct()
+        {
+                parent::__construct();
+                $this->call->library('session');
+        }
+
+        public function profile($id)
+        {
+            echo "User ID: " . $id;
+        }
+    }
+
+**Use case:** loading libraries, models, or middleware that will be used across multiple methods.
+
+
+Returning Views from Controllers
+---------------------------------
+
+Controllers can return HTML views using the `view` method:
+
+.. code-block:: php
+
+    <?php
+    public function profile($id)
+    {
+        $data['user'] = $this->UserModel->find($id);
+        $this->view('user/profile', $data);
+    }
+
+- ``$data`` is an associative array passed to the view.  
+- The ``view()`` method renders the specified template file.
+
+
+Tips and Best Practices
+-------------------------
+
+- Use controllers for **complex routes** and logic.  
+- Keep each controller focused on a specific resource or feature (e.g., `UserController`, `PostController`).  
+- Use **models** for database operations, **views** for presentation, and **controllers** to coordinate them (MVC pattern).  

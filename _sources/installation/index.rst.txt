@@ -1,0 +1,9 @@
+Installation Instructions
+==========================
+
+.. toctree::
+   :maxdepth: 2
+
+   guide
+   upgrading
+

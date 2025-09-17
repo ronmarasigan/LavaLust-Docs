@@ -1,0 +1,224 @@
+Form Validation Class
+=====================
+
+The **Form Validation** class allows you to validate form input data easily and cleanly.  
+It handles checking for required fields, verifying data type, length, and uniqueness, as well as sanitizing and preparing data for database insertion.
+
+Overview
+---------
+
+Typical form validation process:
+
+1. A form is displayed.
+2. The user fills it and submits it.
+3. If invalid, the form is redisplayed with error messages and old values.
+4. If valid, the data is processed (e.g. saved to a database).
+
+LavaLust provides a dedicated Form Validation library to simplify this process.
+
+Form Validation Tutorial
+-------------------------
+
+You will need three parts:
+
+- A **form view** containing the input fields
+- A **success view** shown after successful submission
+- A **controller** to process and validate the data
+
+The Form
+---------
+
+Create ``myform.php`` in your ``app/views/`` directory:
+
+.. code-block:: php
+
+   <?php
+   <html>
+   <head>
+      <title>My Form</title>
+   </head>
+   <body>
+   <?php $LAVA = lava_instance(); ?>
+   <?php echo $LAVA->form_validation->errors(); ?>
+
+   <form action="<?php echo site_url('form');?>" method="post">
+      <h5>Username</h5>
+      <input type="text" name="username" size="50" />
+
+      <h5>Password</h5>
+      <input type="text" name="password" size="50" />
+
+      <h5>Password Confirm</h5>
+      <input type="text" name="passconf" size="50" />
+
+      <h5>Email Address</h5>
+      <input type="text" name="email" size="50" />
+
+      <div><input type="submit" value="Submit" /></div>
+   </form>
+
+   </body>
+   </html>
+
+The Success Page
+-----------------
+
+Create ``formsuccess.php`` in ``app/views/``:
+
+.. code-block:: php
+
+   <?php
+   <html>
+   <head>
+      <title>Form Success</title>
+   </head>
+   <body>
+      <h3>Your form was successfully submitted!</h3>
+   </body>
+   </html>
+
+The Controller
+---------------
+
+Create ``Form.php`` in ``app/controllers/``:
+
+.. code-block:: php
+
+   <?php
+   class Form extends Controller {
+
+      public function index()
+      {
+         $this->call->library('form_validation');
+
+         if ($this->form_validation->run() == FALSE) {
+            $this->call->view('myform');
+         } else {
+            $this->call->view('formsuccess');
+         }
+      }
+   }
+
+Trying It Out
+--------------
+
+Visit your form in the browser:
+
+.. code-block:: none
+
+   example.com/index.php/form/
+
+If you submit without filling fields, it will reload because **no validation rules are set yet**.  
+The ``run()`` method returns **TRUE** only if all validation rules pass.
+
+Setting Validation Rules
+-------------------------
+
+Add rules to your controller:
+
+.. code-block:: php
+
+   <?php
+   class Form extends Controller {
+
+      public function index()
+      {
+         $this->call->library('form_validation');
+
+         $this->form_validation
+            ->name('username')
+               ->required()
+               ->min_length(5)
+               ->max_length(20)
+            ->name('password')
+               ->required()
+               ->min_length(8)
+            ->name('passconf')
+               ->required()
+               ->min_length(8)
+               ->matches('password')
+            ->name('email')
+               ->valid_email();
+
+         if ($this->form_validation->run() == FALSE) {
+            $this->call->view('myform');
+         } else {
+            $this->call->view('formsuccess');
+         }
+      }
+   }
+
+The ``name()`` method selects the input field to validate.  
+Chained methods like ``required()``, ``min_length()``, ``matches()`` apply validation rules to it.
+
+Available Methods
+------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+   :class: longtable
+
+   * - **Method**
+     - **Description**
+   * - ``name($field)``
+     - Selects the input field by its name attribute to apply rules on.
+   * - ``pattern($name, $custom_error)``
+     - Validates using a built-in pattern. Possible values: ``url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email``.
+   * - ``custom_pattern($regex, $custom_error)``
+     - Validates against a custom regex pattern.
+   * - ``required($custom_error)``
+     - Ensures the field is not empty.
+   * - ``matches($field, $custom_error)``
+     - Ensures the value matches another field's value.
+   * - ``differs($field, $custom_error)``
+     - Ensures the value differs from another field's value.
+   * - ``is_unique($table, $field, $str, $custom_error)``
+     - Checks if the value does **not** exist in a database table column.
+   * - ``exact_length($length, $custom_error)``
+     - Ensures the string length is exactly this number.
+   * - ``min_length($length, $custom_error)``
+     - Ensures the string length is at least this number.
+   * - ``max_length($length, $custom_error)``
+     - Ensures the string length does not exceed this number.
+   * - ``valid_email($custom_error)``
+     - Ensures the value is a valid email format.
+   * - ``alpha($custom_error)``
+     - Allows only alphabetic characters.
+   * - ``alpha_space($custom_error)``
+     - Allows alphabetic characters and spaces.
+   * - ``alpha_numeric($custom_error)``
+     - Allows only alphanumeric characters.
+   * - ``alpha_numeric_space($custom_error)``
+     - Allows alphanumeric characters and spaces.
+   * - ``alpha_numeric_dash($custom_error)``
+     - Allows alphanumeric characters and dashes.
+   * - ``numeric($custom_error)``
+     - Allows only numeric values.
+   * - ``greater_than($value, $custom_error)``
+     - Ensures the value is greater than the given number.
+   * - ``greater_than_equal_to($value, $custom_error)``
+     - Ensures the value is greater than or equal to the given number.
+   * - ``less_than($value, $custom_error)``
+     - Ensures the value is less than the given number.
+   * - ``less_than_equal_to($value, $custom_error)``
+     - Ensures the value is less than or equal to the given number.
+   * - ``in_list($array, $custom_error)``
+     - Ensures the value exists within the given array list.
+   * - ``run()``
+     - Runs the validation. Returns **TRUE** if no errors found.
+
+.. note::
+
+   Each validation method supports an optional ``$custom_error`` parameter to override the default error message.
+
+Error Display
+--------------
+
+To show validation errors in your form, include this line in your view:
+
+.. code-block:: php
+
+   <?php echo $this->form_validation->errors(); ?>
+
+It will return a string of all validation errors. If there are none, it returns an empty string.

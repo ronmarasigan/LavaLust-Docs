@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Validation Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Input and Output Class" href="io.html" />
+    <link rel="prev" title="Upload Class" href="upload.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Form Validation Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#form-validation-tutorial">Form Validation Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-form">The Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-success-page">The Success Page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-controller">The Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trying-it-out">Trying It Out</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-validation-rules">Setting Validation Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-methods">Available Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-display">Error Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Form Validation Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="form-validation-class">
+<h1>Form Validation Class<a class="headerlink" href="#form-validation-class" title="Link to this heading"></a></h1>
+<p>The <strong>Form Validation</strong> class allows you to validate form input data easily and cleanly.
+It handles checking for required fields, verifying data type, length, and uniqueness, as well as sanitizing and preparing data for database insertion.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Typical form validation process:</p>
+<ol class="arabic simple">
+<li><p>A form is displayed.</p></li>
+<li><p>The user fills it and submits it.</p></li>
+<li><p>If invalid, the form is redisplayed with error messages and old values.</p></li>
+<li><p>If valid, the data is processed (e.g. saved to a database).</p></li>
+</ol>
+<p>LavaLust provides a dedicated Form Validation library to simplify this process.</p>
+</section>
+<section id="form-validation-tutorial">
+<h2>Form Validation Tutorial<a class="headerlink" href="#form-validation-tutorial" title="Link to this heading"></a></h2>
+<p>You will need three parts:</p>
+<ul class="simple">
+<li><p>A <strong>form view</strong> containing the input fields</p></li>
+<li><p>A <strong>success view</strong> shown after successful submission</p></li>
+<li><p>A <strong>controller</strong> to process and validate the data</p></li>
+</ul>
+</section>
+<section id="the-form">
+<h2>The Form<a class="headerlink" href="#the-form" title="Link to this heading"></a></h2>
+<p>Create <code class="docutils literal notranslate"><span class="pre">myform.php</span></code> in your <code class="docutils literal notranslate"><span class="pre">app/views/</span></code> directory:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">Form</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+<span class="o">&lt;?</span><span class="nx">php</span> <span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span> <span class="cp">?&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
+
+<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot;&gt;</span>
+<span class="x">   &lt;h5&gt;Username&lt;/h5&gt;</span>
+<span class="x">   &lt;input type=&quot;text&quot; name=&quot;username&quot; size=&quot;50&quot; /&gt;</span>
+
+<span class="x">   &lt;h5&gt;Password&lt;/h5&gt;</span>
+<span class="x">   &lt;input type=&quot;text&quot; name=&quot;password&quot; size=&quot;50&quot; /&gt;</span>
+
+<span class="x">   &lt;h5&gt;Password Confirm&lt;/h5&gt;</span>
+<span class="x">   &lt;input type=&quot;text&quot; name=&quot;passconf&quot; size=&quot;50&quot; /&gt;</span>
+
+<span class="x">   &lt;h5&gt;Email Address&lt;/h5&gt;</span>
+<span class="x">   &lt;input type=&quot;text&quot; name=&quot;email&quot; size=&quot;50&quot; /&gt;</span>
+
+<span class="x">   &lt;div&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/div&gt;</span>
+<span class="x">&lt;/form&gt;</span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-success-page">
+<h2>The Success Page<a class="headerlink" href="#the-success-page" title="Link to this heading"></a></h2>
+<p>Create <code class="docutils literal notranslate"><span class="pre">formsuccess.php</span></code> in <code class="docutils literal notranslate"><span class="pre">app/views/</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Form</span> <span class="nx">Success</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Your</span> <span class="nx">form</span> <span class="nx">was</span> <span class="nx">successfully</span> <span class="nx">submitted</span><span class="o">!&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-controller">
+<h2>The Controller<a class="headerlink" href="#the-controller" title="Link to this heading"></a></h2>
+<p>Create <code class="docutils literal notranslate"><span class="pre">Form.php</span></code> in <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Form</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+   <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">()</span> <span class="o">==</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;myform&#39;</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;formsuccess&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="trying-it-out">
+<h2>Trying It Out<a class="headerlink" href="#trying-it-out" title="Link to this heading"></a></h2>
+<p>Visit your form in the browser:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>example.com/index.php/form/
+</pre></div>
+</div>
+<p>If you submit without filling fields, it will reload because <strong>no validation rules are set yet</strong>.
+The <code class="docutils literal notranslate"><span class="pre">run()</span></code> method returns <strong>TRUE</strong> only if all validation rules pass.</p>
+</section>
+<section id="setting-validation-rules">
+<h2>Setting Validation Rules<a class="headerlink" href="#setting-validation-rules" title="Link to this heading"></a></h2>
+<p>Add rules to your controller:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Form</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+   <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span>
+         <span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">required</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">min_length</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">max_length</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">required</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">min_length</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;passconf&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">required</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">min_length</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">matches</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">valid_email</span><span class="p">();</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">()</span> <span class="o">==</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;myform&#39;</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;formsuccess&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">name()</span></code> method selects the input field to validate.
+Chained methods like <code class="docutils literal notranslate"><span class="pre">required()</span></code>, <code class="docutils literal notranslate"><span class="pre">min_length()</span></code>, <code class="docutils literal notranslate"><span class="pre">matches()</span></code> apply validation rules to it.</p>
+</section>
+<section id="available-methods">
+<h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name($field)</span></code></p></td>
+<td><p>Selects the input field by its name attribute to apply rules on.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pattern($name,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Validates using a built-in pattern. Possible values: <code class="docutils literal notranslate"><span class="pre">url,</span> <span class="pre">alpha,</span> <span class="pre">words,</span> <span class="pre">alphanum,</span> <span class="pre">int,</span> <span class="pre">float,</span> <span class="pre">tel,</span> <span class="pre">file,</span> <span class="pre">folder,</span> <span class="pre">date_dmy,</span> <span class="pre">date_ymd,</span> <span class="pre">email</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">custom_pattern($regex,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Validates against a custom regex pattern.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">required($custom_error)</span></code></p></td>
+<td><p>Ensures the field is not empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">matches($field,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value matches another field’s value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">differs($field,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value differs from another field’s value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_unique($table,</span> <span class="pre">$field,</span> <span class="pre">$str,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Checks if the value does <strong>not</strong> exist in a database table column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exact_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the string length is exactly this number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the string length is at least this number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the string length does not exceed this number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">valid_email($custom_error)</span></code></p></td>
+<td><p>Ensures the value is a valid email format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha($custom_error)</span></code></p></td>
+<td><p>Allows only alphabetic characters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_space($custom_error)</span></code></p></td>
+<td><p>Allows alphabetic characters and spaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric($custom_error)</span></code></p></td>
+<td><p>Allows only alphanumeric characters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_space($custom_error)</span></code></p></td>
+<td><p>Allows alphanumeric characters and spaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_dash($custom_error)</span></code></p></td>
+<td><p>Allows alphanumeric characters and dashes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numeric($custom_error)</span></code></p></td>
+<td><p>Allows only numeric values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than($value,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value is greater than the given number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than_equal_to($value,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value is greater than or equal to the given number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">less_than($value,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value is less than the given number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">less_than_equal_to($value,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value is less than or equal to the given number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">in_list($array,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value exists within the given array list.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run()</span></code></p></td>
+<td><p>Runs the validation. Returns <strong>TRUE</strong> if no errors found.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each validation method supports an optional <code class="docutils literal notranslate"><span class="pre">$custom_error</span></code> parameter to override the default error message.</p>
+</div>
+</section>
+<section id="error-display">
+<h2>Error Display<a class="headerlink" href="#error-display" title="Link to this heading"></a></h2>
+<p>To show validation errors in your form, include this line in your view:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+<p>It will return a string of all validation errors. If there are none, it returns an empty string.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="upload.html" class="btn btn-neutral float-left" title="Upload Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="io.html" class="btn btn-neutral float-right" title="Input and Output Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+Model–View–Controller
+=====================
+
+LavaLust is based on the **Model–View–Controller (MVC)** development pattern.  
+MVC is a software approach that separates **application logic** from **presentation**.  
+
+In practice, this allows your web pages to contain minimal scripting since the presentation is kept separate from the PHP logic.
+
+**Model**
+---------
+
+The **Model** represents your data structures.  
+Typically, your model classes contain functions that help you **retrieve, insert, and update** information in your database.
+
+**View**
+--------
+
+The **View** is the information presented to the user.  
+A view is normally a full web page, but in LavaLust it can also be a **page fragment** (like a header or footer), an **RSS feed**, or any other type of “page.”
+
+**Controller**
+--------------
+
+The **Controller** acts as an intermediary between the **Model**, the **View**, and other resources needed to process the HTTP request and generate a response.

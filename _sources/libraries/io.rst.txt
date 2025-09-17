@@ -1,0 +1,162 @@
+Input and Output Class
+=======================
+
+.. note::
+
+   This class is initialized **automatically** by the system, so there is **no need** to load it manually.
+
+The Input and Output (IO) Class in LavaLust provides a set of helper methods to safely and conveniently access request data (`$_POST`, `$_GET`, `$_COOKIE`, `$_SERVER`) and to send customized responses (HTML or JSON) with headers and status codes.
+
+Accessing Form and Server Data
+--------------------------------
+
+Instead of directly using superglobals like ``$_POST['field']`` and having to check if they exist, the IO class provides safe methods that automatically return ``NULL`` if the value is not set.
+
+**Example (without IO):**
+
+.. code-block:: php
+
+   <?php
+   $something = isset($_POST['something']) ? $_POST['something'] : NULL;
+
+**Example (with IO):**
+
+.. code-block:: php
+
+   <?php
+   $something = $this->io->post('something');
+
+Main Request Methods
+---------------------
+
+These methods are used to fetch data from different superglobals:
+
+.. code-block:: php
+
+   <?php
+   // POST data
+   $this->io->post('field');
+   $this->io->post(['field1', 'field2']);
+
+   // GET data
+   $this->io->get('field');
+   $this->io->get(['field1', 'field2']);
+
+   // COOKIE data
+   $this->io->cookie('field');
+   $this->io->cookie(['cookie1', 'cookie2']);
+
+   // SERVER data
+   $this->io->server('field');
+   $this->io->server(['SERVER_PROTOCOL', 'REQUEST_URI']);
+
+Additional Request Methods
+---------------------------
+
+.. code-block:: php
+
+   <?php
+   // Search both POST and GET (POST first)
+   $this->io->post_get('field');
+
+   // Search both GET and POST (GET first)
+   $this->io->get_post('field');
+
+   // Set a cookie
+   // Options: domain, path, prefix, secure, samesite
+   $this->io->set_cookie($name, $value, $expiration, $options = []);
+
+   // Get user IP address (returns '0.0.0.0' if invalid)
+   $this->io->ip_address();
+
+   // Validate an IP address
+   $this->io->valid_ip('127.0.0.1');
+
+   // Check if request is AJAX
+   $this->io->is_ajax();
+
+   // Get the request method (GET, POST, etc.)
+   $this->io->method(); // Can be upper or lower case
+
+Response Handling
+------------------
+
+The IO class also allows you to build and send responses with headers, content, and status codes.
+
+**Example: HTML Response**
+
+.. code-block:: php
+
+   <?php
+   $this->io->add_header('Content-Type', 'text/html');
+   $this->io->set_content('Hello, World!');
+   $this->io->set_status_code(200);
+   $this->io->send();
+
+**Shorthand:**
+
+.. code-block:: php
+
+   <?php
+   $this->io->set_html_content('Hello, World!');
+   $this->io->set_status_code(200);
+   $this->io->send();
+
+**Example: JSON Response**
+
+.. code-block:: php
+
+   <?php
+   $this->io->add_header([
+       'Access-Control-Allow-Origin' => '*',
+       'Content-Type' => 'application/json'
+   ]);
+   $data = ['message' => 'Hello, World!'];
+   $this->io->set_status_code(200);
+   $this->io->send_json($data);
+
+Available Methods Reference
+----------------------------
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+   :class: method-table
+
+   * - Method
+     - Description
+   * - ``post($key)``
+     - Get value from ``$_POST``
+   * - ``get($key)``
+     - Get value from ``$_GET``
+   * - ``cookie($key)``
+     - Get value from ``$_COOKIE``
+   * - ``server($key)``
+     - Get value from ``$_SERVER``
+   * - ``post_get($key)``
+     - Get value from POST or GET (POST first)
+   * - ``get_post($key)``
+     - Get value from GET or POST (GET first)
+   * - ``set_cookie($name, $value, $expire, $options=[])``
+     - Set a cookie with additional options
+   * - ``ip_address()``
+     - Returns the current user's IP address
+   * - ``valid_ip($ip)``
+     - Validate if the given IP is valid
+   * - ``is_ajax()``
+     - Check if the request is AJAX
+   * - ``method()``
+     - Return the current request method (GET/POST/etc.)
+   * - ``add_header($name, $value)`` / ``add_header(array $headers)``
+     - Add response headers
+   * - ``set_content($content)``
+     - Set response content
+   * - ``set_html_content($content)``
+     - Shorthand to set HTML content
+   * - ``set_status_code($code)``
+     - Set HTTP response status code
+   * - ``send()``
+     - Send the response
+   * - ``send_json(array $data)``
+     - Send a JSON response
+

@@ -1,0 +1,92 @@
+Cookie Helper
+=============
+
+The **Cookie Helper** provides a set of functions to simplify working with browser cookies in LavaLust.  
+It allows you to set, retrieve, and delete cookies through a simple API.
+
+.. note::
+
+   This helper uses the framework's internal ``IO`` class through ``lava_instance()->io``.  
+   Make sure the IO class is properly loaded by the framework (it is loaded automatically in normal operation).
+
+Function Summary
+---------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``set_cookie()``
+     - Sets a new cookie with optional parameters.
+   * - ``get_cookie()``
+     - Retrieves a cookie value from the browser.
+   * - ``delete_cookie()``
+     - Deletes an existing cookie from the browser.
+
+Available Functions
+-------------------
+
+.. php:function:: set_cookie($name, $value = '', $expiration = 0, $options = array())
+
+    Sets a cookie in the user's browser.
+
+    :param string $name: The cookie name.
+    :param string $value: The cookie value (default: empty string).
+    :param int $expiration: Cookie expiration time in seconds (default: 0, meaning "until the browser is closed").
+    :param array $options: Optional array of additional cookie settings such as ``domain``, ``path``, ``secure``, and ``httponly``.
+    :returns: void
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        set_cookie('username', 'ronald', 3600, [
+            'path'     => '/',
+            'secure'   => true,
+            'httponly' => true
+        ])
+
+
+.. php:function:: get_cookie($name)
+
+    Fetches an item from the ``$_COOKIE`` array.
+
+    :param string $name: The name of the cookie to retrieve.
+    :returns: mixed — The cookie value if it exists, or ``null`` if it does not.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $username = get_cookie('username');
+        if ($username !== null) {
+            echo "Welcome back, $username!";
+        }
+
+
+.. php:function:: delete_cookie($name, $domain = '', $path = '/', $prefix = '')
+
+    Deletes a cookie from the browser.
+
+    :param string $name: The name of the cookie to delete.
+    :param string $domain: The domain of the cookie (optional).
+    :param string $path: The path of the cookie (default: ``'/'``).
+    :param string $prefix: An optional cookie prefix.
+    :returns: void
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        delete_cookie('username');
+
+Additional Notes
+---------------------
+
+- If your app uses a cookie prefix (set via the ``cookie_prefix`` config item), ``get_cookie()`` will attempt to resolve it automatically.
+- The helper functions are simple wrappers around ``lava_instance()->io->set_cookie()`` and ``lava_instance()->io->cookie()`` for convenience.

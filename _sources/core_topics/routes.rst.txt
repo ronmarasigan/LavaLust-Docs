@@ -1,0 +1,187 @@
+Routes
+=======
+
+LavaLust provides a simple and flexible way to define routes using **closures** (anonymous functions).  
+Closures allow you to define the logic for a route directly when registering it, without creating a separate controller.
+
+
+Basic Route with Closure
+-------------------------
+
+You can create a simple GET route using a closure like this:
+Navigate to ``app/config/routes.php``
+
+.. code-block:: php
+
+    <?php
+    // Define a GET route for the home page
+    $router->get('/', function() {
+        echo "Welcome to LavaLust!";
+    });
+
+**Explanation:**
+
+- ``$router->get()`` defines a route that responds to HTTP GET requests.  
+- The first parameter ``'/'`` is the URI path.  
+- The second parameter is the closure that runs when the route is accessed.
+
+
+Accessing the Route
+--------------------
+
+Once the route is defined, you can access it in your browser:
+
+::
+    
+    http://yourdomain.com/
+
+::
+    
+    Welcome to LavaLust!
+
+
+Passing Parameters to Routes
+-----------------------------
+
+Routes can include dynamic segments which are passed as parameters to the closure:
+
+.. code-block:: php
+
+    <?php
+    $router->get('/user/{id}', function($id) {
+        echo "User ID: " . $id;
+    });
+
+**Accessing this route:**
+
+``http://yourdomain.com/user/42``
+
+**Output:**
+
+::
+    
+    User ID: 42
+
+
+.. note::
+
+   Dynamic parameters are defined in curly braces ``{}`` and are automatically injected into the closure.
+
+
+
+Using Multiple HTTP Methods
+----------------------------
+
+You can define a route that responds to multiple HTTP methods:
+
+.. code-block:: php
+
+    <?php
+    $router->match('/contact', function() {
+        echo "This route works with GET and POST requests.";
+    }, ['get', 'post']);
+
+
+Grouping Routes
+-----------------
+
+Closures can also be used in route groups for better organization:
+
+.. code-block:: php
+
+    <?php
+    $router->group('/admin', function() {
+
+        $router->get('/dashboard', function() {
+            echo "Admin Dashboard";
+        });
+
+        $router->get('/users', function() {
+            echo "Manage Users";
+        });
+
+    });
+
+Grouping Routes
+----------------
+
+Closures can also be used in route groups for better organization:
+
+.. code-block:: php
+
+    <?php
+    $router->group('/admin', function() {
+
+        $router->get('/dashboard', function() {
+            echo "Admin Dashboard";
+        });
+
+        $router->get('/users', function() {
+            echo "Manage Users";
+        });
+
+   });
+
+.. note::
+
+   All routes inside the group will be prefixed with `/admin`.
+
+Regular Expression Constraints
+-------------------------------
+
+You may constrain the format of your route parameters using the ``where`` method on a route instance.  
+The ``where`` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+
+.. code-block:: php
+
+   <?php
+   $router->get('/user/{name}', function (string $name) {
+       // ...
+   })->where('name', '[A-Za-z]+');
+
+   $router->get('/user/{id}', function (string $id) {
+       // ...
+   })->where('id', '[0-9]+');
+
+   $router->get('/user/{id}/{name}', function (string $id, string $name) {
+       // ...
+   })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+For convenience, some commonly used regular expression patterns have helper methods  
+that allow you to quickly add pattern constraints to your routes:
+
+.. code-block:: php
+
+   <?php
+   $router->get('/user/{id}/{name}', function ($id, $name) {
+       // ...
+   })->where_number('id')->where_alpha('name');
+
+   $router->get('/user/{name}', function ($name) {
+       // ...
+   })->where_alphanumeric('name');
+
+   $router->get('/user/{id}', function ($id) {
+       // ...
+   })->where_uuid('id');
+
+   $router->get('/user/{id}', function ($id) {
+       // ...
+   })->where_ulid('id');
+
+   $router->get('/category/{category}', function ($category) {
+       // ...
+   })->where_in('category', ['movie', 'song', 'painting']);
+
+.. note::
+
+   If the incoming request does not match the route pattern constraints,  
+   a **404 HTTP response** will be returned.
+
+
+Tips and Best Practices
+-------------------------
+
+- Use **closures** for small, simple routes or quick prototypes.  
+- For larger applications, consider using **controllers** to keep your code organized.  
+- Always validate route parameters when using dynamic segments.  

@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Helpers" href="../helpers/index.html" />
+    <link rel="prev" title="Session Class" href="session.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Performance Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-performance-class">Using the Performance Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#displaying-total-execution-time">Displaying Total Execution Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#displaying-memory-consumption">Displaying Memory Consumption</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Performance Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="performance-class">
+<h1>Performance Class<a class="headerlink" href="#performance-class" title="Link to this heading"></a></h1>
+<p>The <strong>Performance</strong> class in LavaLust is always active and allows you to calculate the time difference between any two marked points during the execution of your application.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class is initialized automatically by the system, so there is no need to load or instantiate it manually.</p>
+</div>
+<p>The performance timer starts as soon as the framework is invoked and stops when the output class sends the final view to the browser, providing an accurate measurement of the total system execution time.</p>
+<section id="using-the-performance-class">
+<h2>Using the Performance Class<a class="headerlink" href="#using-the-performance-class" title="Link to this heading"></a></h2>
+<p>You can use the <strong>Performance</strong> class within your controllers, views, or models. The general process is as follows:</p>
+<ol class="arabic simple">
+<li><p>Mark a start point.</p></li>
+<li><p>Mark an end point.</p></li>
+<li><p>Retrieve the elapsed time between those points.</p></li>
+</ol>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;performance-&gt;start(&#39;reference_name&#39;);</span>
+
+<span class="x">// Some code happens here</span>
+
+<span class="x">$this-&gt;performance-&gt;stop(&#39;reference_name&#39;);</span>
+<span class="x">echo $this-&gt;performance-&gt;elapsed_time(&#39;reference_name&#39;);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The marker names (e.g., <code class="docutils literal notranslate"><span class="pre">reference_name</span></code>) are arbitrary. You can use any label you want, and you can set multiple markers.</p>
+</div>
+<p><strong>Multiple Markers Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;performance-&gt;start(&#39;dog&#39;);</span>
+
+<span class="x">// Some code happens here</span>
+
+<span class="x">$this-&gt;performance-&gt;start(&#39;cat&#39;);</span>
+
+<span class="x">// More code happens here</span>
+
+<span class="x">$this-&gt;performance-&gt;stop(&#39;cat&#39;);</span>
+
+<span class="x">$this-&gt;performance-&gt;start(&#39;bird&#39;);</span>
+
+<span class="x">// More code happens here</span>
+
+<span class="x">$this-&gt;performance-&gt;stop(&#39;bird&#39;);</span>
+
+<span class="x">$this-&gt;performance-&gt;stop(&#39;dog&#39;);</span>
+
+<span class="x">echo $this-&gt;performance-&gt;elapsed_time(&#39;dog&#39;);</span>
+<span class="x">echo $this-&gt;performance-&gt;elapsed_time(&#39;cat&#39;);</span>
+<span class="x">echo $this-&gt;performance-&gt;elapsed_time(&#39;bird&#39;);</span>
+</pre></div>
+</div>
+</section>
+<section id="displaying-total-execution-time">
+<h2>Displaying Total Execution Time<a class="headerlink" href="#displaying-total-execution-time" title="Link to this heading"></a></h2>
+<p>If you want to display the total elapsed time from the moment LavaLust starts to when the final output is sent to the browser, place the following in one of your view templates:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">performance</span><span class="o">-&gt;</span><span class="na">elapsed_time</span><span class="p">();</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="displaying-memory-consumption">
+<h2>Displaying Memory Consumption<a class="headerlink" href="#displaying-memory-consumption" title="Link to this heading"></a></h2>
+<p>If your PHP installation is configured with <code class="docutils literal notranslate"><span class="pre">--enable-memory-limit</span></code>, you can display the total amount of memory consumed by the system using the following code in one of your view files:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">performance</span><span class="o">-&gt;</span><span class="na">memory_usage</span><span class="p">();</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function can only be used in your view files. The reported consumption reflects the total memory used by the entire application.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="session.html" class="btn btn-neutral float-left" title="Session Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../helpers/index.html" class="btn btn-neutral float-right" title="Helpers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

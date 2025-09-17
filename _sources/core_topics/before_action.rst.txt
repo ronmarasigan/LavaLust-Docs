@@ -1,0 +1,43 @@
+before_action Hook
+==================
+
+.. method:: before_action() -> void
+
+    The **before_action hook** is automatically executed before any controller
+    action method. It provides a central place to run logic that should occur
+    prior to each controller method, such as:
+
+    - Authentication checks
+    - Authorization validation
+    - Input preprocessing
+    - Logging or debugging initialization
+
+    By default, this hook is empty. Extend or override it in your controller
+    classes to implement custom pre-action behavior.
+
+    :return void: This hook does not return a value.
+
+Example
+-------
+
+Override the hook in a controller to perform authentication:
+
+.. code-block:: php
+
+    class PostController extends BaseController
+    {
+        public function before_action()
+        {
+            // Ensure user is logged in before any action
+            if (!$this->auth->check()) {
+                redirect('login');
+            }
+        }
+
+        public function index()
+        {
+            // Runs only after before_action hook passes
+            $posts = $this->postModel->all();
+            $this->load->view('posts/index', ['posts' => $posts]);
+        }
+    }

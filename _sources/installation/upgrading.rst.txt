@@ -1,0 +1,30 @@
+Upgrading Version
+=================
+
+Upgrading from 4.* to >=4.2.5
+-----------------------------
+
+Replace all files and directories in your ``scheme/`` directory.
+
+.. note::
+
+   There are some changes in the ``config.php`` file. Please back up your old version, then replace it with the new one. After replacing, update it based on your current configuration.
+
+.. note::
+
+   Before performing an update, you should take your site offline by replacing the ``index.php`` file with a static one.
+
+Upgrading from 3.* to >=4.0
+---------------------------
+
+Replace all files and directories in your ``scheme/`` directory.
+
+.. note::
+
+   There are some changes in the ``config.php`` file. Please back up your old version, then replace it with the new one. After replacing, update it based on your current configuration.
+
+.. note::
+
+   Routing in LavaLust 4 is very different compared to LavaLust 3 and below. It is now similar to the modern routing of other full-stack frameworks.
+
+Before performing an update, you should take your site offline by replacing the ``index.php`` file with a static one.

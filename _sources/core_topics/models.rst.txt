@@ -1,0 +1,281 @@
+Models
+=======
+
+Models are classes that handle **data operations** such as retrieving, inserting, updating, and deleting records in your database.  
+They provide a clean separation of database logic from controllers and views, following the MVC pattern.
+
+Creating a Model
+------------------
+
+A basic model class should extend LavaLust's base `Model` class:
+
+.. code-block:: php
+
+    <?php
+    class UserModel extends Model
+    {
+        protected $table = 'users';
+        protected $primary_key = 'id';
+    }
+
+**Explanation:**
+
+- ``$table`` specifies the database table associated with the model.  
+- The model inherits methods for common database operations like ``find()``, ``all()``, ``insert()``, ``update()``, and ``delete()``.
+
+Loading a Model in a Controller
+---------------------------------
+
+In LavaLust, you can load a model inside a controller using the ``$this->call->model()`` method:
+
+.. code-block:: php
+
+    <?php
+    class UserController extends Controller
+    {
+        public function __construct()
+        {
+            // Load the UserModel
+            parent::__construct();
+            $this->call->model('UserModel');
+        }
+
+        public function listUsers()
+        {
+            $users = $this->UserModel->all();
+            $this->call->view('user/list', ['users' => $users]);
+        }
+
+        public function showUser($id)
+        {
+            $user = $this->UserModel->find($id);
+            $this->call->view('user/profile', ['user' => $user]);
+        }
+    }
+
+.. note::
+
+   ``$this->call->model('UserModel')`` returns an instance of the model ready to use.
+
+Basic CRUD Operations in Controller
+-------------------------------------
+
+**1. Retrieve all records:**
+
+.. code-block:: php
+
+    <?php
+    public function listUsers()
+    {
+        $users = $this->UserModel->all();
+        foreach ($users as $user) {
+            echo $user['name'] . " - " . $user['email'] . "<br>";
+        }
+    }
+
+**2. Insert a new record:**
+
+.. code-block:: php
+
+    <?php
+    public function addUser()
+    {
+        $data = [
+            'name' => 'Alice Smith',
+            'email' => 'alice@example.com'
+        ];
+        $this->UserModel->insert($data);
+        echo "User added successfully!";
+    }
+
+**3. Update a record:**
+
+.. code-block:: php
+
+    <?php
+    public function updateUser($id)
+    {
+        $data = [
+            'email' => 'alice.smith@example.com'
+        ];
+        $this->UserModel->update($id, $data);
+        echo "User updated successfully!";
+    }
+
+**4. Delete a record:**
+
+.. code-block:: php
+
+    <?php
+    public function deleteUser($id)
+    {
+        $this->UserModel->delete($id);
+        echo "User deleted successfully!";
+    }
+
+Soft Delete
+------------
+
+LavaLust supports **soft deletes**, allowing you to mark a record as deleted without permanently removing it from the database.  
+This is useful for recovering deleted records later.
+
+
+Enabling Soft Delete
+----------------------
+
+To enable soft deletes, add the ``$soft_delete`` property in your model:
+
+.. code-block:: php
+
+    <?php
+    class UserModel extends Model
+    {
+        protected $table = 'users';
+        protected $soft_delete = true; // Enable soft deletes
+    }
+
+
+.. note::
+
+    When ``$soft_delete`` is true, deleted records are not permanently removed.  
+
+.. note::
+
+    Instead, a timestamp (usually in a ``deleted_at`` column) marks the record as deleted.
+
+Soft Delete Operations
+------------------------
+
+**1. Soft Delete a record:**
+
+.. code-block:: php
+
+   $this->call->model('UserModel');
+   $this->UserModel->soft_delete(5);  // Soft delete user with ID 5
+
+**2. Restore a soft-deleted record:**
+
+.. code-block:: php
+    
+    <?php
+    $this->UserModel->restore(5); // Restore user with ID 5
+
+
+Using Relationships
+--------------------
+
+Models can define relationships with other models:
+
+.. code-block:: php
+
+    <?php
+    class PostModel extends Model
+    {
+        protected $table = 'posts';
+        protected $primary_key = 'id';
+
+        public function author($id)
+        {
+            return $this->has_one('UserModel', 'user_id', $id);
+        }
+
+        public function comments($id)
+        {
+            return $this->has_many('CommentModel', 'post_id', $id);
+        }
+    }
+
+**Controller example using relationships:**
+
+.. code-block:: php
+
+    <?php
+    class PostController extends Controller
+    {
+        protected $postModel;
+
+        public function __construct()
+        {
+                parent::__construct();
+                $this->call->model('PostModel');
+        }
+
+        public function showPost($id)
+        {
+            $post = $this->PostModel->find($id);
+            $author = $this->PostModel->author($id);
+            $comments = $this->PostModel->comments($id);
+
+            $this->view('post/show', [
+                'post' => $post,
+                'author' => $author,
+                'comments' => $comments
+            ]);
+        }
+    }
+
+.. note::
+
+   Relationships allow you to fetch related data cleanly without writing complex joins manually.
+
+Loading Multiple Models 
+------------------------
+
+If you would like to load multiple models at a time you can use this:
+								
+.. code-block:: php
+
+    <?php
+    $this->call->model(['model_1', 'model_2']);
+    $this->model_1->method();
+    $this->model_2->method();
+    
+    //or if you load multiple methods
+
+    $this->call->model(['model_1' => 'm1', 'model_2' => m1]);
+    $this->m1->method();
+    $this->m2->method();
+
+Auto-loading Models
+---------------------
+
+If you want certain helpers to always be available in your app (without manually loading them every time),  
+you can **auto-load** them in the configuration:
+
+1. Open ``app/config/autoload.php``.
+2. Add your helper names in the ``$autoload['models']`` array.
+
+**Example:**
+
+.. code-block:: php
+
+   $autoload['models'] = ['UserModel'];
+
+These helpers will now be loaded automatically for every request.
+
+Assigning Model to Different Name 
+----------------------------------
+
+If you would like your model assigned to a different object name you can specify it via the second parameter of the loading method:
+								
+.. code-block:: php
+
+    <?php
+    $this->call->model('model_name', 'foobar');
+    $this->foobar->method();
+    
+    //or if you load multiple methods
+
+    $this->call->model(array('foobar' => 'model_name'));
+    $this->foobar->method();
+
+
+Tips and Best Practices
+------------------------
+
+- Load models in the constructor if they are used across multiple methods.  
+- Keep all database queries inside models — controllers should only coordinate data flow.  
+- Validate all input data before inserting or updating records.  
+- Use model relationships to simplify fetching related data.  
+- Leverage built-in ORM features like ``has_one```, ``has_many``, ``many_to_many`` and ``soft deletes`` when available.
+

@@ -1,0 +1,209 @@
+Blog CRUD using ORM
+============================
+
+This guide demonstrates a basic **Blog CRUD** implementation using LavaLust's **Model-View-Controller** pattern.
+
+Folder structure
+-----------------
+
+.. code-block:: text
+
+    app/
+    ├── controllers/
+    │   └── BlogController.php
+    │
+    ├── models/
+    │   └── BlogModel.php
+    │
+    └── views/
+        └── blog/
+            ├── index.php
+            ├── create.php
+            ├── edit.php
+            └── show.php
+      
+Table Structure
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 30 20 30
+
+   * - Column
+     - Type
+     - Nullable
+     - Description
+   * - id
+     - INT, AUTO_INCREMENT
+     - No
+     - Primary key
+   * - title
+     - VARCHAR(255)
+     - No
+     - Blog post title
+   * - content
+     - TEXT
+     - No
+     - Blog post content
+   * - author
+     - VARCHAR(100)
+     - No
+     - Author name
+   * - created_at
+     - DATETIME
+     - No
+     - Timestamp of creation
+   * - updated_at
+     - DATETIME
+     - Yes
+     - Timestamp of last update
+
+Model
+-----------
+
+.. code-block:: php
+
+    <?php
+    class BlogModel extends Model
+    {
+        protected $table = 'blog';
+        protected $primaryKey = 'id';
+        protected $timestamps = TRUE; // auto handles created_at & updated_at
+
+        public function get_all_posts()
+        {
+            return $this->all();
+        }
+
+        public function get_post($id)
+        {
+            return $this->find($id);
+        }
+
+        public function create_post($data)
+        {
+            return $this->insert($data);
+        }
+
+        public function update_post($id, $data)
+        {
+            return $this->update($id, $data);
+        }
+
+        public function delete_post($id)
+        {
+            return $this->delete($id);
+        }
+    }
+    
+
+Controller
+----------------
+
+.. code-block:: php
+
+    <?php
+    class BlogController extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->model('BlogModel');
+        }
+
+        public function index()
+        {
+            $data['posts'] = $this->BlogModel->get_all_posts();
+            $this->call->view('blog/index', $data);
+        }
+
+        public function view($id)
+        {
+            $data['post'] = $this->BlogModel->get_post($id);
+            $this->call->view('blog/view', $data);
+        }
+
+        public function create()
+        {
+            if ($_POST) {
+                $this->BlogModel->create_post([
+                    'title'      => filter_io('string', $_POST['title']),
+                    'content'    => filter_io('string', $_POST['content']),
+                    'author'     => 'Admin',
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                redirect('blog');
+            } else {
+                $this->call->view('blog/create');
+            }
+        }
+
+        public function edit($id)
+        {
+            if ($_POST) {
+                $this->BlogModel->update_post($id, [
+                    'title'      => filter_io('string', $_POST['title']),
+                    'content'    => filter_io('string', $_POST['content']),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                redirect('blog');
+            } else {
+                $data['post'] = $this->BlogModel->get_post($id);
+                $this->call->view('blog/edit', $data);
+            }
+        }
+
+        public function delete($id)
+        {
+            $this->BlogModel->delete_post($id);
+            redirect('blog');
+        }
+    }
+    
+
+Views
+----------
+
+**Index View - List all posts**
+
+.. code-block:: php
+
+    <?php foreach($posts as $post): ?>
+        <h2><?= $post->title ?></h2>
+        <p><?= str_limitwords($post->content, 20) ?></p>
+        <a href="<?= site_url('blog/view/' . $post->id) ?>">Read More</a>
+        <a href="<?= site_url('blog/edit/' . $post->id) ?>">Edit</a>
+        <a href="<?= site_url('blog/delete/' . $post->id) ?>">Delete</a>
+    <?php endforeach; ?>
+
+
+**View Single Post**
+
+.. code-block:: php
+
+    <h1><?= $post->title ?></h1>
+    <p><?= $post->content ?></p>
+    <p>Author: <?= $post->author ?></p>
+
+
+**Create/Edit Form**
+
+.. code-block:: php
+
+    <form method="post" action="">
+        <label>Title</label>
+        <input type="text" name="title" value="<?= $post->title ?? '' ?>" />
+        <label>Content</label>
+        <textarea name="content"><?= $post->content ?? '' ?></textarea>
+        <button type="submit">Save</button>
+    </form>
+
+
+Notes
+-----
+
+- Always sanitize input using `filter_io()` or LavaLust's security helpers.
+- The **Model** handles database interaction.
+- The **Controller** handles request logic.
+- The **View** displays data to the user.
+- Use **method chaining** with the Model for advanced queries if needed.

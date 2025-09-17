@@ -1,0 +1,86 @@
+Security Helper
+===============
+
+The **Security Helper** provides utility functions to sanitize user input, filenames, and handle CSRF tokens in LavaLust applications.  
+These helpers improve security by filtering input, preventing malicious filenames, and protecting forms against CSRF attacks.
+
+.. note::
+
+   These helper functions rely on PHP's built-in filtering and LavaLust's internal ``Security`` class.  
+   Always ensure user input is properly validated and sanitized when using these helpers.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``filter_io()``
+     - Sanitizes and filters a variable according to its type.
+   * - ``sanitize_filename()``
+     - Sanitizes filenames to prevent unsafe characters.
+   * - ``csrf_field()``
+     - Outputs a hidden input field containing the CSRF token for forms.
+
+Available Functions
+--------------------
+
+.. php:function:: filter_io($type, $var)
+
+    Filters a variable based on the specified type.
+
+    :param string $type: The type of filter to apply (``string``, ``int``, ``float``, ``url``, ``email``).
+    :param mixed $var: The variable to filter.
+    :returns: mixed — The filtered value.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $email = filter_io('email', 'user@example.com');
+        $id    = filter_io('int', '123abc'); // returns 123
+
+
+.. php:function:: sanitize_filename($filename)
+
+    Sanitizes a filename to remove unsafe or special characters.
+
+    :param string $filename: The filename to sanitize.
+    :returns: string — A sanitized version of the filename safe for storage or upload.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $safe_name = sanitize_filename('my file<>.txt');
+        echo $safe_name; // Output: my_file.txt
+
+
+.. php:function:: csrf_field()
+
+    Outputs a hidden input field containing the CSRF token to protect HTML forms against CSRF attacks.
+
+    :returns: void — Directly echoes the HTML input field.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        echo '<form method="post" action="/submit">';
+        csrf_field();
+        echo '<input type="submit" value="Submit">';
+        echo '</form>';
+
+Additional Notes
+-----------------
+
+- ``filter_io()`` uses PHP's ``filter_var()`` for sanitization.
+- ``sanitize_filename()`` leverages LavaLust's internal security class to ensure safe filenames.
+- ``csrf_field()`` automatically generates a token and echoes a hidden input field; include it in every POST form for CSRF protection.
+- Use these helpers consistently to enhance application security and prevent common attacks.

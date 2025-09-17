@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Libraries &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Auto-loading Resources" href="autoload.html" />
+    <link rel="prev" title="Helpers" href="helpers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#loading-a-library">Loading a Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-library">Using a Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-multiple-libraries">Loading Multiple Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-loading-libraries">Auto-loading Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-library">Creating a Custom Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">General Topics</a></li>
+      <li class="breadcrumb-item active">Libraries</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="libraries">
+<h1>Libraries<a class="headerlink" href="#libraries" title="Link to this heading"></a></h1>
+<p><strong>Libraries</strong> are classes that provide reusable functionality for your application.
+Unlike <strong>helpers</strong> (which are just standalone functions), <strong>libraries are full PHP classes</strong> that can maintain their own properties and state.</p>
+<p>LavaLust comes with several built-in libraries (e.g., <code class="docutils literal notranslate"><span class="pre">session</span></code>, <code class="docutils literal notranslate"><span class="pre">form_validation</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>, etc.), and you can also create your own.</p>
+<section id="loading-a-library">
+<h2>Loading a Library<a class="headerlink" href="#loading-a-library" title="Link to this heading"></a></h2>
+<p>To load a library, use the <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library()</span></code> method inside your <strong>controller</strong> or <strong>model</strong>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">AuthController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+
+        <span class="c1">// Load the &#39;session&#39; library</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Use the session library</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="mi">123</span><span class="p">);</span>
+
+        <span class="k">echo</span> <span class="s2">&quot;Logged in as user 123&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The loaded library is available as a property on the controller (e.g., <code class="docutils literal notranslate"><span class="pre">$this-&gt;session</span></code>).</p>
+</div>
+</section>
+<section id="using-a-library">
+<h2>Using a Library<a class="headerlink" href="#using-a-library" title="Link to this heading"></a></h2>
+<p>Once loaded, you can use the library just like any other PHP object.</p>
+<p><strong>Example using the ``session`` library:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// Set a value</span>
+<span class="x">$this-&gt;session-&gt;set(&#39;username&#39;, &#39;LavaUser&#39;);</span>
+
+<span class="x">// Get a value</span>
+<span class="x">echo $this-&gt;session-&gt;get(&#39;username&#39;);</span>
+
+<span class="x">// Remove a value</span>
+<span class="x">$this-&gt;session-&gt;remove(&#39;username&#39;);</span>
+
+<span class="x">// Destroy session</span>
+<span class="x">$this-&gt;session-&gt;destroy();</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-multiple-libraries">
+<h2>Loading Multiple Libraries<a class="headerlink" href="#loading-multiple-libraries" title="Link to this heading"></a></h2>
+<p>You can also load multiple libraries at once:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;library([&#39;session&#39;, &#39;form_validation&#39;, &#39;email&#39;]);</span>
+</pre></div>
+</div>
+<p>All of these libraries will then be available as:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session</span>
+<span class="x">$this-&gt;form_validation</span>
+<span class="x">$this-&gt;email</span>
+</pre></div>
+</div>
+</section>
+<section id="auto-loading-libraries">
+<h2>Auto-loading Libraries<a class="headerlink" href="#auto-loading-libraries" title="Link to this heading"></a></h2>
+<p>If you want certain libraries to always be available in your app (without loading them every time),
+you can <strong>auto-load</strong> them in the configuration file:</p>
+<ol class="arabic simple">
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code>.</p></li>
+<li><p>Add your library names in the <code class="docutils literal notranslate"><span class="pre">$autoload['libraries']</span></code> array.</p></li>
+</ol>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;libraries&#39;] = [&#39;session&#39;, &#39;form_validation&#39;];</span>
+</pre></div>
+</div>
+<p>These libraries will now be loaded automatically for every request.</p>
+</section>
+<section id="creating-a-custom-library">
+<h2>Creating a Custom Library<a class="headerlink" href="#creating-a-custom-library" title="Link to this heading"></a></h2>
+<p>You can create your own library by placing a PHP class file inside <code class="docutils literal notranslate"><span class="pre">app/libraries</span></code>.</p>
+<p><strong>Example:</strong></p>
+<p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">app/libraries/Greeter.php</span></code></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Greeter</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">hello</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Usage in a controller:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">WelcomeController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;greeter&#39;</span><span class="p">);</span>
+
+        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">greeter</span><span class="o">-&gt;</span><span class="na">hello</span><span class="p">(</span><span class="s1">&#39;lavalust&#39;</span><span class="p">);</span>
+        <span class="c1">// Output: Hello, Lavalust!</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>The file name must match the class name (<code class="docutils literal notranslate"><span class="pre">Greeter.php</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">Greeter</span></code>).</p></li>
+<li><p>The class name should use <strong>PascalCase</strong>, and you load it using lowercase (<code class="docutils literal notranslate"><span class="pre">greeter</span></code>).</p></li>
+</ul>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use libraries for <strong>stateful or complex logic</strong> that involves multiple steps.</p></li>
+<li><p>Place <strong>reusable, general-purpose classes</strong> in the <code class="docutils literal notranslate"><span class="pre">app/libraries</span></code> folder.</p></li>
+<li><p>Autoload only the libraries that are used on almost every page (like <code class="docutils literal notranslate"><span class="pre">session</span></code>).</p></li>
+<li><p>Keep library classes <strong>focused on a single responsibility</strong>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Libraries are ideal when you need <strong>object-oriented, reusable logic</strong>
+that goes beyond simple functions (which are better suited for helpers).</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="helpers.html" class="btn btn-neutral float-left" title="Helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autoload.html" class="btn btn-neutral float-right" title="Auto-loading Resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

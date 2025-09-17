@@ -1,0 +1,82 @@
+Performance Class
+=================
+
+The **Performance** class in LavaLust is always active and allows you to calculate the time difference between any two marked points during the execution of your application.
+
+.. note::
+
+   This class is initialized automatically by the system, so there is no need to load or instantiate it manually.
+
+The performance timer starts as soon as the framework is invoked and stops when the output class sends the final view to the browser, providing an accurate measurement of the total system execution time.
+
+Using the Performance Class
+----------------------------
+
+You can use the **Performance** class within your controllers, views, or models. The general process is as follows:
+
+1. Mark a start point.
+2. Mark an end point.
+3. Retrieve the elapsed time between those points.
+
+**Example:**
+
+.. code-block:: php
+
+   $this->performance->start('reference_name');
+
+   // Some code happens here
+
+   $this->performance->stop('reference_name');
+   echo $this->performance->elapsed_time('reference_name');
+
+.. note::
+
+   The marker names (e.g., ``reference_name``) are arbitrary. You can use any label you want, and you can set multiple markers.
+
+**Multiple Markers Example:**
+
+.. code-block:: php
+
+   $this->performance->start('dog');
+
+   // Some code happens here
+
+   $this->performance->start('cat');
+
+   // More code happens here
+
+   $this->performance->stop('cat');
+
+   $this->performance->start('bird');
+
+   // More code happens here
+
+   $this->performance->stop('bird');
+
+   $this->performance->stop('dog');
+
+   echo $this->performance->elapsed_time('dog');
+   echo $this->performance->elapsed_time('cat');
+   echo $this->performance->elapsed_time('bird');
+
+Displaying Total Execution Time
+-------------------------------
+
+If you want to display the total elapsed time from the moment LavaLust starts to when the final output is sent to the browser, place the following in one of your view templates:
+
+.. code-block:: php
+
+   <?php echo $this->performance->elapsed_time(); ?>
+
+Displaying Memory Consumption
+------------------------------
+
+If your PHP installation is configured with ``--enable-memory-limit``, you can display the total amount of memory consumed by the system using the following code in one of your view files:
+
+.. code-block:: php
+
+   <?php echo $this->performance->memory_usage(); ?>
+
+.. note::
+
+   This function can only be used in your view files. The reported consumption reflects the total memory used by the entire application.

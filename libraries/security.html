@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Session Class" href="session.html" />
+    <link rel="prev" title="Pagination Class" href="pagination.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Security Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-methods">Available Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csrf-token-management"><strong>CSRF Token Management</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hash-hmac-utility"><strong>Hash HMAC Utility</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filename-sanitization"><strong>Filename Sanitization</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csrf-workflow">CSRF Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Security Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="security-class">
+<h1>Security Class<a class="headerlink" href="#security-class" title="Link to this heading"></a></h1>
+<p>The <strong>Security Class</strong> provides security-related utilities for the LavaLust framework, including <strong>CSRF protection</strong>, <strong>hash generation</strong>, and <strong>filename sanitization</strong>.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Implements <strong>Cross-Site Request Forgery (CSRF)</strong> protection via secure tokens.</p></li>
+<li><p>Provides methods to <strong>generate and validate CSRF tokens</strong>.</p></li>
+<li><p>Automatically manages CSRF cookies.</p></li>
+<li><p>Includes a helper to <strong>sanitize filenames</strong> for safe file uploads.</p></li>
+</ul>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>This class is <strong>automatically initialized</strong> by the framework if CSRF protection is enabled in your <code class="docutils literal notranslate"><span class="pre">config/config.php</span></code> file.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// In config/config.php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_protection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_token_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lava_csrf_token&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_cookie_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lava_csrf_token&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_expire&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7200</span><span class="p">;</span> <span class="c1">// seconds</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_regenerate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span> <span class="c1">// regenerate token after each POST</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_exclude_uris&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;api/webhook&#39;</span><span class="p">];</span> <span class="c1">// optional URIs to ignore CSRF</span>
+</pre></div>
+</div>
+<p>Once enabled, CSRF protection will be automatically enforced on all POST requests.</p>
+</section>
+<section id="available-methods">
+<h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
+</section>
+<section id="csrf-token-management">
+<h2><strong>CSRF Token Management</strong><a class="headerlink" href="#csrf-token-management" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Validate CSRF token on POST requests</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">csrf_validate</span><span class="p">();</span>
+
+<span class="c1">// Get CSRF token hash (value to embed in forms)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_hash</span><span class="p">();</span>
+
+<span class="c1">// Get CSRF token name (hidden input name to use in forms)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_token_name</span><span class="p">();</span>
+
+<span class="c1">// Set CSRF cookie manually (usually called automatically)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">csrf_set_cookie</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example form with CSRF token:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;form method=&quot;POST&quot; action=&quot;/submit&quot;&gt;</span>
+<span class="x">    &lt;input type=&quot;hidden&quot;</span>
+<span class="x">           name=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_token_name</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x">&quot;</span>
+<span class="x">           value=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_hash</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;</span>
+<span class="x">    &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;</span>
+<span class="x">    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;</span>
+<span class="x">&lt;/form&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="hash-hmac-utility">
+<h2><strong>Hash HMAC Utility</strong><a class="headerlink" href="#hash-hmac-utility" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Generate a secure HMAC hash</span>
+<span class="nv">$token</span> <span class="o">=</span> <span class="s1">&#39;my-secret-token&#39;</span><span class="p">;</span>
+<span class="nv">$hash</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">_hash_hmac</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="filename-sanitization">
+<h2><strong>Filename Sanitization</strong><a class="headerlink" href="#filename-sanitization" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Sanitize a filename before saving</span>
+<span class="nv">$safe</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">sanitize_filename</span><span class="p">(</span><span class="s1">&#39;my&lt;inva|id&gt;:file?.txt&#39;</span><span class="p">);</span>
+<span class="c1">// Result: myinvalidfile.txt</span>
+</pre></div>
+</div>
+</section>
+<section id="csrf-workflow">
+<h2>CSRF Workflow<a class="headerlink" href="#csrf-workflow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>On the first request, a CSRF token is generated and stored as a cookie.</p></li>
+<li><p>Each POST request must include this token as a hidden form field.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">csrf_validate()</span></code> method checks that:</p>
+<ul class="simple">
+<li><p>The POSTed token matches the cookie token.</p></li>
+<li><p>The request URI is not in the <code class="docutils literal notranslate"><span class="pre">csrf_exclude_uris</span></code> list.</p></li>
+</ul>
+</li>
+<li><p>If validation fails, a <strong>403 Forbidden Error</strong> is shown.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">csrf_regenerate</span></code> is enabled, a new token is generated after each successful POST.</p></li>
+</ol>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Only POST requests are checked for CSRF by default.</p></li>
+<li><p>CSRF protection can be selectively disabled for certain URIs via <code class="docutils literal notranslate"><span class="pre">csrf_exclude_uris</span></code>.</p></li>
+<li><p>This class is automatically loaded when CSRF is enabled in config.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pagination.html" class="btn btn-neutral float-left" title="Pagination Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="session.html" class="btn btn-neutral float-right" title="Session Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

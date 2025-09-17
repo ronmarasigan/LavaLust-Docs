@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Reference &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database Reference" href="database_reference.html" />
+    <link rel="prev" title="before_action Hook" href="../core_topics/before_action.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html">Database Query Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Database Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-reference">
+<h1>Database Reference<a class="headerlink" href="#database-reference" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="database_reference.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#database-configuration">Database Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#configuration-values">Configuration values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#connecting-to-your-database">Connecting to your database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#automatically-connecting">Automatically connecting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#manually-connecting">Manually connecting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#connecting-to-a-specific-group">Connecting to a specific group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#connecting-to-multiple-databases">Connecting to multiple databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#using-multiple-database-instances">Using multiple database instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html#best-practices">Best practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="query_builder.html">Database Query Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#database-configuration">Database Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#getting-a-database-instance">Getting a Database Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#raw-query-args-array">raw($query, $args = array())</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#count">count()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#bulk-insert-records">bulk_insert($records)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#bulk-update-records-primarykey-id">bulk_update($records, $primaryKey = ‘id’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#delete">delete()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#update-fields">update($fields = [])</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#insert-fields">insert($fields = [])</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#last-id">last_id()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#table-table-name">table($table_name)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-columns">select($columns)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-max-column-alias-null">select_max($column, $alias = NULL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-min-column-alias-null">select_min($column, $alias = NULL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-sum-column-alias-null">select_sum($column, $alias = NULL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-count-column-alias-total">select_count($column = ‘*’, $alias = ‘total’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-avg-column-alias-null">select_avg($column, $alias = NULL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-distinct-columns">select_distinct($columns)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#join-table-condition-type-inner">join($table, $condition, $type = ‘INNER’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#inner-join-table-condition">inner_join($table, $condition)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#left-join-table-condition">left_join($table, $condition)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#right-join-table-condition">right_join($table, $condition)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#full-outer-join-table-condition">full_outer_join($table, $condition)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#where-column-value-null-operator">where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-where-column-value-null-operator">or_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-where-column-value-null-operator">not_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-where-column-value-null-operator">or_not_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#like-column-match-side-both">like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-like-column-match-side-both">or_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-like-column-match-side-both">not_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-like-column-match-side-both">or_not_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#in-column-array-values">in($column, array $values)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-in-column-array-values">not_in($column, array $values)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-in-column-array-values">or_in($column, array $values)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-in-column-array-values">or_not_in($column, array $values)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#between-column-start-end">between($column, $start, $end)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-between-column-start-end">not_between($column, $start, $end)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-between-column-start-end">or_between($column, $start, $end)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-between-column-start-end">or_not_between($column, $start, $end)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#pagination-perpage-currentpage-1">pagination($perPage, $currentPage = 1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#limit-number">limit($number)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#offset-number">offset($number)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#order-by-column-direction-asc">order_by($column, $direction = ‘ASC’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#group-by-column">group_by($column)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#having-column-value-operator">having($column, $value, $operator = ‘=’)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#grouped-closure-obj">grouped(Closure $obj)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#id1">grouped(Closure $obj)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#get">get()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#get-all">get_all()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#transaction">transaction()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#rollback">rollback()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../core_topics/before_action.html" class="btn btn-neutral float-left" title="before_action Hook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="database_reference.html" class="btn btn-neutral float-right" title="Database Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

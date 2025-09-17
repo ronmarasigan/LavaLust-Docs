@@ -1,0 +1,279 @@
+Blog CRUD using Query Builder
+================================
+
+This example demonstrates a basic CRUD (Create, Read, Update, Delete) for a simple blog application.
+
+Folder structure
+----------------
+
+.. code-block:: text
+
+    app/
+    ├── controllers/
+    │   └── BlogController.php
+    │
+    ├── models/
+    │   └── BlogModel.php
+    │
+    └── views/
+        └── blog/
+            ├── index.php
+            ├── create.php
+            ├── edit.php
+            └── show.php
+
+Blog Table Structure
+---------------------
+
+The following table structure is required for the blog CRUD example:
+
+.. list-table:: blogs
+   :header-rows: 1
+   :widths: 10 20 20 20 20
+
+   * - Column
+     - Type
+     - Null
+     - Key
+     - Description
+   * - id
+     - INT(11)
+     - NO
+     - PRI
+     - Primary key, auto-increment
+   * - title
+     - VARCHAR(255)
+     - NO
+     - 
+     - Blog post title
+   * - content
+     - TEXT
+     - YES
+     - 
+     - Blog post content
+   * - created_at
+     - DATETIME
+     - YES
+     - 
+     - Date and time of creation
+   * - updated_at
+     - DATETIME
+     - YES
+     - 
+     - Date and time of last update
+
+Model: BlogModel.php
+--------------------
+
+.. code-block:: php
+
+    <?php
+    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+    class BlogModel extends Model
+    {
+        protected $table = 'blogs';  # Database table name
+
+        /**
+         * Get all blog posts
+         *
+         * @return array
+         */
+        public function getAll()
+        {
+            return $this->db->table($this->table)->get()->result();
+        }
+
+        /**
+         * Get a single blog post by ID
+         *
+         * @param int $id
+         * @return object|false
+         */
+        public function getById($id)
+        {
+            return $this->db->table($this->table)->where('id', $id)->get()->row();
+        }
+
+        /**
+         * Insert a new blog post
+         *
+         * @param array $data
+         * @return int Inserted ID
+         */
+        public function create($data)
+        {
+            return $this->db->table($this->table)->insert($data);
+        }
+
+        /**
+         * Update a blog post
+         *
+         * @param int $id
+         * @param array $data
+         * @return bool
+         */
+        public function updatePost($id, $data)
+        {
+            return $this->db->table($this->table)->where('id', $id)->update($data);
+        }
+
+        /**
+         * Delete a blog post
+         *
+         * @param int $id
+         * @return bool
+         */
+        public function deletePost($id)
+        {
+            return $this->db->table($this->table)->where('id', $id)->delete();
+        }
+    }
+    ?>
+
+Controller: BlogController.php
+------------------------------
+
+.. code-block:: php
+
+    <?php
+    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+    class BlogController extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->model('BlogModel');
+        }
+
+        /**
+         * Display all blog posts
+         */
+        public function index()
+        {
+            $data['blogs'] = $this->BlogModel->getAll();
+            $this->call->view('blog/index', $data);
+        }
+
+        /**
+         * Show create form
+         */
+        public function create()
+        {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $this->BlogModel->create([
+                    'title' => $_POST['title'],
+                    'content' => $_POST['content'],
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                redirect('blog');
+            }
+            $this->call->view('blog/create');
+        }
+
+        /**
+         * Show edit form
+         *
+         * @param int $id
+         */
+        public function edit($id)
+        {
+            $data['blog'] = $this->BlogModel->getById($id);
+
+            if ($this->io->method() == 'post') {
+                $this->BlogModel->updatePost($id, [
+                    'title' => $_POST['title'],
+                    'content' => $_POST['content'],
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                redirect('blog');
+            }
+
+            $this->call->view('blog/edit', $data);
+        }
+
+        /**
+         * Delete a blog post
+         *
+         * @param int $id
+         */
+        public function delete($id)
+        {
+            $this->BlogModel->deletePost($id);
+            redirect('blog');
+        }
+
+        /**
+         * Show single blog post
+         *
+         * @param int $id
+         */
+        public function show($id)
+        {
+            $data['blog'] = $this->BlogModel->getById($id);
+            $this->call->view('blog/show', $data);
+        }
+    }
+    ?>
+
+Views
+-----
+
+**views/blog/index.php**
+
+.. code-block:: php
+
+    <?php
+    <h1>All Blog Posts</h1>
+    <a href="<?php echo site_url('blog/create'); ?>">Create New Post</a>
+    <ul>
+        <?php foreach($blogs as $blog): ?>
+            <li>
+                <a href="<?php echo site_url('blog/show/'.$BlogModel->id); ?>"><?php echo html_escape($BlogModel->title); ?></a>
+                - <a href="<?php echo site_url('blog/edit/'.$BlogModel->id); ?>">Edit</a>
+                - <a href="<?php echo site_url('blog/delete/'.$BlogModel->id); ?>">Delete</a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    ?>
+
+**views/blog/create.php**
+
+.. code-block:: php
+
+    <?php
+    <h1>Create Blog Post</h1>
+    <form method="POST" action="">
+        <label>Title</label><br>
+        <input type="text" name="title"><br><br>
+        <label>Content</label><br>
+        <textarea name="content"></textarea><br><br>
+        <button type="submit">Create</button>
+    </form>
+    ?>
+
+**views/blog/edit.php**
+
+.. code-block:: php
+
+    <?php
+    <h1>Edit Blog Post</h1>
+    <form method="POST" action="">
+        <label>Title</label><br>
+        <input type="text" name="title" value="<?php echo html_escape($BlogModel->title); ?>"><br><br>
+        <label>Content</label><br>
+        <textarea name="content"><?php echo html_escape($BlogModel->content); ?></textarea><br><br>
+        <button type="submit">Update</button>
+    </form>
+    ?>
+
+**views/blog/show.php**
+
+.. code-block:: php
+
+    <?php
+    <h1><?php echo html_escape($BlogModel->title); ?></h1>
+    <p><?php echo nl2br(html_escape($BlogModel->content)); ?></p>
+    <a href="<?php echo site_url('blog'); ?>">Back</a>
+    ?>

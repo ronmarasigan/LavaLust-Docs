@@ -1,0 +1,146 @@
+Pagination
+==================
+
+This example demonstrates how to use the `Pagination` class to paginate database results in a LavaLust application.
+
+Folder Structure
+----------------
+
+.. code-block:: text
+
+    app/
+    ├── controllers/
+    │   └── BlogController.php
+    │
+    ├── models/
+    │   └── BlogModel.php
+    │
+    └── views/
+        └── blog/
+            └── index.php
+
+Database Table Structure
+-------------------------
+
+**Table: blog_posts**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 60
+
+   * - Column
+     - Type
+     - Description
+   * - id
+     - INT PK AI
+     - Post ID
+   * - title
+     - VARCHAR(255)
+     - Post title
+   * - content
+     - TEXT
+     - Post content
+   * - created_at
+     - DATETIME
+     - Created date
+
+Controller
+------------------
+
+.. code-block:: php
+
+    <?php
+    class BlogController extends Controller
+    {
+        public function index()
+        {
+            // Load pagination library
+            $this->call->library('pagination');
+
+            // Current page from URL segment
+            $current_page = (int) segment(2) ?: 1;// or use segment(3) if your URL is like /blog/index/2
+
+            // Total rows
+            $total_rows = $this->BlogModel->count_all();
+
+            // Rows per page
+            $rows_per_page = 5;
+
+            // Base URL for pagination links
+            $base_url = 'blog/index';
+
+            // Initialize pagination with options
+            $page_data = $this->pagination->initialize(
+                $total_rows,
+                $rows_per_page,
+                $current_page,
+                $base_url,
+                5 // number of visible page links
+            );
+
+            // Optional: set a custom theme
+            $this->pagination->set_theme('tailwind');
+
+            // Optional: set custom CSS classes
+            $this->pagination->set_custom_classes([
+                'ul' => 'flex space-x-2',
+                'li' => 'px-1',
+                'a'  => 'px-3 py-1 rounded bg-gray-100 hover:bg-gray-200'
+            ]);
+
+            // Optional: override text options
+            $this->pagination->set_options([
+                'first_link' => '<< First',
+                'last_link'  => 'Last >>',
+                'next_link'  => 'Next >',
+                'prev_link'  => '< Prev'
+            ]);
+
+            // Get paginated blog posts
+            $limit_clause = $page_data['limit'];
+            $blogs = $this->blogmodel->get_paginated($limit_clause);
+
+            // Pass data to view
+            $this->call->view('blog/index', [
+                'blogs' => $blogs,
+                'pagination' => $this->pagination->paginate(),
+            ]);
+        }
+    }
+    ?>
+
+Model
+-------------
+
+.. code-block:: php
+
+    <?php
+    class BlogModel extends Model
+    {
+        protected $table = 'blog_posts';
+
+        public function count_all()
+        {
+            return $this->db->table($this->table)->count();
+        }
+
+        public function get_paginated($limit_clause)
+        {
+            return $this->db->raw("SELECT * FROM {$this->table} {$limit_clause}")->fetch_all();
+        }
+    }
+    ?>
+
+View
+------------
+
+.. code-block:: php
+
+    <?php foreach($blogs as $post): ?>
+        <h2><?= $post['title'] ?></h2>
+        <p><?= $post['content'] ?></p>
+    <?php endforeach; ?>
+
+    <div class="pagination">
+        <?= $pagination ?>
+    </div>

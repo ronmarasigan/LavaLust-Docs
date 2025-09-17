@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cache Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Config Class" href="config.html" />
+    <link rel="prev" title="Libraries" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cache Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-cache-library">Loading the Cache Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cache-directory-configuration">Cache Directory Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching-a-model">Caching a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching-a-library">Caching a Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching-array-or-object-data">Caching Array or Object Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-a-specific-cache-entry">Deleting a Specific Cache Entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-all-cache">Deleting All Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-cache-by-group">Deleting Cache by Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-cached-model-or-library">Deleting Cached Model or Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Cache Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cache-class">
+<h1>Cache Class<a class="headerlink" href="#cache-class" title="Link to this heading"></a></h1>
+<p>LavaLust provides a simple <strong>caching system</strong> that can boost the performance of your application.
+You can cache <strong>libraries, models, objects, or array data</strong> to avoid expensive recomputation or repeated database queries.</p>
+<section id="loading-the-cache-library">
+<h2>Loading the Cache Library<a class="headerlink" href="#loading-the-cache-library" title="Link to this heading"></a></h2>
+<p>Before using the cache features, load it via:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;cache&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-directory-configuration">
+<h2>Cache Directory Configuration<a class="headerlink" href="#cache-directory-configuration" title="Link to this heading"></a></h2>
+<p>You can specify the cache storage directory by changing the configuration in your <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code> file:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cache_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;runtime/cache/&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Ensure the specified folder is <strong>writable</strong> by the web server.</p>
+</section>
+<section id="caching-a-model">
+<h2>Caching a Model<a class="headerlink" href="#caching-a-model" title="Link to this heading"></a></h2>
+<p>You can cache method results from models to improve performance.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;news_model&#39;</span><span class="p">,</span> <span class="s1">&#39;get_news&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$param1</span><span class="p">,</span> <span class="nv">$param2</span><span class="p">),</span> <span class="mi">120</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example above, the <code class="docutils literal notranslate"><span class="pre">get_news()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">news_model</span></code> class will be cached for <strong>120 minutes</strong>.
+The fourth parameter sets the expiration time in <strong>minutes</strong>.</p>
+</section>
+<section id="caching-a-library">
+<h2>Caching a Library<a class="headerlink" href="#caching-a-library" title="Link to this heading"></a></h2>
+<p>Similar to models, you can also cache library method results.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;some_library&#39;</span><span class="p">,</span> <span class="s1">&#39;calculate_something&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$foo</span><span class="p">,</span> <span class="nv">$bar</span><span class="p">,</span> <span class="nv">$bla</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>If the fourth parameter (expiration time) is <strong>not specified</strong>, it will be cached <strong>indefinitely</strong>.
+This behavior is the same for caching models.</p>
+</section>
+<section id="caching-array-or-object-data">
+<h2>Caching Array or Object Data<a class="headerlink" href="#caching-array-or-object-data" title="Link to this heading"></a></h2>
+<p>You can directly store arbitrary data (arrays, objects, strings, etc.) into the cache.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;acidcore&#39;</span>
+<span class="p">);</span>
+
+<span class="c1">// Storing the data in a cache with the name &quot;cached_name&quot;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="s1">&#39;cached_name&#39;</span><span class="p">);</span>
+
+<span class="c1">// Retrieving a cache by its name &quot;cached_name&quot;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;cached_name&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="deleting-a-specific-cache-entry">
+<h2>Deleting a Specific Cache Entry<a class="headerlink" href="#deleting-a-specific-cache-entry" title="Link to this heading"></a></h2>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;cached_name&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The above code will find and delete the cache file named <code class="docutils literal notranslate"><span class="pre">cached_name</span></code>.</p>
+</section>
+<section id="deleting-all-cache">
+<h2>Deleting All Cache<a class="headerlink" href="#deleting-all-cache" title="Link to this heading"></a></h2>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">delete_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>This will delete <strong>all cache files</strong> stored inside the cache directory.</p>
+</section>
+<section id="deleting-cache-by-group">
+<h2>Deleting Cache by Group<a class="headerlink" href="#deleting-cache-by-group" title="Link to this heading"></a></h2>
+<p>You can delete multiple cache files using a <strong>group prefix</strong>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="s1">&#39;nav_header&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="s1">&#39;nav_footer&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">delete_group</span><span class="p">(</span><span class="s1">&#39;nav_&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This will delete all cache entries whose names start with <code class="docutils literal notranslate"><span class="pre">nav_</span></code>.</p>
+</section>
+<section id="deleting-cached-model-or-library">
+<h2>Deleting Cached Model or Library<a class="headerlink" href="#deleting-cached-model-or-library" title="Link to this heading"></a></h2>
+<p>To delete an existing cached model or library method, pass <strong>-1</strong> as the expiration time:</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cache</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="s1">&#39;get_news&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$param1</span><span class="p">,</span> <span class="nv">$param2</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This will remove the cached version of the <code class="docutils literal notranslate"><span class="pre">get_news()</span></code> method from the <code class="docutils literal notranslate"><span class="pre">news</span></code> model.
+This also works for library classes using <code class="docutils literal notranslate"><span class="pre">$this-&gt;cache-&gt;library()</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Model or library cache entries will be stored <strong>indefinitely</strong> if you do <strong>not</strong> specify the expiration time. The expiration time is set as the <strong>fourth parameter</strong> in both <code class="docutils literal notranslate"><span class="pre">$this-&gt;cache-&gt;model()</span></code> and <code class="docutils literal notranslate"><span class="pre">$this-&gt;cache-&gt;library()</span></code>.</p>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <strong>clear and unique cache names</strong> to avoid conflicts</p></li>
+<li><p>Always <strong>invalidate or clear related cache</strong> after updating database records</p></li>
+<li><p>Use <strong>group prefixes</strong> to simplify cache invalidation (e.g., <cite>user_</cite>, <cite>post_</cite>)</p></li>
+<li><p>Avoid caching <strong>sensitive or personal user data</strong></p></li>
+<li><p>Ensure the cache directory is <strong>writable</strong> and <strong>secured from public access</strong></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config.html" class="btn btn-neutral float-right" title="Config Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

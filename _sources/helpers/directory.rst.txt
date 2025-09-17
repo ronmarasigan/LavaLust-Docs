@@ -1,0 +1,70 @@
+Directory Helper
+================
+
+The **Directory Helper** provides functions for working with file system directories in LavaLust.  
+It allows you to retrieve directory maps and check directory usability safely and efficiently.
+
+.. note::
+
+   This helper relies on PHP's native file system functions such as ``opendir()``, ``readdir()``, ``is_dir()``, ``mkdir()``, and ``is_writable()``.  
+   Ensure your PHP installation has proper permissions for the directories you are working with.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``directory_map()``
+     - Returns an array representing the directory structure.
+   * - ``is_dir_usable()``
+     - Checks if a directory exists and is writable, optionally creating it with specified permissions.
+
+Available Functions
+--------------------
+
+.. php:function:: directory_map($source_dir, $directory_depth = 0, $hidden = FALSE)
+
+    Returns an array representing the structure of a directory.
+
+    :param string $source_dir: The path of the source directory to scan.
+    :param int $directory_depth: Maximum depth of directories to traverse (0 = unlimited).
+    :param bool $hidden: Whether to include hidden files and directories (default: FALSE).
+    :returns: array|false — Returns an array of files/directories, or FALSE on failure.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $map = directory_map('/path/to/folder', 1, TRUE);
+        print_r($map);
+
+.. php:function:: is_dir_usable($dir, $chmod = '0744')
+
+    Checks if a directory exists and is writable. Creates it if it does not exist.
+
+    :param string $dir: The path of the directory to check.
+    :param string $chmod: Directory permission mode if creating it (default: '0744').
+    :returns: bool — TRUE if the directory exists and is writable, FALSE otherwise.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        if (is_dir_usable('/path/to/folder')) {
+            echo "Directory is ready for use.";
+        } else {
+            echo "Directory is not usable.";
+        }
+
+Additional Notes
+----------------
+
+- ``directory_map()`` recursively traverses directories if ``$directory_depth`` allows, and appends a trailing DIRECTORY_SEPARATOR for directories.
+- ``is_dir_usable()`` attempts to create the directory if it does not exist and sets permissions based on the ``$chmod`` parameter.
+- Always ensure PHP has sufficient permissions to write to directories when using these helpers.

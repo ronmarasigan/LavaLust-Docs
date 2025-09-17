@@ -1,0 +1,142 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model–View–Controller &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="General Topics" href="../core_topics/index.html" />
+    <link rel="prev" title="Application Flow Chart" href="application_flow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">LavaLust Overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_flow.html">Application Flow Chart</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model–View–Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model"><strong>Model</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view"><strong>View</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#controller"><strong>Controller</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">LavaLust Overview</a></li>
+      <li class="breadcrumb-item active">Model–View–Controller</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modelviewcontroller">
+<h1>Model–View–Controller<a class="headerlink" href="#modelviewcontroller" title="Link to this heading"></a></h1>
+<p>LavaLust is based on the <strong>Model–View–Controller (MVC)</strong> development pattern.
+MVC is a software approach that separates <strong>application logic</strong> from <strong>presentation</strong>.</p>
+<p>In practice, this allows your web pages to contain minimal scripting since the presentation is kept separate from the PHP logic.</p>
+<section id="model">
+<h2><strong>Model</strong><a class="headerlink" href="#model" title="Link to this heading"></a></h2>
+<p>The <strong>Model</strong> represents your data structures.
+Typically, your model classes contain functions that help you <strong>retrieve, insert, and update</strong> information in your database.</p>
+</section>
+<section id="view">
+<h2><strong>View</strong><a class="headerlink" href="#view" title="Link to this heading"></a></h2>
+<p>The <strong>View</strong> is the information presented to the user.
+A view is normally a full web page, but in LavaLust it can also be a <strong>page fragment</strong> (like a header or footer), an <strong>RSS feed</strong>, or any other type of “page.”</p>
+</section>
+<section id="controller">
+<h2><strong>Controller</strong><a class="headerlink" href="#controller" title="Link to this heading"></a></h2>
+<p>The <strong>Controller</strong> acts as an intermediary between the <strong>Model</strong>, the <strong>View</strong>, and other resources needed to process the HTTP request and generate a response.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="application_flow.html" class="btn btn-neutral float-left" title="Application Flow Chart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../core_topics/index.html" class="btn btn-neutral float-right" title="General Topics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

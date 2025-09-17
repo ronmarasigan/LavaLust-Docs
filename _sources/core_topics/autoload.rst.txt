@@ -1,0 +1,48 @@
+Auto-loading Resources
+=======================
+
+Frameworks like CodeIgniter and LavaLust support an **auto-load** feature that automatically initializes certain resources every time the system runs. This is especially useful for resources that are used globally across the application.
+
+Resources That Can Be Auto-loaded
+---------------------------------
+
+The following items can be loaded automatically:
+
+- **Libraries**: Classes located in the `libraries/` directory.
+- **Helpers**: Files located in the `helpers/` directory.
+- **Config files**: Custom configuration files in the `config/` directory.
+- **Models**: Files located in the `models/` directory.
+
+Configuring Auto-loading
+------------------------
+
+To enable auto-loading:
+
+1. Open the file: ``app/config/autoload.php``.
+2. Add the resources you want to auto-load to the corresponding array for each type of resource.
+3. Do **not** include the file extension (e.g., ``.php``) when specifying items in the array.
+
+For example, in ``autoload.php``:
+
+.. code-block:: php
+
+    $autoload['libraries'] = ['database', 'session'];
+    $autoload['helper'] = ['url', 'form'];
+    $autoload['model'] = ['BlogModel'];
+
+Composer Auto-loading
+----------------------
+
+If your project uses Composer, you can enable Composer's auto-loader:
+
+1. Open ``app/config/config.php``.
+2. Set the configuration variable ``$config['composer_autoload']`` to:
+
+   - ``TRUE`` to use the default Composer auto-loader.
+   - A custom path to your Composer ``vendor/autoload.php`` if needed.
+
+Note
+----
+
+- Auto-loading should be used sparingly for resources that are required globally.
+- Overloading unnecessary resources can slow down application performance.

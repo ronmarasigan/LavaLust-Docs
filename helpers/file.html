@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Helper &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Language Helper" href="language.html" />
+    <link rel="prev" title="Download Helper" href="download.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Helpers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">Download Helper</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">File Helper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#function-summary">Function Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-functions">Available Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#write_file"><code class="docutils literal notranslate"><span class="pre">write_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete_files"><code class="docutils literal notranslate"><span class="pre">delete_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#copy_file"><code class="docutils literal notranslate"><span class="pre">copy_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-notes">Additional Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Helpers</a></li>
+      <li class="breadcrumb-item active">File Helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="file-helper">
+<h1>File Helper<a class="headerlink" href="#file-helper" title="Link to this heading"></a></h1>
+<p>The <strong>File Helper</strong> provides utility functions for writing, deleting, and copying files in LavaLust.
+It simplifies file system operations while handling proper locking, directory traversal, and optional behaviors.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These helper functions rely on PHP’s native file system functions like <code class="docutils literal notranslate"><span class="pre">fopen()</span></code>, <code class="docutils literal notranslate"><span class="pre">fwrite()</span></code>, <code class="docutils literal notranslate"><span class="pre">unlink()</span></code>, <code class="docutils literal notranslate"><span class="pre">scandir()</span></code>, and <code class="docutils literal notranslate"><span class="pre">copy()</span></code>.
+Ensure your PHP scripts have proper file and directory permissions to perform these operations safely.</p>
+</div>
+<section id="function-summary">
+<h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">write_file()</span></code></p></td>
+<td><p>Writes data to a file with exclusive locking.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">delete_files()</span></code></p></td>
+<td><p>Deletes files in a directory, optionally removing the directory itself.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">copy_file()</span></code></p></td>
+<td><p>Copies or moves a file to a new location.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="available-functions">
+<h2>Available Functions<a class="headerlink" href="#available-functions" title="Link to this heading"></a></h2>
+<dl class="php function">
+<dt class="sig sig-object php" id="write_file">
+<span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$file</span></em>, <em class="sig-param"><span class="pre">$content</span></em>, <em class="sig-param"><span class="pre">$mode</span> <span class="pre">=</span> <span class="pre">'w'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#write_file" title="Link to this definition"></a></dt>
+<dd><p>Writes the given content to a file using exclusive locking to prevent race conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$file</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Full path to the file to write.</p></li>
+<li><p><strong>$content</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The content to write to the file.</p></li>
+<li><p><strong>$mode</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – File mode for writing (default: <code class="docutils literal notranslate"><span class="pre">w</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>int|false — Number of bytes written, or FALSE on failure.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nx">write_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s2">&quot;Hello, LavaLust!&quot;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;File written successfully!&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$dir_path</span></em>, <em class="sig-param"><span class="pre">$del_dir</span> <span class="pre">=</span> <span class="pre">FALSE</span></em>, <em class="sig-param"><span class="pre">$htdocs</span> <span class="pre">=</span> <span class="pre">FALSE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#delete_files" title="Link to this definition"></a></dt>
+<dd><p>Deletes all files in a directory, optionally removing subdirectories and the directory itself.
+Can preserve common web files like <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> or <code class="docutils literal notranslate"><span class="pre">index.php</span></code> if <code class="docutils literal notranslate"><span class="pre">$htdocs</span></code> is TRUE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$dir_path</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Path to the directory to delete files from.</p></li>
+<li><p><strong>$del_dir</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to delete the directory itself (default: FALSE).</p></li>
+<li><p><strong>$htdocs</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to preserve web files like <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> or <code class="docutils literal notranslate"><span class="pre">index.php</span></code> (default: FALSE).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool — TRUE on success, FALSE on failure.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Delete all files but keep the directory</span>
+<span class="nx">delete_files</span><span class="p">(</span><span class="s1">&#39;/path/to/directory&#39;</span><span class="p">);</span>
+
+<span class="c1">// Delete all files and the directory itself</span>
+<span class="nx">delete_files</span><span class="p">(</span><span class="s1">&#39;/path/to/directory&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="copy_file">
+<span class="sig-name descname"><span class="pre">copy_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$path</span></em>, <em class="sig-param"><span class="pre">$copy_path</span></em>, <em class="sig-param"><span class="pre">$remove_original</span> <span class="pre">=</span> <span class="pre">FALSE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#copy_file" title="Link to this definition"></a></dt>
+<dd><p>Copies a file to a new location, or moves it if <code class="docutils literal notranslate"><span class="pre">$remove_original</span></code> is TRUE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$path</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Path to the source file.</p></li>
+<li><p><strong>$copy_path</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Path to the destination file.</p></li>
+<li><p><strong>$remove_original</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – If TRUE, the file is moved instead of copied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool — TRUE on success, FALSE on failure.</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Copy a file</span>
+<span class="nx">copy_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;/new/path/file.txt&#39;</span><span class="p">);</span>
+
+<span class="c1">// Move a file</span>
+<span class="nx">copy_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;/new/path/file.txt&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">write_file()</span></code> uses <strong>exclusive locking</strong> via <code class="docutils literal notranslate"><span class="pre">flock()</span></code> to prevent concurrent write issues.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delete_files()</span></code> can skip important web files if <code class="docutils literal notranslate"><span class="pre">$htdocs</span></code> is TRUE.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copy_file()</span></code> is a simple wrapper for <code class="docutils literal notranslate"><span class="pre">copy()</span></code> or <code class="docutils literal notranslate"><span class="pre">rename()</span></code> depending on whether you want to move or copy the file.</p></li>
+<li><p>Always ensure that your PHP process has <strong>sufficient permissions</strong> for the directories and files involved.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="download.html" class="btn btn-neutral float-left" title="Download Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="language.html" class="btn btn-neutral float-right" title="Language Helper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

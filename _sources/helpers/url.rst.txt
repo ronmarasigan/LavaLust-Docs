@@ -1,0 +1,88 @@
+URL & Asset Helper
+===================
+
+The **URL & Asset Helper** provides functions to handle URLs, redirects, asset inclusion, and active state management in LavaLust applications.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``base_url()``
+     - Returns the base URL of the application.
+   * - ``site_url($url = '')``
+     - Generates a full site URL including optional index page.
+   * - ``redirect($uri = '', $permanent = false, $exit = true)``
+     - Redirects to the specified URI using HTTP headers.
+   * - ``load_js(array $paths)``
+     - Loads one or multiple JavaScript files from the public directory.
+   * - ``load_css(array $paths)``
+     - Loads one or multiple CSS files from the public directory.
+   * - ``active($current_page, $css_class = 'active')``
+     - Prints a CSS class if the current URL matches the specified page.
+   * - ``segment($seg)``
+     - Retrieves a specific URI segment.
+
+Available Functions
+--------------------
+
+.. php:function:: base_url()
+
+    Returns the base URL of the application.
+
+    :returns: string — Base URL.
+
+
+.. php:function:: site_url(string $url = '')
+
+    Generates a full URL to a site resource, optionally including the index page.
+
+    :param string $url: The URI segment to append.
+    :returns: string — Full URL.
+
+
+.. php:function:: redirect(string $uri = '', bool $permanent = false, bool $exit = true)
+
+    Redirects to a given URI using HTTP headers.
+
+    :param string $uri: Destination URI.
+    :param bool $permanent: Whether to use 301 Permanent Redirect (default false).
+    :param bool $exit: Whether to exit after redirect (default true).
+    :returns: void
+
+
+.. php:function:: load_js(array $paths)
+
+    Loads one or more JavaScript files from the public directory.
+
+    :param array $paths: List of JS file paths relative to the public directory.
+    :returns: void
+
+
+.. php:function:: load_css(array $paths)
+
+    Loads one or more CSS files from the public directory.
+
+    :param array $paths: List of CSS file paths relative to the public directory.
+    :returns: void
+
+
+.. php:function:: active(string $current_page, string $css_class = 'active')
+
+    Prints a CSS class if the current URL matches the specified page.
+
+    :param string $current_page: Page or route to compare with the current URI.
+    :param string $css_class: CSS class to output if active (default 'active').
+    :returns: void
+
+
+.. php:function:: segment(int $seg)
+
+    Retrieves a specific URI segment.
+
+    :param int $seg: The segment index to retrieve.
+    :returns: string|false — Segment string if exists, false otherwise.

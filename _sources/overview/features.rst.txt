@@ -1,0 +1,23 @@
+Support Features
+================
+
+LavaLust comes with a variety of built-in features to make development faster and easier:
+
+- **Model–View–Controller (MVC) Pattern**
+- **Super Lightweight**
+- **Simple Query Builder Class**
+- **Form Data Validation**
+- **Session Management**
+- **Simple Email Sending**
+- **File Uploading Class**
+- **Performance Class**
+- **Config Class**
+- **Simple Logger Class**
+- **Encryption Class**
+- **RESTful API**
+- **Migration Class**
+- **Pagination**
+- **Simple Page Caching**
+- **File Downloading Class**
+- **Search-engine Friendly URLs**
+- **Helper Functions**

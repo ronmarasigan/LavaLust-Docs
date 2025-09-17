@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Functions and Error Handling &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="before_action Hook" href="before_action.html" />
+    <link rel="prev" title="Auto-loading Resources" href="autoload.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Common Functions and Error Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#class-loader">Class Loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#load_class"><code class="docutils literal notranslate"><span class="pre">load_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loaded_class"><code class="docutils literal notranslate"><span class="pre">loaded_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#show_404"><code class="docutils literal notranslate"><span class="pre">show_404()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show_error"><code class="docutils literal notranslate"><span class="pre">show_error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-access">Configuration Access</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config_item"><code class="docutils literal notranslate"><span class="pre">config_item()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#autoload_config"><code class="docutils literal notranslate"><span class="pre">autoload_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#database_config"><code class="docutils literal notranslate"><span class="pre">database_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#route_config"><code class="docutils literal notranslate"><span class="pre">route_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#html_escape"><code class="docutils literal notranslate"><span class="pre">html_escape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is_php"><code class="docutils literal notranslate"><span class="pre">is_php()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is_https"><code class="docutils literal notranslate"><span class="pre">is_https()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#framework-instance-access">Framework Instance Access</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lava_instance"><code class="docutils literal notranslate"><span class="pre">lava_instance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">General Topics</a></li>
+      <li class="breadcrumb-item active">Common Functions and Error Handling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="common-functions-and-error-handling">
+<h1>Common Functions and Error Handling<a class="headerlink" href="#common-functions-and-error-handling" title="Link to this heading"></a></h1>
+<p>LavaLust comes with several core functions to handle class loading, configuration, error handling, and environment checks. These functions are globally available and form the backbone of the framework.</p>
+<section id="class-loader">
+<h2>Class Loader<a class="headerlink" href="#class-loader" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="load_class">
+<span class="sig-name descname"><span class="pre">load_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$directory</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array</span> <span class="pre">$params</span> <span class="pre">=</span> <span class="pre">NULL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$object_name</span> <span class="pre">=</span> <span class="pre">NULL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#load_class" title="Link to this definition"></a></dt>
+<dd><p>Loads a class from the specified directory and stores an instance in the Registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$class</strong> (<em>string</em>) – The class name to load</p></li>
+<li><p><strong>$directory</strong> (<em>string</em>) – Directory to search in (relative to app/system)</p></li>
+<li><p><strong>$params</strong> (<em>array</em><em>|</em><em>null</em>) – Constructor parameters (if any)</p></li>
+<li><p><strong>$object_name</strong> (<em>string</em><em>|</em><em>null</em>) – Optional object key for Registry storage</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return object<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded class instance</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$logger</span> <span class="o">=</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;Logger&#39;</span><span class="p">,</span> <span class="s1">&#39;kernel&#39;</span><span class="p">);</span>
+<span class="nv">$logger</span><span class="o">-&gt;</span><span class="na">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;This is a test message.&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="loaded_class">
+<span class="sig-name descname"><span class="pre">loaded_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$class</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$object_name</span> <span class="pre">=</span> <span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#loaded_class" title="Link to this definition"></a></dt>
+<dd><p>Keeps track of loaded libraries and classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$class</strong> (<em>string</em>) – Class name</p></li>
+<li><p><strong>$object_name</strong> (<em>string</em>) – Object key used in Registry</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return array<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of loaded class names</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$loaded</span> <span class="o">=</span> <span class="nx">loaded_class</span><span class="p">();</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$loaded</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="show_404">
+<span class="sig-name descname"><span class="pre">show_404</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$heading</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$message</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$template</span> <span class="pre">=</span> <span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">string</span></span></span><a class="headerlink" href="#show_404" title="Link to this definition"></a></dt>
+<dd><p>Displays a 404 Page Not Found error page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$heading</strong> (<em>string</em>) – Optional heading text</p></li>
+<li><p><strong>$message</strong> (<em>string</em>) – Optional detailed message</p></li>
+<li><p><strong>$template</strong> (<em>string</em>) – Optional template name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return string<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTML of the 404 page</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nx">show_404</span><span class="p">(</span><span class="s1">&#39;Page Not Found&#39;</span><span class="p">,</span> <span class="s1">&#39;The requested page does not exist.&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="show_error">
+<span class="sig-name descname"><span class="pre">show_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$heading</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$message</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$template</span> <span class="pre">=</span> <span class="pre">'error_general'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">$code</span> <span class="pre">=</span> <span class="pre">500</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">string</span></span></span><a class="headerlink" href="#show_error" title="Link to this definition"></a></dt>
+<dd><p>Displays an error page for debugging purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$heading</strong> (<em>string</em>) – Error heading</p></li>
+<li><p><strong>$message</strong> (<em>string</em>) – Error message</p></li>
+<li><p><strong>$template</strong> (<em>string</em>) – Template file to use</p></li>
+<li><p><strong>$code</strong> (<em>int</em>) – HTTP status code</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return string<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTML of the error page</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;Database Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Unable to connect to the database&#39;</span><span class="p">,</span> <span class="s1">&#39;error_db&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="configuration-access">
+<h2>Configuration Access<a class="headerlink" href="#configuration-access" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#get_config" title="Link to this definition"></a></dt>
+<dd><p>Loads the global configuration file <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code> and returns its array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return array<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Associative array of configuration items</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$config</span> <span class="o">=</span> <span class="nx">get_config</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="config_item">
+<span class="sig-name descname"><span class="pre">config_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$item</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">mixed</span></span></span><a class="headerlink" href="#config_item" title="Link to this definition"></a></dt>
+<dd><p>Returns a single configuration value from the loaded config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>$item</strong> (<em>string</em>) – Config item key</p>
+</dd>
+<dt class="field-even">Return mixed<span class="colon">:</span></dt>
+<dd class="field-even"><p>Config value or NULL if not set</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">echo</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autoload_config">
+<span class="sig-name descname"><span class="pre">autoload_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#autoload_config" title="Link to this definition"></a></dt>
+<dd><p>Loads the <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code> file for auto-loading resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return array<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of resources to autoload</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$autoload</span> <span class="o">=</span> <span class="nx">autoload_config</span><span class="p">();</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;libraries&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="database_config">
+<span class="sig-name descname"><span class="pre">database_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#database_config" title="Link to this definition"></a></dt>
+<dd><p>Loads the database configuration file <code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return array<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Database configuration array</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$db_config</span> <span class="o">=</span> <span class="nx">database_config</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$db_config</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;hostname&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="route_config">
+<span class="sig-name descname"><span class="pre">route_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#route_config" title="Link to this definition"></a></dt>
+<dd><p>Loads the routing configuration file <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return array<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Routing configuration array</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$routes</span> <span class="o">=</span> <span class="nx">route_config</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;default_controller&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="html_escape">
+<span class="sig-name descname"><span class="pre">html_escape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mixed</span> <span class="pre">$var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span> <span class="pre">$double_encode</span> <span class="pre">=</span> <span class="pre">TRUE</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">mixed</span></span></span><a class="headerlink" href="#html_escape" title="Link to this definition"></a></dt>
+<dd><p>Escapes HTML entities in a string or array recursively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$var</strong> (<em>mixed</em>) – String or array to escape</p></li>
+<li><p><strong>$double_encode</strong> (<em>bool</em>) – Prevents double-encoding if FALSE</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return mixed<span class="colon">:</span></dt>
+<dd class="field-even"><p>Escaped string or array</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="s1">&#39;&lt;script&gt;alert(1)&lt;/script&gt;&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="is_php">
+<span class="sig-name descname"><span class="pre">is_php</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span> <span class="pre">$version</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#is_php" title="Link to this definition"></a></dt>
+<dd><p>Checks if the current PHP version is greater than or equal to the specified version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>$version</strong> (<em>string</em>) – PHP version to check</p>
+</dd>
+<dt class="field-even">Return bool<span class="colon">:</span></dt>
+<dd class="field-even"><p>TRUE if current PHP version is &gt;= $version</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">is_php</span><span class="p">(</span><span class="s1">&#39;8.0&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Running PHP 8+&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="is_https">
+<span class="sig-name descname"><span class="pre">is_https</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#is_https" title="Link to this definition"></a></dt>
+<dd><p>Determines whether the application is accessed via HTTPS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return bool<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TRUE if HTTPS, FALSE otherwise</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">is_https</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Secure connection&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="framework-instance-access">
+<h2>Framework Instance Access<a class="headerlink" href="#framework-instance-access" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lava_instance">
+<span class="sig-name descname"><span class="pre">lava_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#lava_instance" title="Link to this definition"></a></dt>
+<dd><p>Returns the main LavaLust framework instance. This instance allows access to core components such as <cite>db</cite>, <cite>security</cite>, <cite>call</cite>, and other libraries loaded into the framework.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return object<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The main LavaLust instance</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="c1">// Get the main instance</span>
+<span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span>
+
+<span class="c1">// Access the database</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+
+<span class="c1">// Access security methods</span>
+<span class="nv">$csrf_token</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_hash</span><span class="p">();</span>
+
+<span class="c1">// Load a library</span>
+<span class="nv">$logger</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autoload.html" class="btn btn-neutral float-left" title="Auto-loading Resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="before_action.html" class="btn btn-neutral float-right" title="before_action Hook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

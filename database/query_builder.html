@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Query Reference &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Libraries" href="../libraries/index.html" />
+    <link rel="prev" title="Database Reference" href="database_reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Database Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="database_reference.html">Database Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Query Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-configuration">Database Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-a-database-instance">Getting a Database Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#raw-query-args-array">raw($query, $args = array())</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#count">count()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bulk-insert-records">bulk_insert($records)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bulk-update-records-primarykey-id">bulk_update($records, $primaryKey = ‘id’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete">delete()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update-fields">update($fields = [])</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insert-fields">insert($fields = [])</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#last-id">last_id()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-table-name">table($table_name)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-columns">select($columns)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-max-column-alias-null">select_max($column, $alias = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-min-column-alias-null">select_min($column, $alias = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-sum-column-alias-null">select_sum($column, $alias = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-count-column-alias-total">select_count($column = ‘*’, $alias = ‘total’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-avg-column-alias-null">select_avg($column, $alias = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-distinct-columns">select_distinct($columns)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#join-table-condition-type-inner">join($table, $condition, $type = ‘INNER’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inner-join-table-condition">inner_join($table, $condition)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#left-join-table-condition">left_join($table, $condition)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#right-join-table-condition">right_join($table, $condition)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#full-outer-join-table-condition">full_outer_join($table, $condition)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#where-column-value-null-operator">where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-where-column-value-null-operator">or_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-where-column-value-null-operator">not_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-where-column-value-null-operator">or_not_where($column, $value = NULL, $operator = ‘=’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#like-column-match-side-both">like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-like-column-match-side-both">or_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-like-column-match-side-both">not_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-like-column-match-side-both">or_not_like($column, $match, $side = ‘both’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-column-array-values">in($column, array $values)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-in-column-array-values">not_in($column, array $values)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-in-column-array-values">or_in($column, array $values)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-in-column-array-values">or_not_in($column, array $values)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#between-column-start-end">between($column, $start, $end)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-between-column-start-end">not_between($column, $start, $end)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-between-column-start-end">or_between($column, $start, $end)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-between-column-start-end">or_not_between($column, $start, $end)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pagination-perpage-currentpage-1">pagination($perPage, $currentPage = 1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limit-number">limit($number)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#offset-number">offset($number)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#order-by-column-direction-asc">order_by($column, $direction = ‘ASC’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-by-column">group_by($column)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#having-column-value-operator">having($column, $value, $operator = ‘=’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grouped-closure-obj">grouped(Closure $obj)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">grouped(Closure $obj)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get">get()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-all">get_all()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transaction">transaction()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rollback">rollback()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Database Reference</a></li>
+      <li class="breadcrumb-item active">Database Query Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-query-reference">
+<h1>Database Query Reference<a class="headerlink" href="#database-query-reference" title="Link to this heading"></a></h1>
+<p>LavaLust provides a powerful and lightweight <strong>Database Class</strong> that uses a <strong>fluent query builder</strong>.
+It lets you run SQL queries, retrieve results, and perform inserts, updates, and deletes easily without writing raw SQL directly.</p>
+<section id="database-configuration">
+<h2>Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
+<p>Database settings are defined in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code></p>
+<p>Example configuration:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+     <span class="s1">&#39;driver&#39;</span>        <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;hostname&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;port&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;username&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;password&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;database&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;charset&#39;</span>       <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;dbprefix&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+     <span class="c1">// Optional for SQLite</span>
+     <span class="s1">&#39;path&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span>
+ <span class="p">);</span>
+</pre></div>
+</div>
+<p>Make sure you set the correct credentials for your environment.</p>
+</section>
+<section id="getting-a-database-instance">
+<h2>Getting a Database Instance<a class="headerlink" href="#getting-a-database-instance" title="Link to this heading"></a></h2>
+<p>You can get the database instance using the <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code> property from within controllers, models, and libraries:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">UserController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+        <span class="nb">print_r</span><span class="p">(</span><span class="nv">$users</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">$this-&gt;db-&gt;table('users')</span></code> initializes a query builder for the <cite>users</cite> table.</p>
+</div>
+</section>
+<section id="raw-query-args-array">
+<h2>raw($query, $args = array())<a class="headerlink" href="#raw-query-args-array" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Executes a raw SQL query with optional bound parameters.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE id = ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="count">
+<h2>count()<a class="headerlink" href="#count" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Returns the number of rows in the current table with applied where conditions.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+<span class="k">echo</span> <span class="s2">&quot;Total active users: </span><span class="si">$total</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="bulk-insert-records">
+<h2>bulk_insert($records)<a class="headerlink" href="#bulk-insert-records" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Inserts multiple records at once into the current table.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span><span class="p">],</span>
+  <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;jane@example.com&#39;</span><span class="p">]</span>
+<span class="p">];</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bulk_insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bulk-update-records-primarykey-id">
+<h2>bulk_update($records, $primaryKey = ‘id’)<a class="headerlink" href="#bulk-update-records-primarykey-id" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Updates multiple records at once based on the primary key field.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$updates</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;active&#39;</span><span class="p">],</span>
+  <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;inactive&#39;</span><span class="p">]</span>
+<span class="p">];</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bulk_update</span><span class="p">(</span><span class="nv">$updates</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="delete">
+<h2>delete()<a class="headerlink" href="#delete" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Deletes records from the current table with applied where conditions.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="update-fields">
+<h2>update($fields = [])<a class="headerlink" href="#update-fields" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Updates a single record or multiple records matching where conditions.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">update</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Johnny&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="insert-fields">
+<h2>insert($fields = [])<a class="headerlink" href="#insert-fields" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Inserts a new record into the current table.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="last-id">
+<h2>last_id()<a class="headerlink" href="#last-id" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Returns the last inserted ID from the previous <code class="docutils literal notranslate"><span class="pre">insert()</span></code> or <code class="docutils literal notranslate"><span class="pre">exec()</span></code> operation.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="table-table-name">
+<h2>table($table_name)<a class="headerlink" href="#table-table-name" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Specifies the table to be used for the current query.
+Resets the internal query builder state.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="select-columns">
+<h2>select($columns)<a class="headerlink" href="#select-columns" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Specifies which columns to select in the query.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name, email&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="select-max-column-alias-null">
+<h2>select_max($column, $alias = NULL)<a class="headerlink" href="#select-max-column-alias-null" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Selects the maximum value of a column. Optionally sets an alias for the result column.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_max</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;max_amount&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;max_amount&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="select-min-column-alias-null">
+<h2>select_min($column, $alias = NULL)<a class="headerlink" href="#select-min-column-alias-null" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Selects the minimum value of a column. Optionally sets an alias for the result column.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_min</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;min_amount&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;min_amount&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="select-sum-column-alias-null">
+<h2>select_sum($column, $alias = NULL)<a class="headerlink" href="#select-sum-column-alias-null" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Selects the sum of all values in a column.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_sum</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;total_amount&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;total_amount&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="select-count-column-alias-total">
+<h2>select_count($column = ‘*’, $alias = ‘total’)<a class="headerlink" href="#select-count-column-alias-total" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Counts the number of rows or specific column values.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_count</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;user_count&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;user_count&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="select-avg-column-alias-null">
+<h2>select_avg($column, $alias = NULL)<a class="headerlink" href="#select-avg-column-alias-null" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Selects the average value of a column.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_avg</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;average_amount&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;average_amount&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="select-distinct-columns">
+<h2>select_distinct($columns)<a class="headerlink" href="#select-distinct-columns" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Selects distinct (unique) values from a column.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">select_distinct</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="join-table-condition-type-inner">
+<h2>join($table, $condition, $type = ‘INNER’)<a class="headerlink" href="#join-table-condition-type-inner" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Performs a SQL JOIN between the current table and another table.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.user_id = users.id&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="inner-join-table-condition">
+<h2>inner_join($table, $condition)<a class="headerlink" href="#inner-join-table-condition" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Shortcut for <code class="docutils literal notranslate"><span class="pre">join()</span></code> with INNER join.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">inner_join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.user_id = users.id&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="left-join-table-condition">
+<h2>left_join($table, $condition)<a class="headerlink" href="#left-join-table-condition" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Performs a LEFT JOIN between the current table and another table.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">left_join</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id = profiles.user_id&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="right-join-table-condition">
+<h2>right_join($table, $condition)<a class="headerlink" href="#right-join-table-condition" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Performs a RIGHT JOIN between the current table and another table.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">right_join</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id = profiles.user_id&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="full-outer-join-table-condition">
+<h2>full_outer_join($table, $condition)<a class="headerlink" href="#full-outer-join-table-condition" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Performs a FULL OUTER JOIN between the current table and another table (if supported by your DB driver).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$result = $this-&gt;db-&gt;table(&#39;table_a&#39;)</span>
+<span class="x">             -&gt;full_outer_join(&#39;table_b&#39;, &#39;table_a.id = table_b.id&#39;)</span>
+<span class="x">             -&gt;get_all();</span>
+</pre></div>
+</div>
+</section>
+<section id="where-column-value-null-operator">
+<h2>where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#where-column-value-null-operator" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE</cite> condition to the query.
+Can be chained multiple times to add multiple conditions.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-where-column-value-null-operator">
+<h2>or_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#or-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE</cite> condition to the query.
+Used when you want alternative conditions in the <cite>WHERE</cite> clause.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="not-where-column-value-null-operator">
+<h2>not_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#not-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE NOT</cite> condition to the query.
+Negates the condition you specify.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;banned&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-not-where-column-value-null-operator">
+<h2>or_not_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#or-not-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE NOT</cite> condition to the query.
+Used for alternative negative conditions in the <cite>WHERE</cite> clause.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;inactive&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="like-column-match-side-both">
+<h2>like($column, $match, $side = ‘both’)<a class="headerlink" href="#like-column-match-side-both" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>LIKE</cite> condition to the query.
+The <cite>$side</cite> parameter controls where to add the wildcard <cite>%</cite>:
+- <cite>both</cite> (default): <cite>%match%</cite>
+- <cite>before</cite>: <cite>%match</cite>
+- <cite>after</cite>: <cite>match%</cite></p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-like-column-match-side-both">
+<h2>or_like($column, $match, $side = ‘both’)<a class="headerlink" href="#or-like-column-match-side-both" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR LIKE</cite> condition to the query.
+Used to provide an alternative match condition.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="not-like-column-match-side-both">
+<h2>not_like($column, $match, $side = ‘both’)<a class="headerlink" href="#not-like-column-match-side-both" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>NOT LIKE</cite> condition to the query.
+Negates the match condition.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">not_like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-not-like-column-match-side-both">
+<h2>or_not_like($column, $match, $side = ‘both’)<a class="headerlink" href="#or-not-like-column-match-side-both" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR NOT LIKE</cite> condition to the query.
+Used as an alternative negated match condition.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_not_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;spam&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="in-column-array-values">
+<h2>in($column, array $values)<a class="headerlink" href="#in-column-array-values" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE IN</cite> condition to the query.
+Matches rows where the column’s value is <strong>in the given array</strong>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="not-in-column-array-values">
+<h2>not_in($column, array $values)<a class="headerlink" href="#not-in-column-array-values" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE NOT IN</cite> condition to the query.
+Matches rows where the column’s value is <strong>not in the given array</strong>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">not_in</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;banned&#39;</span><span class="p">,</span> <span class="s1">&#39;inactive&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-in-column-array-values">
+<h2>or_in($column, array $values)<a class="headerlink" href="#or-in-column-array-values" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE IN</cite> condition to the query.
+Useful when combining multiple conditions where at least one should match.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_in</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;contributor&#39;</span><span class="p">,</span> <span class="s1">&#39;subscriber&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-not-in-column-array-values">
+<h2>or_not_in($column, array $values)<a class="headerlink" href="#or-not-in-column-array-values" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE NOT IN</cite> condition to the query.
+Combines with other conditions to exclude values as an alternative condition.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_not_in</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;deleted&#39;</span><span class="p">,</span> <span class="s1">&#39;suspended&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="between-column-start-end">
+<h2>between($column, $start, $end)<a class="headerlink" href="#between-column-start-end" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE BETWEEN</cite> condition to the query.
+Matches rows where the column’s value is <strong>between the given start and end values (inclusive)</strong>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">between</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-12-31&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="not-between-column-start-end">
+<h2>not_between($column, $start, $end)<a class="headerlink" href="#not-between-column-start-end" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <cite>WHERE NOT BETWEEN</cite> condition to the query.
+Matches rows where the column’s value is <strong>outside the given start and end values</strong>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">not_between</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-between-column-start-end">
+<h2>or_between($column, $start, $end)<a class="headerlink" href="#or-between-column-start-end" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE BETWEEN</cite> condition to the query.
+Useful for combining conditions where <strong>either another condition OR this range</strong> must be true.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_between</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-30&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="or-not-between-column-start-end">
+<h2>or_not_between($column, $start, $end)<a class="headerlink" href="#or-not-between-column-start-end" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds an <cite>OR WHERE NOT BETWEEN</cite> condition to the query.
+Used to combine with other conditions as an alternative to exclude values in a range.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;completed&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_not_between</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="pagination-perpage-currentpage-1">
+<h2>pagination($perPage, $currentPage = 1)<a class="headerlink" href="#pagination-perpage-currentpage-1" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Automatically applies <strong>LIMIT</strong> and <strong>OFFSET</strong> to the query based on the given
+<strong>items per page</strong> and <strong>current page number</strong>.
+This is helpful for paginating long result sets.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$page</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">pagination</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nv">$page</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong>
+Make sure to handle the current page number properly (e.g., from query string).</p>
+<p>—</p>
+</section>
+<section id="limit-number">
+<h2>limit($number)<a class="headerlink" href="#limit-number" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Limits the <strong>maximum number of rows</strong> returned from the query.
+Usually used to control the result size.</p>
+<p><strong>Example:</strong></p>
+<blockquote>
+<div><p>&lt;?php</p>
+</div></blockquote>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;db-&gt;table(&#39;users&#39;)</span>
+<span class="x">   -&gt;limit(5)</span>
+<span class="x">   -&gt;get_all();</span>
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="offset-number">
+<h2>offset($number)<a class="headerlink" href="#offset-number" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Skips the given number of rows before starting to return the results.
+Commonly used together with <cite>limit()</cite> for custom pagination logic.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">offset</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="order-by-column-direction-asc">
+<h2>order_by($column, $direction = ‘ASC’)<a class="headerlink" href="#order-by-column-direction-asc" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Specifies the column by which the result set should be <strong>sorted</strong>.
+You can call this multiple times to order by multiple columns.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong>
+<cite>$direction</cite> can be either <strong>ASC</strong> (ascending) or <strong>DESC</strong> (descending).</p>
+<p>—</p>
+</section>
+<section id="group-by-column">
+<h2>group_by($column)<a class="headerlink" href="#group-by-column" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Groups the query results by a specified column.
+Useful when using aggregate functions like <cite>COUNT()</cite>, <cite>SUM()</cite>, etc.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;customer_id, COUNT(*) as total_orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;customer_id&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="having-column-value-operator">
+<h2>having($column, $value, $operator = ‘=’)<a class="headerlink" href="#having-column-value-operator" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Adds a <strong>HAVING</strong> condition to filter grouped results.
+Used together with <cite>group_by()</cite> and aggregate functions.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;customer_id, COUNT(*) as total_orders&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;customer_id&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">&#39;total_orders&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="grouped-closure-obj">
+<h2>grouped(Closure $obj)<a class="headerlink" href="#grouped-closure-obj" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Wraps multiple WHERE conditions in <strong>parentheses</strong> by using a closure.
+This is useful when you need to <strong>group logical conditions</strong> (especially when mixing <cite>AND</cite> / <cite>OR</cite>).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$db-&gt;table(&#39;users&#39;)</span>
+<span class="x">   -&gt;grouped(function($q) {</span>
+<span class="x">       $q-&gt;where(&#39;status&#39;, &#39;active&#39;)</span>
+<span class="x">         -&gt;or_where(&#39;status&#39;, &#39;pending&#39;);</span>
+<span class="x">   })</span>
+<span class="x">   -&gt;where(&#39;age&#39;, 18, &#39;&gt;=&#39;)</span>
+<span class="x">   -&gt;get_all();</span>
+</pre></div>
+</div>
+<p><strong>Generated SQL:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pending&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>grouped(Closure $obj)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Wraps multiple WHERE conditions in <strong>parentheses</strong> by using a closure.
+This is useful when you need to <strong>group logical conditions</strong> (especially when mixing <cite>AND</cite> / <cite>OR</cite>).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
+       <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">);</span>
+   <span class="p">})</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Generated SQL:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="o">&lt;?</span><span class="n">php</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pending&#39;</span><span class="p">)</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="get">
+<h2>get()<a class="headerlink" href="#get" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Executes the built query and returns a raw database result object (driver-specific).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$query</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$row</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="get-all">
+<h2>get_all()<a class="headerlink" href="#get-all" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Executes the query and returns all rows as an array.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="transaction">
+<h2>transaction()<a class="headerlink" href="#transaction" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Starts a <strong>database transaction</strong>.
+This allows you to execute multiple queries as a single unit of work.
+If any query fails, you can roll back the entire set of operations.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John Doe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span>
+<span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+    <span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;bio&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello world&#39;</span>
+<span class="p">]);</span>
+
+<span class="c1">// Commit if all queries succeed</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
+ <span class="nx">commit</span><span class="p">()</span>
+ <span class="o">-------------</span>
+ <span class="o">**</span><span class="nx">Description</span><span class="o">:**</span>
+ <span class="nx">Commits</span> <span class="nx">all</span> <span class="nx">operations</span> <span class="nx">performed</span> <span class="nx">since</span> <span class="nx">the</span> <span class="nx">last</span> <span class="sb">`transaction()`</span> <span class="nx">call</span><span class="o">.</span>
+ <span class="k">This</span> <span class="nx">makes</span> <span class="nx">all</span> <span class="nx">the</span> <span class="nx">changes</span> <span class="o">**</span><span class="nx">permanent</span><span class="o">**</span> <span class="nx">in</span> <span class="nx">the</span> <span class="nx">database</span><span class="o">.</span>
+
+ <span class="o">**</span><span class="nx">Example</span><span class="o">:**</span>
+
+ <span class="o">..</span> <span class="nx">code</span><span class="o">-</span><span class="nx">block</span><span class="o">::</span> <span class="na">php</span>
+
+ <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
+ <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Jane&#39;</span><span class="p">]);</span>
+ <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="rollback">
+<h2>rollback()<a class="headerlink" href="#rollback" title="Link to this heading"></a></h2>
+<p><strong>Description:</strong>
+Rolls back all operations performed since the last <cite>transaction()</cite> call.
+Use this to <strong>undo</strong> all changes if something goes wrong during the transaction.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
+
+<span class="k">try</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Error Test&#39;</span><span class="p">]);</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">&#39;Something went wrong!&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<p>Follow these guidelines to ensure safe, maintainable, and performant database queries when using LavaLust’s database query builder:</p>
+<p><cite>Use Query Builder Instead of Raw Queries</cite></p>
+<p><strong>Reason:</strong> Prevents SQL injection and improves readability.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="c1">// ✅ Safe</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+
+<span class="c1">// ❌ Unsafe</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE id = </span><span class="si">$id</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><cite>Always Escape User Input`</cite></p>
+<p><strong>Reason:</strong> Prevents SQL injection vulnerabilities when building queries dynamically.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$input_name</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE name = </span><span class="si">$name</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><cite>Limit the Columns You Select`</cite></p>
+<p><strong>Reason:</strong> Improves performance by fetching only needed data.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name, email&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><cite>Use Pagination for Large Datasets`</cite></p>
+<p><strong>Reason:</strong> Avoids memory overhead when fetching many rows.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">offset</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><cite>Use Transactions for Critical Operations`</cite></p>
+<p><strong>Reason:</strong> Ensures data integrity when performing multiple related operations.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="database_reference.html" class="btn btn-neutral float-left" title="Database Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../libraries/index.html" class="btn btn-neutral float-right" title="Libraries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

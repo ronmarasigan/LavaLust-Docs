@@ -1,0 +1,18 @@
+Installation Guide
+==================
+
+**(via downloading and extracting the zip file)**
+
+#. Unzip the package.
+#. Upload the LavaLust folders and files to your server. Normally the
+   ``index.php`` file will be at your root.
+#. Open your project in terminal and type ``php -S localhost:3000`` and hit enter.
+#. Open your browser and type ``http://localhost:3000`` in the address bar.
+
+**(via Git)**
+
+#. Install Git and Composer.
+#. Select the server folder then open a terminal. Type
+   ``git clone https://github.com/ronmarasigan/LavaLust`` and hit enter.
+#. Open your project in terminal and type ``php -S localhost:3000`` and hit enter.
+#. Open your browser and type ``http://localhost:3000`` in the address bar.

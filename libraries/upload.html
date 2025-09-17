@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Form Validation Class" href="form_validation.html" />
+    <link rel="prev" title="Encryption Class" href="encryption.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Upload Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-process">The Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-the-upload-form">Creating the Upload Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-success-page">The Success Page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-controller">The Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-upload-directory">The Upload Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-preferences">Setting Preferences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-methods">Available Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Upload Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="upload-class">
+<h1>Upload Class<a class="headerlink" href="#upload-class" title="Link to this heading"></a></h1>
+<p>The <strong>Upload</strong> class allows you to <strong>upload files</strong> safely in LavaLust.
+You can define various preferences, such as allowed file types, size restrictions, and automatic filename encryption.</p>
+<section id="the-process">
+<h2>The Process<a class="headerlink" href="#the-process" title="Link to this heading"></a></h2>
+<p>Uploading a file involves the following general process:</p>
+<ol class="arabic simple">
+<li><p>An upload form is displayed, allowing the user to select a file.</p></li>
+<li><p>When the form is submitted, the file is uploaded to the destination directory.</p></li>
+<li><p>The file is validated based on the preferences you set.</p></li>
+<li><p>On success, a confirmation is displayed. Otherwise, errors are shown.</p></li>
+</ol>
+</section>
+<section id="creating-the-upload-form">
+<h2>Creating the Upload Form<a class="headerlink" href="#creating-the-upload-form" title="Link to this heading"></a></h2>
+<p>Create a view file called <code class="docutils literal notranslate"><span class="pre">upload_form.php</span></code> inside your <code class="docutils literal notranslate"><span class="pre">app/views/</span></code> directory:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Upload</span> <span class="nx">Form</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+
+<span class="o">&lt;?</span><span class="nx">php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span> <span class="p">{</span> <span class="k">echo</span> <span class="nv">$error</span><span class="p">;</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+
+<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;upload/do_upload&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span>
+<span class="x">   &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;</span>
+<span class="x">   &lt;br&gt;&lt;br&gt;</span>
+<span class="x">   &lt;input type=&quot;submit&quot; value=&quot;upload&quot; /&gt;</span>
+<span class="x">&lt;/form&gt;</span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-success-page">
+<h2>The Success Page<a class="headerlink" href="#the-success-page" title="Link to this heading"></a></h2>
+<p>Create another view file called <code class="docutils literal notranslate"><span class="pre">upload_success.php</span></code> in the same folder:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Upload</span> <span class="nx">Success</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Your</span> <span class="nb">file</span> <span class="nx">was</span> <span class="nx">successfully</span> <span class="nx">uploaded</span><span class="o">!&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
+
+<span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nv">$filename</span><span class="p">;</span> <span class="cp">?&gt;</span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-controller">
+<h2>The Controller<a class="headerlink" href="#the-controller" title="Link to this heading"></a></h2>
+<p>Create a controller called <code class="docutils literal notranslate"><span class="pre">Upload.php</span></code> inside your <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code> directory:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Upload</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+   <span class="k">public</span> <span class="k">function</span> <span class="nf">upload</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
+         <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">])</span>
+         <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">])</span>
+         <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
+         <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
+         <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="the-upload-directory">
+<h2>The Upload Directory<a class="headerlink" href="#the-upload-directory" title="Link to this heading"></a></h2>
+<p>You will need a destination directory for your uploaded files.
+Create a directory called <code class="docutils literal notranslate"><span class="pre">uploads</span></code> in the root of your LavaLust installation and set its permissions to <strong>777</strong>.</p>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>Like most other classes in LavaLust, the Upload class is initialized in your controller using:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Once the Upload class is loaded, you can access it via:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-preferences">
+<h2>Setting Preferences<a class="headerlink" href="#setting-preferences" title="Link to this heading"></a></h2>
+<p>You control what is allowed to be uploaded through various preference methods.
+Example:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
+   <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">])</span>
+   <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
+   <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="available-methods">
+<h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_extensions(array</span> <span class="pre">$exts)</span></code></p></td>
+<td><p>Set allowed file extensions. Default: <code class="docutils literal notranslate"><span class="pre">['gif','jpg','jpeg','png']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_mimes(array</span> <span class="pre">$mimes)</span></code></p></td>
+<td><p>Set allowed MIME types. Default: <code class="docutils literal notranslate"><span class="pre">['image/gif','image/jpg','image/jpeg','image/png']</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_dir(string</span> <span class="pre">$path)</span></code></p></td>
+<td><p>Directory where files will be saved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_size(int</span> <span class="pre">$mb)</span></code></p></td>
+<td><p>Maximum file size in MB.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_size(int</span> <span class="pre">$mb)</span></code></p></td>
+<td><p>Minimum file size in MB.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_image()</span></code></p></td>
+<td><p>Restricts uploads to image files only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encrypt_name()</span></code></p></td>
+<td><p>Automatically rename uploaded file to a random encrypted filename.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">do_upload()</span></code></p></td>
+<td><p>Performs the upload process. Returns <strong>true</strong> on success.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_errors()</span></code></p></td>
+<td><p>Returns an array of error messages.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_filename()</span></code></p></td>
+<td><p>Returns the final uploaded filename.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_size()</span></code></p></td>
+<td><p>Returns the size of the uploaded file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></p></td>
+<td><p>Returns the file extension of the uploaded file.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always validate the uploaded file’s extension and MIME type to ensure security.
+Avoid allowing executable file types (e.g. <code class="docutils literal notranslate"><span class="pre">.php</span></code>, <code class="docutils literal notranslate"><span class="pre">.exe</span></code>) to be uploaded.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encryption.html" class="btn btn-neutral float-left" title="Encryption Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="form_validation.html" class="btn btn-neutral float-right" title="Form Validation Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

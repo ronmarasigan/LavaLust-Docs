@@ -1,0 +1,170 @@
+Migration Class
+================
+
+The **Migration Class** is a way to manage changes to your database schema over time.  
+It provides a structured and versioned way to track and apply changes (such as creating tables, adding columns, or modifying indexes) in code.
+
+This allows you to evolve the database schema in a **controlled and reproducible** manner.
+
+Enabling and Loading Migration
+-------------------------------
+
+Like most other classes in LavaLust, the Migration library is initialized in your controller using the ``$this->call->library()`` method:
+
+.. code-block:: php
+
+   <?php
+   $this->call->library('migration');
+
+Once loaded, the Migration library object will be available using:
+
+.. code-block:: php
+
+   <?php
+   $this->migration;
+
+You must also enable migrations in the configuration file:
+
+.. code-block:: php
+
+   <?php
+   // File: app/config/migration.php
+   $config['migration_enabled'] = true;
+   $config['migration_path'] = 'app/migrations';
+   $config['migration_table'] = 'migrations';
+
+Controller Example
+-------------------
+
+Create a controller (e.g. ``Migrations.php``) to handle migration commands:
+
+.. code-block:: php
+
+   <?php
+
+   class Migration extends Controller {
+
+       public function __construct()
+       {
+           parent::__construct();
+           $this->call->library('migration');
+       }
+
+       public function create_migration($migration_class)
+       {
+           // e.g. $migration_class = "create_users_table"
+           $this->migration->create_migration($migration_class);
+       }
+
+       public function migrate()
+       {
+           $this->migration->migrate();
+       }
+
+       public function rollback()
+       {
+           $this->migration->rollback();
+       }
+   }
+
+Routes Example
+---------------
+
+Add routes so you can call these actions via the browser:
+
+.. code-block:: php
+
+   <?php
+   $router->get('create-migration/{migration_class}', 'Migration::create_migration');
+   $router->get('migrate', 'Migration::migrate');
+   $router->get('rollback', 'Migration::rollback');
+
+Creating a Migration File
+--------------------------
+
+Visit the following URL to create a new migration file:
+
+::
+
+   http://localhost/project_name/create-migration/create_users_table
+
+This will generate a file like ``app/migrations/001_create_users_table.php``.
+
+Open the file and define your schema:
+
+.. code-block:: php
+
+   <?php
+
+   class Create_users_table {
+
+       private $_lava;
+       protected $dbforge;
+
+       public function __construct()
+       {
+           $this->_lava =& lava_instance();
+           $this->_lava->call->dbforge();
+       }
+
+       public function up()
+       {
+           // Define the table structure
+           $this->_lava->dbforge->add_field([
+               'id' => [
+                   'type'           => 'INT',
+                   'constraint'     => 11,
+                   'auto_increment' => TRUE
+               ]
+           ]);
+           $this->_lava->dbforge->add_key('id', TRUE);
+           $this->_lava->dbforge->create_table('your_table_name');
+       }
+
+       public function down()
+       {
+           // Drop the table
+           $this->_lava->dbforge->drop_table('your_table_name');
+       }
+   }
+
+Running Migrations
+-------------------
+
+- **Run all pending migrations**
+
+  Visit:
+
+  ::
+
+     http://localhost/project_name/migrate
+
+- **Rollback the last migration batch**
+
+  Visit:
+
+  ::
+
+     http://localhost/project_name/rollback
+
+Available Methods Reference
+----------------------------
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+   :class: method-table
+
+   * - Method
+     - Description
+   * - ``create_migration($name)``
+     - Creates a new migration file with the given name inside ``app/migrations``
+   * - ``migrate()``
+     - Executes all available migration files that have not been run yet
+   * - ``rollback()``
+     - Reverts (drops) the most recent migration batch
+
+.. note::
+
+   Each migration file must contain an ``up()`` method (to apply changes)  
+   and a ``down()`` method (to rollback changes).

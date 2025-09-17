@@ -1,0 +1,155 @@
+Cache Class
+===========
+
+LavaLust provides a simple **caching system** that can boost the performance of your application.  
+You can cache **libraries, models, objects, or array data** to avoid expensive recomputation or repeated database queries.
+
+Loading the Cache Library
+---------------------------
+
+Before using the cache features, load it via:
+
+.. code-block:: php
+    
+    <?php
+
+   $this->call->library('cache');
+
+Cache Directory Configuration
+------------------------------
+
+You can specify the cache storage directory by changing the configuration in your ``app/config/config.php`` file:
+
+.. code-block:: php
+
+    <?php
+
+   $config['cache_dir'] = 'runtime/cache/';
+
+**Note:** Ensure the specified folder is **writable** by the web server.
+
+Caching a Model
+-----------------
+
+You can cache method results from models to improve performance.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->model('news_model', 'get_news', array($param1, $param2), 120);
+
+In the example above, the ``get_news()`` method of the ``news_model`` class will be cached for **120 minutes**.  
+The fourth parameter sets the expiration time in **minutes**.
+
+Caching a Library
+-------------------
+
+Similar to models, you can also cache library method results.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla));
+
+If the fourth parameter (expiration time) is **not specified**, it will be cached **indefinitely**.  
+This behavior is the same for caching models.
+
+Caching Array or Object Data
+------------------------------
+
+You can directly store arbitrary data (arrays, objects, strings, etc.) into the cache.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $data = array(
+       'id' => 1,
+       'username' => 'acidcore'
+   );
+
+   // Storing the data in a cache with the name "cached_name"
+   $this->cache->write($data, 'cached_name');
+
+   // Retrieving a cache by its name "cached_name"
+   $data = $this->cache->get('cached_name');
+
+Deleting a Specific Cache Entry
+---------------------------------
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->delete('cached_name');
+
+The above code will find and delete the cache file named ``cached_name``.
+
+Deleting All Cache
+--------------------
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->delete_all();
+
+This will delete **all cache files** stored inside the cache directory.
+
+Deleting Cache by Group
+-------------------------
+
+You can delete multiple cache files using a **group prefix**.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->write($data, 'nav_header');
+   $this->cache->write($data, 'nav_footer');
+   $this->cache->delete_group('nav_');
+
+This will delete all cache entries whose names start with ``nav_``.
+
+Deleting Cached Model or Library
+----------------------------------
+
+To delete an existing cached model or library method, pass **-1** as the expiration time:
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+
+   $this->cache->model('news', 'get_news', array($param1, $param2), -1);
+
+This will remove the cached version of the ``get_news()`` method from the ``news`` model.  
+This also works for library classes using ``$this->cache->library()``.
+
+.. note::
+
+    Model or library cache entries will be stored **indefinitely** if you do **not** specify the expiration time. The expiration time is set as the **fourth parameter** in both ``$this->cache->model()`` and ``$this->cache->library()``.
+
+Best Practices
+----------------
+
+- Use **clear and unique cache names** to avoid conflicts  
+- Always **invalidate or clear related cache** after updating database records  
+- Use **group prefixes** to simplify cache invalidation (e.g., `user_`, `post_`)  
+- Avoid caching **sensitive or personal user data**  
+- Ensure the cache directory is **writable** and **secured from public access**

@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Config Class &mdash; LavaLust 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Email Class" href="email.html" />
+    <link rel="prev" title="Cache Class" href="cache.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/welcome.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manual-loading">Manual Loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-loading">Auto-loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fetching-config-items">Fetching Config Items</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-config-item">Setting a Config Item</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Config Class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config-class">
+<h1>Config Class<a class="headerlink" href="#config-class" title="Link to this heading"></a></h1>
+<p>The Config class provides a means to retrieve configuration preferences.
+These preferences can come from the default config file (<code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>) or from your own custom config files.</p>
+<p>By default, LavaLust has one primary config file, located at <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>.
+If you open the file using your text editor you’ll see that config items are stored in an array called <code class="docutils literal notranslate"><span class="pre">$config</span></code>.</p>
+<p>You can add your own config items to this file, or if you prefer to keep your configuration items separate
+(assuming you even need config items), simply create your own file and save it in the <code class="docutils literal notranslate"><span class="pre">config</span></code> folder.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you do create your own config files use the same format as the primary one, storing your items in an array called <code class="docutils literal notranslate"><span class="pre">$config</span></code>.
+LavaLust will intelligently manage these files so there will be no conflict even though the array has the same name
+(assuming an array index is not named the same as another).</p>
+</div>
+<section id="manual-loading">
+<h2>Manual Loading<a class="headerlink" href="#manual-loading" title="Link to this heading"></a></h2>
+<p>To load one of your custom config files you will use the following function within the controller that needs it:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">filename</span></code> is the name of your config file, without the <code class="docutils literal notranslate"><span class="pre">.php</span></code> file extension.</p>
+<p>If you need to load multiple config files normally they will be merged into one master config array.
+Name collisions can occur, however, if you have identically named array indexes in different config files.
+To avoid collisions you can set the second parameter to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> and each config file will be stored in an array index
+corresponding to the name of the config file. Example:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Stored in an array with this prototype: $this-&gt;config[&#39;blog_settings&#39;] = $config</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="auto-loading">
+<h2>Auto-loading<a class="headerlink" href="#auto-loading" title="Link to this heading"></a></h2>
+<p>If you find that you need a particular config file globally, you can have it loaded automatically by the system.
+To do this, open the <code class="docutils literal notranslate"><span class="pre">autoload.php</span></code> file, located at <code class="docutils literal notranslate"><span class="pre">application/config/autoload.php</span></code>,
+and add your config file as indicated in the file.</p>
+</section>
+<section id="fetching-config-items">
+<h2>Fetching Config Items<a class="headerlink" href="#fetching-config-items" title="Link to this heading"></a></h2>
+<p>To retrieve an item from your config file, use the following function:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;item_name&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">item_name</span></code> is the <code class="docutils literal notranslate"><span class="pre">$config</span></code> array index you want to retrieve.
+For example, to fetch your language choice you’ll do this:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$lang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;language&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the item you are trying to fetch does not exist.</p>
+<p>If you are using the second parameter of the <code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;load</span></code> function in order to assign your config items
+to a specific index you can retrieve it by specifying the index name in the second parameter of the
+<code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;get()</span></code> function. Example:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Loads a config file named blog_settings.php and assigns it to an index named &quot;blog_settings&quot;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+
+<span class="c1">// Retrieve a config item named site_name contained within the blog_settings array</span>
+<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;site_name&#39;</span><span class="p">,</span> <span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
+
+<span class="c1">// An alternate way to specify the same item:</span>
+<span class="nv">$blog_config</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
+<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$blog_config</span><span class="p">[</span><span class="s1">&#39;site_name&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-a-config-item">
+<h2>Setting a Config Item<a class="headerlink" href="#setting-a-config-item" title="Link to this heading"></a></h2>
+<p>If you would like to dynamically set a config item or change an existing one, you can do so using:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;item_name&#39;</span><span class="p">,</span> <span class="s1">&#39;item_value&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">item_name</span></code> is the <code class="docutils literal notranslate"><span class="pre">$config</span></code> array index you want to change, and <code class="docutils literal notranslate"><span class="pre">item_value</span></code> is its value.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cache.html" class="btn btn-neutral float-left" title="Cache Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="email.html" class="btn btn-neutral float-right" title="Email Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ronald M. Marasigan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
