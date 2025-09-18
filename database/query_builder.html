@@ -74,22 +74,22 @@
 <li class="toctree-l3"><a class="reference internal" href="#left-join-table-condition">left_join($table, $condition)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#right-join-table-condition">right_join($table, $condition)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#full-outer-join-table-condition">full_outer_join($table, $condition)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#where-column-value-null-operator">where($column, $value = NULL, $operator = ‘=’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-where-column-value-null-operator">or_where($column, $value = NULL, $operator = ‘=’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#not-where-column-value-null-operator">not_where($column, $value = NULL, $operator = ‘=’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-not-where-column-value-null-operator">or_not_where($column, $value = NULL, $operator = ‘=’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#like-column-match-side-both">like($column, $match, $side = ‘both’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-like-column-match-side-both">or_like($column, $match, $side = ‘both’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#not-like-column-match-side-both">not_like($column, $match, $side = ‘both’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-not-like-column-match-side-both">or_not_like($column, $match, $side = ‘both’)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#in-column-array-values">in($column, array $values)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#not-in-column-array-values">not_in($column, array $values)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-in-column-array-values">or_in($column, array $values)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-not-in-column-array-values">or_not_in($column, array $values)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#between-column-start-end">between($column, $start, $end)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#not-between-column-start-end">not_between($column, $start, $end)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-between-column-start-end">or_between($column, $start, $end)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-not-between-column-start-end">or_not_between($column, $start, $end)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#where-where-op-null-val-null-type-andor-and">where($where, $op = NULL, $val = NULL, $type = ‘’, $andOr = ‘AND’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-where-where-op-null-val-null">or_where($where, $op = NULL, $val = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-where-where-op-null-val-null">not_where($where, $op = NULL, $val = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-where-where-op-null-val-null">or_not_where($where, $op = NULL, $val = NULL)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#like-field-data-type-andor-and">like($field, $data, $type = ‘’, $andOr = ‘AND’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-like-field-data">or_like($field, $data)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-like-field-data">not_like($field, $data)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-like-field-data">or_not_like($field, $data)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-field-array-keys-type-andor-and">in($field, array $keys, $type = ‘’, $andOr = ‘AND’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-in-field-array-keys">not_in($field, array $keys)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-in-field-array-keys">or_in($field, array $keys)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-in-field-array-keys">or_not_in($field, array $keys)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#between-field-value1-value2-type-andor-and">between($field, $value1, $value2, $type = ‘’, $andOr = ‘AND’)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-between-field-value1-value2">not_between($field, $value1, $value2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-between-field-value1-value2">or_between($field, $value1, $value2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-not-between-field-value1-value2">or_not_between($field, $value1, $value2)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pagination-perpage-currentpage-1">pagination($perPage, $currentPage = 1)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#limit-number">limit($number)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#offset-number">offset($number)</a></li>
@@ -322,7 +322,7 @@ Selects the maximum value of a column. Optionally sets an alias for the result c
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">select_max</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;max_amount&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;max_amount&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -336,7 +336,7 @@ Selects the minimum value of a column. Optionally sets an alias for the result c
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">select_min</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;min_amount&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;min_amount&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -350,7 +350,7 @@ Selects the sum of all values in a column.</p>
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">select_sum</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;total_amount&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;total_amount&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -364,7 +364,7 @@ Counts the number of rows or specific column values.</p>
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">select_count</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;user_count&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;user_count&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -378,7 +378,7 @@ Selects the average value of a column.</p>
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">select_avg</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;average_amount&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">get_row</span><span class="p">();</span>
+             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;average_amount&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -459,8 +459,8 @@ Performs a FULL OUTER JOIN between the current table and another table (if suppo
 </pre></div>
 </div>
 </section>
-<section id="where-column-value-null-operator">
-<h2>where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#where-column-value-null-operator" title="Link to this heading"></a></h2>
+<section id="where-where-op-null-val-null-type-andor-and">
+<h2>where($where, $op = NULL, $val = NULL, $type = ‘’, $andOr = ‘AND’)<a class="headerlink" href="#where-where-op-null-val-null-type-andor-and" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE</cite> condition to the query.
 Can be chained multiple times to add multiple conditions.</p>
@@ -469,13 +469,13 @@ Can be chained multiple times to add multiple conditions.</p>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
-<section id="or-where-column-value-null-operator">
-<h2>or_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#or-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<section id="or-where-where-op-null-val-null">
+<h2>or_where($where, $op = NULL, $val = NULL)<a class="headerlink" href="#or-where-where-op-null-val-null" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE</cite> condition to the query.
 Used when you want alternative conditions in the <cite>WHERE</cite> clause.</p>
@@ -489,8 +489,8 @@ Used when you want alternative conditions in the <cite>WHERE</cite> clause.</p>
 </pre></div>
 </div>
 </section>
-<section id="not-where-column-value-null-operator">
-<h2>not_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#not-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<section id="not-where-where-op-null-val-null">
+<h2>not_where($where, $op = NULL, $val = NULL)<a class="headerlink" href="#not-where-where-op-null-val-null" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE NOT</cite> condition to the query.
 Negates the condition you specify.</p>
@@ -503,8 +503,8 @@ Negates the condition you specify.</p>
 </pre></div>
 </div>
 </section>
-<section id="or-not-where-column-value-null-operator">
-<h2>or_not_where($column, $value = NULL, $operator = ‘=’)<a class="headerlink" href="#or-not-where-column-value-null-operator" title="Link to this heading"></a></h2>
+<section id="or-not-where-where-op-null-val-null">
+<h2>or_not_where($where, $op = NULL, $val = NULL)<a class="headerlink" href="#or-not-where-where-op-null-val-null" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE NOT</cite> condition to the query.
 Used for alternative negative conditions in the <cite>WHERE</cite> clause.</p>
@@ -518,14 +518,10 @@ Used for alternative negative conditions in the <cite>WHERE</cite> clause.</p>
 </pre></div>
 </div>
 </section>
-<section id="like-column-match-side-both">
-<h2>like($column, $match, $side = ‘both’)<a class="headerlink" href="#like-column-match-side-both" title="Link to this heading"></a></h2>
+<section id="like-field-data-type-andor-and">
+<h2>like($field, $data, $type = ‘’, $andOr = ‘AND’)<a class="headerlink" href="#like-field-data-type-andor-and" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
-Adds a <cite>LIKE</cite> condition to the query.
-The <cite>$side</cite> parameter controls where to add the wildcard <cite>%</cite>:
-- <cite>both</cite> (default): <cite>%match%</cite>
-- <cite>before</cite>: <cite>%match</cite>
-- <cite>after</cite>: <cite>match%</cite></p>
+Adds a <cite>LIKE</cite> condition to the query.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
@@ -535,8 +531,8 @@ The <cite>$side</cite> parameter controls where to add the wildcard <cite>%</cit
 </pre></div>
 </div>
 </section>
-<section id="or-like-column-match-side-both">
-<h2>or_like($column, $match, $side = ‘both’)<a class="headerlink" href="#or-like-column-match-side-both" title="Link to this heading"></a></h2>
+<section id="or-like-field-data">
+<h2>or_like($field, $data)<a class="headerlink" href="#or-like-field-data" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR LIKE</cite> condition to the query.
 Used to provide an alternative match condition.</p>
@@ -544,14 +540,14 @@ Used to provide an alternative match condition.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">or_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
-<section id="not-like-column-match-side-both">
-<h2>not_like($column, $match, $side = ‘both’)<a class="headerlink" href="#not-like-column-match-side-both" title="Link to this heading"></a></h2>
+<section id="not-like-field-data">
+<h2>not_like($field, $data)<a class="headerlink" href="#not-like-field-data" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>NOT LIKE</cite> condition to the query.
 Negates the match condition.</p>
@@ -559,13 +555,13 @@ Negates the match condition.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">not_like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">not_like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%admin%&#39;</span><span class="p">)</span>
    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
-<section id="or-not-like-column-match-side-both">
-<h2>or_not_like($column, $match, $side = ‘both’)<a class="headerlink" href="#or-not-like-column-match-side-both" title="Link to this heading"></a></h2>
+<section id="or-not-like-field-data">
+<h2>or_not_like($field, $data)<a class="headerlink" href="#or-not-like-field-data" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR NOT LIKE</cite> condition to the query.
 Used as an alternative negated match condition.</p>
@@ -573,14 +569,14 @@ Used as an alternative negated match condition.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">or_not_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;spam&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
+   <span class="o">-&gt;</span><span class="na">or_not_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;%spam%&#39;</span><span class="p">)</span>
    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
-<section id="in-column-array-values">
-<h2>in($column, array $values)<a class="headerlink" href="#in-column-array-values" title="Link to this heading"></a></h2>
+<section id="in-field-array-keys-type-andor-and">
+<h2>in($field, array $keys, $type = ‘’, $andOr = ‘AND’)<a class="headerlink" href="#in-field-array-keys-type-andor-and" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE IN</cite> condition to the query.
 Matches rows where the column’s value is <strong>in the given array</strong>.</p>
@@ -593,8 +589,8 @@ Matches rows where the column’s value is <strong>in the given array</strong>.<
 </pre></div>
 </div>
 </section>
-<section id="not-in-column-array-values">
-<h2>not_in($column, array $values)<a class="headerlink" href="#not-in-column-array-values" title="Link to this heading"></a></h2>
+<section id="not-in-field-array-keys">
+<h2>not_in($field, array $keys)<a class="headerlink" href="#not-in-field-array-keys" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE NOT IN</cite> condition to the query.
 Matches rows where the column’s value is <strong>not in the given array</strong>.</p>
@@ -607,8 +603,8 @@ Matches rows where the column’s value is <strong>not in the given array</stron
 </pre></div>
 </div>
 </section>
-<section id="or-in-column-array-values">
-<h2>or_in($column, array $values)<a class="headerlink" href="#or-in-column-array-values" title="Link to this heading"></a></h2>
+<section id="or-in-field-array-keys">
+<h2>or_in($field, array $keys)<a class="headerlink" href="#or-in-field-array-keys" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE IN</cite> condition to the query.
 Useful when combining multiple conditions where at least one should match.</p>
@@ -622,8 +618,8 @@ Useful when combining multiple conditions where at least one should match.</p>
 </pre></div>
 </div>
 </section>
-<section id="or-not-in-column-array-values">
-<h2>or_not_in($column, array $values)<a class="headerlink" href="#or-not-in-column-array-values" title="Link to this heading"></a></h2>
+<section id="or-not-in-field-array-keys">
+<h2>or_not_in($field, array $keys)<a class="headerlink" href="#or-not-in-field-array-keys" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE NOT IN</cite> condition to the query.
 Combines with other conditions to exclude values as an alternative condition.</p>
@@ -637,8 +633,8 @@ Combines with other conditions to exclude values as an alternative condition.</p
 </pre></div>
 </div>
 </section>
-<section id="between-column-start-end">
-<h2>between($column, $start, $end)<a class="headerlink" href="#between-column-start-end" title="Link to this heading"></a></h2>
+<section id="between-field-value1-value2-type-andor-and">
+<h2>between($field, $value1, $value2, $type = ‘’, $andOr = ‘AND’)<a class="headerlink" href="#between-field-value1-value2-type-andor-and" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE BETWEEN</cite> condition to the query.
 Matches rows where the column’s value is <strong>between the given start and end values (inclusive)</strong>.</p>
@@ -651,8 +647,8 @@ Matches rows where the column’s value is <strong>between the given start and e
 </pre></div>
 </div>
 </section>
-<section id="not-between-column-start-end">
-<h2>not_between($column, $start, $end)<a class="headerlink" href="#not-between-column-start-end" title="Link to this heading"></a></h2>
+<section id="not-between-field-value1-value2">
+<h2>not_between($field, $value1, $value2)<a class="headerlink" href="#not-between-field-value1-value2" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds a <cite>WHERE NOT BETWEEN</cite> condition to the query.
 Matches rows where the column’s value is <strong>outside the given start and end values</strong>.</p>
@@ -665,8 +661,8 @@ Matches rows where the column’s value is <strong>outside the given start and e
 </pre></div>
 </div>
 </section>
-<section id="or-between-column-start-end">
-<h2>or_between($column, $start, $end)<a class="headerlink" href="#or-between-column-start-end" title="Link to this heading"></a></h2>
+<section id="or-between-field-value1-value2">
+<h2>or_between($field, $value1, $value2)<a class="headerlink" href="#or-between-field-value1-value2" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE BETWEEN</cite> condition to the query.
 Useful for combining conditions where <strong>either another condition OR this range</strong> must be true.</p>
@@ -680,8 +676,8 @@ Useful for combining conditions where <strong>either another condition OR this r
 </pre></div>
 </div>
 </section>
-<section id="or-not-between-column-start-end">
-<h2>or_not_between($column, $start, $end)<a class="headerlink" href="#or-not-between-column-start-end" title="Link to this heading"></a></h2>
+<section id="or-not-between-field-value1-value2">
+<h2>or_not_between($field, $value1, $value2)<a class="headerlink" href="#or-not-between-field-value1-value2" title="Link to this heading"></a></h2>
 <p><strong>Description:</strong>
 Adds an <cite>OR WHERE NOT BETWEEN</cite> condition to the query.
 Used to combine with other conditions as an alternative to exclude values in a range.</p>
@@ -851,10 +847,8 @@ Executes the built query and returns a raw database result object (driver-specif
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
-<span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-<span class="k">foreach</span> <span class="p">(</span><span class="nv">$query</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$row</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nv">$row</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="nv">$row</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
 </section>

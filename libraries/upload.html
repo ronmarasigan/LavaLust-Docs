@@ -161,9 +161,9 @@ You can define various preferences, such as allowed file types, size restriction
 </section>
 <section id="the-controller">
 <h2>The Controller<a class="headerlink" href="#the-controller" title="Link to this heading"></a></h2>
-<p>Create a controller called <code class="docutils literal notranslate"><span class="pre">Upload.php</span></code> inside your <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code> directory:</p>
+<p>Create a controller called <code class="docutils literal notranslate"><span class="pre">UploadController.php</span></code> inside your <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code> directory:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">class</span> <span class="nc">Upload</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+<span class="k">class</span> <span class="nc">UploadController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
    <span class="k">public</span> <span class="k">function</span> <span class="nf">upload</span><span class="p">()</span> <span class="p">{</span>
       <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>

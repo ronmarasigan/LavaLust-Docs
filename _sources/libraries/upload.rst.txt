@@ -63,12 +63,12 @@ Create another view file called ``upload_success.php`` in the same folder:
 The Controller
 ---------------
 
-Create a controller called ``Upload.php`` inside your ``app/controllers/`` directory:
+Create a controller called ``UploadController.php`` inside your ``app/controllers/`` directory:
 
 .. code-block:: php
 
    <?php
-   class Upload extends Controller {
+   class UploadController extends Controller {
 
       public function upload() {
          $this->call->library('upload', $_FILES["userfile"]);

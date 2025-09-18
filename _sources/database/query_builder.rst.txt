@@ -240,7 +240,7 @@ Selects the maximum value of a column. Optionally sets an alias for the result c
 
    $result = $this->db->table('orders')
                 ->select_max('amount', 'max_amount')
-                ->get_row();
+                ->get();
    echo $result['max_amount'];
 
 
@@ -258,7 +258,7 @@ Selects the minimum value of a column. Optionally sets an alias for the result c
 
    $result = $this->db->table('orders')
                 ->select_min('amount', 'min_amount')
-                ->get_row();
+                ->get();
    echo $result['min_amount'];
 
 
@@ -276,7 +276,7 @@ Selects the sum of all values in a column.
 
    $result = $this->db->table('orders')
                 ->select_sum('amount', 'total_amount')
-                ->get_row();
+                ->get();
    echo $result['total_amount'];
 
 
@@ -294,7 +294,7 @@ Counts the number of rows or specific column values.
 
    $result = $this->db->table('users')
                 ->select_count('id', 'user_count')
-                ->get_row();
+                ->get();
    echo $result['user_count'];
 
 
@@ -312,7 +312,7 @@ Selects the average value of a column.
 
    $result = $this->db->table('orders')
                 ->select_avg('amount', 'average_amount')
-                ->get_row();
+                ->get();
    echo $result['average_amount'];
 
 
@@ -416,8 +416,8 @@ Performs a FULL OUTER JOIN between the current table and another table (if suppo
                 ->get_all();
 
 
-where($column, $value = NULL, $operator = '=')
------------------------------------------------
+where($where, $op = NULL, $val = NULL, $type = '', $andOr = 'AND')
+-------------------------------------------------------------------
 **Description:**  
 Adds a `WHERE` condition to the query.  
 Can be chained multiple times to add multiple conditions.
@@ -430,11 +430,11 @@ Can be chained multiple times to add multiple conditions.
 
    $this->db->table('users')
       ->where('status', 'active')
-      ->where('age', 18, '>=')
+      ->where('age', '>=', 18)
       ->get_all();
 
-or_where($column, $value = NULL, $operator = '=')
---------------------------------------------------
+or_where($where, $op = NULL, $val = NULL)
+------------------------------------------
 **Description:**  
 Adds an `OR WHERE` condition to the query.  
 Used when you want alternative conditions in the `WHERE` clause.
@@ -450,8 +450,8 @@ Used when you want alternative conditions in the `WHERE` clause.
       ->or_where('status', 'pending')
       ->get_all();
 
-not_where($column, $value = NULL, $operator = '=')
----------------------------------------------------
+not_where($where, $op = NULL, $val = NULL)
+------------------------------------------
 **Description:**  
 Adds a `WHERE NOT` condition to the query.  
 Negates the condition you specify.
@@ -466,8 +466,8 @@ Negates the condition you specify.
       ->not_where('status', 'banned')
       ->get_all();
 
-or_not_where($column, $value = NULL, $operator = '=')
-------------------------------------------------------
+or_not_where($where, $op = NULL, $val = NULL)
+----------------------------------------------
 **Description:**  
 Adds an `OR WHERE NOT` condition to the query.  
 Used for alternative negative conditions in the `WHERE` clause.
@@ -484,14 +484,10 @@ Used for alternative negative conditions in the `WHERE` clause.
       ->get_all();
 
 
-like($column, $match, $side = 'both')
---------------------------------------
+like($field, $data, $type = '', $andOr = 'AND')
+------------------------------------------------
 **Description:**  
 Adds a `LIKE` condition to the query.  
-The `$side` parameter controls where to add the wildcard `%`:
-- `both` (default): `%match%`
-- `before`: `%match`
-- `after`: `match%`
 
 **Example:**
 
@@ -503,8 +499,8 @@ The `$side` parameter controls where to add the wildcard `%`:
       ->like('username', 'john')
       ->get_all();
 
-or_like($column, $match, $side = 'both')
------------------------------------------
+or_like($field, $data)
+-----------------------
 **Description:**  
 Adds an `OR LIKE` condition to the query.  
 Used to provide an alternative match condition.
@@ -516,12 +512,12 @@ Used to provide an alternative match condition.
     <?php 
 
    $this->db->table('users')
-      ->like('username', 'john')
-      ->or_like('email', 'john')
+      ->like('username', '%john%')
+      ->or_like('email', '%john%')
       ->get_all();
 
-not_like($column, $match, $side = 'both')
-------------------------------------------
+not_like($field, $data)
+------------------------
 **Description:**  
 Adds a `NOT LIKE` condition to the query.  
 Negates the match condition.
@@ -533,11 +529,11 @@ Negates the match condition.
     <?php 
 
    $this->db->table('users')
-      ->not_like('username', 'admin')
+      ->not_like('username', '%admin%')
       ->get_all();
 
-or_not_like($column, $match, $side = 'both')
-----------------------------------------------
+or_not_like($field, $data)
+---------------------------
 **Description:**  
 Adds an `OR NOT LIKE` condition to the query.  
 Used as an alternative negated match condition.
@@ -549,13 +545,13 @@ Used as an alternative negated match condition.
     <?php 
 
    $this->db->table('users')
-      ->like('username', 'john')
-      ->or_not_like('email', 'spam')
+      ->like('username', '%john%')
+      ->or_not_like('email', '%spam%')
       ->get_all();
 
 
-in($column, array $values)
-----------------------------
+in($field, array $keys, $type = '', $andOr = 'AND')
+----------------------------------------------------
 **Description:**  
 Adds a `WHERE IN` condition to the query.  
 Matches rows where the column's value is **in the given array**.
@@ -570,8 +566,8 @@ Matches rows where the column's value is **in the given array**.
       ->in('role', ['admin', 'editor', 'author'])
       ->get_all();
 
-not_in($column, array $values)
--------------------------------
+not_in($field, array $keys)
+----------------------------
 **Description:**  
 Adds a `WHERE NOT IN` condition to the query.  
 Matches rows where the column's value is **not in the given array**.
@@ -586,8 +582,8 @@ Matches rows where the column's value is **not in the given array**.
       ->not_in('status', ['banned', 'inactive'])
       ->get_all();
 
-or_in($column, array $values)
--------------------------------
+or_in($field, array $keys)
+---------------------------
 **Description:**  
 Adds an `OR WHERE IN` condition to the query.  
 Useful when combining multiple conditions where at least one should match.
@@ -603,8 +599,8 @@ Useful when combining multiple conditions where at least one should match.
       ->or_in('role', ['contributor', 'subscriber'])
       ->get_all();
 
-or_not_in($column, array $values)
------------------------------------
+or_not_in($field, array $keys)
+-------------------------------
 **Description:**  
 Adds an `OR WHERE NOT IN` condition to the query.  
 Combines with other conditions to exclude values as an alternative condition.
@@ -621,8 +617,8 @@ Combines with other conditions to exclude values as an alternative condition.
       ->get_all();
 
 
-between($column, $start, $end)
--------------------------------
+between($field, $value1, $value2, $type = '', $andOr = 'AND')
+--------------------------------------------------------------
 **Description:**  
 Adds a `WHERE BETWEEN` condition to the query.  
 Matches rows where the column's value is **between the given start and end values (inclusive)**.
@@ -637,8 +633,8 @@ Matches rows where the column's value is **between the given start and end value
       ->between('created_at', '2024-01-01', '2024-12-31')
       ->get_all();
 
-not_between($column, $start, $end)
------------------------------------
+not_between($field, $value1, $value2)
+--------------------------------------
 **Description:**  
 Adds a `WHERE NOT BETWEEN` condition to the query.  
 Matches rows where the column's value is **outside the given start and end values**.
@@ -653,8 +649,8 @@ Matches rows where the column's value is **outside the given start and end value
       ->not_between('amount', 100, 500)
       ->get_all();
 
-or_between($column, $start, $end)
------------------------------------
+or_between($field, $value1, $value2)
+-------------------------------------
 **Description:**  
 Adds an `OR WHERE BETWEEN` condition to the query.  
 Useful for combining conditions where **either another condition OR this range** must be true.
@@ -670,8 +666,8 @@ Useful for combining conditions where **either another condition OR this range**
       ->or_between('created_at', '2024-06-01', '2024-06-30')
       ->get_all();
 
-or_not_between($column, $start, $end)
---------------------------------------
+or_not_between($field, $value1, $value2)
+-----------------------------------------
 **Description:**  
 Adds an `OR WHERE NOT BETWEEN` condition to the query.  
 Used to combine with other conditions as an alternative to exclude values in a range.
@@ -874,10 +870,8 @@ Executes the built query and returns a raw database result object (driver-specif
 
     <?php 
 
-   $query = $this->db->table('users')->get();
-   foreach ($query->result() as $row) {
-       echo $row->name;
-   }
+   $row = $this->db->table('users')->get();
+   echo $row['name'];
 
 
 get_all()
