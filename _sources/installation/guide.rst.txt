@@ -3,6 +3,7 @@ Installation Guide
 
 **(via downloading and extracting the zip file)**
 
+#. Download the `latest release <https://github.com/ronmarasigan/LavaLust/releases/tag/v4.2.5>`_ package.
 #. Unzip the package.
 #. Upload the LavaLust folders and files to your server. Normally the
    ``index.php`` file will be at your root.
