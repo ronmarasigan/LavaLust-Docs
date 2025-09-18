@@ -131,13 +131,12 @@ It handles checking for required fields, verifying data type, length, and unique
 <section id="the-form">
 <h2>The Form<a class="headerlink" href="#the-form" title="Link to this heading"></a></h2>
 <p>Create <code class="docutils literal notranslate"><span class="pre">myform.php</span></code> in your <code class="docutils literal notranslate"><span class="pre">app/views/</span></code> directory:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
-   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">Form</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
-<span class="o">&lt;?</span><span class="nx">php</span> <span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span> <span class="cp">?&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">   &lt;title&gt;My Form&lt;/title&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span> <span class="cp">?&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
 
 <span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot;&gt;</span>
@@ -164,15 +163,14 @@ It handles checking for required fields, verifying data type, length, and unique
 <section id="the-success-page">
 <h2>The Success Page<a class="headerlink" href="#the-success-page" title="Link to this heading"></a></h2>
 <p>Create <code class="docutils literal notranslate"><span class="pre">formsuccess.php</span></code> in <code class="docutils literal notranslate"><span class="pre">app/views/</span></code>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
-   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Form</span> <span class="nx">Success</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
-   <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Your</span> <span class="nx">form</span> <span class="nx">was</span> <span class="nx">successfully</span> <span class="nx">submitted</span><span class="o">!&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nx">body</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nx">html</span><span class="o">&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">   &lt;title&gt;Form Success&lt;/title&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">   &lt;h3&gt;Your form was successfully submitted!&lt;/h3&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
 </pre></div>
 </div>
 </section>

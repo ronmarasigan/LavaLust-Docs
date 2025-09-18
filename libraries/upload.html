@@ -142,16 +142,15 @@ You can define various preferences, such as allowed file types, size restriction
 <section id="the-success-page">
 <h2>The Success Page<a class="headerlink" href="#the-success-page" title="Link to this heading"></a></h2>
 <p>Create another view file called <code class="docutils literal notranslate"><span class="pre">upload_success.php</span></code> in the same folder:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
-   <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Upload</span> <span class="nx">Success</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">   &lt;title&gt;Upload Success&lt;/title&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
 
-<span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Your</span> <span class="nb">file</span> <span class="nx">was</span> <span class="nx">successfully</span> <span class="nx">uploaded</span><span class="o">!&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
+<span class="x">&lt;h3&gt;Your file was successfully uploaded!&lt;/h3&gt;</span>
 
-<span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nv">$filename</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$filename</span><span class="p">;</span> <span class="cp">?&gt;</span>
 
 <span class="x">&lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>

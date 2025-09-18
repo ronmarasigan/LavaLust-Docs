@@ -32,7 +32,6 @@ Create ``myform.php`` in your ``app/views/`` directory:
 
 .. code-block:: php
 
-   <?php
    <html>
    <head>
       <title>My Form</title>
@@ -67,7 +66,6 @@ Create ``formsuccess.php`` in ``app/views/``:
 
 .. code-block:: php
 
-   <?php
    <html>
    <head>
       <title>Form Success</title>

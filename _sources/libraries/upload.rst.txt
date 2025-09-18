@@ -45,7 +45,6 @@ Create another view file called ``upload_success.php`` in the same folder:
 
 .. code-block:: php
 
-   <?php
    <html>
    <head>
       <title>Upload Success</title>
