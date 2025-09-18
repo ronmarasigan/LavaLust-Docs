@@ -54,7 +54,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#passing-parameters-to-routes">Passing Parameters to Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#using-multiple-http-methods">Using Multiple HTTP Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#grouping-routes">Grouping Routes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Grouping Routes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#regular-expression-constraints">Regular Expression Constraints</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tips-and-best-practices">Tips and Best Practices</a></li>
 </ul>
@@ -174,24 +173,6 @@ Navigate to <code class="docutils literal notranslate"><span class="pre">app/con
     <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">echo</span> <span class="s2">&quot;Manage Users&quot;</span><span class="p">;</span>
     <span class="p">});</span>
-
-<span class="p">});</span>
-</pre></div>
-</div>
-</section>
-<section id="id1">
-<h2>Grouping Routes<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>Closures can also be used in route groups for better organization:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
- <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-
-     <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-         <span class="k">echo</span> <span class="s2">&quot;Admin Dashboard&quot;</span><span class="p">;</span>
-     <span class="p">});</span>
-
-     <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-         <span class="k">echo</span> <span class="s2">&quot;Manage Users&quot;</span><span class="p">;</span>
-     <span class="p">});</span>
 
 <span class="p">});</span>
 </pre></div>

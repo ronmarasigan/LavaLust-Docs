@@ -102,26 +102,6 @@ Closures can also be used in route groups for better organization:
 
     });
 
-Grouping Routes
-----------------
-
-Closures can also be used in route groups for better organization:
-
-.. code-block:: php
-
-    <?php
-    $router->group('/admin', function() {
-
-        $router->get('/dashboard', function() {
-            echo "Admin Dashboard";
-        });
-
-        $router->get('/users', function() {
-            echo "Manage Users";
-        });
-
-   });
-
 .. note::
 
    All routes inside the group will be prefixed with `/admin`.

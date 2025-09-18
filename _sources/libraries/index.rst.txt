@@ -6,6 +6,7 @@ Here are the built-in LavaLust libraries.
 .. toctree::
    :maxdepth: 1
 
+   api
    cache
    config
    email

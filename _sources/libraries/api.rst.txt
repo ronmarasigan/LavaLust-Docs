@@ -1,0 +1,533 @@
+API Library
+===========
+
+The ``Api`` library provides helper methods for building secure RESTful APIs in LavaLust.  
+It supports:
+
+- CORS headers
+- Parsing JSON/form bodies
+- Standard API responses
+- JWT-based authentication (access/refresh token system)
+- Basic authentication
+- Refresh token encryption and storage
+
+This library is automatically configured using values from ``app/config/api.php``.
+
+Folder Structure
+----------------
+
+.. code-block:: text
+
+    app/
+    ├── controllers/
+    │   └── ApiController.php
+    │
+    └── config/
+        └── api.php
+
+Configuration
+-------------
+
+Set the following values in ``app/config/api.php``:
+
+.. code-block:: php
+
+    <?php
+    $config['api_helper_enabled'] = FALSE;
+    $config['payload_token_expiration'] = 900;
+    $config['refresh_token_expiration'] = 604800;
+    $config['jwt_secret'] = 'l99H8TM4Q4JXFM3Hr8LN';
+    $config['refresh_token_key'] = 'BDswlrEaYWAgeJ4VurGe';
+    $config['allow_origin'] = '*';
+    $config['refresh_token_table'] = 'refresh_tokens';
+
+Properties
+----------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Property
+     - Type
+     - Description
+   * - ``$_lava``
+     - object
+     - LavaLust super object (via ``lava_instance()``)
+   * - ``$refresh_token_table``
+     - string
+     - Database table name for storing refresh tokens
+   * - ``$payload_token_expiration``
+     - integer
+     - Lifetime of access (payload) tokens in seconds
+   * - ``$refresh_token_expiration``
+     - integer
+     - Lifetime of refresh tokens in seconds
+   * - ``$allow_origin``
+     - string
+     - Allowed origin for CORS
+   * - ``$jwt_secret``
+     - string
+     - Secret key used for signing JWT tokens
+   * - ``$refresh_token_key``
+     - string
+     - Key used for encrypting refresh tokens
+
+Methods
+-------
+
+**CORS & Request Helpers**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``handle_cors()``
+     - Sets CORS headers. Called automatically in the constructor.
+   * - ``body(): array``
+     - Parses JSON or form-encoded request body and returns it as an array.
+   * - ``get_query_params(): array``
+     - Returns URL query parameters as an associative array.
+   * - ``require_method(string $method)``
+     - Enforces a specific HTTP method. Sends 405 if not matched.
+
+**Responses**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``respond(mixed $data, int $code = 200)``
+     - Sends a JSON response with HTTP status code.
+   * - ``respond_error(string $message, int $code = 400)``
+     - Sends an error response with a message and status code.
+
+**JWT Authentication**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``encode_jwt(array $payload): string``
+     - Encodes data into a signed JWT.
+   * - ``decode_jwt(string $token): array|false``
+     - Decodes and verifies a JWT.
+   * - ``validate_jwt(string $token): array|false``
+     - Validates structure and expiration of a JWT.
+   * - ``get_bearer_token(): ?string``
+     - Extracts a JWT bearer token from the ``Authorization`` header.
+   * - ``require_jwt(): array``
+     - Validates the current bearer token and returns its payload.
+
+**Token System**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``issue_tokens(array $user_data): array``
+     - Issues an access token and a refresh token, stores the refresh token in the database.
+   * - ``refresh_access_token(string $refresh_token)``
+     - Validates and rotates a refresh token, issues new tokens.
+   * - ``revoke_refresh_token(string $refresh_token)``
+     - Deletes a refresh token from the database.
+   * - ``cleanup_expired_refresh_tokens(int $user_id)``
+     - Deletes expired refresh tokens for a user.
+
+**Basic Authentication**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Description
+   * - ``check_basic_auth(string $user, string $pass): bool``
+     - Verifies provided basic auth credentials.
+   * - ``require_basic_auth(string $user, string $pass)``
+     - Requires valid basic auth, otherwise sends a 401 Unauthorized response.
+
+Database Structure
+------------------
+
+**Table: ``users``**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Column
+     - Type
+     - Null
+     - Default
+     - Description
+   * - id
+     - INT(11) PK AI
+     - NO
+     - AUTO_INCREMENT
+     - Primary key
+   * - username
+     - VARCHAR(50) UNIQUE
+     - NO
+     - —
+     - Username of the user
+   * - email
+     - VARCHAR(100) UNIQUE
+     - NO
+     - —
+     - Email address of the user
+   * - password
+     - VARCHAR(255)
+     - NO
+     - —
+     - Hashed password
+   * - role
+     - VARCHAR(20)
+     - YES
+     - 'user'
+     - User role (default: user)
+   * - created_at
+     - TIMESTAMP
+     - YES
+     - CURRENT_TIMESTAMP
+     - Record creation time
+
+**Table: ``refresh_tokens``**
+
+.. list-table::
+   :header-rows: 1
+
+   * - Column
+     - Type
+     - Description
+   * - id
+     - INT PK AI
+     - Primary key
+   * - user_id
+     - INT
+     - Associated user ID
+   * - token
+     - TEXT
+     - Encrypted refresh token
+   * - expires_at
+     - DATETIME
+     - Expiration date of the refresh token
+
+Controller Example
+------------------
+
+**Routes**
+
+.. code-block:: php
+
+    $router->post('login', 'ApiController::login');
+    $router->post('logout', 'ApiController::logout');
+    $router->post('create', 'ApiController::create');
+    $router->put('update/{id}', 'ApiController::update');
+    $router->delete('delete/{id}', 'ApiController::delete');
+    $router->get('list', 'ApiController::list');
+    $router->get('profile', 'ApiController::profile');
+    $router->post('refresh', 'ApiController::refresh');
+
+**Controller**
+
+.. code-block:: php
+
+    <?php
+    class ApiController extends Controller {
+        private $user_id;
+
+        public function login() {
+            $this->api->require_method('POST');
+            $input = $this->api->body();
+            $username = $input['username'] ?? '';
+            $password = $input['password'] ?? '';
+
+            $stmt = $this->db->raw('SELECT * FROM users WHERE username = ?', [$username]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $tokens = $this->api->issue_tokens(['id' => $user['id'], 'role' => $user['role']]);
+                $this->api->respond($tokens);
+            } else {
+                $this->api->respond_error('Invalid credentials', 401);
+            }
+        }
+
+        public function logout() {
+            $this->api->require_method('POST');
+            $input = $this->api->body();
+            $token = $input['refresh_token'] ?? '';
+            $this->api->revoke_refresh_token($token);
+            $this->api->respond(['message' => 'Logged out']);
+        }
+
+        public function list() {
+            $stmt = $this->db->table('users')
+                             ->select('id, username, email, role, created_at')
+                             ->get_all();
+            $this->api->respond($stmt);
+        }
+
+        public function create() {
+            $input = $this->api->body();
+            $this->db->raw(
+                "INSERT INTO users (username, email, password, role, created_at) 
+                 VALUES (?, ?, ?, ?, NOW())",
+                [$input['username'], $input['email'], password_hash($input['password'], PASSWORD_BCRYPT), $input['role']]
+            );
+            $this->api->respond(['message' => 'User created']);
+        }
+
+        public function update($id) {
+            $input = $this->api->body();
+            $this->db->raw("UPDATE users SET username=?, email=?, role=? WHERE id=?", 
+                [$input['username'], $input['email'], $input['role'], $id]);
+            $this->api->respond(['message' => 'User updated']);
+        }
+
+        public function delete($id) {
+            $this->db->raw("DELETE FROM users WHERE id = ?", [$id]);
+            $this->api->respond(['message' => 'User deleted']);
+        }
+
+        public function profile() {
+            $auth = $this->api->require_jwt();
+            $this->user_id = $auth['sub'];
+            $stmt = $this->db->raw(
+                "SELECT id, username, email, role, created_at FROM users WHERE id = ?", 
+                [$this->user_id]
+            );
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->api->respond($user ?: ['message' => 'User not found']);
+        }
+
+        public function refresh() {
+            $this->api->require_method('POST');
+            $input = $this->api->body();
+            $refresh_token = $input['refresh_token'] ?? '';
+            $this->api->refresh_access_token($refresh_token);
+        }
+    }
+
+🧪 Using Postman with PHP API Controller
+-----------------------------------------
+
+This guide shows how to test each endpoint of your PHP API using **Postman**, either in VS Code (via Postman extension) or the standalone Postman app.
+
+.. note::
+   Use your actual base URL (e.g. ``http://localhost/ApiController/...``) when testing.
+
+---
+
+🔐 1. Login
+-----------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   POST /ApiController/login
+
+**Request Body:**
+
+.. code-block:: text
+
+   {
+     "username": "admin",
+     "password": "your_password"
+   }
+
+**Expected Response:**
+
+.. code-block:: text
+
+   {
+     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
+     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+   }
+
+---
+
+🔓 2. Logout
+------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   POST /ApiController/logout
+
+**Request Body:**
+
+.. code-block:: text
+
+   {
+     "refresh_token": "your_refresh_token"
+   }
+
+**Expected Response:**
+
+.. code-block:: text
+
+   {
+     "message": "Logged out"
+   }
+
+---
+
+👥 3. List Users
+----------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   GET /ApiController/list
+
+**Headers:**
+
+.. code-block:: text
+
+   Authorization: Bearer your_access_token
+
+**Expected Response:**
+
+.. code-block:: text
+
+   [
+     {
+       "id": 1,
+       "username": "admin",
+       "email": "admin@example.com",
+       "role": "admin",
+       "created_at": "2025-08-01 12:00:00"
+     },
+     ...
+   ]
+
+---
+
+🧑‍💻 4. Create User
+---------------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   POST /ApiController/create
+
+**Headers:**
+
+.. code-block:: text
+
+   Authorization: Bearer your_access_token
+   Content-Type: application/json
+
+**Request Body:**
+
+.. code-block:: text
+
+   {
+     "username": "newuser",
+     "email": "newuser@example.com",
+     "password": "secure123",
+     "role": "user"
+   }
+
+---
+
+✏️ 5. Update User
+------------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   PUT /ApiController/update/{id}
+
+**Headers:**
+
+.. code-block:: text
+
+   Authorization: Bearer your_access_token
+   Content-Type: application/json
+
+**Request Body:**
+
+.. code-block:: text
+
+   {
+     "username": "updateduser",
+     "email": "updated@example.com",
+     "role": "editor"
+   }
+
+---
+
+🗑️ 6. Delete User
+-------------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   DELETE /ApiController/delete/{id}
+
+**Headers:**
+
+.. code-block:: text
+
+   Authorization: Bearer your_access_token
+
+---
+
+🙋 7. Profile
+--------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   GET /ApiController/profile
+
+**Headers:**
+
+.. code-block:: text
+
+   Authorization: Bearer your_access_token
+
+---
+
+🔄 8. Refresh Token
+---------------------
+
+**Endpoint:**
+
+.. code-block:: text
+
+   POST /ApiController/refresh
+
+**Request Body:**
+
+.. code-block:: text
+
+   {
+     "refresh_token": "your_refresh_token"
+   }
+
+---
+
+💡 Tips
+-------
+
+- Use **Postman collections** to save all these endpoints.
+- Use **environment variables** for ``{{base_url}}``, ``{{access_token}}``, and ``{{refresh_token}}`` to streamline testing and token management.
+
+.. note:: Notes
+   - Configure values such as ``jwt_secret``, ``refresh_token_key``, and expiration times in ``app/config/api.php``.
+   - CORS is automatically handled on every request.
+   - ``OPTIONS`` requests are automatically responded with ``200`` and exit.
+
+``Api`` library simplifies authentication, token management, and secure API development in LavaLust.
