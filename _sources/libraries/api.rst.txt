@@ -311,18 +311,17 @@ Controller Example
         }
     }
 
-🧪 Using Postman with PHP API Controller
------------------------------------------
+Using Postman with PHP API Controller
+---------------------------------------
 
 This guide shows how to test each endpoint of your PHP API using **Postman**, either in VS Code (via Postman extension) or the standalone Postman app.
 
 .. note::
    Use your actual base URL (e.g. ``http://localhost/ApiController/...``) when testing.
 
----
 
-🔐 1. Login
------------
+Login
+~~~~~~~
 
 **Endpoint:**
 
@@ -348,10 +347,9 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
    }
 
----
 
-🔓 2. Logout
-------------
+Logout
+~~~~~~~
 
 **Endpoint:**
 
@@ -375,10 +373,9 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      "message": "Logged out"
    }
 
----
 
-👥 3. List Users
-----------------
+List Users
+~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -407,10 +404,8 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      ...
    ]
 
----
-
-🧑‍💻 4. Create User
----------------------
+Create User
+~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -436,10 +431,8 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      "role": "user"
    }
 
----
-
-✏️ 5. Update User
-------------------
+Update User
+~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -464,10 +457,8 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      "role": "editor"
    }
 
----
-
-🗑️ 6. Delete User
--------------------
+Delete User
+~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -481,10 +472,9 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
 
    Authorization: Bearer your_access_token
 
----
 
-🙋 7. Profile
---------------
+Profile
+~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -498,10 +488,9 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
 
    Authorization: Bearer your_access_token
 
----
 
-🔄 8. Refresh Token
----------------------
+Refresh Token
+~~~~~~~~~~~~~~~
 
 **Endpoint:**
 
@@ -517,9 +506,8 @@ This guide shows how to test each endpoint of your PHP API using **Postman**, ei
      "refresh_token": "your_refresh_token"
    }
 
----
 
-💡 Tips
+Tips
 -------
 
 - Use **Postman collections** to save all these endpoints.

@@ -57,16 +57,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#database-structure">Database Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#controller-example">Controller Example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#using-postman-with-php-api-controller">🧪 Using Postman with PHP API Controller</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#login">🔐 1. Login</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#logout">🔓 2. Logout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#list-users">👥 3. List Users</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-user">🧑‍💻 4. Create User</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#update-user">✏️ 5. Update User</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#delete-user">🗑️ 6. Delete User</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#profile">🙋 7. Profile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#refresh-token">🔄 8. Refresh Token</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tips">💡 Tips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-postman-with-php-api-controller">Using Postman with PHP API Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#login">Login</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logout">Logout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-users">List Users</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-user">Create User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-user">Update User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-user">Delete User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#profile">Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refresh-token">Refresh Token</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tips">Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
@@ -468,16 +470,14 @@ It supports:</p>
 </div>
 </section>
 <section id="using-postman-with-php-api-controller">
-<h2>🧪 Using Postman with PHP API Controller<a class="headerlink" href="#using-postman-with-php-api-controller" title="Link to this heading"></a></h2>
+<h2>Using Postman with PHP API Controller<a class="headerlink" href="#using-postman-with-php-api-controller" title="Link to this heading"></a></h2>
 <p>This guide shows how to test each endpoint of your PHP API using <strong>Postman</strong>, either in VS Code (via Postman extension) or the standalone Postman app.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Use your actual base URL (e.g. <code class="docutils literal notranslate"><span class="pre">http://localhost/ApiController/...</span></code>) when testing.</p>
 </div>
-<p>—</p>
-</section>
 <section id="login">
-<h2>🔐 1. Login<a class="headerlink" href="#login" title="Link to this heading"></a></h2>
+<h3>Login<a class="headerlink" href="#login" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/login
 </pre></div>
@@ -496,10 +496,9 @@ It supports:</p>
 }
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="logout">
-<h2>🔓 2. Logout<a class="headerlink" href="#logout" title="Link to this heading"></a></h2>
+<h3>Logout<a class="headerlink" href="#logout" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/logout
 </pre></div>
@@ -516,10 +515,9 @@ It supports:</p>
 }
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="list-users">
-<h2>👥 3. List Users<a class="headerlink" href="#list-users" title="Link to this heading"></a></h2>
+<h3>List Users<a class="headerlink" href="#list-users" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /ApiController/list
 </pre></div>
@@ -541,10 +539,9 @@ It supports:</p>
 ]
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="create-user">
-<h2>🧑‍💻 4. Create User<a class="headerlink" href="#create-user" title="Link to this heading"></a></h2>
+<h3>Create User<a class="headerlink" href="#create-user" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/create
 </pre></div>
@@ -563,10 +560,9 @@ Content-Type: application/json
 }
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="update-user">
-<h2>✏️ 5. Update User<a class="headerlink" href="#update-user" title="Link to this heading"></a></h2>
+<h3>Update User<a class="headerlink" href="#update-user" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /ApiController/update/{id}
 </pre></div>
@@ -584,10 +580,9 @@ Content-Type: application/json
 }
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="delete-user">
-<h2>🗑️ 6. Delete User<a class="headerlink" href="#delete-user" title="Link to this heading"></a></h2>
+<h3>Delete User<a class="headerlink" href="#delete-user" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /ApiController/delete/{id}
 </pre></div>
@@ -596,10 +591,9 @@ Content-Type: application/json
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Authorization: Bearer your_access_token
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="profile">
-<h2>🙋 7. Profile<a class="headerlink" href="#profile" title="Link to this heading"></a></h2>
+<h3>Profile<a class="headerlink" href="#profile" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /ApiController/profile
 </pre></div>
@@ -608,10 +602,9 @@ Content-Type: application/json
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Authorization: Bearer your_access_token
 </pre></div>
 </div>
-<p>—</p>
 </section>
 <section id="refresh-token">
-<h2>🔄 8. Refresh Token<a class="headerlink" href="#refresh-token" title="Link to this heading"></a></h2>
+<h3>Refresh Token<a class="headerlink" href="#refresh-token" title="Link to this heading"></a></h3>
 <p><strong>Endpoint:</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/refresh
 </pre></div>
@@ -622,10 +615,10 @@ Content-Type: application/json
 }
 </pre></div>
 </div>
-<p>—</p>
+</section>
 </section>
 <section id="tips">
-<h2>💡 Tips<a class="headerlink" href="#tips" title="Link to this heading"></a></h2>
+<h2>Tips<a class="headerlink" href="#tips" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Use <strong>Postman collections</strong> to save all these endpoints.</p></li>
 <li><p>Use <strong>environment variables</strong> for <code class="docutils literal notranslate"><span class="pre">{{base_url}}</span></code>, <code class="docutils literal notranslate"><span class="pre">{{access_token}}</span></code>, and <code class="docutils literal notranslate"><span class="pre">{{refresh_token}}</span></code> to streamline testing and token management.</p></li>
