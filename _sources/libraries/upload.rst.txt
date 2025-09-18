@@ -21,7 +21,6 @@ Create a view file called ``upload_form.php`` inside your ``app/views/`` directo
 
 .. code-block:: php
 
-   <?php
    <html>
    <head>
       <title>Upload Form</title>
