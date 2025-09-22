@@ -1,6 +1,13 @@
 LavaLust Changelog
 ==================
 
+LavaLust 4.3.0
+
+#Changelog
+
+1. Add support for HMVC. modules folder was added to /app
+2. Added lava file for CLI. Sample usage 'php lava make:controller ControllerName'
+
 LavaLust 4.2.5
 --------------
 
