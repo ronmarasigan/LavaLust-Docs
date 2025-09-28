@@ -19,4 +19,6 @@ Here are the built-in LavaLust libraries.
    pagination
    security
    session
+   session_security
    performance
+   ember

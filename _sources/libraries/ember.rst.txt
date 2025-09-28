@@ -1,0 +1,302 @@
+Ember Library
+=============
+
+Overview
+--------
+
+The **Ember** class is a lightweight templating engine for the LavaLust PHP Framework.  
+It allows developers to use a simplified syntax for templates, supporting **sections**, **includes**, **template inheritance**, **custom filters**, and **functions**.
+
+Ember combines simplicity and flexibility, compiling templates into PHP for fast execution.
+
+Features
+---------
+
+* Template inheritance using ``@extends`` and ``@yield``
+* Section management using ``@section`` and ``@endsection``
+* Template inclusion via ``@include``
+* Custom filters and functions
+* Escaped and raw output syntax
+* Auto-escaping support for XSS prevention
+* Built-in control structures: ``@if``, ``@foreach``, ``@while``, etc.
+
+Class Summary
+-------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - **Property / Method**
+     - **Description**
+   * - ``templates_path``
+     - Directory path to template files.
+   * - ``cache_path``
+     - Directory path to compiled (cached) templates.
+   * - ``globals``
+     - Global variables accessible in all templates.
+   * - ``functions``
+     - Custom functions callable within templates.
+   * - ``filters``
+     - Registered filters for variable transformation.
+   * - ``auto_escape``
+     - Boolean that controls whether HTML escaping is automatically applied.
+
+
+Configuration Example (``app/config/ember.php``)
+-------------------------------------------------
+
+.. code-block:: php
+
+   $config['templates_path'] = APP_DIR . 'views/';
+   $config['cache_path']     = APP_DIR . 'cache/';
+   $config['auto_escape']    = TRUE;
+   $config['ember_helper_enabled'] = TRUE;
+
+Public Methods
+--------------
+
+escape()
+---------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->escape($value);
+
+**Description:**
+Escapes a value using ``htmlspecialchars()`` if ``auto_escape`` is enabled.
+
+**Example:**
+
+.. code-block:: php
+
+   echo $this->ember->escape('<b>Hello</b>');
+   // Output: &lt;b&gt;Hello&lt;/b&gt;
+
+add_global()
+-------------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->add_global($name, $value);
+
+**Description:**
+Registers a global variable available to all templates.
+
+**Example:**
+
+.. code-block:: php
+
+   $this->ember->add_global('appName', 'MyLavaApp');
+
+**Usage in Template:**
+
+.. code-block:: twig
+
+   <p>Welcome to {{ appName }}</p>
+
+add_function()
+---------------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->add_function($name, $callable);
+
+**Description:**
+Registers a callable function accessible from within templates.
+
+**Example:**
+
+.. code-block:: php
+
+   $this->ember->add_function('site_url', fn($path = '') => site_url($path));
+
+**Usage in Template:**
+
+.. code-block:: twig
+
+   <a href="{{ site_url('dashboard') }}">Dashboard</a>
+
+add_filter()
+-------------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->add_filter($name, $callable);
+
+**Description:**
+Registers a custom filter for transforming variable output.
+
+**Example:**
+
+.. code-block:: php
+
+   $this->ember->add_filter('upper', fn($v) => strtoupper($v));
+   $this->ember->add_filter('lower', fn($v) => strtolower($v));
+
+**Usage in Template:**
+
+.. code-block:: twig
+
+   <p>{{ username|upper }}</p>
+
+apply_filter()
+--------------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->apply_filter($name, $value);
+
+**Description:**
+Applies a registered filter to a given value.
+
+**Example:**
+
+.. code-block:: php
+
+   echo $this->ember->apply_filter('upper', 'ronald');
+   // Output: RONALD
+
+render()
+---------
+
+**Syntax:**
+
+.. code-block:: php
+
+   $this->ember->render($template, $context = []);
+
+**Description:**
+Renders a template with the provided context data.
+
+**Parameters:**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 60
+
+   * - **Name**
+     - **Type**
+     - **Description**
+   * - ``$template``
+     - string
+     - Template file name (without extension)
+   * - ``$context``
+     - array
+     - Variables passed to the template
+
+**Example:**
+
+.. code-block:: php
+
+   echo $this->ember->render('pages.profile', ['name' => 'Ron']);
+
+**Template (``views/pages/profile.ember.php``):**
+
+.. code-block:: twig
+
+   <h1>Hello, {{ name|upper }}</h1>
+
+**Output:**
+
+.. code-block::
+
+   Hello, RON
+
+Template Directives
+-------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - **Directive**
+     - **Purpose**
+     - **Example**
+   * - ``@extends('layout')``
+     - Extends a base layout template
+     - ``@extends('layouts.main')``
+   * - ``@section('name')`` / ``@endsection``
+     - Defines a content section
+     - ``@section('title') Home @endsection``
+   * - ``@yield('name')``
+     - Displays section content
+     - ``@yield('content')``
+   * - ``@include('file')``
+     - Includes another template
+     - ``@include('partials.header')``
+   * - ``@if / @elseif / @else / @endif``
+     - Conditional logic
+     - ``@if($user) Welcome @endif``
+   * - ``@foreach / @endforeach``
+     - Loop structure
+     - ``@foreach($users as $user) {{ user.name }} @endforeach``
+   * - ``@php / @endphp``
+     - Raw PHP code
+     - ``@php echo date('Y'); @endphp``
+   * - ``{{ var }}``
+     - Escaped variable output
+     - ``{{ username }}``
+   * - ``{!! var !!}``
+     - Raw (unescaped) output
+     - ``{!! html_content !!}``
+   * - ``{{ var|filter }}``
+     - Applies a registered filter
+     - ``{{ name|upper }}``
+
+Example Template Structure
+--------------------------
+
+**File:** ``views/layouts/main.ember.php``
+
+.. code-block:: twig
+
+   <html>
+   <head>
+       <title>@yield('title')</title>
+   </head>
+   <body>
+       @include('partials.header')
+       <main>
+           @yield('content')
+       </main>
+   </body>
+   </html>
+
+**File:** ``views/pages/home.ember.php``
+
+.. code-block:: twig
+
+   @extends('layouts.main')
+
+   @section('title')
+       Welcome Page
+   @endsection
+
+   @section('content')
+       <h1>Hello, {{ name|upper }}</h1>
+   @endsection
+
+Output:
+
+.. code-block::
+
+   Hello, RON
+
+Notes
+-----
+
+* Templates are automatically cached to the configured ``cache_path``.
+* Filters and functions must be registered **before rendering**.
+* Use ``{!! !!}`` only for **trusted HTML output**.
+* Auto-escaping is controlled globally via the ``auto_escape`` configuration option.

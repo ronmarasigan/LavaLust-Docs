@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session Security Methods &mdash; LavaLust 4.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=a17b270f"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Performance Class" href="performance.html" />
+    <link rel="prev" title="Session Class" href="session.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Session Security Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-details">Method Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-lock-status">check_lock_status()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-attempts">reset_attempts()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unlock-attempts">unlock_attempts()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unlock-all-attempts">unlock_all_attempts()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-session-account-creation-lockout-example">Multiple Session (Account Creation) Lockout Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developer-notes-internal-methods">Developer Notes (Internal Methods)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ember.html">Ember Library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Session Security Methods</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="session-security-methods">
+<h1>Session Security Methods<a class="headerlink" href="#session-security-methods" title="Link to this heading"></a></h1>
+<p>This document describes the security-related methods used in the Session class for managing login attempts, account lockouts, manual unlocking, and account creation limits.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The following methods handle security-related tasks such as tracking failed login attempts, checking lock status, and resetting or unlocking users.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Purpose</strong></p></th>
+<th class="head"><p><strong>Scope</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
+<td><p>Checks the user’s current lock status, including attempts and remaining lock time.</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset_attempts()</span></code></p></td>
+<td><p>Resets attempts and unlocks the user after a successful login.</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_attempts()</span></code></p></td>
+<td><p>Manually unlocks a single user (admin override).</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_all_attempts()</span></code></p></td>
+<td><p>Unlocks and resets all users globally.</p></td>
+<td><p>Global</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">creation</span> <span class="pre">lockout</span></code></p></td>
+<td><p>Limits multiple account creations within a short time.</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="method-details">
+<h2>Method Details<a class="headerlink" href="#method-details" title="Link to this heading"></a></h2>
+<section id="check-lock-status">
+<h3>check_lock_status()<a class="headerlink" href="#check-lock-status" title="Link to this heading"></a></h3>
+<p><strong>Purpose:</strong>
+Check if a user (based on IP + fingerprint) is locked, how many attempts have been made, and how much time remains before unlocking.</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$status = $this-&gt;session-&gt;check_lock_status();</span>
+
+<span class="x">if ($status[&#39;locked&#39;]) {</span>
+<span class="x">    echo &quot;User is locked. Please wait {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
+<span class="x">} else {</span>
+<span class="x">    echo &quot;Attempts: {$status[&#39;attempts&#39;]} / {$status[&#39;max_attempts&#39;]}&quot;;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Returns:</strong>
+An array containing the following keys:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Key</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">locked</span></code></p></td>
+<td><p>Boolean value indicating if the user is currently locked.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">attempts</span></code></p></td>
+<td><p>Number of failed attempts so far.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_attempts</span></code></p></td>
+<td><p>Maximum allowed failed attempts before lockout.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">remaining</span></code></p></td>
+<td><p>Remaining lock duration in seconds (if locked).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reset-attempts">
+<h3>reset_attempts()<a class="headerlink" href="#reset-attempts" title="Link to this heading"></a></h3>
+<p><strong>Purpose:</strong>
+Reset attempts and unlock the user automatically after successful authentication.</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// After successful login</span>
+<span class="x">$this-&gt;session-&gt;reset_attempts();</span>
+<span class="x">echo &quot;Login successful. Attempts reset.&quot;;</span>
+</pre></div>
+</div>
+<p><strong>Returns:</strong>
+Boolean <code class="docutils literal notranslate"><span class="pre">true</span></code> after resetting.</p>
+</section>
+<section id="unlock-attempts">
+<h3>unlock_attempts()<a class="headerlink" href="#unlock-attempts" title="Link to this heading"></a></h3>
+<p><strong>Purpose:</strong>
+Manually unlock a specific user (useful for admin panels or CLI commands).</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$ip = &#39;122.53.222.248&#39;;</span>
+<span class="x">$fingerprint = &#39;4e5dc1c30043eb3cf10f7185b21c1fa2&#39;;</span>
+
+<span class="x">if ($this-&gt;session-&gt;unlock_attempts($ip, $fingerprint)) {</span>
+<span class="x">    echo &quot;User {$ip} unlocked successfully.&quot;;</span>
+<span class="x">} else {</span>
+<span class="x">    echo &quot;No lock found for that IP/fingerprint.&quot;;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Returns:</strong>
+Boolean indicating success (<code class="docutils literal notranslate"><span class="pre">true</span></code> if unlocked, <code class="docutils literal notranslate"><span class="pre">false</span></code> if no record found).</p>
+</section>
+<section id="unlock-all-attempts">
+<h3>unlock_all_attempts()<a class="headerlink" href="#unlock-all-attempts" title="Link to this heading"></a></h3>
+<p><strong>Purpose:</strong>
+Globally unlock all users and reset all login attempts (for system maintenance or testing).</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$totalUnlocked = $this-&gt;session-&gt;unlock_all_attempts();</span>
+<span class="x">echo &quot;{$totalUnlocked} users have been unlocked.&quot;;</span>
+</pre></div>
+</div>
+<p><strong>Returns:</strong>
+Integer — the number of users reset/unlocked.</p>
+</section>
+</section>
+<section id="multiple-session-account-creation-lockout-example">
+<h2>Multiple Session (Account Creation) Lockout Example<a class="headerlink" href="#multiple-session-account-creation-lockout-example" title="Link to this heading"></a></h2>
+<p>This section shows how to apply the same session security logic for <strong>account creation limits</strong> (e.g., prevent bots or abuse from repeatedly creating accounts).</p>
+<p><strong>Behavior:</strong>
+- Each account creation request is logged using a <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix.
+- After exceeding the limit, the user/IP is temporarily blocked from creating new accounts.</p>
+<p><strong>Example Implementation:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$ip = $_SERVER[&#39;REMOTE_ADDR&#39;];</span>
+<span class="x">$fingerprint = $this-&gt;session-&gt;generate_fingerprint();</span>
+<span class="x">$key = &quot;creation_{$ip}_{$fingerprint}&quot;;</span>
+
+<span class="x">// Load current security data</span>
+<span class="x">$data = $this-&gt;session-&gt;_security_load();</span>
+
+<span class="x">// Configuration</span>
+<span class="x">$lockoutDuration = 3600; // 1 hour</span>
+<span class="x">$maxCreations = 3;       // Limit to 3 per hour</span>
+
+<span class="x">if (isset($data[$key][&#39;creations&#39;])) {</span>
+<span class="x">    // Remove expired timestamps</span>
+<span class="x">    $data[$key][&#39;creations&#39;] = array_filter(</span>
+<span class="x">        $data[$key][&#39;creations&#39;],</span>
+<span class="x">        fn($t) =&gt; ($t + $lockoutDuration) &gt; time()</span>
+<span class="x">    );</span>
+
+<span class="x">    // Check if limit exceeded</span>
+<span class="x">    if (count($data[$key][&#39;creations&#39;]) &gt;= $maxCreations) {</span>
+<span class="x">        die(&quot;Too many account creations. Try again later.&quot;);</span>
+<span class="x">    }</span>
+<span class="x">} else {</span>
+<span class="x">    $data[$key][&#39;creations&#39;] = [];</span>
+<span class="x">}</span>
+
+<span class="x">// Log this creation</span>
+<span class="x">$data[$key][&#39;creations&#39;][] = time();</span>
+
+<span class="x">// Save to JSON</span>
+<span class="x">$this-&gt;session-&gt;_security_save($data);</span>
+
+<span class="x">echo &quot;Account created successfully.&quot;;</span>
+</pre></div>
+</div>
+<p><strong>JSON Example (after several creations):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964281</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;creation_122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;creations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964281</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964320</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong>
+- The <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix isolates account creation attempts from login attempts.
+- <code class="docutils literal notranslate"><span class="pre">creations</span></code> timestamps are stored in UNIX time for expiration tracking.
+- You can reuse this logic for password resets, verification requests, or API key registrations.</p>
+</section>
+<section id="developer-notes-internal-methods">
+<h2>Developer Notes (Internal Methods)<a class="headerlink" href="#developer-notes-internal-methods" title="Link to this heading"></a></h2>
+<p>The following methods are internal to the Session security system and are <strong>not intended for direct use</strong>, except for debugging or extension.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Purpose</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_security_init()</span></code></p></td>
+<td><p>Ensures that the security JSON file and directory exist. Automatically creates them if missing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_security_load()</span></code></p></td>
+<td><p>Loads and decodes the security JSON data into an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_security_save($data)</span></code></p></td>
+<td><p>Saves the given array data back into the JSON file with pretty formatting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_security_log_attempt($ip,</span> <span class="pre">$fingerprint)</span></code></p></td>
+<td><p>Records a failed login attempt. If the number of attempts exceeds the limit, adds a <code class="docutils literal notranslate"><span class="pre">locked_until</span></code> timestamp.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Internal Flow:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// Step 1: On login failure</span>
+<span class="x">$this-&gt;session-&gt;_security_log_attempt($ip, $fingerprint);</span>
+
+<span class="x">// Step 2: Before next login attempt</span>
+<span class="x">$status = $this-&gt;session-&gt;check_lock_status();</span>
+
+<span class="x">if ($status[&#39;locked&#39;]) {</span>
+<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
+<span class="x">}</span>
+
+<span class="x">// Step 3: On successful login</span>
+<span class="x">$this-&gt;session-&gt;reset_attempts();</span>
+</pre></div>
+</div>
+<p><strong>Storage Format Example (security.json):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964265</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964301</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1758967901</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Typical Use Case</strong></p></th>
+<th class="head"><p><strong>When to Use</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
+<td><p>Check if a login attempt should be blocked.</p></td>
+<td><p>Before verifying credentials.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset_attempts()</span></code></p></td>
+<td><p>Clear attempts after successful login.</p></td>
+<td><p>After verifying credentials successfully.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_attempts()</span></code></p></td>
+<td><p>Manually clear lock for one user.</p></td>
+<td><p>Admin dashboard or maintenance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_all_attempts()</span></code></p></td>
+<td><p>Clear all security locks.</p></td>
+<td><p>System reset or testing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">creation</span> <span class="pre">lockout</span></code></p></td>
+<td><p>Prevent mass or automated account creation.</p></td>
+<td><p>During user registration flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">security_*</span> <span class="pre">(internal)</span></code></p></td>
+<td><p>Internal data handling and persistence.</p></td>
+<td><p>Framework or developer use only.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="session.html" class="btn btn-neutral float-left" title="Session Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="performance.html" class="btn btn-neutral float-right" title="Performance Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

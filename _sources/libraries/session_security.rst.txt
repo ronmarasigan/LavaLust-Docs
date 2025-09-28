@@ -1,0 +1,277 @@
+Session Security Methods
+=========================
+
+This document describes the security-related methods used in the Session class for managing login attempts, account lockouts, manual unlocking, and account creation limits.
+
+Overview
+--------
+
+The following methods handle security-related tasks such as tracking failed login attempts, checking lock status, and resetting or unlocking users.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - **Method**
+     - **Purpose**
+     - **Scope**
+   * - ``check_lock_status()``
+     - Checks the user's current lock status, including attempts and remaining lock time.
+     - Per IP / Fingerprint
+   * - ``reset_attempts()``
+     - Resets attempts and unlocks the user after a successful login.
+     - Per IP / Fingerprint
+   * - ``unlock_attempts()``
+     - Manually unlocks a single user (admin override).
+     - Per IP / Fingerprint
+   * - ``unlock_all_attempts()``
+     - Unlocks and resets all users globally.
+     - Global
+   * - ``creation lockout``
+     - Limits multiple account creations within a short time.
+     - Per IP / Fingerprint
+
+
+Method Details
+--------------
+
+check_lock_status()
+~~~~~~~~~~~~~~~~~~~
+
+**Purpose:**  
+Check if a user (based on IP + fingerprint) is locked, how many attempts have been made, and how much time remains before unlocking.
+
+**Example Usage:**
+
+.. code-block:: php
+
+   $status = $this->session->check_lock_status();
+
+   if ($status['locked']) {
+       echo "User is locked. Please wait {$status['remaining']} seconds.";
+   } else {
+       echo "Attempts: {$status['attempts']} / {$status['max_attempts']}";
+   }
+
+**Returns:**  
+An array containing the following keys:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - **Key**
+     - **Description**
+   * - ``locked``
+     - Boolean value indicating if the user is currently locked.
+   * - ``attempts``
+     - Number of failed attempts so far.
+   * - ``max_attempts``
+     - Maximum allowed failed attempts before lockout.
+   * - ``remaining``
+     - Remaining lock duration in seconds (if locked).
+
+
+reset_attempts()
+~~~~~~~~~~~~~~~~
+
+**Purpose:**  
+Reset attempts and unlock the user automatically after successful authentication.
+
+**Example Usage:**
+
+.. code-block:: php
+
+   // After successful login
+   $this->session->reset_attempts();
+   echo "Login successful. Attempts reset.";
+
+**Returns:**  
+Boolean ``true`` after resetting.
+
+
+unlock_attempts()
+~~~~~~~~~~~~~~~~~
+
+**Purpose:**  
+Manually unlock a specific user (useful for admin panels or CLI commands).
+
+**Example Usage:**
+
+.. code-block:: php
+
+   $ip = '122.53.222.248';
+   $fingerprint = '4e5dc1c30043eb3cf10f7185b21c1fa2';
+
+   if ($this->session->unlock_attempts($ip, $fingerprint)) {
+       echo "User {$ip} unlocked successfully.";
+   } else {
+       echo "No lock found for that IP/fingerprint.";
+   }
+
+**Returns:**  
+Boolean indicating success (``true`` if unlocked, ``false`` if no record found).
+
+
+unlock_all_attempts()
+~~~~~~~~~~~~~~~~~~~~~
+
+**Purpose:**  
+Globally unlock all users and reset all login attempts (for system maintenance or testing).
+
+**Example Usage:**
+
+.. code-block:: php
+
+   $totalUnlocked = $this->session->unlock_all_attempts();
+   echo "{$totalUnlocked} users have been unlocked.";
+
+**Returns:**  
+Integer — the number of users reset/unlocked.
+
+
+Multiple Session (Account Creation) Lockout Example
+---------------------------------------------------
+
+This section shows how to apply the same session security logic for **account creation limits** (e.g., prevent bots or abuse from repeatedly creating accounts).
+
+**Behavior:**
+- Each account creation request is logged using a ``creation_`` prefix.
+- After exceeding the limit, the user/IP is temporarily blocked from creating new accounts.
+
+**Example Implementation:**
+
+.. code-block:: php
+
+   $ip = $_SERVER['REMOTE_ADDR'];
+   $fingerprint = $this->session->generate_fingerprint();
+   $key = "creation_{$ip}_{$fingerprint}";
+
+   // Load current security data
+   $data = $this->session->_security_load();
+
+   // Configuration
+   $lockoutDuration = 3600; // 1 hour
+   $maxCreations = 3;       // Limit to 3 per hour
+
+   if (isset($data[$key]['creations'])) {
+       // Remove expired timestamps
+       $data[$key]['creations'] = array_filter(
+           $data[$key]['creations'],
+           fn($t) => ($t + $lockoutDuration) > time()
+       );
+
+       // Check if limit exceeded
+       if (count($data[$key]['creations']) >= $maxCreations) {
+           die("Too many account creations. Try again later.");
+       }
+   } else {
+       $data[$key]['creations'] = [];
+   }
+
+   // Log this creation
+   $data[$key]['creations'][] = time();
+
+   // Save to JSON
+   $this->session->_security_save($data);
+
+   echo "Account created successfully.";
+
+**JSON Example (after several creations):**
+
+.. code-block:: json
+
+   {
+       "122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2": {
+           "attempts": 2,
+           "timestamps": [1758964259, 1758964281]
+       },
+       "creation_122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2": {
+           "creations": [1758964259, 1758964281, 1758964320]
+       }
+   }
+
+**Notes:**
+- The ``creation_`` prefix isolates account creation attempts from login attempts.
+- ``creations`` timestamps are stored in UNIX time for expiration tracking.
+- You can reuse this logic for password resets, verification requests, or API key registrations.
+
+
+Developer Notes (Internal Methods)
+----------------------------------
+
+The following methods are internal to the Session security system and are **not intended for direct use**, except for debugging or extension.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - **Method**
+     - **Purpose**
+   * - ``_security_init()``
+     - Ensures that the security JSON file and directory exist. Automatically creates them if missing.
+   * - ``_security_load()``
+     - Loads and decodes the security JSON data into an array.
+   * - ``_security_save($data)``
+     - Saves the given array data back into the JSON file with pretty formatting.
+   * - ``_security_log_attempt($ip, $fingerprint)``
+     - Records a failed login attempt. If the number of attempts exceeds the limit, adds a ``locked_until`` timestamp.
+
+**Example Internal Flow:**
+
+.. code-block:: php
+
+   // Step 1: On login failure
+   $this->session->_security_log_attempt($ip, $fingerprint);
+
+   // Step 2: Before next login attempt
+   $status = $this->session->check_lock_status();
+
+   if ($status['locked']) {
+       echo "Locked for {$status['remaining']} seconds.";
+   }
+
+   // Step 3: On successful login
+   $this->session->reset_attempts();
+
+**Storage Format Example (security.json):**
+
+.. code-block:: json
+
+   {
+       "122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2": {
+           "attempts": 3,
+           "timestamps": [1758964259, 1758964265, 1758964301],
+           "locked_until": 1758967901
+       }
+   }
+
+
+Summary
+-------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - **Method**
+     - **Typical Use Case**
+     - **When to Use**
+   * - ``check_lock_status()``
+     - Check if a login attempt should be blocked.
+     - Before verifying credentials.
+   * - ``reset_attempts()``
+     - Clear attempts after successful login.
+     - After verifying credentials successfully.
+   * - ``unlock_attempts()``
+     - Manually clear lock for one user.
+     - Admin dashboard or maintenance.
+   * - ``unlock_all_attempts()``
+     - Clear all security locks.
+     - System reset or testing.
+   * - ``creation lockout``
+     - Prevent mass or automated account creation.
+     - During user registration flow.
+   * - ``security_* (internal)``
+     - Internal data handling and persistence.
+     - Framework or developer use only.
