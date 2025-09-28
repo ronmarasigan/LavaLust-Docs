@@ -79,7 +79,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#render">render()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#template-directives">Template Directives</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-template-structure">Example Template Structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Ember_registrar">Ember Registrar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Ember_registrar.Ember_registrar"><code class="docutils literal notranslate"><span class="pre">Ember_registrar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#globals">Globals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filters">Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extending-the-registrar">Extending the Registrar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -394,14 +402,253 @@ Renders a template with the provided context data.</p>
 </pre></div>
 </div>
 </section>
-<section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Templates are automatically cached to the configured <code class="docutils literal notranslate"><span class="pre">cache_path</span></code>.</p></li>
-<li><p>Filters and functions must be registered <strong>before rendering</strong>.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">{!!</span> <span class="pre">!!}</span></code> only for <strong>trusted HTML output</strong>.</p></li>
-<li><p>Auto-escaping is controlled globally via the <code class="docutils literal notranslate"><span class="pre">auto_escape</span></code> configuration option.</p></li>
-</ul>
+</section>
+<section id="module-Ember_registrar">
+<span id="ember-registrar"></span><h1>Ember Registrar<a class="headerlink" href="#module-Ember_registrar" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Ember_registrar.Ember_registrar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Ember_registrar.</span></span><span class="sig-name descname"><span class="pre">Ember_registrar</span></span><a class="headerlink" href="#Ember_registrar.Ember_registrar" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p>The <a class="reference internal" href="#module-Ember_registrar" title="Ember_registrar"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ember_registrar</span></code></a> class provides a collection of <strong>default filters, globals, and functions</strong> that extend the Ember template engine in the LavaLust Framework.</p>
+<p>It acts as a registration hub where you can define custom filters, functions, and global variables that become available to all templates rendered through the Ember engine.</p>
+<p>This class is automatically called inside the <code class="xref py py-class docutils literal notranslate"><span class="pre">Ember</span></code> class upon initialization.</p>
+<hr class="docutils" />
+<section id="globals">
+<h2>Globals<a class="headerlink" href="#globals" title="Link to this heading"></a></h2>
+<p>These are automatically accessible inside templates:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>app_name</p></td>
+<td><p>Application name (from config or fallback)</p></td>
+</tr>
+<tr class="row-odd"><td><p>base_url</p></td>
+<td><p>Base URL of the application</p></td>
+</tr>
+<tr class="row-even"><td><p>site_url</p></td>
+<td><p>Site URL with index.php if not removed</p></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">app_name</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">site_url</span> <span class="cp">}}</span><span class="s">/dashboard&quot;</span><span class="p">&gt;</span>Dashboard<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="filters">
+<h2>Filters<a class="headerlink" href="#filters" title="Link to this heading"></a></h2>
+<p>Filters are applied using the pipe <code class="docutils literal notranslate"><span class="pre">|</span></code> operator in templates:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>upper</p></td>
+<td><p>Converts string to uppercase</p></td>
+</tr>
+<tr class="row-odd"><td><p>lower</p></td>
+<td><p>Converts string to lowercase</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>Converts string to title case</p></td>
+</tr>
+<tr class="row-odd"><td><p>capitalize</p></td>
+<td><p>Capitalizes first letter</p></td>
+</tr>
+<tr class="row-even"><td><p>trim</p></td>
+<td><p>Removes whitespace</p></td>
+</tr>
+<tr class="row-odd"><td><p>reverse</p></td>
+<td><p>Reverses string or array</p></td>
+</tr>
+<tr class="row-even"><td><p>escape / e</p></td>
+<td><p>Escapes HTML characters</p></td>
+</tr>
+<tr class="row-odd"><td><p>raw</p></td>
+<td><p>Outputs value without escaping</p></td>
+</tr>
+<tr class="row-even"><td><p>nl2br</p></td>
+<td><p>Converts newlines to &lt;br&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><p>length</p></td>
+<td><p>Returns length of string or array</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>Returns default if value is empty</p></td>
+</tr>
+<tr class="row-odd"><td><p>join</p></td>
+<td><p>Joins array elements</p></td>
+</tr>
+<tr class="row-even"><td><p>slice</p></td>
+<td><p>Extracts substring or sub-array</p></td>
+</tr>
+<tr class="row-odd"><td><p>number_format</p></td>
+<td><p>Formats number</p></td>
+</tr>
+<tr class="row-even"><td><p>abs</p></td>
+<td><p>Returns absolute value</p></td>
+</tr>
+<tr class="row-odd"><td><p>round</p></td>
+<td><p>Rounds a number</p></td>
+</tr>
+<tr class="row-even"><td><p>date</p></td>
+<td><p>Formats date</p></td>
+</tr>
+<tr class="row-odd"><td><p>json_encode</p></td>
+<td><p>Converts value to JSON</p></td>
+</tr>
+<tr class="row-even"><td><p>replace</p></td>
+<td><p>Performs key-value replacement</p></td>
+</tr>
+<tr class="row-odd"><td><p>money</p></td>
+<td><p>Formats number as currency (₱ by default)</p></td>
+</tr>
+<tr class="row-even"><td><p>slug</p></td>
+<td><p>Converts string to URL slug</p></td>
+</tr>
+<tr class="row-odd"><td><p>pluralize</p></td>
+<td><p>Adds “s” if count not 1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">username</span> <span class="o">|</span> <span class="nf">upper</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">message</span> <span class="o">|</span> <span class="nf">escape</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="m">123456.789</span> <span class="o">|</span> <span class="nf">money</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="m">5</span> <span class="o">|</span> <span class="nf">pluralize</span><span class="o">(</span><span class="s2">&quot;apple&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<p>Functions can be called in templates:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>url(path)</p></td>
+<td><p>Returns a clean URL path</p></td>
+</tr>
+<tr class="row-odd"><td><p>asset(path)</p></td>
+<td><p>Returns a public asset URL</p></td>
+</tr>
+<tr class="row-even"><td><p>site_url(path)</p></td>
+<td><p>Returns a site-relative URL</p></td>
+</tr>
+<tr class="row-odd"><td><p>base_url(path)</p></td>
+<td><p>Returns base URL + path</p></td>
+</tr>
+<tr class="row-even"><td><p>active(route)</p></td>
+<td><p>Returns “active” if current route matches</p></td>
+</tr>
+<tr class="row-odd"><td><p>config(key)</p></td>
+<td><p>Returns a config value</p></td>
+</tr>
+<tr class="row-even"><td><p>session(key)</p></td>
+<td><p>Returns session variable or all if key is null</p></td>
+</tr>
+<tr class="row-odd"><td><p>upper(str)</p></td>
+<td><p>Converts string to uppercase</p></td>
+</tr>
+<tr class="row-even"><td><p>repeat(str, n)</p></td>
+<td><p>Repeats string n times</p></td>
+</tr>
+<tr class="row-odd"><td><p>now()</p></td>
+<td><p>Returns current date and time</p></td>
+</tr>
+<tr class="row-even"><td><p>date(format, time)</p></td>
+<td><p>Returns formatted date</p></td>
+</tr>
+<tr class="row-odd"><td><p>include(template, vars)</p></td>
+<td><p>Includes another template</p></td>
+</tr>
+<tr class="row-even"><td><p>dump(value)</p></td>
+<td><p>Debug helper: prints value with &lt;pre&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><p>csrf_field()</p></td>
+<td><p>Prints CSRF hidden input field</p></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset</span><span class="o">(</span><span class="s1">&#39;images/logo.png&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;Logo&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">csrf_field</span><span class="o">()</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">now</span><span class="o">()</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="extending-the-registrar">
+<h2>Extending the Registrar<a class="headerlink" href="#extending-the-registrar" title="Link to this heading"></a></h2>
+<p>You can extend <a class="reference internal" href="#module-Ember_registrar" title="Ember_registrar"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ember_registrar</span></code></a> to register additional filters, functions, or globals:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">EmberConfigs</span> <span class="k">extends</span> <span class="nx">Ember_registrar</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(</span><span class="nv">$engine</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Add a new global</span>
+        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_global</span><span class="p">(</span><span class="s1">&#39;myName&#39;</span><span class="p">,</span> <span class="s1">&#39;Ron&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Add a new filter</span>
+        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_filter</span><span class="p">(</span><span class="s1">&#39;greet&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello, &#39;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Add a new function</span>
+        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_function</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example in template:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">myName</span> <span class="o">|</span> <span class="nf">greet</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>2 + 3 = <span class="cp">{{</span> <span class="nv">sum</span><span class="o">(</span><span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">)</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<blockquote>
+<div><p>Default filters and functions are automatically registered.
+Custom registrars can override or extend existing definitions.
+Place extended registrar under <code class="docutils literal notranslate"><span class="pre">app/libraries/EmberConfigs.php</span></code> and load via:</p>
+</div></blockquote>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;library(&#39;EmberConfigs&#39;);</span>
+<span class="x">$this-&gt;EmberConfigs-&gt;register($this-&gt;ember);</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>Templates are automatically cached to the configured <code class="docutils literal notranslate"><span class="pre">cache_path</span></code>.
+Filters and functions must be registered <strong>before rendering</strong>.
+Use <code class="docutils literal notranslate"><span class="pre">{!!</span> <span class="pre">!!}</span></code> only for <strong>trusted HTML output</strong>.
+Auto-escaping is controlled globally via the <code class="docutils literal notranslate"><span class="pre">auto_escape</span></code> configuration option.</p>
 </section>
 </section>
 

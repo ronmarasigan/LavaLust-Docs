@@ -293,10 +293,212 @@ Output:
 
    Hello, RON
 
-Notes
------
+Ember Registrar
+===============
 
-* Templates are automatically cached to the configured ``cache_path``.
-* Filters and functions must be registered **before rendering**.
-* Use ``{!! !!}`` only for **trusted HTML output**.
-* Auto-escaping is controlled globally via the ``auto_escape`` configuration option.
+.. module:: Ember_registrar
+.. class:: Ember_registrar
+
+The :class:`Ember_registrar` class provides a collection of **default filters, globals, and functions** that extend the Ember template engine in the LavaLust Framework.
+
+It acts as a registration hub where you can define custom filters, functions, and global variables that become available to all templates rendered through the Ember engine.
+
+This class is automatically called inside the :class:`Ember` class upon initialization.
+
+-------------------------------------------------------------------
+
+Globals
+-------
+
+These are automatically accessible inside templates:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Name
+     - Description
+   * - app_name
+     - Application name (from config or fallback)
+   * - base_url
+     - Base URL of the application
+   * - site_url
+     - Site URL with index.php if not removed
+
+Example:
+
+.. code-block:: html+jinja
+
+    <title>{{ app_name }}</title>
+    <a href="{{ site_url }}/dashboard">Dashboard</a>
+
+-------------------------------------------------------------------
+
+Filters
+-------
+
+Filters are applied using the pipe ``|`` operator in templates:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Filter Name
+     - Description
+   * - upper
+     - Converts string to uppercase
+   * - lower
+     - Converts string to lowercase
+   * - title
+     - Converts string to title case
+   * - capitalize
+     - Capitalizes first letter
+   * - trim
+     - Removes whitespace
+   * - reverse
+     - Reverses string or array
+   * - escape / e
+     - Escapes HTML characters
+   * - raw
+     - Outputs value without escaping
+   * - nl2br
+     - Converts newlines to <br>
+   * - length
+     - Returns length of string or array
+   * - default
+     - Returns default if value is empty
+   * - join
+     - Joins array elements
+   * - slice
+     - Extracts substring or sub-array
+   * - number_format
+     - Formats number
+   * - abs
+     - Returns absolute value
+   * - round
+     - Rounds a number
+   * - date
+     - Formats date
+   * - json_encode
+     - Converts value to JSON
+   * - replace
+     - Performs key-value replacement
+   * - money
+     - Formats number as currency (₱ by default)
+   * - slug
+     - Converts string to URL slug
+   * - pluralize
+     - Adds "s" if count not 1
+
+Example:
+
+.. code-block:: html+jinja
+
+    <p>{{ username | upper }}</p>
+    <p>{{ message | escape }}</p>
+    <p>{{ 123456.789 | money }}</p>
+    <p>{{ 5 | pluralize("apple") }}</p>
+
+-------------------------------------------------------------------
+
+Functions
+---------
+
+Functions can be called in templates:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - url(path)
+     - Returns a clean URL path
+   * - asset(path)
+     - Returns a public asset URL
+   * - site_url(path)
+     - Returns a site-relative URL
+   * - base_url(path)
+     - Returns base URL + path
+   * - active(route)
+     - Returns "active" if current route matches
+   * - config(key)
+     - Returns a config value
+   * - session(key)
+     - Returns session variable or all if key is null
+   * - upper(str)
+     - Converts string to uppercase
+   * - repeat(str, n)
+     - Repeats string n times
+   * - now()
+     - Returns current date and time
+   * - date(format, time)
+     - Returns formatted date
+   * - include(template, vars)
+     - Includes another template
+   * - dump(value)
+     - Debug helper: prints value with <pre>
+   * - csrf_field()
+     - Prints CSRF hidden input field
+
+Example:
+
+.. code-block:: html+jinja
+
+    <img src="{{ asset('images/logo.png') }}" alt="Logo">
+    <form method="post">
+        {{ csrf_field() }}
+    </form>
+    <p>{{ now() }}</p>
+
+-------------------------------------------------------------------
+
+Extending the Registrar
+-----------------------
+
+You can extend :class:`Ember_registrar` to register additional filters, functions, or globals:
+
+.. code-block:: php
+
+    <?php
+    class EmberConfigs extends Ember_registrar {
+
+        public function __construct($engine)
+        {
+            // Add a new global
+            $engine[0]->add_global('myName', 'Ron');
+
+            // Add a new filter
+            $engine[0]->add_filter('greet', fn($name) => 'Hello, ' . ucfirst($name) . '!');
+
+            // Add a new function
+            $engine[0]->add_function('sum', fn($a, $b) => $a + $b);
+        }
+    }
+
+Example in template:
+
+.. code-block:: html+jinja
+
+    <p>{{ myName | greet }}</p>
+    <p>2 + 3 = {{ sum(2, 3) }}</p>
+
+
+.. note::
+
+    Default filters and functions are automatically registered.  
+    Custom registrars can override or extend existing definitions.  
+    Place extended registrar under ``app/libraries/EmberConfigs.php`` and load via:
+
+  .. code-block:: php
+
+      $this->call->library('EmberConfigs');
+      $this->EmberConfigs->register($this->ember);
+
+Summary
+-------
+
+Templates are automatically cached to the configured ``cache_path``.
+Filters and functions must be registered **before rendering**.
+Use ``{!! !!}`` only for **trusted HTML output**.
+Auto-escaping is controlled globally via the ``auto_escape`` configuration option.
