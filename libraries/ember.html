@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ember Library &mdash; LavaLust 4.3.0 documentation</title>
+  <title>Ember Template Engine &mdash; LavaLust 4.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
@@ -63,9 +63,9 @@
 <li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session_security.html">Session Security Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_security.html">Session Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Ember Library</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ember Template Engine</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#class-summary">Class Summary</a></li>
@@ -103,7 +103,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
-      <li class="breadcrumb-item active">Ember Library</li>
+      <li class="breadcrumb-item active">Ember Template Engine</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -112,8 +112,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ember-library">
-<h1>Ember Library<a class="headerlink" href="#ember-library" title="Link to this heading"></a></h1>
+  <section id="ember-template-engine">
+<h1>Ember Template Engine<a class="headerlink" href="#ember-template-engine" title="Link to this heading"></a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>The <strong>Ember</strong> class is a lightweight templating engine for the LavaLust PHP Framework.
@@ -168,10 +168,10 @@ It allows developers to use a simplified syntax for templates, supporting <stron
 </section>
 <section id="configuration-example-app-config-ember-php">
 <h2>Configuration Example (<code class="docutils literal notranslate"><span class="pre">app/config/ember.php</span></code>)<a class="headerlink" href="#configuration-example-app-config-ember-php" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$config[&#39;templates_path&#39;] = APP_DIR . &#39;views/&#39;;</span>
-<span class="x">$config[&#39;cache_path&#39;]     = APP_DIR . &#39;cache/&#39;;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$config[&#39;ember_helper_enabled&#39;] = TRUE;</span>
+<span class="x">$config[&#39;cache_path&#39;] = ROOT_DIR . &#39;runtime/cache/&#39;;</span>
+<span class="x">$config[&#39;templates_path&#39;] = APP_DIR . &#39;views/&#39;;</span>
 <span class="x">$config[&#39;auto_escape&#39;]    = TRUE;</span>
-<span class="x">$config[&#39;ember_helper_enabled&#39;] = TRUE;</span>
 </pre></div>
 </div>
 </section>

@@ -1,5 +1,5 @@
-Ember Library
-=============
+Ember Template Engine
+======================
 
 Overview
 --------
@@ -48,10 +48,10 @@ Configuration Example (``app/config/ember.php``)
 
 .. code-block:: php
 
-   $config['templates_path'] = APP_DIR . 'views/';
-   $config['cache_path']     = APP_DIR . 'cache/';
-   $config['auto_escape']    = TRUE;
    $config['ember_helper_enabled'] = TRUE;
+   $config['cache_path'] = ROOT_DIR . 'runtime/cache/';
+   $config['templates_path'] = APP_DIR . 'views/';
+   $config['auto_escape']    = TRUE;
 
 Public Methods
 --------------

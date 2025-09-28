@@ -1,5 +1,5 @@
-Session Security Methods
-=========================
+Session Security
+=================
 
 This document describes the security-related methods used in the Session class for managing login attempts, account lockouts, manual unlocking, and account creation limits.
 
@@ -36,7 +36,7 @@ Method Details
 --------------
 
 check_lock_status()
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 **Purpose:**  
 Check if a user (based on IP + fingerprint) is locked, how many attempts have been made, and how much time remains before unlocking.
@@ -73,7 +73,7 @@ An array containing the following keys:
 
 
 reset_attempts()
-~~~~~~~~~~~~~~~~
+-----------------
 
 **Purpose:**  
 Reset attempts and unlock the user automatically after successful authentication.
@@ -91,7 +91,7 @@ Boolean ``true`` after resetting.
 
 
 unlock_attempts()
-~~~~~~~~~~~~~~~~~
+------------------
 
 **Purpose:**  
 Manually unlock a specific user (useful for admin panels or CLI commands).
@@ -114,7 +114,7 @@ Boolean indicating success (``true`` if unlocked, ``false`` if no record found).
 
 
 unlock_all_attempts()
-~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 **Purpose:**  
 Globally unlock all users and reset all login attempts (for system maintenance or testing).
