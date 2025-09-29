@@ -273,6 +273,12 @@ Example Template Structure
    </body>
    </html>
 
+**File:** ``views/partials/header.ember.php``
+
+.. code-block:: twig
+
+   <header><h1>My Application</h1></header>
+
 **File:** ``views/pages/home.ember.php``
 
 .. code-block:: twig
