@@ -1,7 +1,26 @@
 Upgrading Version
 =================
 
-Upgrading from 4.2.5* to >=4.3.0
+Upgrading from 4.3.1 to 4.4.0
+----------------------------------
+
+Add the new configuration file ``ember.php`` to your ``app/config/`` directory.
+Replace all files and directories in your ``scheme/`` directory.
+
+.. note::
+
+   Before performing an update, you should take your site offline by replacing the ``index.php`` file with a static one.
+
+Upgrading from 4.3.0 to 4.3.1
+----------------------------------
+
+Replace all files and directories in your ``scheme/`` directory.
+
+.. note::
+
+   Before performing an update, you should take your site offline by replacing the ``index.php`` file with a static one.
+
+Upgrading from 4.2.* to >=4.3.0
 ----------------------------------
 
 Replace all files and directories in your ``scheme/`` directory.
