@@ -1,6 +1,18 @@
 LavaLust Changelog
 ==================
 
+LavaLust 4.4.0
+---------------
+
+1. Added a simple template engine called Ember Template Engine.
+2. Enhanced Session class by adding security feature like locking if security threats was detected.
+3. Added support for database session handler
+
+LavaLust 4.3.1
+---------------
+
+1. Critical bug fixed in Config class with get_config() and config_item() where loaded config is not merging with the default.
+
 LavaLust 4.3.0
 ---------------
 
