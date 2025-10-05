@@ -179,17 +179,17 @@
     <span class="p">}</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * Register a new user</span>
-<span class="sd">     *</span>
-<span class="sd">     * @param string $username</span>
-<span class="sd">     * @param string $password</span>
-<span class="sd">     * @param string $role</span>
-<span class="sd">     * @return bool</span>
-<span class="sd">     */</span>
+<span class="sd">    * Register a new user</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param string $username</span>
+<span class="sd">    * @param string $password</span>
+<span class="sd">    * @param string $role</span>
+<span class="sd">    * @return bool</span>
+<span class="sd">    */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">register</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">,</span> <span class="nv">$role</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$hash</span> <span class="o">=</span> <span class="nb">password_hash</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span> <span class="nx">PASSWORD_DEFAULT</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
             <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nv">$username</span><span class="p">,</span>
             <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="nv">$hash</span><span class="p">,</span>
             <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="nv">$role</span><span class="p">,</span>
@@ -198,20 +198,20 @@
     <span class="p">}</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * Login user</span>
-<span class="sd">     *</span>
-<span class="sd">     * @param string $username</span>
-<span class="sd">     * @param string $password</span>
-<span class="sd">     * @return bool</span>
-<span class="sd">     */</span>
+<span class="sd">    * Login user</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param string $username</span>
+<span class="sd">    * @param string $password</span>
+<span class="sd">    * @return bool</span>
+<span class="sd">    */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-                         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="nv">$username</span><span class="p">)</span>
-                         <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+                        <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="nv">$username</span><span class="p">)</span>
+                        <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span> <span class="o">&amp;&amp;</span> <span class="nb">password_verify</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
                 <span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
                 <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
                 <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span>
@@ -224,34 +224,34 @@
     <span class="p">}</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * Check if user is logged in</span>
-<span class="sd">     *</span>
-<span class="sd">     * @return bool</span>
-<span class="sd">     */</span>
+<span class="sd">    * Check if user is logged in</span>
+<span class="sd">    *</span>
+<span class="sd">    * @return bool</span>
+<span class="sd">    */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">is_logged_in</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;logged_in&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;logged_in&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * Check user role</span>
-<span class="sd">     *</span>
-<span class="sd">     * @param string $role</span>
-<span class="sd">     * @return bool</span>
-<span class="sd">     */</span>
+<span class="sd">    * Check user role</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param string $role</span>
+<span class="sd">    * @return bool</span>
+<span class="sd">    */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">has_role</span><span class="p">(</span><span class="nv">$role</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nv">$role</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nv">$role</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
-<span class="sd">     * Logout user</span>
-<span class="sd">     *</span>
-<span class="sd">     * @return void</span>
-<span class="sd">     */</span>
+<span class="sd">    * Logout user</span>
+<span class="sd">    *</span>
+<span class="sd">    * @return void</span>
+<span class="sd">    */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span><span class="s1">&#39;username&#39;</span><span class="p">,</span><span class="s1">&#39;role&#39;</span><span class="p">,</span><span class="s1">&#39;logged_in&#39;</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span><span class="s1">&#39;username&#39;</span><span class="p">,</span><span class="s1">&#39;role&#39;</span><span class="p">,</span><span class="s1">&#39;logged_in&#39;</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>
@@ -323,7 +323,7 @@
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">dashboard</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">([</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">]);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">auth</span><span class="o">-&gt;</span><span class="na">is_logged_in</span><span class="p">())</span> <span class="p">{</span>
             <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;auth/login&#39;</span><span class="p">);</span>
@@ -334,7 +334,7 @@
             <span class="k">exit</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;auth/dashboard&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;auth/dashboard&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;session&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span>
@@ -351,7 +351,7 @@
 <section id="view-example">
 <h2>View Example<a class="headerlink" href="#view-example" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;!-- register.php --&gt;</span>
-<span class="x">&lt;form method=&quot;post&quot;&gt;</span>
+<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;auth/register&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot;&gt;</span>
 <span class="x">    &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;</span>
 <span class="x">    &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;</span>
 <span class="x">    &lt;select name=&quot;role&quot;&gt;</span>
@@ -362,15 +362,15 @@
 <span class="x">&lt;/form&gt;</span>
 
 <span class="x">&lt;!-- login.php --&gt;</span>
-<span class="x">&lt;form method=&quot;post&quot;&gt;</span>
+<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;auth/login&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot;&gt;</span>
 <span class="x">    &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;Username&quot; required&gt;</span>
 <span class="x">    &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;Password&quot; required&gt;</span>
 <span class="x">    &lt;button type=&quot;submit&quot;&gt;Login&lt;/button&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 
 <span class="x">&lt;!-- dashboard.php --&gt;</span>
-<span class="x">&lt;h1&gt;Welcome, </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">session</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">!&lt;/h1&gt;</span>
-<span class="x">&lt;p&gt;Role: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">session</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;h1&gt;Welcome, </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">!&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;Role: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 <span class="x">&lt;a href=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;auth/logout&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Logout&lt;/a&gt;</span>
 </pre></div>
 </div>

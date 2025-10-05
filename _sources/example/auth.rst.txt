@@ -79,17 +79,17 @@ Library Example
         }
 
         /**
-         * Register a new user
-         *
-         * @param string $username
-         * @param string $password
-         * @param string $role
-         * @return bool
-         */
+        * Register a new user
+        *
+        * @param string $username
+        * @param string $password
+        * @param string $role
+        * @return bool
+        */
         public function register($username, $password, $role = 'user')
         {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            return $this->db->table('users')->insert([
+            return $this->_lava->db->table('users')->insert([
                 'username' => $username,
                 'password' => $hash,
                 'role' => $role,
@@ -98,20 +98,20 @@ Library Example
         }
 
         /**
-         * Login user
-         *
-         * @param string $username
-         * @param string $password
-         * @return bool
-         */
+        * Login user
+        *
+        * @param string $username
+        * @param string $password
+        * @return bool
+        */
         public function login($username, $password)
         {
-            $user = $this->db->table('users')
-                             ->where('username', $username)
-                             ->get();
+            $user = $this->_lava->db->table('users')
+                            ->where('username', $username)
+                            ->get();
 
             if ($user && password_verify($password, $user['password'])) {
-                $this->session->set_userdata([
+                $this->_lava->session->set_userdata([
                     'user_id' => $user['id'],
                     'username' => $user['username'],
                     'role' => $user['role'],
@@ -124,34 +124,34 @@ Library Example
         }
 
         /**
-         * Check if user is logged in
-         *
-         * @return bool
-         */
+        * Check if user is logged in
+        *
+        * @return bool
+        */
         public function is_logged_in()
         {
-            return (bool) $this->session->userdata('logged_in');
+            return (bool) $this->_lava->session->userdata('logged_in');
         }
 
         /**
-         * Check user role
-         *
-         * @param string $role
-         * @return bool
-         */
+        * Check user role
+        *
+        * @param string $role
+        * @return bool
+        */
         public function has_role($role)
         {
-            return $this->session->userdata('role') === $role;
+            return $this->_lava->session->userdata('role') === $role;
         }
 
         /**
-         * Logout user
-         *
-         * @return void
-         */
+        * Logout user
+        *
+        * @return void
+        */
         public function logout()
         {
-            $this->session->unset_userdata(['user_id','username','role','logged_in']);
+            $this->_lava->session->unset_userdata(['user_id','username','role','logged_in']);
         }
     }
     ?>
@@ -225,7 +225,7 @@ Controller Example
 
         public function dashboard()
         {
-            $this->call->library('auth');
+            $this->call->library(['auth', 'session']);
 
             if (!$this->auth->is_logged_in()) {
                 redirect('auth/login');
@@ -236,7 +236,7 @@ Controller Example
                 exit;
             }
 
-            $this->call->view('auth/dashboard');
+            $this->call->view('auth/dashboard', ['session' => $this->session]);
         }
 
         public function logout()
@@ -254,7 +254,7 @@ View Example
 .. code-block:: php
 
     <!-- register.php -->
-    <form method="post">
+    <form action="<?=site_url('auth/register');?>" method="post">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <select name="role">
@@ -265,13 +265,13 @@ View Example
     </form>
 
     <!-- login.php -->
-    <form method="post">
+    <form action="<?=site_url('auth/login');?>" method="post">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
 
     <!-- dashboard.php -->
-    <h1>Welcome, <?= session('username') ?>!</h1>
-    <p>Role: <?= session('role') ?></p>
+    <h1>Welcome, <?= $session->userdata('username') ?>!</h1>
+    <p>Role: <?= $session->userdata('role') ?></p>
     <a href="<?= site_url('auth/logout') ?>">Logout</a>
