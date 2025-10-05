@@ -166,6 +166,13 @@
 </section>
 <section id="library-example">
 <h2>Library Example<a class="headerlink" href="#library-example" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">//routes</span>
+<span class="x">$router-&gt;match(&#39;/auth/login&#39;, &#39;AuthController::login&#39;, [&#39;GET&#39;, &#39;POST&#39;]);</span>
+<span class="x">$router-&gt;match(&#39;/auth/register&#39;, &#39;AuthController::register&#39;, [&#39;GET&#39;, &#39;POST&#39;]);</span>
+<span class="x">$router-&gt;get(&#39;auth/dashboard&#39;, &#39;AuthController::dashboard&#39;);</span>
+<span class="x">$router-&gt;get(&#39;/auth/logout&#39;, &#39;AuthController::logout&#39;);</span>
+</pre></div>
+</div>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">Auth</span>
 <span class="p">{</span>
