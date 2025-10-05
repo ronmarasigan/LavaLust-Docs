@@ -166,11 +166,14 @@
 </section>
 <section id="library-example">
 <h2>Library Example<a class="headerlink" href="#library-example" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">//routes</span>
-<span class="x">$router-&gt;match(&#39;/auth/login&#39;, &#39;AuthController::login&#39;, [&#39;GET&#39;, &#39;POST&#39;]);</span>
-<span class="x">$router-&gt;match(&#39;/auth/register&#39;, &#39;AuthController::register&#39;, [&#39;GET&#39;, &#39;POST&#39;]);</span>
-<span class="x">$router-&gt;get(&#39;auth/dashboard&#39;, &#39;AuthController::dashboard&#39;);</span>
-<span class="x">$router-&gt;get(&#39;/auth/logout&#39;, &#39;AuthController::logout&#39;);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="c1">//routes</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/auth/login&#39;</span><span class="p">,</span> <span class="s1">&#39;AuthController::login&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/auth/register&#39;</span><span class="p">,</span> <span class="s1">&#39;AuthController::register&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;auth/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;AuthController::dashboard&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/auth/logout&#39;</span><span class="p">,</span> <span class="s1">&#39;AuthController::logout&#39;</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
 </pre></div>
 </div>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>

@@ -261,10 +261,10 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;POST&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">([</span>
-                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
             <span class="p">]);</span>
             <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
@@ -283,9 +283,9 @@
 
         <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">updatePost</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="p">[</span>
-                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;updated_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
+                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
             <span class="p">]);</span>
             <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
         <span class="p">}</span>
@@ -324,7 +324,7 @@
 <p><strong>views/blog/index.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">All</span> <span class="nx">Blog</span> <span class="nx">Posts</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;&lt;?php echo site_url(&#39;blog/create&#39;); ?&gt;&quot;</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="k">New</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="k">New</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
     <span class="o">&lt;?</span><span class="nx">php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$blogs</span> <span class="k">as</span> <span class="nv">$blog</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
 <span class="x">        &lt;li&gt;</span>
@@ -340,7 +340,7 @@
 <p><strong>views/blog/create.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="nx">Blog</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Title</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Content</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
@@ -353,7 +353,7 @@
 <p><strong>views/blog/edit.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Edit</span> <span class="nx">Blog</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Title</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;title&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;&lt;?php echo html_escape(</span><span class="si">$BlogModel-&gt;title</span><span class="s2">); ?&gt;&quot;</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Content</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
@@ -366,7 +366,7 @@
 <p><strong>views/blog/show.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
-<span class="x">&lt;p&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nb">nl2br</span><span class="p">(</span><span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">));</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 <span class="x">&lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Back&lt;/a&gt;</span>
 <span class="x">?&gt;</span>
 </pre></div>

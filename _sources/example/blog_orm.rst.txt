@@ -189,7 +189,7 @@ Views
 
 .. code-block:: php
 
-    <form method="post" action="">
+    <form method="post" action="//put your route here">
         <label>Title</label>
         <input type="text" name="title" value="<?= $post->title ?? '' ?>" />
         <label>Content</label>

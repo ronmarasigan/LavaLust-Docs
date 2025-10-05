@@ -66,12 +66,15 @@ Library Example
 
 .. code-block:: php
     
+    <?php
+
     //routes
     $router->match('/auth/login', 'AuthController::login', ['GET', 'POST']);
     $router->match('/auth/register', 'AuthController::register', ['GET', 'POST']);
     $router->get('auth/dashboard', 'AuthController::dashboard');
     $router->get('/auth/logout', 'AuthController::logout');
-
+    ?>
+    
 .. code-block:: php
 
     <?php

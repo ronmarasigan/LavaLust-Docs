@@ -161,10 +161,10 @@ Controller: BlogController.php
          */
         public function create()
         {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($this->io->method() == 'post') {
                 $this->BlogModel->create([
-                    'title' => $_POST['title'],
-                    'content' => $_POST['content'],
+                    'title' => $this->io->post('title'),
+                    'content' => $this->io->post('content'),
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
                 redirect('blog');
@@ -183,9 +183,9 @@ Controller: BlogController.php
 
             if ($this->io->method() == 'post') {
                 $this->BlogModel->updatePost($id, [
-                    'title' => $_POST['title'],
-                    'content' => $_POST['content'],
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'title' => $this->io->post('title'),
+                    'content' => $this->io->post('content'),
+                    'created_at' => date('Y-m-d H:i:s')
                 ]);
                 redirect('blog');
             }
@@ -226,7 +226,7 @@ Views
 
     <?php
     <h1>All Blog Posts</h1>
-    <a href="<?php echo site_url('blog/create'); ?>">Create New Post</a>
+    <a href="//put your route here">Create New Post</a>
     <ul>
         <?php foreach($blogs as $blog): ?>
             <li>
@@ -244,7 +244,7 @@ Views
 
     <?php
     <h1>Create Blog Post</h1>
-    <form method="POST" action="">
+    <form action="//put your route here" method="POST">
         <label>Title</label><br>
         <input type="text" name="title"><br><br>
         <label>Content</label><br>
@@ -259,7 +259,7 @@ Views
 
     <?php
     <h1>Edit Blog Post</h1>
-    <form method="POST" action="">
+    <form method="POST" action="//put your route here">
         <label>Title</label><br>
         <input type="text" name="title" value="<?php echo html_escape($BlogModel->title); ?>"><br><br>
         <label>Content</label><br>
@@ -274,6 +274,6 @@ Views
 
     <?php
     <h1><?php echo html_escape($BlogModel->title); ?></h1>
-    <p><?php echo nl2br(html_escape($BlogModel->content)); ?></p>
+    <p><?php echo html_escape($BlogModel->content); ?></p>
     <a href="<?php echo site_url('blog'); ?>">Back</a>
     ?>
