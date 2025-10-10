@@ -221,6 +221,7 @@ Controller Example
 
 .. code-block:: php
 
+    <?php
     $router->post('login', 'ApiController::login');
     $router->post('logout', 'ApiController::logout');
     $router->post('create', 'ApiController::create');

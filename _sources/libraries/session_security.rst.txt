@@ -82,6 +82,8 @@ Reset attempts and unlock the user automatically after successful authentication
 
 .. code-block:: php
 
+    <?php
+    
    // After successful login
    $this->session->reset_attempts();
    echo "Login successful. Attempts reset.";
@@ -99,6 +101,8 @@ Manually unlock a specific user (useful for admin panels or CLI commands).
 **Example Usage:**
 
 .. code-block:: php
+
+    <?php
 
    $ip = '122.53.222.248';
    $fingerprint = '4e5dc1c30043eb3cf10f7185b21c1fa2';
@@ -123,6 +127,8 @@ Globally unlock all users and reset all login attempts (for system maintenance o
 
 .. code-block:: php
 
+    <?php
+
    $totalUnlocked = $this->session->unlock_all_attempts();
    echo "{$totalUnlocked} users have been unlocked.";
 
@@ -142,6 +148,8 @@ This section shows how to apply the same session security logic for **account cr
 **Example Implementation:**
 
 .. code-block:: php
+
+    <?php
 
    $ip = $_SERVER['REMOTE_ADDR'];
    $fingerprint = $this->session->generate_fingerprint();
@@ -221,6 +229,8 @@ The following methods are internal to the Session security system and are **not 
 
 .. code-block:: php
 
+  <?php
+  
    // Step 1: On login failure
    $this->session->_security_log_attempt($ip, $fingerprint);
 

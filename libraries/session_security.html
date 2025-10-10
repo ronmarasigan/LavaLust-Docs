@@ -200,9 +200,11 @@ An array containing the following keys:</p>
 <p><strong>Purpose:</strong>
 Reset attempts and unlock the user automatically after successful authentication.</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// After successful login</span>
-<span class="x">$this-&gt;session-&gt;reset_attempts();</span>
-<span class="x">echo &quot;Login successful. Attempts reset.&quot;;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="c1">// After successful login</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">reset_attempts</span><span class="p">();</span>
+<span class="k">echo</span> <span class="s2">&quot;Login successful. Attempts reset.&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>Returns:</strong>
@@ -213,14 +215,16 @@ Boolean <code class="docutils literal notranslate"><span class="pre">true</span>
 <p><strong>Purpose:</strong>
 Manually unlock a specific user (useful for admin panels or CLI commands).</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$ip = &#39;122.53.222.248&#39;;</span>
-<span class="x">$fingerprint = &#39;4e5dc1c30043eb3cf10f7185b21c1fa2&#39;;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
-<span class="x">if ($this-&gt;session-&gt;unlock_attempts($ip, $fingerprint)) {</span>
-<span class="x">    echo &quot;User {$ip} unlocked successfully.&quot;;</span>
-<span class="x">} else {</span>
-<span class="x">    echo &quot;No lock found for that IP/fingerprint.&quot;;</span>
-<span class="x">}</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="s1">&#39;122.53.222.248&#39;</span><span class="p">;</span>
+<span class="nv">$fingerprint</span> <span class="o">=</span> <span class="s1">&#39;4e5dc1c30043eb3cf10f7185b21c1fa2&#39;</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unlock_attempts</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$fingerprint</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;User </span><span class="si">{</span><span class="nv">$ip</span><span class="si">}</span><span class="s2"> unlocked successfully.&quot;</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;No lock found for that IP/fingerprint.&quot;</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Returns:</strong>
@@ -231,8 +235,10 @@ Boolean indicating success (<code class="docutils literal notranslate"><span cla
 <p><strong>Purpose:</strong>
 Globally unlock all users and reset all login attempts (for system maintenance or testing).</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$totalUnlocked = $this-&gt;session-&gt;unlock_all_attempts();</span>
-<span class="x">echo &quot;{$totalUnlocked} users have been unlocked.&quot;;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+
+<span class="nv">$totalUnlocked</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unlock_all_attempts</span><span class="p">();</span>
+<span class="k">echo</span> <span class="s2">&quot;</span><span class="si">{</span><span class="nv">$totalUnlocked</span><span class="si">}</span><span class="s2"> users have been unlocked.&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>Returns:</strong>
@@ -245,39 +251,41 @@ Integer — the number of users reset/unlocked.</p>
 - Each account creation request is logged using a <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix.
 - After exceeding the limit, the user/IP is temporarily blocked from creating new accounts.</p>
 <p><strong>Example Implementation:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$ip = $_SERVER[&#39;REMOTE_ADDR&#39;];</span>
-<span class="x">$fingerprint = $this-&gt;session-&gt;generate_fingerprint();</span>
-<span class="x">$key = &quot;creation_{$ip}_{$fingerprint}&quot;;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
 
-<span class="x">// Load current security data</span>
-<span class="x">$data = $this-&gt;session-&gt;_security_load();</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">];</span>
+<span class="nv">$fingerprint</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">generate_fingerprint</span><span class="p">();</span>
+<span class="nv">$key</span> <span class="o">=</span> <span class="s2">&quot;creation_</span><span class="si">{</span><span class="nv">$ip</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nv">$fingerprint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span>
 
-<span class="x">// Configuration</span>
-<span class="x">$lockoutDuration = 3600; // 1 hour</span>
-<span class="x">$maxCreations = 3;       // Limit to 3 per hour</span>
+<span class="c1">// Load current security data</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_load</span><span class="p">();</span>
 
-<span class="x">if (isset($data[$key][&#39;creations&#39;])) {</span>
-<span class="x">    // Remove expired timestamps</span>
-<span class="x">    $data[$key][&#39;creations&#39;] = array_filter(</span>
-<span class="x">        $data[$key][&#39;creations&#39;],</span>
-<span class="x">        fn($t) =&gt; ($t + $lockoutDuration) &gt; time()</span>
-<span class="x">    );</span>
+<span class="c1">// Configuration</span>
+<span class="nv">$lockoutDuration</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">;</span> <span class="c1">// 1 hour</span>
+<span class="nv">$maxCreations</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>       <span class="c1">// Limit to 3 per hour</span>
 
-<span class="x">    // Check if limit exceeded</span>
-<span class="x">    if (count($data[$key][&#39;creations&#39;]) &gt;= $maxCreations) {</span>
-<span class="x">        die(&quot;Too many account creations. Try again later.&quot;);</span>
-<span class="x">    }</span>
-<span class="x">} else {</span>
-<span class="x">    $data[$key][&#39;creations&#39;] = [];</span>
-<span class="x">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="c1">// Remove expired timestamps</span>
+    <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">array_filter</span><span class="p">(</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">],</span>
+        <span class="nx">fn</span><span class="p">(</span><span class="nv">$t</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nv">$t</span> <span class="o">+</span> <span class="nv">$lockoutDuration</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">time</span><span class="p">()</span>
+    <span class="p">);</span>
 
-<span class="x">// Log this creation</span>
-<span class="x">$data[$key][&#39;creations&#39;][] = time();</span>
+    <span class="c1">// Check if limit exceeded</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="nv">$maxCreations</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&quot;Too many account creations. Try again later.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="p">}</span>
 
-<span class="x">// Save to JSON</span>
-<span class="x">$this-&gt;session-&gt;_security_save($data);</span>
+<span class="c1">// Log this creation</span>
+<span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">][]</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
 
-<span class="x">echo &quot;Account created successfully.&quot;;</span>
+<span class="c1">// Save to JSON</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_save</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+
+<span class="k">echo</span> <span class="s2">&quot;Account created successfully.&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>JSON Example (after several creations):</strong></p>
@@ -326,18 +334,20 @@ Integer — the number of users reset/unlocked.</p>
 </tbody>
 </table>
 <p><strong>Example Internal Flow:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// Step 1: On login failure</span>
-<span class="x">$this-&gt;session-&gt;_security_log_attempt($ip, $fingerprint);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="x">// Step 2: Before next login attempt</span>
-<span class="x">$status = $this-&gt;session-&gt;check_lock_status();</span>
+ <span class="c1">// Step 1: On login failure</span>
+ <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_log_attempt</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$fingerprint</span><span class="p">);</span>
 
-<span class="x">if ($status[&#39;locked&#39;]) {</span>
-<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
-<span class="x">}</span>
+ <span class="c1">// Step 2: Before next login attempt</span>
+ <span class="nv">$status</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">check_lock_status</span><span class="p">();</span>
 
-<span class="x">// Step 3: On successful login</span>
-<span class="x">$this-&gt;session-&gt;reset_attempts();</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$status</span><span class="p">[</span><span class="s1">&#39;locked&#39;</span><span class="p">])</span> <span class="p">{</span>
+     <span class="k">echo</span> <span class="s2">&quot;Locked for </span><span class="si">{</span><span class="nv">$status</span><span class="p">[</span><span class="s1">&#39;remaining&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">;</span>
+ <span class="p">}</span>
+
+ <span class="c1">// Step 3: On successful login</span>
+ <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">reset_attempts</span><span class="p">();</span>
 </pre></div>
 </div>
 <p><strong>Storage Format Example (security.json):</strong></p>

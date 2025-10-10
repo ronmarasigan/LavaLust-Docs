@@ -382,14 +382,15 @@ It supports:</p>
 <section id="controller-example">
 <h2>Controller Example<a class="headerlink" href="#controller-example" title="Link to this heading"></a></h2>
 <p><strong>Routes</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$router-&gt;post(&#39;login&#39;, &#39;ApiController::login&#39;);</span>
-<span class="x">$router-&gt;post(&#39;logout&#39;, &#39;ApiController::logout&#39;);</span>
-<span class="x">$router-&gt;post(&#39;create&#39;, &#39;ApiController::create&#39;);</span>
-<span class="x">$router-&gt;put(&#39;update/{id}&#39;, &#39;ApiController::update&#39;);</span>
-<span class="x">$router-&gt;delete(&#39;delete/{id}&#39;, &#39;ApiController::delete&#39;);</span>
-<span class="x">$router-&gt;get(&#39;list&#39;, &#39;ApiController::list&#39;);</span>
-<span class="x">$router-&gt;get(&#39;profile&#39;, &#39;ApiController::profile&#39;);</span>
-<span class="x">$router-&gt;post(&#39;refresh&#39;, &#39;ApiController::refresh&#39;);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::login&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::logout&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::create&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;update/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;delete/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::delete&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::list&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;profile&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::profile&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;refresh&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::refresh&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Controller</strong></p>
