@@ -969,21 +969,10 @@ Follow these guidelines to ensure safe, maintainable, and performant database qu
     <?php 
 
    // ✅ Safe
-   $this->db->table('users')->where('id', $id)->get_row();
+   $this->db->table('users')->where('id', $id)->get();
 
    // ❌ Unsafe
    $this->db->query("SELECT * FROM users WHERE id = $id");
-
-`Always Escape User Input``
-
-**Reason:** Prevents SQL injection vulnerabilities when building queries dynamically.
-
-.. code-block:: php
-
-    <?php 
-
-   $name = $this->db->escape($input_name);
-   $this->db->query("SELECT * FROM users WHERE name = $name");
 
 `Limit the Columns You Select``
 
