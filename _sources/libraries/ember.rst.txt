@@ -469,16 +469,16 @@ You can extend :class:`Ember_registrar` to register additional filters, function
     <?php
     class EmberConfigs extends Ember_registrar {
 
-        public function __construct($engine)
+        public function register($engine)
         {
             // Add a new global
-            $engine[0]->add_global('myName', 'Ron');
+            $engine->add_global('myName', 'Ron');
 
             // Add a new filter
-            $engine[0]->add_filter('greet', fn($name) => 'Hello, ' . ucfirst($name) . '!');
+            $engine->add_filter('greet', fn($name) => 'Hello, ' . ucfirst($name) . '!');
 
             // Add a new function
-            $engine[0]->add_function('sum', fn($a, $b) => $a + $b);
+            $engine->add_function('sum', fn($a, $b) => $a + $b);
         }
     }
 

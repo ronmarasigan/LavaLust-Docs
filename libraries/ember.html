@@ -615,16 +615,16 @@ Renders a template with the provided context data.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">EmberConfigs</span> <span class="k">extends</span> <span class="nx">Ember_registrar</span> <span class="p">{</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(</span><span class="nv">$engine</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">register</span><span class="p">(</span><span class="nv">$engine</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="c1">// Add a new global</span>
-        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_global</span><span class="p">(</span><span class="s1">&#39;myName&#39;</span><span class="p">,</span> <span class="s1">&#39;Ron&#39;</span><span class="p">);</span>
+        <span class="nv">$engine</span><span class="o">-&gt;</span><span class="na">add_global</span><span class="p">(</span><span class="s1">&#39;myName&#39;</span><span class="p">,</span> <span class="s1">&#39;Ron&#39;</span><span class="p">);</span>
 
         <span class="c1">// Add a new filter</span>
-        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_filter</span><span class="p">(</span><span class="s1">&#39;greet&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello, &#39;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
+        <span class="nv">$engine</span><span class="o">-&gt;</span><span class="na">add_filter</span><span class="p">(</span><span class="s1">&#39;greet&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello, &#39;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
 
         <span class="c1">// Add a new function</span>
-        <span class="nv">$engine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">add_function</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">);</span>
+        <span class="nv">$engine</span><span class="o">-&gt;</span><span class="na">add_function</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="nx">fn</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
