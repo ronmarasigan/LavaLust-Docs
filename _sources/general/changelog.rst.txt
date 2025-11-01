@@ -1,6 +1,12 @@
 LavaLust Changelog
 ==================
 
+LavaLust 4.4.1
+------------------
+
+1. Fixed bug in accessing view files inside a folder.
+2. Fix other known bugs
+
 LavaLust 4.4.0
 ---------------
 
