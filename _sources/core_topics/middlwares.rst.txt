@@ -1,0 +1,125 @@
+Middleware
+==========
+
+.. method:: Middleware::run(array $middlewares, Closure $destination) -> mixed
+
+    The **Middleware system** provides a structured way to filter HTTP requests
+    before they reach their final destination (such as a route or controller
+    action). Middleware are executed in sequence using a **pipeline pattern**,
+    allowing each middleware to decide whether execution should continue.
+
+    Middleware are commonly used for:
+
+    - Authentication checks
+    - Authorization and role validation
+    - CSRF or security enforcement
+    - Request preprocessing
+    - Access control and guards
+
+    Middleware are resolved using a configuration-based map and must implement
+    a ``handle(Closure $next)`` method.
+
+    :param array $middlewares: A list of middleware keys to execute in order.
+    :param Closure $destination: The final callback executed after all middleware pass.
+    :return mixed: The return value of the final destination or middleware.
+
+Configuration
+-------------
+
+Middleware mappings are defined in **app/config/middleware.php**.  
+Each key maps to a middleware class loaded from the ``middlewares`` directory.
+
+.. code-block:: php
+
+    <?php
+    $config['middleware'] = array(
+        // AuthMiddleware and AdminMiddleware are classes inside app/middlewares
+        // You can add more middlewares here
+        'auth'  => load_class('AuthMiddleware', 'middlewares'),
+        'admin' => load_class('AdminMiddleware', 'middlewares'),
+    );
+
+Each middleware class must define a ``handle()`` method:
+
+.. code-block:: php
+
+    <?php
+    class AuthMiddleware
+    {
+        public function handle(Closure $next)
+        {
+            if (!isset($_SESSION['user'])) {
+                redirect('login');
+            }
+
+            return $next();
+        }
+    }
+
+Usage
+-----
+
+Middleware can be applied directly to routes or route groups via the router.
+
+Route Group Middleware
+----------------------
+
+Apply one or more middleware to a group of routes in **app/config/routes.php**:
+
+.. code-block:: php
+
+    <?php
+    // Protected user routes
+    $router->group(
+        ['prefix' => '/user', 'middleware' => ['auth', 'admin']],
+        function ($router) {
+
+            $router->get('/profile/{id}', function ($id) {
+                echo 'Hello userid ! ' . $id;
+            })->where_number('id');
+
+            $router->get('/dashboard', function () {
+                echo 'User dashboard';
+            });
+
+        }
+    );
+
+All routes inside the group will execute the ``auth`` middleware first,
+followed by the ``admin`` middleware, before reaching the route callback.
+
+Single Route Middleware
+-----------------------
+
+Middleware can also be applied to an individual route:
+
+.. code-block:: php
+
+    <?php
+    // Admin-only route
+    $router->get('/adminpanel', function () {
+        echo 'Admin panel';
+    })->middleware('admin');
+
+In this case, only the ``admin`` middleware will be executed before
+the route callback.
+
+Execution Flow
+--------------
+
+1. Incoming request is matched to a route
+2. Assigned middleware are resolved from configuration
+3. Middleware are executed in order
+4. Each middleware calls ``$next()`` to continue
+5. Final route callback is executed
+
+If a middleware does **not** call ``$next()``, execution stops immediately.
+
+Summary
+-------
+
+- Middleware are registered in configuration
+- They are executed using a pipeline pattern
+- Can be applied per-route or per-group
+- Ideal for authentication, authorization, and request filtering
+- Keeps route logic clean and reusable

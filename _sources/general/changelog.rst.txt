@@ -1,6 +1,12 @@
 LavaLust Changelog
 ==================
 
+LavaLust 4.5.0
+------------------
+
+1. Allow to create user middleware.
+2. Add simple queues and scheduler as a service.
+
 LavaLust 4.4.1
 ------------------
 
