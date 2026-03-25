@@ -35,10 +35,10 @@ Add .htaccess file inside public directory and put this:
       # Handle Front Controller...
       RewriteCond %{REQUEST_FILENAME} !-d
       RewriteCond %{REQUEST_FILENAME} !-f
-      RewriteRule ^ index.php [L]
+      RewriteRule ^(.*)$ index.php/$1 [L]
    </IfModule>
 
-   # Optional: Deny access to .env or sensitive files
+   # Optional: Deny access to sensitive files
    <FilesMatch "^\.env|composer\.json|composer\.lock">
       Order allow,deny
       Deny from all

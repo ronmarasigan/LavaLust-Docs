@@ -122,10 +122,10 @@ RewriteRule ^(.*)$ public/$1 [L,QSA]
    # Handle Front Controller...
    RewriteCond %{REQUEST_FILENAME} !-d
    RewriteCond %{REQUEST_FILENAME} !-f
-   RewriteRule ^ index.php [L]
+   RewriteRule ^(.*)$ index.php/$1 [L]
 &lt;/IfModule&gt;
 
-# Optional: Deny access to .env or sensitive files
+# Optional: Deny access to sensitive files
 &lt;FilesMatch &quot;^\.env|composer\.json|composer\.lock&quot;&gt;
    Order allow,deny
    Deny from all
