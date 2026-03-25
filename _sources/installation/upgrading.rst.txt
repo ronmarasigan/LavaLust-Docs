@@ -8,11 +8,14 @@ Update your index.php ROOT_DIR from __DIR___ to dirname(__DIR__) and put it to y
 Update the .htaccess in your root to this:
 
 .. code-block:: text
+
    RewriteCond %{REQUEST_URI} !^/public/
    RewriteRule ^(.*)$ public/$1 [L,QSA]
 
 Add .htaccess file inside public directory and put this:
+
 .. code-block:: text
+   
    <IfModule mod_rewrite.c>
       <IfModule mod_negotiation.c>
          Options -MultiViews -Indexes
