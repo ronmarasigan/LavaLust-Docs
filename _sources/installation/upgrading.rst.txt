@@ -1,6 +1,44 @@
 Upgrading Version
 =================
 
+Upgrading from 4.5.0 to 4.6.0
+----------------------------------
+
+Update your index.php ROOT_DIR from __DIR___ to dirname(__DIR__) and put it to your public directory.
+Update the .htaccess in your root to this:
+
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+Add .htaccess file inside public directory and put this:
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Optional: Deny access to .env or sensitive files
+<FilesMatch "^\.env|composer\.json|composer\.lock">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
 Upgrading from 4.4.1 to 4.5.0
 ----------------------------------
 

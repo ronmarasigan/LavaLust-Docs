@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upgrading Version &mdash; LavaLust 4.5.0 documentation</title>
+  <title>Upgrading Version &mdash; LavaLust 4.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=5ef59c98"></script>
+      <script src="../_static/documentation_options.js?v=cc8a4273"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -48,6 +48,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Instructions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="guide.html">Installation Guide</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Upgrading Version</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-from-4-5-0-to-4-6-0">Upgrading from 4.5.0 to 4.6.0</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#upgrading-from-4-4-1-to-4-5-0">Upgrading from 4.4.1 to 4.5.0</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#upgrading-from-4-4-0-to-4-4-1">Upgrading from 4.4.0 to 4.4.1</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#upgrading-from-4-3-1-to-4-4-0">Upgrading from 4.3.1 to 4.4.0</a></li>
@@ -93,6 +94,42 @@
              
   <section id="upgrading-version">
 <h1>Upgrading Version<a class="headerlink" href="#upgrading-version" title="Link to this heading"></a></h1>
+<section id="upgrading-from-4-5-0-to-4-6-0">
+<h2>Upgrading from 4.5.0 to 4.6.0<a class="headerlink" href="#upgrading-from-4-5-0-to-4-6-0" title="Link to this heading"></a></h2>
+<p>Update your index.php ROOT_DIR from __DIR___ to dirname(__DIR__) and put it to your public directory.
+Update the .htaccess in your root to this:</p>
+<p>RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L,QSA]</p>
+<p>Add .htaccess file inside public directory and put this:
+&lt;IfModule mod_rewrite.c&gt;</p>
+<blockquote>
+<div><dl class="simple">
+<dt>&lt;IfModule mod_negotiation.c&gt;</dt><dd><p>Options -MultiViews -Indexes</p>
+</dd>
+</dl>
+<p>&lt;/IfModule&gt;</p>
+<p>RewriteEngine On</p>
+<p># Handle Authorization Header
+RewriteCond %{<a class="reference external" href="HTTP:Authorization">HTTP:Authorization</a>} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{<a class="reference external" href="HTTP:Authorization">HTTP:Authorization</a>}]</p>
+<p># Redirect Trailing Slashes If Not A Folder…
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]</p>
+<p># Handle Front Controller…
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]</p>
+</div></blockquote>
+<p>&lt;/IfModule&gt;</p>
+<p># Optional: Deny access to .env or sensitive files
+&lt;FilesMatch “^.env|composer.json|composer.lock”&gt;</p>
+<blockquote>
+<div><p>Order allow,deny
+Deny from all</p>
+</div></blockquote>
+<p>&lt;/FilesMatch&gt;</p>
+</section>
 <section id="upgrading-from-4-4-1-to-4-5-0">
 <h2>Upgrading from 4.4.1 to 4.5.0<a class="headerlink" href="#upgrading-from-4-4-1-to-4-5-0" title="Link to this heading"></a></h2>
 <p>Replace all files and directories in your <code class="docutils literal notranslate"><span class="pre">scheme/</span></code> directory.</p>
