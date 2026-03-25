@@ -98,12 +98,11 @@
 <h2>Upgrading from 4.5.0 to 4.6.0<a class="headerlink" href="#upgrading-from-4-5-0-to-4-6-0" title="Link to this heading"></a></h2>
 <p>Update your index.php ROOT_DIR from __DIR___ to dirname(__DIR__) and put it to your public directory.
 Update the .htaccess in your root to this:</p>
-<p>RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ public/$1 [L,QSA]</p>
 <p>Add .htaccess file inside public directory and put this:
-&lt;IfModule mod_rewrite.c&gt;</p>
+.. code-block:: text</p>
 <blockquote>
-<div><dl class="simple">
+<div><dl>
+<dt>&lt;IfModule mod_rewrite.c&gt;</dt><dd><dl class="simple">
 <dt>&lt;IfModule mod_negotiation.c&gt;</dt><dd><p>Options -MultiViews -Indexes</p>
 </dd>
 </dl>
@@ -120,7 +119,8 @@ RewriteRule ^ %1 [L,R=301]</p>
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [L]</p>
-</div></blockquote>
+</dd>
+</dl>
 <p>&lt;/IfModule&gt;</p>
 <p># Optional: Deny access to .env or sensitive files
 &lt;FilesMatch “^.env|composer.json|composer.lock”&gt;</p>
@@ -129,6 +129,7 @@ RewriteRule ^ index.php [L]</p>
 Deny from all</p>
 </div></blockquote>
 <p>&lt;/FilesMatch&gt;</p>
+</div></blockquote>
 </section>
 <section id="upgrading-from-4-4-1-to-4-5-0">
 <h2>Upgrading from 4.4.1 to 4.5.0<a class="headerlink" href="#upgrading-from-4-4-1-to-4-5-0" title="Link to this heading"></a></h2>
