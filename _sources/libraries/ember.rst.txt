@@ -405,8 +405,6 @@ Example:
     <p>{{ 123456.789 | money }}</p>
     <p>{{ 5 | pluralize("apple") }}</p>
 
--------------------------------------------------------------------
-
 Functions
 ---------
 
@@ -416,36 +414,126 @@ Functions can be called in templates:
    :header-rows: 1
    :widths: 25 75
 
-   * - Function Name
-     - Description
-   * - url(path)
-     - Returns a clean URL path
-   * - asset(path)
-     - Returns a public asset URL
-   * - site_url(path)
-     - Returns a site-relative URL
-   * - base_url(path)
-     - Returns base URL + path
-   * - active(route)
-     - Returns "active" if current route matches
-   * - config(key)
-     - Returns a config value
-   * - session(key)
-     - Returns session variable or all if key is null
-   * - upper(str)
-     - Converts string to uppercase
-   * - repeat(str, n)
-     - Repeats string n times
-   * - now()
-     - Returns current date and time
-   * - date(format, time)
-     - Returns formatted date
-   * - include(template, vars)
-     - Includes another template
-   * - dump(value)
-     - Debug helper: prints value with <pre>
-   * - csrf_field()
-     - Prints CSRF hidden input field
+  * - Name
+    - Description
+  * - app_name
+    - Application name from config (default: "LavaLust App")
+  * - base_url
+    - Base URL of the application
+  * - site_url
+    - Site URL with index.php (if applicable)
+  * - csp_nonce
+    - Content Security Policy nonce for inline scripts/styles
+  * - Filter
+    - Description
+  * - upper
+    - Converts string to uppercase
+  * - lower
+    - Converts string to lowercase
+  * - title
+    - Converts string to Title Case
+  * - capitalize
+    - Capitalizes first letter
+  * - trim
+    - Removes whitespace from both ends
+  * - reverse
+    - Reverses string or array
+  * - Filter
+    - Description
+  * - escape / e
+    - Escapes output (recommended for safety)
+  * - raw
+    - Outputs raw HTML (dangerous, use carefully)
+  * - nl2br
+    - Converts newlines to <br>
+  * - striptags
+    - Removes HTML tags
+  * - Filter
+    - Description
+  * - length
+    - Counts items in array or characters in string
+  * - default(value)
+    - Returns default if value is empty
+  * - join(separator)
+    - Joins array into string
+  * - slice(start, length)
+    - Extracts part of array or string
+  * - Filter
+    - Description
+  * - number_format(decimals)
+    - Formats number with decimals
+  * - abs
+    - Absolute value
+  * - round(precision)
+    - Rounds number
+  * - Filter
+    - Description
+  * - date(format)
+    - Formats date/time value
+  * - Filter
+    - Description
+  * - json(pretty)
+    - Converts value to JSON string
+  * - replace(search, replace)
+    - Replaces text inside string
+  * - Filter
+    - Description
+  * - money(symbol)
+    - Formats number as currency (default ₱)
+  * - slug
+    - Converts string to URL-friendly slug
+  * - pluralize(word)
+    - Adds "s" if count is not 1
+  * - Function Name
+    - Description
+  * - url(path)
+    - Returns a clean relative URL (prepends "/")
+  * - asset(path)
+    - Returns URL from ``public/`` directory
+  * - site_url(path)
+    - Returns routed URL
+  * - base_url(path)
+    - Returns base URL + path
+  * - active(route)
+    - Returns "active" if route matches current URL
+  * - Function Name
+    - Description
+  * - config(key)
+    - Returns config value
+  * - session(key)
+    - Returns session value; returns all if key is null
+  * - Function Name
+    - Description
+  * - upper(str)
+    - Converts string to uppercase
+  * - repeat(str, n)
+    - Repeats string n times
+  * - Function Name
+    - Description
+  * - now()
+    - Returns current datetime (Y-m-d H:i:s)
+  * - date(format, timestamp)
+    - Formats timestamp
+  * - Function Name
+    - Description
+  * - include(template, vars)
+    - Renders another template with variables
+  * - dump(value, die=false)
+    - Prints formatted debug output; optionally stops execution
+  * - Function Name
+    - Description
+  * - csrf_field()
+    - Outputs hidden CSRF input field
+  * - old(key, default)
+    - Returns previously submitted form value
+  * - Function Name
+    - Description
+  * - nonce()
+    - Returns CSP nonce for inline scripts/styles
+  * - Function Name
+    - Description
+  * - asset_version(path)
+    - Returns asset URL with cache-busting version (?v=timestamp)
 
 Example:
 

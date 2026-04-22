@@ -65,6 +65,15 @@ Create a controller (e.g. ``Migrations.php``) to handle migration commands:
        {
            $this->migration->rollback();
        }
+
+       public function rollback-all()
+       {
+           $this->migration->rollback_all();
+       }
+
+       public function refresh() {
+            $this->migration->refresh();        
+       }
    }
 
 Routes Example
@@ -78,6 +87,8 @@ Add routes so you can call these actions via the browser:
    $router->get('create-migration/{migration_class}', 'Migration::create_migration');
    $router->get('migrate', 'Migration::migrate');
    $router->get('rollback', 'Migration::rollback');
+   $router->get('rollback-all', 'Migration::rollback_all');
+   $router->get('refresh', 'Migration::refresh');
 
 Creating a Migration File
 --------------------------

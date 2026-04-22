@@ -52,12 +52,24 @@
 <li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#creating-a-model">Creating a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-properties">Model Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#loading-a-model-in-a-controller">Loading a Model in a Controller</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basic-crud-operations-in-controller">Basic CRUD Operations in Controller</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#soft-delete">Soft Delete</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#enabling-soft-delete">Enabling Soft Delete</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#soft-delete-operations">Soft Delete Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-records">Retrieving Records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-or-create-update-or-create">Find or Create / Update or Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aggregate-methods">Aggregate Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grouping-and-having">Grouping and Having</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scopes">Scopes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pagination">Pagination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bulk-operations">Bulk Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#soft-delete">Soft Delete</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enabling-soft-delete">Enabling Soft Delete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#soft-delete-operations">Soft Delete Operations</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#using-relationships">Using Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eager-loading">Eager Loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transactions">Transactions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#loading-multiple-models">Loading Multiple Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#auto-loading-models">Auto-loading Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#assigning-model-to-different-name">Assigning Model to Different Name</a></li>
@@ -109,7 +121,7 @@
 They provide a clean separation of database logic from controllers and views, following the MVC pattern.</p>
 <section id="creating-a-model">
 <h2>Creating a Model<a class="headerlink" href="#creating-a-model" title="Link to this heading"></a></h2>
-<p>A basic model class should extend LavaLust’s base <cite>Model</cite> class:</p>
+<p>A basic model class should extend LavaLust’s base <code class="docutils literal notranslate"><span class="pre">Model</span></code> class:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
@@ -123,6 +135,40 @@ They provide a clean separation of database logic from controllers and views, fo
 <li><p><code class="docutils literal notranslate"><span class="pre">$table</span></code> specifies the database table associated with the model.</p></li>
 <li><p>The model inherits methods for common database operations like <code class="docutils literal notranslate"><span class="pre">find()</span></code>, <code class="docutils literal notranslate"><span class="pre">all()</span></code>, <code class="docutils literal notranslate"><span class="pre">insert()</span></code>, <code class="docutils literal notranslate"><span class="pre">update()</span></code>, and <code class="docutils literal notranslate"><span class="pre">delete()</span></code>.</p></li>
 </ul>
+</section>
+<section id="model-properties">
+<h2>Model Properties<a class="headerlink" href="#model-properties" title="Link to this heading"></a></h2>
+<p>You can configure the following protected properties in your model:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$table</span>              <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span>        <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+
+    <span class="c1">// Whitelist of columns allowed for mass assignment</span>
+    <span class="k">protected</span> <span class="nv">$fillable</span>           <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">];</span>
+
+    <span class="c1">// Blacklist of columns protected from mass assignment</span>
+    <span class="k">protected</span> <span class="nv">$guarded</span>            <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">];</span>
+
+    <span class="c1">// Automatically manage created_at and updated_at</span>
+    <span class="k">protected</span> <span class="nv">$timestamps</span>         <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+
+    <span class="c1">// Customize timestamp column names</span>
+    <span class="k">protected</span> <span class="nv">$created_at_column</span>  <span class="o">=</span> <span class="s1">&#39;created_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$updated_at_column</span>  <span class="o">=</span> <span class="s1">&#39;updated_at&#39;</span><span class="p">;</span>
+
+    <span class="c1">// Soft delete settings</span>
+    <span class="k">protected</span> <span class="nv">$has_soft_delete</span>    <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">&#39;deleted_at&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If both <code class="docutils literal notranslate"><span class="pre">$fillable</span></code> and <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> are empty, all columns are allowed (legacy mode).
+Always define <code class="docutils literal notranslate"><span class="pre">$fillable</span></code> or <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> in production models.</p>
+</div>
 </section>
 <section id="loading-a-model-in-a-controller">
 <h2>Loading a Model in a Controller<a class="headerlink" href="#loading-a-model-in-a-controller" title="Link to this heading"></a></h2>
@@ -174,13 +220,18 @@ They provide a clean separation of database logic from controllers and views, fo
 <span class="k">public</span> <span class="k">function</span> <span class="nf">addUser</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span>
         <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span>
     <span class="p">];</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="s2">&quot;User added successfully!&quot;</span><span class="p">;</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="s2">&quot;User added with ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">insert()</span></code> returns the last inserted ID. It respects <code class="docutils literal notranslate"><span class="pre">$fillable</span></code> / <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> and
+automatically sets <code class="docutils literal notranslate"><span class="pre">created_at</span></code> and <code class="docutils literal notranslate"><span class="pre">updated_at</span></code> if timestamps are enabled.</p>
 </div>
 <p><strong>3. Update a record:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
@@ -203,44 +254,281 @@ They provide a clean separation of database logic from controllers and views, fo
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><strong>5. Find a single record by primary key:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Include soft-deleted records</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>6. Find a single record by column:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_by</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>7. Find all records matching a column value:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$admins</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_all_by</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>8. Update records matching conditions:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update_where</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;guest&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;member&#39;</span><span class="p">]</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>9. Delete records matching conditions:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete_where</span><span class="p">([</span><span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="retrieving-records">
+<h2>Retrieving Records<a class="headerlink" href="#retrieving-records" title="Link to this heading"></a></h2>
+<p><strong>Get first record:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Get last record:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">last</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Get a single column value:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Get a flat array of column values:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="c1">// With conditions</span>
+<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Check if a record exists:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$exists</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">exists</span><span class="p">([</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Row count:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+
+<span class="c1">// Include soft-deleted rows</span>
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Order results:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Limit results:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Filter with a WHERE clause:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$activeAdmins</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span>
+    <span class="o">-&gt;</span><span class="na">filter</span><span class="p">([</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Get table columns:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$columns</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">get_columns</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Raw SQL query:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$results</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
+    <span class="s1">&#39;SELECT * FROM users WHERE created_at &gt; ?&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">]</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Access the query builder directly:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="find-or-create-update-or-create">
+<h2>Find or Create / Update or Create<a class="headerlink" href="#find-or-create-update-or-create" title="Link to this heading"></a></h2>
+<p><strong>first_or_create</strong> — finds the first matching record or inserts one if none exists:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">first_or_create</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">]</span>
+<span class="p">);</span>
+
+<span class="nv">$user</span>    <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;record&#39;</span><span class="p">];</span>
+<span class="nv">$created</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">];</span> <span class="c1">// true if a new record was inserted</span>
+</pre></div>
+</div>
+<p><strong>update_or_create</strong> — updates the first matching record, or creates one if none found:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update_or_create</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;editor&#39;</span><span class="p">]</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="aggregate-methods">
+<h2>Aggregate Methods<a class="headerlink" href="#aggregate-methods" title="Link to this heading"></a></h2>
+<p>All aggregate methods accept optional <code class="docutils literal notranslate"><span class="pre">$conditions</span></code> and a <code class="docutils literal notranslate"><span class="pre">$with_deleted</span></code> flag.</p>
+<p><strong>Sum:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">OrderModel</span><span class="o">-&gt;</span><span class="na">sum</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Max:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$max</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">max</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;category_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Min:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$min</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">min</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Average:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$avg</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ReviewModel</span><span class="o">-&gt;</span><span class="na">avg</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;product_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="grouping-and-having">
+<h2>Grouping and Having<a class="headerlink" href="#grouping-and-having" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span>
+    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">&#39;COUNT(id)&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span>
+    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="scopes">
+<h2>Scopes<a class="headerlink" href="#scopes" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">scope()</span></code> to apply a reusable query closure to the underlying database builder:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">scope</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$db</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;verified&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">);</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="pagination">
+<h2>Pagination<a class="headerlink" href="#pagination" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$page</span>   <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(</span>
+    <span class="mi">15</span><span class="p">,</span>              <span class="c1">// per page</span>
+    <span class="nv">$page</span><span class="p">,</span>           <span class="c1">// current page</span>
+    <span class="p">[</span><span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1">// optional conditions</span>
+<span class="p">);</span>
+
+<span class="c1">// Result structure:</span>
+<span class="c1">// [</span>
+<span class="c1">//   &#39;data&#39;         =&gt; [...],  // rows for this page</span>
+<span class="c1">//   &#39;total&#39;        =&gt; 150,    // total matching rows</span>
+<span class="c1">//   &#39;per_page&#39;     =&gt; 15,</span>
+<span class="c1">//   &#39;current_page&#39; =&gt; 2,</span>
+<span class="c1">//   &#39;last_page&#39;    =&gt; 10,</span>
+<span class="c1">// ]</span>
+</pre></div>
+</div>
+</section>
+<section id="bulk-operations">
+<h2>Bulk Operations<a class="headerlink" href="#bulk-operations" title="Link to this heading"></a></h2>
+<p><strong>Bulk insert:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">bulk_insert</span><span class="p">([</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>   <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;bob@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Carol&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;carol@example.com&#39;</span><span class="p">],</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Bulk update:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$affected</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">bulk_update</span><span class="p">([</span>
+    <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;editor&#39;</span><span class="p">],</span>
+<span class="p">]);</span>
+<span class="c1">// Returns: int (number of rows updated)</span>
+</pre></div>
+</div>
+<p><strong>Empty a table:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">truncate</span><span class="p">();</span>
+</pre></div>
+</div>
 </section>
 <section id="soft-delete">
 <h2>Soft Delete<a class="headerlink" href="#soft-delete" title="Link to this heading"></a></h2>
 <p>LavaLust supports <strong>soft deletes</strong>, allowing you to mark a record as deleted without permanently removing it from the database.
 This is useful for recovering deleted records later.</p>
-</section>
 <section id="enabling-soft-delete">
-<h2>Enabling Soft Delete<a class="headerlink" href="#enabling-soft-delete" title="Link to this heading"></a></h2>
-<p>To enable soft deletes, add the <code class="docutils literal notranslate"><span class="pre">$soft_delete</span></code> property in your model:</p>
+<h3>Enabling Soft Delete<a class="headerlink" href="#enabling-soft-delete" title="Link to this heading"></a></h3>
+<p>To enable soft deletes, add the <code class="docutils literal notranslate"><span class="pre">$has_soft_delete</span></code> property in your model:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$soft_delete</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// Enable soft deletes</span>
+    <span class="k">protected</span> <span class="nv">$table</span>          <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$has_soft_delete</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// Enable soft deletes</span>
+
+    <span class="c1">// Optional: customize the column name (default: deleted_at)</span>
+    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">&#39;removed_at&#39;</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When <code class="docutils literal notranslate"><span class="pre">$soft_delete</span></code> is true, deleted records are not permanently removed.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">$has_soft_delete</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, deleted records are not permanently removed.
+Instead, a timestamp in the <code class="docutils literal notranslate"><span class="pre">deleted_at</span></code> column (or your custom column) marks the record as deleted.
+All queries automatically exclude rows where this column is not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Instead, a timestamp (usually in a <code class="docutils literal notranslate"><span class="pre">deleted_at</span></code> column) marks the record as deleted.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">$has_soft_delete</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code> and you call <code class="docutils literal notranslate"><span class="pre">soft_delete()</span></code>, it will fall back to a
+hard <code class="docutils literal notranslate"><span class="pre">delete()</span></code> automatically.</p>
 </div>
 </section>
 <section id="soft-delete-operations">
-<h2>Soft Delete Operations<a class="headerlink" href="#soft-delete-operations" title="Link to this heading"></a></h2>
-<p><strong>1. Soft Delete a record:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;model(&#39;UserModel&#39;);</span>
-<span class="x">$this-&gt;UserModel-&gt;soft_delete(5);  // Soft delete user with ID 5</span>
+<h3>Soft Delete Operations<a class="headerlink" href="#soft-delete-operations" title="Link to this heading"></a></h3>
+<p><strong>1. Soft delete a record:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">soft_delete</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>  <span class="c1">// Sets deleted_at timestamp on user ID 5</span>
 </pre></div>
 </div>
 <p><strong>2. Restore a soft-deleted record:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">restore</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// Restore user with ID 5</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">restore</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// Nullifies deleted_at for user ID 5</span>
 </pre></div>
 </div>
+<p><strong>3. Query including soft-deleted records:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Pass true to any query method to include soft-deleted rows</span>
+<span class="nv">$all</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>4. Hard delete (bypasses soft delete):</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="using-relationships">
 <h2>Using Relationships<a class="headerlink" href="#using-relationships" title="Link to this heading"></a></h2>
@@ -248,42 +536,61 @@ This is useful for recovering deleted records later.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">PostModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;posts&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span>       <span class="o">=</span> <span class="s1">&#39;posts&#39;</span><span class="p">;</span>
     <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">author</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="c1">// A post has one author (FK: user_id on users table)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">author</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_one</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_one</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">comments</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="c1">// A post has many comments (FK: post_id on comments table)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">comments</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_many</span><span class="p">(</span><span class="s1">&#39;CommentModel&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_many</span><span class="p">(</span><span class="s1">&#39;CommentModel&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// A post belongs to a category (FK: category_id on posts table)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">category</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongs_to</span><span class="p">(</span><span class="s1">&#39;CategoryModel&#39;</span><span class="p">,</span> <span class="s1">&#39;category_id&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// A post has many tags via pivot table</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">tags</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">many_to_many</span><span class="p">(</span><span class="s1">&#39;TagModel&#39;</span><span class="p">,</span> <span class="s1">&#39;post_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tag_id&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Available relationship types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">has_one($related,</span> <span class="pre">$foreign_key)</span></code> — current model owns one related record.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_many($related,</span> <span class="pre">$foreign_key)</span></code> — current model owns many related records.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">belongs_to($related,</span> <span class="pre">$foreign_key)</span></code> — current model holds the foreign key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">many_to_many($related,</span> <span class="pre">$pivot_table,</span> <span class="pre">$current_key,</span> <span class="pre">$related_key)</span></code> — relationship via an intermediate pivot table.</p></li>
+</ul>
 <p><strong>Controller example using relationships:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">PostController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$postModel</span><span class="p">;</span>
-
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
-            <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;PostModel&#39;</span><span class="p">);</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;PostModel&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">showPost</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$post</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nv">$author</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">author</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$post</span>     <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$author</span>   <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">author</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
         <span class="nv">$comments</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">comments</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;post/show&#39;</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">&#39;post&#39;</span> <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">,</span>
-            <span class="s1">&#39;author&#39;</span> <span class="o">=&gt;</span> <span class="nv">$author</span><span class="p">,</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;post/show&#39;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="s1">&#39;post&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$author</span><span class="p">,</span>
             <span class="s1">&#39;comments&#39;</span> <span class="o">=&gt;</span> <span class="nv">$comments</span>
         <span class="p">]);</span>
     <span class="p">}</span>
@@ -295,6 +602,53 @@ This is useful for recovering deleted records later.</p>
 <p>Relationships allow you to fetch related data cleanly without writing complex joins manually.</p>
 </div>
 </section>
+<section id="eager-loading">
+<h2>Eager Loading<a class="headerlink" href="#eager-loading" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">with()</span></code> before <code class="docutils literal notranslate"><span class="pre">all()</span></code> to automatically attach related records to every row, avoiding N+1 query problems:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Load all posts with their author and comments attached</span>
+<span class="nv">$posts</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span>
+    <span class="o">-&gt;</span><span class="na">with</span><span class="p">([</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;comments&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+
+<span class="c1">// Each post now has $post[&#39;author&#39;] and $post[&#39;comments&#39;]</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$posts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39; by &#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">$with</span></code> array is automatically reset after each <code class="docutils literal notranslate"><span class="pre">all()</span></code> call, so eager-loading state
+does not leak between requests.</p>
+</div>
+</section>
+<section id="transactions">
+<h2>Transactions<a class="headerlink" href="#transactions" title="Link to this heading"></a></h2>
+<p>Wrap multiple write operations in a transaction to ensure atomicity:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
+
+<span class="k">try</span> <span class="p">{</span>
+    <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">,</span>
+    <span class="p">]);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProfileModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+        <span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$userId</span><span class="p">,</span>
+        <span class="s1">&#39;bio&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello world&#39;</span><span class="p">,</span>
+    <span class="p">]);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
+
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">();</span>
+    <span class="c1">// Handle error...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="loading-multiple-models">
 <h2>Loading Multiple Models<a class="headerlink" href="#loading-multiple-models" title="Link to this heading"></a></h2>
 <p>If you would like to load multiple models at a time you can use this:</p>
@@ -303,9 +657,8 @@ This is useful for recovering deleted records later.</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">model_1</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">model_2</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 
-<span class="c1">//or if you load multiple methods</span>
-
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;model_1&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;m1&#39;</span><span class="p">,</span> <span class="s1">&#39;model_2&#39;</span> <span class="o">=&gt;</span> <span class="nx">m1</span><span class="p">]);</span>
+<span class="c1">// Or with aliases</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;model_1&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;m1&#39;</span><span class="p">,</span> <span class="s1">&#39;model_2&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;m2&#39;</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">m1</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">m2</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 </pre></div>
@@ -313,17 +666,17 @@ This is useful for recovering deleted records later.</p>
 </section>
 <section id="auto-loading-models">
 <h2>Auto-loading Models<a class="headerlink" href="#auto-loading-models" title="Link to this heading"></a></h2>
-<p>If you want certain helpers to always be available in your app (without manually loading them every time),
+<p>If you want certain models to always be available in your app (without manually loading them every time),
 you can <strong>auto-load</strong> them in the configuration:</p>
 <ol class="arabic simple">
 <li><p>Open <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code>.</p></li>
-<li><p>Add your helper names in the <code class="docutils literal notranslate"><span class="pre">$autoload['models']</span></code> array.</p></li>
+<li><p>Add your model names in the <code class="docutils literal notranslate"><span class="pre">$autoload['models']</span></code> array.</p></li>
 </ol>
 <p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;models&#39;] = [&#39;UserModel&#39;];</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;models&#39;] = [&#39;UserModel&#39;, &#39;PostModel&#39;];</span>
 </pre></div>
 </div>
-<p>These helpers will now be loaded automatically for every request.</p>
+<p>These models will now be loaded automatically for every request.</p>
 </section>
 <section id="assigning-model-to-different-name">
 <h2>Assigning Model to Different Name<a class="headerlink" href="#assigning-model-to-different-name" title="Link to this heading"></a></h2>
@@ -332,9 +685,8 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;model_name&#39;</span><span class="p">,</span> <span class="s1">&#39;foobar&#39;</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">foobar</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 
-<span class="c1">//or if you load multiple methods</span>
-
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;model_name&#39;</span><span class="p">));</span>
+<span class="c1">// Or using array syntax</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;foobar&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;model_name&#39;</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">foobar</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -344,9 +696,14 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <ul class="simple">
 <li><p>Load models in the constructor if they are used across multiple methods.</p></li>
 <li><p>Keep all database queries inside models — controllers should only coordinate data flow.</p></li>
+<li><p>Always define <code class="docutils literal notranslate"><span class="pre">$fillable</span></code> or <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> — never rely on the open legacy mode in production.</p></li>
 <li><p>Validate all input data before inserting or updating records.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">with()</span></code> for eager loading rather than calling relationship methods inside loops to avoid N+1 queries.</p></li>
 <li><p>Use model relationships to simplify fetching related data.</p></li>
-<li><p>Leverage built-in ORM features like <code class="docutils literal notranslate"><span class="pre">has_one`</span></code>, <code class="docutils literal notranslate"><span class="pre">has_many</span></code>, <code class="docutils literal notranslate"><span class="pre">many_to_many</span></code> and <code class="docutils literal notranslate"><span class="pre">soft</span> <span class="pre">deletes</span></code> when available.</p></li>
+<li><p>Prefer <code class="docutils literal notranslate"><span class="pre">soft_delete()</span></code> over <code class="docutils literal notranslate"><span class="pre">delete()</span></code> for any user-facing data that may need recovery.</p></li>
+<li><p>Wrap multi-step write operations in <code class="docutils literal notranslate"><span class="pre">transaction()</span></code> / <code class="docutils literal notranslate"><span class="pre">commit()</span></code> / <code class="docutils literal notranslate"><span class="pre">rollback()</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">paginate()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">all()</span></code> on large tables to avoid loading thousands of rows into memory.</p></li>
+<li><p>Leverage built-in ORM features like <code class="docutils literal notranslate"><span class="pre">has_one</span></code>, <code class="docutils literal notranslate"><span class="pre">has_many</span></code>, <code class="docutils literal notranslate"><span class="pre">many_to_many</span></code>, and soft deletes when available.</p></li>
 </ul>
 </section>
 </section>

@@ -7,7 +7,7 @@ They provide a clean separation of database logic from controllers and views, fo
 Creating a Model
 ------------------
 
-A basic model class should extend LavaLust's base `Model` class:
+A basic model class should extend LavaLust's base ``Model`` class:
 
 .. code-block:: php
 
@@ -22,6 +22,42 @@ A basic model class should extend LavaLust's base `Model` class:
 
 - ``$table`` specifies the database table associated with the model.  
 - The model inherits methods for common database operations like ``find()``, ``all()``, ``insert()``, ``update()``, and ``delete()``.
+
+Model Properties
+------------------
+
+You can configure the following protected properties in your model:
+
+.. code-block:: php
+
+    <?php
+    class UserModel extends Model
+    {
+        protected $table              = 'users';
+        protected $primary_key        = 'id';
+
+        // Whitelist of columns allowed for mass assignment
+        protected $fillable           = ['name', 'email', 'role'];
+
+        // Blacklist of columns protected from mass assignment
+        protected $guarded            = ['id'];
+
+        // Automatically manage created_at and updated_at
+        protected $timestamps         = true;
+
+        // Customize timestamp column names
+        protected $created_at_column  = 'created_at';
+        protected $updated_at_column  = 'updated_at';
+
+        // Soft delete settings
+        protected $has_soft_delete    = true;
+        protected $soft_delete_column = 'deleted_at';
+    }
+
+.. note::
+
+   If both ``$fillable`` and ``$guarded`` are empty, all columns are allowed (legacy mode).
+   Always define ``$fillable`` or ``$guarded`` in production models.
 
 Loading a Model in a Controller
 ---------------------------------
@@ -81,12 +117,17 @@ Basic CRUD Operations in Controller
     public function addUser()
     {
         $data = [
-            'name' => 'Alice Smith',
+            'name'  => 'Alice Smith',
             'email' => 'alice@example.com'
         ];
-        $this->UserModel->insert($data);
-        echo "User added successfully!";
+        $id = $this->UserModel->insert($data);
+        echo "User added with ID: " . $id;
     }
+
+.. note::
+
+   ``insert()`` returns the last inserted ID. It respects ``$fillable`` / ``$guarded`` and
+   automatically sets ``created_at`` and ``updated_at`` if timestamps are enabled.
 
 **3. Update a record:**
 
@@ -113,53 +154,348 @@ Basic CRUD Operations in Controller
         echo "User deleted successfully!";
     }
 
+**5. Find a single record by primary key:**
+
+.. code-block:: php
+
+    <?php
+    $user = $this->UserModel->find(5);
+
+    // Include soft-deleted records
+    $user = $this->UserModel->find(5, true);
+
+**6. Find a single record by column:**
+
+.. code-block:: php
+
+    <?php
+    $user = $this->UserModel->find_by('email', 'alice@example.com');
+
+**7. Find all records matching a column value:**
+
+.. code-block:: php
+
+    <?php
+    $admins = $this->UserModel->find_all_by('role', 'admin');
+
+**8. Update records matching conditions:**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->update_where(
+        ['role' => 'guest'],
+        ['role' => 'member']
+    );
+
+**9. Delete records matching conditions:**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->delete_where(['active' => 0]);
+
+Retrieving Records
+-------------------
+
+**Get first record:**
+
+.. code-block:: php
+
+    <?php
+    $user = $this->UserModel->first();
+
+**Get last record:**
+
+.. code-block:: php
+
+    <?php
+    $user = $this->UserModel->last();
+
+**Get a single column value:**
+
+.. code-block:: php
+
+    <?php
+    $email = $this->UserModel->value('email', ['id' => 5]);
+
+**Get a flat array of column values:**
+
+.. code-block:: php
+
+    <?php
+    $emails = $this->UserModel->pluck('email');
+
+    // With conditions
+    $emails = $this->UserModel->pluck('email', ['role' => 'admin']);
+
+**Check if a record exists:**
+
+.. code-block:: php
+
+    <?php
+    $exists = $this->UserModel->exists(['email' => 'alice@example.com']);
+
+**Row count:**
+
+.. code-block:: php
+
+    <?php
+    $total = $this->UserModel->count();
+
+    // Include soft-deleted rows
+    $total = $this->UserModel->count(true);
+
+**Order results:**
+
+.. code-block:: php
+
+    <?php
+    $users = $this->UserModel->order_by('name', 'ASC');
+
+**Limit results:**
+
+.. code-block:: php
+
+    <?php
+    $users = $this->UserModel->limit(10);
+
+**Filter with a WHERE clause:**
+
+.. code-block:: php
+
+    <?php
+    $activeAdmins = $this->UserModel
+        ->filter(['role' => 'admin', 'active' => 1])
+        ->get_all();
+
+**Get table columns:**
+
+.. code-block:: php
+
+    <?php
+    $columns = $this->UserModel->get_columns();
+
+**Raw SQL query:**
+
+.. code-block:: php
+
+    <?php
+    $results = $this->UserModel->raw(
+        'SELECT * FROM users WHERE created_at > ?',
+        ['2024-01-01']
+    );
+
+**Access the query builder directly:**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->query()->where('active', 1)->get_all();
+
+Find or Create / Update or Create
+-----------------------------------
+
+**first_or_create** — finds the first matching record or inserts one if none exists:
+
+.. code-block:: php
+
+    <?php
+    $result = $this->UserModel->first_or_create(
+        ['email' => 'alice@example.com'],
+        ['name'  => 'Alice Smith']
+    );
+
+    $user    = $result['record'];
+    $created = $result['created']; // true if a new record was inserted
+
+**update_or_create** — updates the first matching record, or creates one if none found:
+
+.. code-block:: php
+
+    <?php
+    $id = $this->UserModel->update_or_create(
+        ['email' => 'alice@example.com'],
+        ['name'  => 'Alice Smith', 'role' => 'editor']
+    );
+
+Aggregate Methods
+------------------
+
+All aggregate methods accept optional ``$conditions`` and a ``$with_deleted`` flag.
+
+**Sum:**
+
+.. code-block:: php
+
+    <?php
+    $total = $this->OrderModel->sum('amount', ['user_id' => 5]);
+
+**Max:**
+
+.. code-block:: php
+
+    <?php
+    $max = $this->ProductModel->max('price', ['category_id' => 3]);
+
+**Min:**
+
+.. code-block:: php
+
+    <?php
+    $min = $this->ProductModel->min('price');
+
+**Average:**
+
+.. code-block:: php
+
+    <?php
+    $avg = $this->ReviewModel->avg('rating', ['product_id' => 12]);
+
+Grouping and Having
+--------------------
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel
+        ->group_by('role')
+        ->having('COUNT(id)', '>', 5)
+        ->query()
+        ->get_all();
+
+Scopes
+-------
+
+Use ``scope()`` to apply a reusable query closure to the underlying database builder:
+
+.. code-block:: php
+
+    <?php
+    $users = $this->UserModel->scope(function($db) {
+        $db->where('verified', 1)->order_by('name', 'ASC');
+    })->query()->get_all();
+
+Pagination
+-----------
+
+.. code-block:: php
+
+    <?php
+    $page   = $_GET['page'] ?? 1;
+    $result = $this->UserModel->paginate(
+        15,              // per page
+        $page,           // current page
+        ['active' => 1]  // optional conditions
+    );
+
+    // Result structure:
+    // [
+    //   'data'         => [...],  // rows for this page
+    //   'total'        => 150,    // total matching rows
+    //   'per_page'     => 15,
+    //   'current_page' => 2,
+    //   'last_page'    => 10,
+    // ]
+
+Bulk Operations
+----------------
+
+**Bulk insert:**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->bulk_insert([
+        ['name' => 'Alice', 'email' => 'alice@example.com'],
+        ['name' => 'Bob',   'email' => 'bob@example.com'],
+        ['name' => 'Carol', 'email' => 'carol@example.com'],
+    ]);
+
+**Bulk update:**
+
+.. code-block:: php
+
+    <?php
+    $affected = $this->UserModel->bulk_update([
+        ['id' => 1, 'role' => 'admin'],
+        ['id' => 2, 'role' => 'editor'],
+    ]);
+    // Returns: int (number of rows updated)
+
+**Empty a table:**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->truncate();
+
 Soft Delete
 ------------
 
 LavaLust supports **soft deletes**, allowing you to mark a record as deleted without permanently removing it from the database.  
 This is useful for recovering deleted records later.
 
-
 Enabling Soft Delete
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
-To enable soft deletes, add the ``$soft_delete`` property in your model:
+To enable soft deletes, add the ``$has_soft_delete`` property in your model:
 
 .. code-block:: php
 
     <?php
     class UserModel extends Model
     {
-        protected $table = 'users';
-        protected $soft_delete = true; // Enable soft deletes
+        protected $table          = 'users';
+        protected $has_soft_delete = true; // Enable soft deletes
+
+        // Optional: customize the column name (default: deleted_at)
+        protected $soft_delete_column = 'removed_at';
     }
 
+.. note::
+
+    When ``$has_soft_delete`` is ``true``, deleted records are not permanently removed.
+    Instead, a timestamp in the ``deleted_at`` column (or your custom column) marks the record as deleted.
+    All queries automatically exclude rows where this column is not ``NULL``.
 
 .. note::
 
-    When ``$soft_delete`` is true, deleted records are not permanently removed.  
-
-.. note::
-
-    Instead, a timestamp (usually in a ``deleted_at`` column) marks the record as deleted.
+    If ``$has_soft_delete`` is ``false`` and you call ``soft_delete()``, it will fall back to a
+    hard ``delete()`` automatically.
 
 Soft Delete Operations
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-**1. Soft Delete a record:**
+**1. Soft delete a record:**
 
 .. code-block:: php
 
-   $this->call->model('UserModel');
-   $this->UserModel->soft_delete(5);  // Soft delete user with ID 5
+    <?php
+    $this->UserModel->soft_delete(5);  // Sets deleted_at timestamp on user ID 5
 
 **2. Restore a soft-deleted record:**
 
 .. code-block:: php
-    
-    <?php
-    $this->UserModel->restore(5); // Restore user with ID 5
 
+    <?php
+    $this->UserModel->restore(5); // Nullifies deleted_at for user ID 5
+
+**3. Query including soft-deleted records:**
+
+.. code-block:: php
+
+    <?php
+    // Pass true to any query method to include soft-deleted rows
+    $all  = $this->UserModel->all(true);
+    $user = $this->UserModel->find(5, true);
+
+**4. Hard delete (bypasses soft delete):**
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->delete(5);
 
 Using Relationships
 --------------------
@@ -171,19 +507,40 @@ Models can define relationships with other models:
     <?php
     class PostModel extends Model
     {
-        protected $table = 'posts';
+        protected $table       = 'posts';
         protected $primary_key = 'id';
 
-        public function author($id)
+        // A post has one author (FK: user_id on users table)
+        public function author(): array
         {
-            return $this->has_one('UserModel', 'user_id', $id);
+            return $this->has_one('UserModel', 'user_id');
         }
 
-        public function comments($id)
+        // A post has many comments (FK: post_id on comments table)
+        public function comments(): array
         {
-            return $this->has_many('CommentModel', 'post_id', $id);
+            return $this->has_many('CommentModel', 'post_id');
+        }
+
+        // A post belongs to a category (FK: category_id on posts table)
+        public function category(): array
+        {
+            return $this->belongs_to('CategoryModel', 'category_id');
+        }
+
+        // A post has many tags via pivot table
+        public function tags(): array
+        {
+            return $this->many_to_many('TagModel', 'post_tag', 'post_id', 'tag_id');
         }
     }
+
+Available relationship types:
+
+- ``has_one($related, $foreign_key)`` — current model owns one related record.
+- ``has_many($related, $foreign_key)`` — current model owns many related records.
+- ``belongs_to($related, $foreign_key)`` — current model holds the foreign key.
+- ``many_to_many($related, $pivot_table, $current_key, $related_key)`` — relationship via an intermediate pivot table.
 
 **Controller example using relationships:**
 
@@ -192,23 +549,21 @@ Models can define relationships with other models:
     <?php
     class PostController extends Controller
     {
-        protected $postModel;
-
         public function __construct()
         {
-                parent::__construct();
-                $this->call->model('PostModel');
+            parent::__construct();
+            $this->call->model('PostModel');
         }
 
         public function showPost($id)
         {
-            $post = $this->PostModel->find($id);
-            $author = $this->PostModel->author($id);
+            $post     = $this->PostModel->find($id);
+            $author   = $this->PostModel->author($id);
             $comments = $this->PostModel->comments($id);
 
-            $this->view('post/show', [
-                'post' => $post,
-                'author' => $author,
+            $this->call->view('post/show', [
+                'post'     => $post,
+                'author'   => $author,
                 'comments' => $comments
             ]);
         }
@@ -217,6 +572,57 @@ Models can define relationships with other models:
 .. note::
 
    Relationships allow you to fetch related data cleanly without writing complex joins manually.
+
+Eager Loading
+--------------
+
+Use ``with()`` before ``all()`` to automatically attach related records to every row, avoiding N+1 query problems:
+
+.. code-block:: php
+
+    <?php
+    // Load all posts with their author and comments attached
+    $posts = $this->PostModel
+        ->with(['author', 'comments'])
+        ->all();
+
+    // Each post now has $post['author'] and $post['comments']
+    foreach ($posts as $post) {
+        echo $post['title'] . ' by ' . $post['author']['name'];
+    }
+
+.. note::
+
+   The ``$with`` array is automatically reset after each ``all()`` call, so eager-loading state
+   does not leak between requests.
+
+Transactions
+-------------
+
+Wrap multiple write operations in a transaction to ensure atomicity:
+
+.. code-block:: php
+
+    <?php
+    $this->UserModel->transaction();
+
+    try {
+        $userId = $this->UserModel->insert([
+            'name'  => 'Alice',
+            'email' => 'alice@example.com',
+        ]);
+
+        $this->ProfileModel->insert([
+            'user_id' => $userId,
+            'bio'     => 'Hello world',
+        ]);
+
+        $this->UserModel->commit();
+
+    } catch (Exception $e) {
+        $this->UserModel->rollback();
+        // Handle error...
+    }
 
 Loading Multiple Models 
 ------------------------
@@ -230,28 +636,27 @@ If you would like to load multiple models at a time you can use this:
     $this->model_1->method();
     $this->model_2->method();
     
-    //or if you load multiple methods
-
-    $this->call->model(['model_1' => 'm1', 'model_2' => m1]);
+    // Or with aliases
+    $this->call->model(['model_1' => 'm1', 'model_2' => 'm2']);
     $this->m1->method();
     $this->m2->method();
 
 Auto-loading Models
 ---------------------
 
-If you want certain helpers to always be available in your app (without manually loading them every time),  
+If you want certain models to always be available in your app (without manually loading them every time),  
 you can **auto-load** them in the configuration:
 
 1. Open ``app/config/autoload.php``.
-2. Add your helper names in the ``$autoload['models']`` array.
+2. Add your model names in the ``$autoload['models']`` array.
 
 **Example:**
 
 .. code-block:: php
 
-   $autoload['models'] = ['UserModel'];
+   $autoload['models'] = ['UserModel', 'PostModel'];
 
-These helpers will now be loaded automatically for every request.
+These models will now be loaded automatically for every request.
 
 Assigning Model to Different Name 
 ----------------------------------
@@ -264,9 +669,8 @@ If you would like your model assigned to a different object name you can specify
     $this->call->model('model_name', 'foobar');
     $this->foobar->method();
     
-    //or if you load multiple methods
-
-    $this->call->model(array('foobar' => 'model_name'));
+    // Or using array syntax
+    $this->call->model(['foobar' => 'model_name']);
     $this->foobar->method();
 
 
@@ -275,7 +679,11 @@ Tips and Best Practices
 
 - Load models in the constructor if they are used across multiple methods.  
 - Keep all database queries inside models — controllers should only coordinate data flow.  
+- Always define ``$fillable`` or ``$guarded`` — never rely on the open legacy mode in production.
 - Validate all input data before inserting or updating records.  
+- Use ``with()`` for eager loading rather than calling relationship methods inside loops to avoid N+1 queries.
 - Use model relationships to simplify fetching related data.  
-- Leverage built-in ORM features like ``has_one```, ``has_many``, ``many_to_many`` and ``soft deletes`` when available.
-
+- Prefer ``soft_delete()`` over ``delete()`` for any user-facing data that may need recovery.
+- Wrap multi-step write operations in ``transaction()`` / ``commit()`` / ``rollback()``.
+- Use ``paginate()`` instead of ``all()`` on large tables to avoid loading thousands of rows into memory.
+- Leverage built-in ORM features like ``has_one``, ``has_many``, ``many_to_many``, and soft deletes when available.

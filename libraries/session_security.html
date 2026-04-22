@@ -66,12 +66,19 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Session Security</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#method-details">Method Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-security-status">get_security_status()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#check-lock-status">check_lock_status()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-check-lock">security_check_lock()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-log-attempt">security_log_attempt()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reset-attempts">reset_attempts()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#unlock-attempts">unlock_attempts()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#unlock-all-attempts">unlock_all_attempts()</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#multiple-session-account-creation-lockout-example">Multiple Session (Account Creation) Lockout Example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#developer-notes-internal-methods">Developer Notes (Internal Methods)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-creation-lockout">Session Creation Lockout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fingerprint-security">Fingerprint Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-fixation-protection">Session Fixation Protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inactivity-timeout">Inactivity Timeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#internal-methods-advanced">Internal Methods (Advanced)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storage-format-security-json">Storage Format (security.json)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
@@ -110,10 +117,19 @@
              
   <section id="session-security">
 <h1>Session Security<a class="headerlink" href="#session-security" title="Link to this heading"></a></h1>
-<p>This document describes the security-related methods used in the Session class for managing login attempts, account lockouts, manual unlocking, and account creation limits.</p>
+<p>This document describes the security-related features of the Session class,
+including login attempt tracking, account lockouts, session creation limits,
+fingerprint validation, and inactivity handling.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>The following methods handle security-related tasks such as tracking failed login attempts, checking lock status, and resetting or unlocking users.</p>
+<p>The session security system protects against:</p>
+<ul class="simple">
+<li><p>Brute-force login attempts</p></li>
+<li><p>Session hijacking (fingerprint/IP mismatch)</p></li>
+<li><p>Session fixation</p></li>
+<li><p>Session creation flooding (bot protection)</p></li>
+<li><p>Idle session abuse (inactivity timeout)</p></li>
+</ul>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
@@ -127,25 +143,45 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
-<td><p>Checks the user’s current lock status, including attempts and remaining lock time.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_security_status()</span></code></p></td>
+<td><p>Returns full session security status (locks, attempts, creation, inactivity).</p></td>
 <td><p>Per IP / Fingerprint</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset_attempts()</span></code></p></td>
-<td><p>Resets attempts and unlocks the user after a successful login.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
+<td><p>Checks login attempt lock status.</p></td>
 <td><p>Per IP / Fingerprint</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_attempts()</span></code></p></td>
-<td><p>Manually unlocks a single user (admin override).</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reset_attempts()</span></code></p></td>
+<td><p>Resets failed attempts after successful login.</p></td>
 <td><p>Per IP / Fingerprint</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_all_attempts()</span></code></p></td>
-<td><p>Unlocks and resets all users globally.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_attempts()</span></code></p></td>
+<td><p>Manually unlocks a specific user.</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_all_attempts()</span></code></p></td>
+<td><p>Unlocks all users globally.</p></td>
 <td><p>Global</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">creation</span> <span class="pre">lockout</span></code></p></td>
-<td><p>Limits multiple account creations within a short time.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">security_log_attempt()</span></code></p></td>
+<td><p>Logs failed or suspicious attempts.</p></td>
 <td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">security_check_lock()</span></code></p></td>
+<td><p>Blocks access if user is currently locked.</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">security_track_session_creation()</span></code></p></td>
+<td><p>Tracks excessive session creation (anti-bot).</p></td>
+<td><p>Per IP / Fingerprint</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></p></td>
+<td><p>Generates unique fingerprint for session protection.</p></td>
+<td><p>Per User</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">regenerate_on_login()</span></code></p></td>
+<td><p>Prevents session fixation.</p></td>
+<td><p>Per Session</p></td>
 </tr>
 </tbody>
 </table>
@@ -153,210 +189,208 @@
 <section id="method-details">
 <h2>Method Details<a class="headerlink" href="#method-details" title="Link to this heading"></a></h2>
 </section>
+<section id="get-security-status">
+<h2>get_security_status()<a class="headerlink" href="#get-security-status" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Returns complete security information for the current session.</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$status = $this-&gt;session-&gt;get_security_status();</span>
+
+<span class="x">if ($status[&#39;locked&#39;]) {</span>
+<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds&quot;;</span>
+<span class="x">}</span>
+
+<span class="x">if ($status[&#39;creation_locked&#39;]) {</span>
+<span class="x">    echo &quot;Too many sessions created. Wait {$status[&#39;creation_remaining&#39;]} seconds&quot;;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Returns:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>locked</p></td>
+<td><p>Whether login is locked</p></td>
+</tr>
+<tr class="row-odd"><td><p>remaining</p></td>
+<td><p>Remaining lock time (seconds)</p></td>
+</tr>
+<tr class="row-even"><td><p>attempts</p></td>
+<td><p>Failed login attempts</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_attempts</p></td>
+<td><p>Maximum allowed attempts</p></td>
+</tr>
+<tr class="row-even"><td><p>creation_locked</p></td>
+<td><p>Whether session creation is locked</p></td>
+</tr>
+<tr class="row-odd"><td><p>creation_remaining</p></td>
+<td><p>Remaining creation lock time</p></td>
+</tr>
+<tr class="row-even"><td><p>inactivity_expired</p></td>
+<td><p>Whether session expired due to inactivity</p></td>
+</tr>
+<tr class="row-odd"><td><p>ip</p></td>
+<td><p>Current user IP</p></td>
+</tr>
+<tr class="row-even"><td><p>fingerprint</p></td>
+<td><p>Generated session fingerprint</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="check-lock-status">
 <h2>check_lock_status()<a class="headerlink" href="#check-lock-status" title="Link to this heading"></a></h2>
 <p><strong>Purpose:</strong>
-Check if a user (based on IP + fingerprint) is locked, how many attempts have been made, and how much time remains before unlocking.</p>
+Check login attempt lock status.</p>
 <p><strong>Example Usage:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$status = $this-&gt;session-&gt;check_lock_status();</span>
 
 <span class="x">if ($status[&#39;locked&#39;]) {</span>
-<span class="x">    echo &quot;User is locked. Please wait {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
-<span class="x">} else {</span>
-<span class="x">    echo &quot;Attempts: {$status[&#39;attempts&#39;]} / {$status[&#39;max_attempts&#39;]}&quot;;</span>
+<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
 <span class="x">}</span>
 </pre></div>
 </div>
-<p><strong>Returns:</strong>
-An array containing the following keys:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>Key</strong></p></th>
-<th class="head"><p><strong>Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">locked</span></code></p></td>
-<td><p>Boolean value indicating if the user is currently locked.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">attempts</span></code></p></td>
-<td><p>Number of failed attempts so far.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_attempts</span></code></p></td>
-<td><p>Maximum allowed failed attempts before lockout.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">remaining</span></code></p></td>
-<td><p>Remaining lock duration in seconds (if locked).</p></td>
-</tr>
-</tbody>
-</table>
+</section>
+<section id="security-check-lock">
+<h2>security_check_lock()<a class="headerlink" href="#security-check-lock" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Prevents execution if user is currently locked.</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$msg = $this-&gt;session-&gt;security_check_lock($ip, $fingerprint);</span>
+
+<span class="x">if ($msg) {</span>
+<span class="x">    die($msg);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</section>
+<section id="security-log-attempt">
+<h2>security_log_attempt()<a class="headerlink" href="#security-log-attempt" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Logs failed login or suspicious activity.</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;security_log_attempt($ip, $fingerprint, &#39;Invalid password&#39;);</span>
+</pre></div>
+</div>
 </section>
 <section id="reset-attempts">
 <h2>reset_attempts()<a class="headerlink" href="#reset-attempts" title="Link to this heading"></a></h2>
 <p><strong>Purpose:</strong>
-Reset attempts and unlock the user automatically after successful authentication.</p>
+Clears failed attempts after successful login.</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
-
-<span class="c1">// After successful login</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">reset_attempts</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s2">&quot;Login successful. Attempts reset.&quot;</span><span class="p">;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;reset_attempts();</span>
 </pre></div>
 </div>
-<p><strong>Returns:</strong>
-Boolean <code class="docutils literal notranslate"><span class="pre">true</span></code> after resetting.</p>
 </section>
 <section id="unlock-attempts">
 <h2>unlock_attempts()<a class="headerlink" href="#unlock-attempts" title="Link to this heading"></a></h2>
 <p><strong>Purpose:</strong>
-Manually unlock a specific user (useful for admin panels or CLI commands).</p>
+Unlock a specific user manually.</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
-
-<span class="nv">$ip</span> <span class="o">=</span> <span class="s1">&#39;122.53.222.248&#39;</span><span class="p">;</span>
-<span class="nv">$fingerprint</span> <span class="o">=</span> <span class="s1">&#39;4e5dc1c30043eb3cf10f7185b21c1fa2&#39;</span><span class="p">;</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unlock_attempts</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$fingerprint</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;User </span><span class="si">{</span><span class="nv">$ip</span><span class="si">}</span><span class="s2"> unlocked successfully.&quot;</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;No lock found for that IP/fingerprint.&quot;</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;unlock_attempts($ip, $fingerprint);</span>
 </pre></div>
 </div>
-<p><strong>Returns:</strong>
-Boolean indicating success (<code class="docutils literal notranslate"><span class="pre">true</span></code> if unlocked, <code class="docutils literal notranslate"><span class="pre">false</span></code> if no record found).</p>
 </section>
 <section id="unlock-all-attempts">
 <h2>unlock_all_attempts()<a class="headerlink" href="#unlock-all-attempts" title="Link to this heading"></a></h2>
 <p><strong>Purpose:</strong>
-Globally unlock all users and reset all login attempts (for system maintenance or testing).</p>
+Reset all locks globally.</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
-
-<span class="nv">$totalUnlocked</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unlock_all_attempts</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s2">&quot;</span><span class="si">{</span><span class="nv">$totalUnlocked</span><span class="si">}</span><span class="s2"> users have been unlocked.&quot;</span><span class="p">;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$count = $this-&gt;session-&gt;unlock_all_attempts();</span>
+<span class="x">echo &quot;{$count} users unlocked&quot;;</span>
 </pre></div>
 </div>
-<p><strong>Returns:</strong>
-Integer — the number of users reset/unlocked.</p>
 </section>
-<section id="multiple-session-account-creation-lockout-example">
-<h2>Multiple Session (Account Creation) Lockout Example<a class="headerlink" href="#multiple-session-account-creation-lockout-example" title="Link to this heading"></a></h2>
-<p>This section shows how to apply the same session security logic for <strong>account creation limits</strong> (e.g., prevent bots or abuse from repeatedly creating accounts).</p>
+<section id="session-creation-lockout">
+<h2>Session Creation Lockout<a class="headerlink" href="#session-creation-lockout" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Prevent bots from rapidly creating sessions.</p>
 <p><strong>Behavior:</strong>
-- Each account creation request is logged using a <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix.
-- After exceeding the limit, the user/IP is temporarily blocked from creating new accounts.</p>
-<p><strong>Example Implementation:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x"> </span><span class="cp">&lt;?php</span>
+- Tracks session creation timestamps
+- Locks if threshold exceeded
+- Uses <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix in storage</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$msg = $this-&gt;session-&gt;security_track_session_creation($ip, $fingerprint);</span>
 
-<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">];</span>
-<span class="nv">$fingerprint</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">generate_fingerprint</span><span class="p">();</span>
-<span class="nv">$key</span> <span class="o">=</span> <span class="s2">&quot;creation_</span><span class="si">{</span><span class="nv">$ip</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nv">$fingerprint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span>
-
-<span class="c1">// Load current security data</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_load</span><span class="p">();</span>
-
-<span class="c1">// Configuration</span>
-<span class="nv">$lockoutDuration</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">;</span> <span class="c1">// 1 hour</span>
-<span class="nv">$maxCreations</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>       <span class="c1">// Limit to 3 per hour</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]))</span> <span class="p">{</span>
-    <span class="c1">// Remove expired timestamps</span>
-    <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">array_filter</span><span class="p">(</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">],</span>
-        <span class="nx">fn</span><span class="p">(</span><span class="nv">$t</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nv">$t</span> <span class="o">+</span> <span class="nv">$lockoutDuration</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">time</span><span class="p">()</span>
-    <span class="p">);</span>
-
-    <span class="c1">// Check if limit exceeded</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="nv">$maxCreations</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">die</span><span class="p">(</span><span class="s2">&quot;Too many account creations. Try again later.&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
-<span class="p">}</span>
-
-<span class="c1">// Log this creation</span>
-<span class="nv">$data</span><span class="p">[</span><span class="nv">$key</span><span class="p">][</span><span class="s1">&#39;creations&#39;</span><span class="p">][]</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
-
-<span class="c1">// Save to JSON</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_save</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-
-<span class="k">echo</span> <span class="s2">&quot;Account created successfully.&quot;</span><span class="p">;</span>
+<span class="x">if ($msg) {</span>
+<span class="x">    echo $msg;</span>
+<span class="x">}</span>
 </pre></div>
 </div>
-<p><strong>JSON Example (after several creations):</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964281</span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;creation_122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;creations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964281</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964320</span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Notes:</strong>
-- The <code class="docutils literal notranslate"><span class="pre">creation_</span></code> prefix isolates account creation attempts from login attempts.
-- <code class="docutils literal notranslate"><span class="pre">creations</span></code> timestamps are stored in UNIX time for expiration tracking.
-- You can reuse this logic for password resets, verification requests, or API key registrations.</p>
 </section>
-<section id="developer-notes-internal-methods">
-<h2>Developer Notes (Internal Methods)<a class="headerlink" href="#developer-notes-internal-methods" title="Link to this heading"></a></h2>
-<p>The following methods are internal to the Session security system and are <strong>not intended for direct use</strong>, except for debugging or extension.</p>
+<section id="fingerprint-security">
+<h2>Fingerprint Security<a class="headerlink" href="#fingerprint-security" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Protect against session hijacking.</p>
+<p><strong>How it works:</strong>
+- Combines browser headers + optional IP
+- Uses HMAC SHA-256 hashing
+- Stored in session and verified on each request</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$fingerprint = $this-&gt;session-&gt;generate_fingerprint();</span>
+</pre></div>
+</div>
+</section>
+<section id="session-fixation-protection">
+<h2>Session Fixation Protection<a class="headerlink" href="#session-fixation-protection" title="Link to this heading"></a></h2>
+<p><strong>Method:</strong> <code class="docutils literal notranslate"><span class="pre">regenerate_on_login()</span></code></p>
+<p><strong>Purpose:</strong>
+Regenerates session ID after login.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;regenerate_on_login();</span>
+</pre></div>
+</div>
+</section>
+<section id="inactivity-timeout">
+<h2>Inactivity Timeout<a class="headerlink" href="#inactivity-timeout" title="Link to this heading"></a></h2>
+<p><strong>Purpose:</strong>
+Automatically destroys session after inactivity.</p>
+<p><strong>Behavior:</strong>
+- Based on <code class="docutils literal notranslate"><span class="pre">sess_inactivity_timeout</span></code>
+- Default: 30 minutes
+- Automatically checked on each request</p>
+<p><strong>Result:</strong>
+- Session destroyed silently
+- <code class="docutils literal notranslate"><span class="pre">inactivity_expired</span></code> becomes TRUE</p>
+</section>
+<section id="internal-methods-advanced">
+<h2>Internal Methods (Advanced)<a class="headerlink" href="#internal-methods-advanced" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
-<th class="head"><p><strong>Purpose</strong></p></th>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_security_init()</span></code></p></td>
-<td><p>Ensures that the security JSON file and directory exist. Automatically creates them if missing.</p></td>
+<td><p>Initializes storage file securely</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_security_load()</span></code></p></td>
-<td><p>Loads and decodes the security JSON data into an array.</p></td>
+<td><p>Loads JSON data with file locking</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_security_save($data)</span></code></p></td>
-<td><p>Saves the given array data back into the JSON file with pretty formatting.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_security_log_attempt($ip,</span> <span class="pre">$fingerprint)</span></code></p></td>
-<td><p>Records a failed login attempt. If the number of attempts exceeds the limit, adds a <code class="docutils literal notranslate"><span class="pre">locked_until</span></code> timestamp.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_security_save()</span></code></p></td>
+<td><p>Saves data safely with locking</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Example Internal Flow:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-
- <span class="c1">// Step 1: On login failure</span>
- <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">_security_log_attempt</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$fingerprint</span><span class="p">);</span>
-
- <span class="c1">// Step 2: Before next login attempt</span>
- <span class="nv">$status</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">check_lock_status</span><span class="p">();</span>
-
- <span class="k">if</span> <span class="p">(</span><span class="nv">$status</span><span class="p">[</span><span class="s1">&#39;locked&#39;</span><span class="p">])</span> <span class="p">{</span>
-     <span class="k">echo</span> <span class="s2">&quot;Locked for </span><span class="si">{</span><span class="nv">$status</span><span class="p">[</span><span class="s1">&#39;remaining&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="c1">// Step 3: On successful login</span>
- <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">reset_attempts</span><span class="p">();</span>
-</pre></div>
-</div>
-<p><strong>Storage Format Example (security.json):</strong></p>
+</section>
+<section id="storage-format-security-json">
+<h2>Storage Format (security.json)<a class="headerlink" href="#storage-format-security-json" title="Link to this heading"></a></h2>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;122.53.222.248_4e5dc1c30043eb3cf10f7185b21c1fa2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1758964259</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964265</span><span class="p">,</span><span class="w"> </span><span class="mi">1758964301</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1758967901</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="nt">&quot;IP_FINGERPRINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;creation_IP_FINGERPRINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;creations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -364,41 +398,35 @@ Integer — the number of users reset/unlocked.</p>
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 50.0%" />
-<col style="width: 25.0%" />
-</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
-<th class="head"><p><strong>Typical Use Case</strong></p></th>
-<th class="head"><p><strong>When to Use</strong></p></th>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Use Case</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
-<td><p>Check if a login attempt should be blocked.</p></td>
-<td><p>Before verifying credentials.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_security_status()</span></code></p></td>
+<td><p>Full monitoring/debugging</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check_lock_status()</span></code></p></td>
+<td><p>Before login validation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">security_log_attempt()</span></code></p></td>
+<td><p>On failed login</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset_attempts()</span></code></p></td>
-<td><p>Clear attempts after successful login.</p></td>
-<td><p>After verifying credentials successfully.</p></td>
+<td><p>After successful login</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">security_track_session_creation()</span></code></p></td>
+<td><p>Prevent bot session spam</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">regenerate_on_login()</span></code></p></td>
+<td><p>Prevent session fixation</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_attempts()</span></code></p></td>
-<td><p>Manually clear lock for one user.</p></td>
-<td><p>Admin dashboard or maintenance.</p></td>
+<td><p>Admin manual unlock</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unlock_all_attempts()</span></code></p></td>
-<td><p>Clear all security locks.</p></td>
-<td><p>System reset or testing.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">creation</span> <span class="pre">lockout</span></code></p></td>
-<td><p>Prevent mass or automated account creation.</p></td>
-<td><p>During user registration flow.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">security_*</span> <span class="pre">(internal)</span></code></p></td>
-<td><p>Internal data handling and persistence.</p></td>
-<td><p>Framework or developer use only.</p></td>
+<td><p>System reset</p></td>
 </tr>
 </tbody>
 </table>

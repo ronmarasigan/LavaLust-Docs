@@ -159,6 +159,15 @@ It provides a structured and versioned way to track and apply changes (such as c
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">();</span>
     <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback</span><span class="o">-</span><span class="nx">all</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback_all</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">refresh</span><span class="p">();</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -170,6 +179,8 @@ It provides a structured and versioned way to track and apply changes (such as c
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;create-migration/{migration_class}&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::create_migration&#39;</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;migrate&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::migrate&#39;</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;rollback&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::rollback&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;rollback-all&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::rollback_all&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;refresh&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::refresh&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>

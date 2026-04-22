@@ -89,10 +89,19 @@ Create ``Form.php`` in ``app/controllers/``:
       {
          $this->call->library('form_validation');
 
-         if ($this->form_validation->run() == FALSE) {
-            $this->call->view('myform');
-         } else {
+         // Modern validation (recommended)
+         if ($this->form_validation->validate([
+            'username|Username' => 'required|min_length[5]|max_length[20]',
+            'password|Password' => 'required|min_length[8]',
+            'passconf|Confirm Password' => 'required|matches[password]',
+            'email|Email Address' => 'required|valid_email'
+         ]))
+         {
             $this->call->view('formsuccess');
+         }
+         else
+         {
+            $this->call->view('myform');
          }
       }
    }
@@ -106,45 +115,87 @@ Visit your form in the browser:
 
    example.com/index.php/form/
 
-If you submit without filling fields, it will reload because **no validation rules are set yet**.  
-The ``run()`` method returns **TRUE** only if all validation rules pass.
+If you submit without filling fields, validation will fail and errors will be displayed.
 
-Setting Validation Rules
--------------------------
+The ``validate()`` method returns **TRUE** only if all validation rules pass.
 
-Add rules to your controller:
+Setting Validation Rules (Modern)
+---------------------------------
+
+Rules are defined using a **pipe-separated string**:
 
 .. code-block:: php
 
-   <?php
-   class Form extends Controller {
+   $this->form_validation->validate([
+      'username|Username' => 'required|min_length[5]|max_length[20]',
+      'password|Password' => 'required|min_length[8]',
+      'passconf|Confirm Password' => 'required|matches[password]',
+      'email|Email Address' => 'required|valid_email'
+   ]);
 
-      public function index()
-      {
-         $this->call->library('form_validation');
+- Use ``|`` to separate rules
+- Use ``[value]`` to pass parameters
+- Use ``field|Label`` to customize field names in error messages
 
-         $this->form_validation
-            ->name('username')
-               ->required()
-               ->min_length(5)
-               ->max_length(20)
-            ->name('password')
-               ->required()
-               ->min_length(8)
-            ->name('passconf')
-               ->required()
-               ->min_length(8)
-               ->matches('password')
-            ->name('email')
-               ->valid_email();
+Setting Custom Error Messages
+-----------------------------
 
-         if ($this->form_validation->run() == FALSE) {
-            $this->call->view('myform');
-         } else {
-            $this->call->view('formsuccess');
-         }
-      }
+.. code-block:: php
+
+   $this->form_validation->validate([
+      'username|Username' => 'required|min_length[5]'
+   ], [
+      'username' => [
+         'required' => 'Username is required!',
+         'min_length' => 'Username must be at least 5 characters'
+      ]
+   ]);
+
+Using submitted()
+------------------
+
+You can check if the form is submitted:
+
+.. code-block:: php
+
+   if ($this->form_validation->submitted()) {
+      // form was submitted
    }
+
+Legacy / Fluent Style (Optional)
+--------------------------------
+
+The old chaining method is still supported:
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('username')
+         ->required()
+         ->min_length(5)
+         ->max_length(20)
+      ->name('password')
+         ->required()
+         ->min_length(8)
+      ->name('passconf')
+         ->required()
+         ->matches('password')
+      ->name('email')
+         ->valid_email();
+
+   if ($this->form_validation->run() == FALSE) {
+      $this->call->view('myform');
+   } else {
+      $this->call->view('formsuccess');
+   }
+
+Notes
+------
+
+- ``validate()`` is the **recommended approach**
+- It automatically resets previous errors
+- Cleaner and easier to scale
+- ``run()`` is mainly used for fluent style
 
 The ``name()`` method selects the input field to validate.  
 Chained methods like ``required()``, ``min_length()``, ``matches()`` apply validation rules to it.
@@ -205,6 +256,16 @@ Available Methods
      - Ensures the value exists within the given array list.
    * - ``run()``
      - Runs the validation. Returns **TRUE** if no errors found.
+   * - ``errors()``
+     - Returns a string of all validation errors. Empty string if none.
+   * - ``submitted()``
+     - Checks if the form was submitted. Returns **TRUE** if submitted, **FALSE** otherwise.
+   * - ``reset()``
+     - Resets all validation errors and previous input values.
+   * - ``validate($rules, $custom_errors)``
+     - Validates using an array of rules. Returns **TRUE** if all pass, **FALSE** if any fail.
+   * - ``rules($rules, $custom_errors)``
+     - Sets validation rules using an array. Does not run validation.
 
 .. note::
 

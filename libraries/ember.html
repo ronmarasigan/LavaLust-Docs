@@ -540,62 +540,192 @@ Renders a template with the provided context data.</p>
 </pre></div>
 </div>
 </section>
-<hr class="docutils" />
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <p>Functions can be called in templates:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Function Name</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">:header-rows: 1
+ :widths: 25 75</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
 <tbody>
-<tr class="row-even"><td><p>url(path)</p></td>
-<td><p>Returns a clean URL path</p></td>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-odd"><td><p>asset(path)</p></td>
-<td><p>Returns a public asset URL</p></td>
+<tr class="row-even"><td><p>app_name</p></td>
+<td><p>Application name from config (default: “LavaLust App”)</p></td>
 </tr>
-<tr class="row-even"><td><p>site_url(path)</p></td>
-<td><p>Returns a site-relative URL</p></td>
+<tr class="row-odd"><td><p>base_url</p></td>
+<td><p>Base URL of the application</p></td>
 </tr>
-<tr class="row-odd"><td><p>base_url(path)</p></td>
-<td><p>Returns base URL + path</p></td>
+<tr class="row-even"><td><p>site_url</p></td>
+<td><p>Site URL with index.php (if applicable)</p></td>
 </tr>
-<tr class="row-even"><td><p>active(route)</p></td>
-<td><p>Returns “active” if current route matches</p></td>
+<tr class="row-odd"><td><p>csp_nonce</p></td>
+<td><p>Content Security Policy nonce for inline scripts/styles</p></td>
 </tr>
-<tr class="row-odd"><td><p>config(key)</p></td>
-<td><p>Returns a config value</p></td>
+<tr class="row-even"><td><p>Filter</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td><p>session(key)</p></td>
-<td><p>Returns session variable or all if key is null</p></td>
-</tr>
-<tr class="row-odd"><td><p>upper(str)</p></td>
+<tr class="row-odd"><td><p>upper</p></td>
 <td><p>Converts string to uppercase</p></td>
 </tr>
-<tr class="row-even"><td><p>repeat(str, n)</p></td>
+<tr class="row-even"><td><p>lower</p></td>
+<td><p>Converts string to lowercase</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p>Converts string to Title Case</p></td>
+</tr>
+<tr class="row-even"><td><p>capitalize</p></td>
+<td><p>Capitalizes first letter</p></td>
+</tr>
+<tr class="row-odd"><td><p>trim</p></td>
+<td><p>Removes whitespace from both ends</p></td>
+</tr>
+<tr class="row-even"><td><p>reverse</p></td>
+<td><p>Reverses string or array</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>escape / e</p></td>
+<td><p>Escapes output (recommended for safety)</p></td>
+</tr>
+<tr class="row-odd"><td><p>raw</p></td>
+<td><p>Outputs raw HTML (dangerous, use carefully)</p></td>
+</tr>
+<tr class="row-even"><td><p>nl2br</p></td>
+<td><p>Converts newlines to &lt;br&gt;</p></td>
+</tr>
+<tr class="row-odd"><td><p>striptags</p></td>
+<td><p>Removes HTML tags</p></td>
+</tr>
+<tr class="row-even"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-odd"><td><p>length</p></td>
+<td><p>Counts items in array or characters in string</p></td>
+</tr>
+<tr class="row-even"><td><p>default(value)</p></td>
+<td><p>Returns default if value is empty</p></td>
+</tr>
+<tr class="row-odd"><td><p>join(separator)</p></td>
+<td><p>Joins array into string</p></td>
+</tr>
+<tr class="row-even"><td><p>slice(start, length)</p></td>
+<td><p>Extracts part of array or string</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>number_format(decimals)</p></td>
+<td><p>Formats number with decimals</p></td>
+</tr>
+<tr class="row-odd"><td><p>abs</p></td>
+<td><p>Absolute value</p></td>
+</tr>
+<tr class="row-even"><td><p>round(precision)</p></td>
+<td><p>Rounds number</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>date(format)</p></td>
+<td><p>Formats date/time value</p></td>
+</tr>
+<tr class="row-odd"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>json(pretty)</p></td>
+<td><p>Converts value to JSON string</p></td>
+</tr>
+<tr class="row-odd"><td><p>replace(search, replace)</p></td>
+<td><p>Replaces text inside string</p></td>
+</tr>
+<tr class="row-even"><td><p>Filter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-odd"><td><p>money(symbol)</p></td>
+<td><p>Formats number as currency (default ₱)</p></td>
+</tr>
+<tr class="row-even"><td><p>slug</p></td>
+<td><p>Converts string to URL-friendly slug</p></td>
+</tr>
+<tr class="row-odd"><td><p>pluralize(word)</p></td>
+<td><p>Adds “s” if count is not 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-odd"><td><p>url(path)</p></td>
+<td><p>Returns a clean relative URL (prepends “/”)</p></td>
+</tr>
+<tr class="row-even"><td><p>asset(path)</p></td>
+<td><p>Returns URL from <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory</p></td>
+</tr>
+<tr class="row-odd"><td><p>site_url(path)</p></td>
+<td><p>Returns routed URL</p></td>
+</tr>
+<tr class="row-even"><td><p>base_url(path)</p></td>
+<td><p>Returns base URL + path</p></td>
+</tr>
+<tr class="row-odd"><td><p>active(route)</p></td>
+<td><p>Returns “active” if route matches current URL</p></td>
+</tr>
+<tr class="row-even"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-odd"><td><p>config(key)</p></td>
+<td><p>Returns config value</p></td>
+</tr>
+<tr class="row-even"><td><p>session(key)</p></td>
+<td><p>Returns session value; returns all if key is null</p></td>
+</tr>
+<tr class="row-odd"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>upper(str)</p></td>
+<td><p>Converts string to uppercase</p></td>
+</tr>
+<tr class="row-odd"><td><p>repeat(str, n)</p></td>
 <td><p>Repeats string n times</p></td>
 </tr>
+<tr class="row-even"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
 <tr class="row-odd"><td><p>now()</p></td>
-<td><p>Returns current date and time</p></td>
+<td><p>Returns current datetime (Y-m-d H:i:s)</p></td>
 </tr>
-<tr class="row-even"><td><p>date(format, time)</p></td>
-<td><p>Returns formatted date</p></td>
+<tr class="row-even"><td><p>date(format, timestamp)</p></td>
+<td><p>Formats timestamp</p></td>
 </tr>
-<tr class="row-odd"><td><p>include(template, vars)</p></td>
-<td><p>Includes another template</p></td>
+<tr class="row-odd"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td><p>dump(value)</p></td>
-<td><p>Debug helper: prints value with &lt;pre&gt;</p></td>
+<tr class="row-even"><td><p>include(template, vars)</p></td>
+<td><p>Renders another template with variables</p></td>
+</tr>
+<tr class="row-odd"><td><p>dump(value, die=false)</p></td>
+<td><p>Prints formatted debug output; optionally stops execution</p></td>
+</tr>
+<tr class="row-even"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
 </tr>
 <tr class="row-odd"><td><p>csrf_field()</p></td>
-<td><p>Prints CSRF hidden input field</p></td>
+<td><p>Outputs hidden CSRF input field</p></td>
+</tr>
+<tr class="row-even"><td><p>old(key, default)</p></td>
+<td><p>Returns previously submitted form value</p></td>
+</tr>
+<tr class="row-odd"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>nonce()</p></td>
+<td><p>Returns CSP nonce for inline scripts/styles</p></td>
+</tr>
+<tr class="row-odd"><td><p>Function Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p>asset_version(path)</p></td>
+<td><p>Returns asset URL with cache-busting version (?v=timestamp)</p></td>
 </tr>
 </tbody>
 </table>

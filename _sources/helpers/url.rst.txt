@@ -12,7 +12,7 @@ Function Summary
 
    * - Function
      - Description
-   * - ``base_url()``
+   * - ``base_url($uri = '', $protocol = null)``
      - Returns the base URL of the application.
    * - ``site_url($url = '')``
      - Generates a full site URL including optional index page.
@@ -30,7 +30,7 @@ Function Summary
 Available Functions
 --------------------
 
-.. php:function:: base_url()
+.. php:function:: base_url($uri = '', $protocol = null)
 
     Returns the base URL of the application.
 
