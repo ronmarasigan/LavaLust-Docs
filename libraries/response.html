@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Response &mdash; LavaLust 4.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=cc8a4273"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Language Class" href="language.html" />
+    <link rel="prev" title="Request" href="request.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html">Request</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Response</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-a-status-code">Setting a Status Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-headers">Adding Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-content">Setting Content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-the-response">Sending the Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-a-json-response">Sending a JSON Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-response-patterns">Common Response Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-reference">Method Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ember.html">Ember Template Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ember.html#module-Ember_registrar">Ember Registrar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Response</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="response">
+<h1>Response<a class="headerlink" href="#response" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Io</span></code> library also handles HTTP responses — setting status codes, headers, content,
+and sending JSON or HTML back to the client.</p>
+<p>It is available in controllers via <code class="docutils literal notranslate"><span class="pre">$this-&gt;io</span></code>.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>A typical response is built in three steps:</p>
+<ol class="arabic simple">
+<li><p>Set a status code with <code class="docutils literal notranslate"><span class="pre">set_status_code()</span></code></p></li>
+<li><p>Set headers and content</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">send()</span></code> to flush everything to the client</p></li>
+</ol>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello World&lt;/h1&gt;&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-a-status-code">
+<h2>Setting a Status Code<a class="headerlink" href="#setting-a-status-code" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>   <span class="c1">// OK</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>   <span class="c1">// Created</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>   <span class="c1">// Bad Request</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">401</span><span class="p">);</span>   <span class="c1">// Unauthorized</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">403</span><span class="p">);</span>   <span class="c1">// Forbidden</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>   <span class="c1">// Not Found</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>   <span class="c1">// Internal Server Error</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-headers">
+<h2>Adding Headers<a class="headerlink" href="#adding-headers" title="Link to this heading"></a></h2>
+<p><strong>Single header:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Cache-Control&#39;</span><span class="p">,</span> <span class="s1">&#39;no-cache&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Multiple headers at once (pass an array):</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">([</span>
+    <span class="s1">&#39;Cache-Control&#39;</span>             <span class="o">=&gt;</span> <span class="s1">&#39;no-store&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;X-Content-Type-Options&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;nosniff&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;X-Frame-Options&#39;</span>           <span class="o">=&gt;</span> <span class="s1">&#39;DENY&#39;</span><span class="p">,</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Headers are queued internally and only sent when <code class="docutils literal notranslate"><span class="pre">send()</span></code> is called.</p>
+</div>
+</section>
+<section id="setting-content">
+<h2>Setting Content<a class="headerlink" href="#setting-content" title="Link to this heading"></a></h2>
+<p><strong>Plain or HTML content:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hello&lt;/p&gt;&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>HTML content (automatically adds ``Content-Type: text/html``):</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Welcome&lt;/h1&gt;&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="sending-the-response">
+<h2>Sending the Response<a class="headerlink" href="#sending-the-response" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">send()</span></code> flushes the status code, all queued headers, and the content body:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Custom-Header&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Response body&lt;/p&gt;&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="sending-a-json-response">
+<h2>Sending a JSON Response<a class="headerlink" href="#sending-a-json-response" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">send_json()</span></code> automatically sets <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">application/json</span></code>, encodes the data,
+and calls <code class="docutils literal notranslate"><span class="pre">send()</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span>
+    <span class="s1">&#39;status&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User created&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span>      <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">,</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>JSON error response:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">422</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span>
+    <span class="s1">&#39;status&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Validation failed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;errors&#39;</span>  <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;The email field is required.&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="common-response-patterns">
+<h2>Common Response Patterns<a class="headerlink" href="#common-response-patterns" title="Link to this heading"></a></h2>
+<p><strong>200 OK with JSON data:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User not found&#39;</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>201 Created after insert:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">());</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Created&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>204 No Content after delete:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">204</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>HTML response with custom headers:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">page</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Frame-Options&#39;</span><span class="p">,</span> <span class="s1">&#39;SAMEORIGIN&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello from LavaLust&lt;/h1&gt;&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Redirect using a header:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">old_page</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">301</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Location&#39;</span><span class="p">,</span> <span class="s1">&#39;/new-page&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="method-reference">
+<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Returns</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_status_code(int</span> <span class="pre">$code)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Sets the HTTP response status code</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_header(string|array</span> <span class="pre">$name,</span> <span class="pre">string</span> <span class="pre">$value)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Queues one or more response headers</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_content(mixed</span> <span class="pre">$content)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Sets the raw response body</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_html_content(mixed</span> <span class="pre">$content)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Sets the response body and adds <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">text/html</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Sends the status code, all queued headers, and the content body</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">send_json(mixed</span> <span class="pre">$data)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Encodes <code class="docutils literal notranslate"><span class="pre">$data</span></code> as JSON, sets <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">application/json</span></code>, and sends</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="request.html" class="btn btn-neutral float-left" title="Request" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="language.html" class="btn btn-neutral float-right" title="Language Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

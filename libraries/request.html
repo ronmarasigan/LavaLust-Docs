@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request &mdash; LavaLust 4.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=cc8a4273"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Response" href="response.html" />
+    <link rel="prev" title="Input and Output Class" href="io.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LavaLust
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Request</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#csrf-protection">CSRF Protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-post-data">Reading POST Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-get-data">Reading GET Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-get-combined">POST + GET Combined</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-cookies">Reading Cookies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-cookies">Setting Cookies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-cookie-parameters"><code class="docutils literal notranslate"><span class="pre">set_cookie()</span></code> Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-server-variables">Reading Server Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-method">Request Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ip-address">IP Address</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#valid-ip-parameters"><code class="docutils literal notranslate"><span class="pre">valid_ip()</span></code> Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ajax-detection">AJAX Detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-reference">Method Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="response.html">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ember.html">Ember Template Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ember.html#module-Ember_registrar">Ember Registrar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
+      <li class="breadcrumb-item active">Request</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="request">
+<h1>Request<a class="headerlink" href="#request" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Io</span></code> library provides access to HTTP request data including <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">GET</span></code>, cookies,
+server variables, IP addresses, and request method detection.</p>
+<p>It is available in controllers via <code class="docutils literal notranslate"><span class="pre">$this-&gt;io</span></code>.</p>
+<section id="csrf-protection">
+<h2>CSRF Protection<a class="headerlink" href="#csrf-protection" title="Link to this heading"></a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">csrf_protection</span></code> is enabled in your config, <code class="docutils literal notranslate"><span class="pre">csrf_validate()</span></code> runs automatically
+on every request when the <code class="docutils literal notranslate"><span class="pre">Io</span></code> class is instantiated. No manual call is needed.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/config/config.php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_protection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-post-data">
+<h2>Reading POST Data<a class="headerlink" href="#reading-post-data" title="Link to this heading"></a></h2>
+<p><strong>Get a single POST value:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Get all POST values:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
+<span class="c1">// Returns: [&#39;name&#39; =&gt; &#39;Alice&#39;, &#39;email&#39; =&gt; &#39;alice@example.com&#39;, ...]</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-get-data">
+<h2>Reading GET Data<a class="headerlink" href="#reading-get-data" title="Link to this heading"></a></h2>
+<p><strong>Get a single GET value:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Get all GET values:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$params</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="c1">// Returns: [&#39;page&#39; =&gt; &#39;2&#39;, &#39;sort&#39; =&gt; &#39;asc&#39;, ...]</span>
+</pre></div>
+</div>
+</section>
+<section id="post-get-combined">
+<h2>POST + GET Combined<a class="headerlink" href="#post-get-combined" title="Link to this heading"></a></h2>
+<p>Use these when a value may come from either <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">GET</span></code>.</p>
+<p><strong>post_get</strong> — checks POST first, falls back to GET:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>get_post</strong> — checks GET first, falls back to POST:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-cookies">
+<h2>Reading Cookies<a class="headerlink" href="#reading-cookies" title="Link to this heading"></a></h2>
+<p><strong>Get a single cookie value:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$token</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;remember_token&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Get all cookies:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$cookies</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-cookies">
+<h2>Setting Cookies<a class="headerlink" href="#setting-cookies" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Simple cookie (expires at end of session)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">);</span>
+
+<span class="c1">// Cookie that expires in 1 hour</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">);</span>
+
+<span class="c1">// Cookie with custom options</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;domain&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;.example.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;secure&#39;</span>   <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
+    <span class="s1">&#39;httponly&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
+    <span class="s1">&#39;samesite&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Strict&#39;</span><span class="p">,</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Options not provided in the <code class="docutils literal notranslate"><span class="pre">$options</span></code> array are automatically filled from your
+config values (<code class="docutils literal notranslate"><span class="pre">cookie_path</span></code>, <code class="docutils literal notranslate"><span class="pre">cookie_domain</span></code>, <code class="docutils literal notranslate"><span class="pre">cookie_secure</span></code>, etc.).</p>
+</div>
+<section id="set-cookie-parameters">
+<h3><code class="docutils literal notranslate"><span class="pre">set_cookie()</span></code> Parameters<a class="headerlink" href="#set-cookie-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Cookie name (config prefix is prepended automatically)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$value</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">''</span></code></p></td>
+<td><p>Cookie value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$expiration</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Lifetime in seconds from now. <code class="docutils literal notranslate"><span class="pre">0</span></code> = session cookie. Negative values expire immediately.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$options</span></code></p></td>
+<td><p>array</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Override any of: <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">domain</span></code>, <code class="docutils literal notranslate"><span class="pre">secure</span></code>, <code class="docutils literal notranslate"><span class="pre">httponly</span></code>, <code class="docutils literal notranslate"><span class="pre">samesite</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reading-server-variables">
+<h2>Reading Server Variables<a class="headerlink" href="#reading-server-variables" title="Link to this heading"></a></h2>
+<p><strong>Get a single server variable:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$host</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">);</span>
+<span class="nv">$uri</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Get all server variables:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$server</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="request-method">
+<h2>Request Method<a class="headerlink" href="#request-method" title="Link to this heading"></a></h2>
+<p>Returns the current HTTP request method.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Lowercase (default)</span>
+<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>       <span class="c1">// &#39;get&#39;, &#39;post&#39;, &#39;put&#39;, etc.</span>
+
+<span class="c1">// Uppercase</span>
+<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span>   <span class="c1">// &#39;GET&#39;, &#39;POST&#39;, &#39;PUT&#39;, etc.</span>
+</pre></div>
+</div>
+<p><strong>Practical example — method-based branching:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">form</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+        <span class="c1">// handle form submission</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;form/create&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ip-address">
+<h2>IP Address<a class="headerlink" href="#ip-address" title="Link to this heading"></a></h2>
+<p><strong>Get the client IP address:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">ip_address()</span></code> checks <code class="docutils literal notranslate"><span class="pre">HTTP_X_FORWARDED_FOR</span></code>, <code class="docutils literal notranslate"><span class="pre">HTTP_CLIENT_IP</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">HTTP_X_REAL_IP</span></code> in order before falling back to <code class="docutils literal notranslate"><span class="pre">REMOTE_ADDR</span></code>. Only values
+that pass <code class="docutils literal notranslate"><span class="pre">FILTER_VALIDATE_IP</span></code> are accepted from proxy headers.</p>
+</div>
+<p><strong>Validate an IP address:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Validate any IP (v4 or v6)</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">);</span>           <span class="c1">// true</span>
+
+<span class="c1">// Validate IPv4 only</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv4&#39;</span><span class="p">);</span>   <span class="c1">// true</span>
+
+<span class="c1">// Validate IPv6 only</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;::1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv6&#39;</span><span class="p">);</span>            <span class="c1">// true</span>
+</pre></div>
+</div>
+<section id="valid-ip-parameters">
+<h3><code class="docutils literal notranslate"><span class="pre">valid_ip()</span></code> Parameters<a class="headerlink" href="#valid-ip-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$ip</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>IP address to validate</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$which</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">''</span></code></p></td>
+<td><p>Protocol to enforce: <code class="docutils literal notranslate"><span class="pre">'ipv4'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ipv6'</span></code>, or <code class="docutils literal notranslate"><span class="pre">''</span></code> (any)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ajax-detection">
+<h2>AJAX Detection<a class="headerlink" href="#ajax-detection" title="Link to this heading"></a></h2>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> if the current request was made via XMLHttpRequest.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ok&#39;</span><span class="p">]);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;page/index&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">is_ajax()</span></code> relies on the <code class="docutils literal notranslate"><span class="pre">X-Requested-With:</span> <span class="pre">XMLHttpRequest</span></code> header, which is
+sent automatically by most JavaScript libraries (jQuery, Axios, etc.) but not by
+native <code class="docutils literal notranslate"><span class="pre">fetch()</span></code> unless you set the header manually.</p>
+</div>
+</section>
+<section id="method-reference">
+<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Returns</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string|array</p></td>
+<td><p>Returns a single POST value or all POST data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string|array</p></td>
+<td><p>Returns a single GET value or all GET data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post_get(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Checks POST first, then GET</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_post(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Checks GET first, then POST</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cookie(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string|array</p></td>
+<td><p>Returns a single cookie value or all cookies</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_cookie(string</span> <span class="pre">$name,</span> <span class="pre">string</span> <span class="pre">$value,</span> <span class="pre">int</span> <span class="pre">$exp,</span> <span class="pre">array</span> <span class="pre">$opts)</span></code></p></td>
+<td><p>void</p></td>
+<td><p>Sets a cookie with optional config-backed defaults</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">server(?string</span> <span class="pre">$index)</span></code></p></td>
+<td><p>string|array</p></td>
+<td><p>Returns a single <code class="docutils literal notranslate"><span class="pre">$_SERVER</span></code> value or all server data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">method(bool</span> <span class="pre">$upper)</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Returns the HTTP request method in lower or upper case</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ip_address()</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Returns the client IP address</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_ip(string</span> <span class="pre">$ip,</span> <span class="pre">string</span> <span class="pre">$which)</span></code></p></td>
+<td><p>bool</p></td>
+<td><p>Validates an IP address (optionally enforces IPv4 or IPv6)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_ajax()</span></code></p></td>
+<td><p>bool</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> if the request is an XMLHttpRequest</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="io.html" class="btn btn-neutral float-left" title="Input and Output Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="response.html" class="btn btn-neutral float-right" title="Response" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

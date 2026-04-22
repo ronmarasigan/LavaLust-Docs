@@ -1,0 +1,225 @@
+Response
+========
+
+The ``Io`` library also handles HTTP responses — setting status codes, headers, content,
+and sending JSON or HTML back to the client.
+
+It is available in controllers via ``$this->io``.
+
+Overview
+--------
+
+A typical response is built in three steps:
+
+1. Set a status code with ``set_status_code()``
+2. Set headers and content
+3. Call ``send()`` to flush everything to the client
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_status_code(200);
+    $this->io->set_html_content('<h1>Hello World</h1>');
+    $this->io->send();
+
+Setting a Status Code
+---------------------
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_status_code(200);   // OK
+    $this->io->set_status_code(201);   // Created
+    $this->io->set_status_code(400);   // Bad Request
+    $this->io->set_status_code(401);   // Unauthorized
+    $this->io->set_status_code(403);   // Forbidden
+    $this->io->set_status_code(404);   // Not Found
+    $this->io->set_status_code(500);   // Internal Server Error
+
+Adding Headers
+--------------
+
+**Single header:**
+
+.. code-block:: php
+
+    <?php
+    $this->io->add_header('Cache-Control', 'no-cache');
+
+**Multiple headers at once (pass an array):**
+
+.. code-block:: php
+
+    <?php
+    $this->io->add_header([
+        'Cache-Control'             => 'no-store',
+        'X-Content-Type-Options'    => 'nosniff',
+        'X-Frame-Options'           => 'DENY',
+    ]);
+
+.. note::
+
+   Headers are queued internally and only sent when ``send()`` is called.
+
+Setting Content
+---------------
+
+**Plain or HTML content:**
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_content('<p>Hello</p>');
+
+**HTML content (automatically adds ``Content-Type: text/html``):**
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_html_content('<h1>Welcome</h1>');
+
+Sending the Response
+--------------------
+
+``send()`` flushes the status code, all queued headers, and the content body:
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_status_code(200);
+    $this->io->add_header('X-Custom-Header', 'value');
+    $this->io->set_html_content('<p>Response body</p>');
+    $this->io->send();
+
+Sending a JSON Response
+-----------------------
+
+``send_json()`` automatically sets ``Content-Type: application/json``, encodes the data,
+and calls ``send()``:
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_status_code(200);
+    $this->io->send_json([
+        'status'  => 'success',
+        'message' => 'User created',
+        'id'      => 42,
+    ]);
+
+**JSON error response:**
+
+.. code-block:: php
+
+    <?php
+    $this->io->set_status_code(422);
+    $this->io->send_json([
+        'status'  => 'error',
+        'message' => 'Validation failed',
+        'errors'  => [
+            'email' => 'The email field is required.',
+        ],
+    ]);
+
+Common Response Patterns
+------------------------
+
+**200 OK with JSON data:**
+
+.. code-block:: php
+
+    <?php
+    public function show($id)
+    {
+        $this->call->model('UserModel');
+        $user = $this->UserModel->find($id);
+
+        if (!$user) {
+            $this->io->set_status_code(404);
+            $this->io->send_json(['message' => 'User not found']);
+        }
+
+        $this->io->set_status_code(200);
+        $this->io->send_json($user);
+    }
+
+**201 Created after insert:**
+
+.. code-block:: php
+
+    <?php
+    public function store()
+    {
+        $this->call->model('UserModel');
+        $id = $this->UserModel->insert($this->io->post());
+
+        $this->io->set_status_code(201);
+        $this->io->send_json(['message' => 'Created', 'id' => $id]);
+    }
+
+**204 No Content after delete:**
+
+.. code-block:: php
+
+    <?php
+    public function destroy($id)
+    {
+        $this->call->model('UserModel');
+        $this->UserModel->delete($id);
+
+        $this->io->set_status_code(204);
+        $this->io->send();
+    }
+
+**HTML response with custom headers:**
+
+.. code-block:: php
+
+    <?php
+    public function page()
+    {
+        $this->io->set_status_code(200);
+        $this->io->add_header('X-Frame-Options', 'SAMEORIGIN');
+        $this->io->set_html_content('<h1>Hello from LavaLust</h1>');
+        $this->io->send();
+    }
+
+**Redirect using a header:**
+
+.. code-block:: php
+
+    <?php
+    public function old_page()
+    {
+        $this->io->set_status_code(301);
+        $this->io->add_header('Location', '/new-page');
+        $this->io->send();
+    }
+
+Method Reference
+----------------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Returns
+     - Description
+   * - ``set_status_code(int $code)``
+     - void
+     - Sets the HTTP response status code
+   * - ``add_header(string|array $name, string $value)``
+     - void
+     - Queues one or more response headers
+   * - ``set_content(mixed $content)``
+     - void
+     - Sets the raw response body
+   * - ``set_html_content(mixed $content)``
+     - void
+     - Sets the response body and adds ``Content-Type: text/html``
+   * - ``send()``
+     - void
+     - Sends the status code, all queued headers, and the content body
+   * - ``send_json(mixed $data)``
+     - void
+     - Encodes ``$data`` as JSON, sets ``Content-Type: application/json``, and sends

@@ -14,6 +14,8 @@ Here are the built-in LavaLust libraries.
    upload
    form_validation
    io
+   request
+   response
    language
    migration
    pagination

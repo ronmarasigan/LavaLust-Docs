@@ -1,0 +1,303 @@
+Request
+=======
+
+The ``Io`` library provides access to HTTP request data including ``POST``, ``GET``, cookies,
+server variables, IP addresses, and request method detection.
+
+It is available in controllers via ``$this->io``.
+
+CSRF Protection
+---------------
+
+If ``csrf_protection`` is enabled in your config, ``csrf_validate()`` runs automatically
+on every request when the ``Io`` class is instantiated. No manual call is needed.
+
+.. code-block:: php
+
+    <?php
+    // app/config/config.php
+    $config['csrf_protection'] = TRUE;
+
+Reading POST Data
+-----------------
+
+**Get a single POST value:**
+
+.. code-block:: php
+
+    <?php
+    $name = $this->io->post('name');
+
+**Get all POST values:**
+
+.. code-block:: php
+
+    <?php
+    $data = $this->io->post();
+    // Returns: ['name' => 'Alice', 'email' => 'alice@example.com', ...]
+
+Reading GET Data
+----------------
+
+**Get a single GET value:**
+
+.. code-block:: php
+
+    <?php
+    $page = $this->io->get('page');
+
+**Get all GET values:**
+
+.. code-block:: php
+
+    <?php
+    $params = $this->io->get();
+    // Returns: ['page' => '2', 'sort' => 'asc', ...]
+
+POST + GET Combined
+--------------------
+
+Use these when a value may come from either ``POST`` or ``GET``.
+
+**post_get** — checks POST first, falls back to GET:
+
+.. code-block:: php
+
+    <?php
+    $value = $this->io->post_get('search');
+
+**get_post** — checks GET first, falls back to POST:
+
+.. code-block:: php
+
+    <?php
+    $value = $this->io->get_post('search');
+
+Reading Cookies
+---------------
+
+**Get a single cookie value:**
+
+.. code-block:: php
+
+    <?php
+    $token = $this->io->cookie('remember_token');
+
+**Get all cookies:**
+
+.. code-block:: php
+
+    <?php
+    $cookies = $this->io->cookie();
+
+Setting Cookies
+---------------
+
+.. code-block:: php
+
+    <?php
+    // Simple cookie (expires at end of session)
+    $this->io->set_cookie('username', 'alice');
+
+    // Cookie that expires in 1 hour
+    $this->io->set_cookie('username', 'alice', 3600);
+
+    // Cookie with custom options
+    $this->io->set_cookie('username', 'alice', 3600, [
+        'path'     => '/',
+        'domain'   => '.example.com',
+        'secure'   => TRUE,
+        'httponly' => TRUE,
+        'samesite' => 'Strict',
+    ]);
+
+.. note::
+
+   Options not provided in the ``$options`` array are automatically filled from your
+   config values (``cookie_path``, ``cookie_domain``, ``cookie_secure``, etc.).
+
+``set_cookie()`` Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$name``
+     - string
+     - —
+     - Cookie name (config prefix is prepended automatically)
+   * - ``$value``
+     - string
+     - ``''``
+     - Cookie value
+   * - ``$expiration``
+     - int
+     - ``0``
+     - Lifetime in seconds from now. ``0`` = session cookie. Negative values expire immediately.
+   * - ``$options``
+     - array
+     - ``[]``
+     - Override any of: ``prefix``, ``path``, ``domain``, ``secure``, ``httponly``, ``samesite``
+
+Reading Server Variables
+------------------------
+
+**Get a single server variable:**
+
+.. code-block:: php
+
+    <?php
+    $host = $this->io->server('HTTP_HOST');
+    $uri  = $this->io->server('REQUEST_URI');
+
+**Get all server variables:**
+
+.. code-block:: php
+
+    <?php
+    $server = $this->io->server();
+
+Request Method
+--------------
+
+Returns the current HTTP request method.
+
+.. code-block:: php
+
+    <?php
+    // Lowercase (default)
+    $method = $this->io->method();       // 'get', 'post', 'put', etc.
+
+    // Uppercase
+    $method = $this->io->method(TRUE);   // 'GET', 'POST', 'PUT', etc.
+
+**Practical example — method-based branching:**
+
+.. code-block:: php
+
+    <?php
+    public function form()
+    {
+        if ($this->io->method() === 'post') {
+            $name = $this->io->post('name');
+            // handle form submission
+        } else {
+            $this->call->view('form/create');
+        }
+    }
+
+IP Address
+----------
+
+**Get the client IP address:**
+
+.. code-block:: php
+
+    <?php
+    $ip = $this->io->ip_address();
+
+.. note::
+
+   ``ip_address()`` checks ``HTTP_X_FORWARDED_FOR``, ``HTTP_CLIENT_IP``, and
+   ``HTTP_X_REAL_IP`` in order before falling back to ``REMOTE_ADDR``. Only values
+   that pass ``FILTER_VALIDATE_IP`` are accepted from proxy headers.
+
+**Validate an IP address:**
+
+.. code-block:: php
+
+    <?php
+    // Validate any IP (v4 or v6)
+    $valid = $this->io->valid_ip('192.168.1.1');           // true
+
+    // Validate IPv4 only
+    $valid = $this->io->valid_ip('192.168.1.1', 'ipv4');   // true
+
+    // Validate IPv6 only
+    $valid = $this->io->valid_ip('::1', 'ipv6');            // true
+
+``valid_ip()`` Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$ip``
+     - string
+     - —
+     - IP address to validate
+   * - ``$which``
+     - string
+     - ``''``
+     - Protocol to enforce: ``'ipv4'``, ``'ipv6'``, or ``''`` (any)
+
+AJAX Detection
+--------------
+
+Returns ``TRUE`` if the current request was made via XMLHttpRequest.
+
+.. code-block:: php
+
+    <?php
+    if ($this->io->is_ajax()) {
+        $this->io->send_json(['status' => 'ok']);
+    } else {
+        $this->call->view('page/index');
+    }
+
+.. note::
+
+   ``is_ajax()`` relies on the ``X-Requested-With: XMLHttpRequest`` header, which is
+   sent automatically by most JavaScript libraries (jQuery, Axios, etc.) but not by
+   native ``fetch()`` unless you set the header manually.
+
+Method Reference
+----------------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Method
+     - Returns
+     - Description
+   * - ``post(?string $index)``
+     - string|array
+     - Returns a single POST value or all POST data
+   * - ``get(?string $index)``
+     - string|array
+     - Returns a single GET value or all GET data
+   * - ``post_get(?string $index)``
+     - string
+     - Checks POST first, then GET
+   * - ``get_post(?string $index)``
+     - string
+     - Checks GET first, then POST
+   * - ``cookie(?string $index)``
+     - string|array
+     - Returns a single cookie value or all cookies
+   * - ``set_cookie(string $name, string $value, int $exp, array $opts)``
+     - void
+     - Sets a cookie with optional config-backed defaults
+   * - ``server(?string $index)``
+     - string|array
+     - Returns a single ``$_SERVER`` value or all server data
+   * - ``method(bool $upper)``
+     - string
+     - Returns the HTTP request method in lower or upper case
+   * - ``ip_address()``
+     - string
+     - Returns the client IP address
+   * - ``valid_ip(string $ip, string $which)``
+     - bool
+     - Validates an IP address (optionally enforces IPv4 or IPv6)
+   * - ``is_ajax()``
+     - bool
+     - Returns ``TRUE`` if the request is an XMLHttpRequest
