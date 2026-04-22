@@ -26,14 +26,14 @@ Reading POST Data
 .. code-block:: php
 
     <?php
-    $name = $this->io->post('name');
+    $name = $this->request->post('name');
 
 **Get all POST values:**
 
 .. code-block:: php
 
     <?php
-    $data = $this->io->post();
+    $data = $this->request->post();
     // Returns: ['name' => 'Alice', 'email' => 'alice@example.com', ...]
 
 Reading GET Data
@@ -44,14 +44,14 @@ Reading GET Data
 .. code-block:: php
 
     <?php
-    $page = $this->io->get('page');
+    $page = $this->request->get('page');
 
 **Get all GET values:**
 
 .. code-block:: php
 
     <?php
-    $params = $this->io->get();
+    $params = $this->request->get();
     // Returns: ['page' => '2', 'sort' => 'asc', ...]
 
 POST + GET Combined
@@ -64,14 +64,14 @@ Use these when a value may come from either ``POST`` or ``GET``.
 .. code-block:: php
 
     <?php
-    $value = $this->io->post_get('search');
+    $value = $this->request->post_get('search');
 
 **get_post** — checks GET first, falls back to POST:
 
 .. code-block:: php
 
     <?php
-    $value = $this->io->get_post('search');
+    $value = $this->request->get_post('search');
 
 Reading Cookies
 ---------------
@@ -81,14 +81,14 @@ Reading Cookies
 .. code-block:: php
 
     <?php
-    $token = $this->io->cookie('remember_token');
+    $token = $this->request->cookie('remember_token');
 
 **Get all cookies:**
 
 .. code-block:: php
 
     <?php
-    $cookies = $this->io->cookie();
+    $cookies = $this->request->cookie();
 
 Setting Cookies
 ---------------
@@ -97,13 +97,13 @@ Setting Cookies
 
     <?php
     // Simple cookie (expires at end of session)
-    $this->io->set_cookie('username', 'alice');
+    $this->request->set_cookie('username', 'alice');
 
     // Cookie that expires in 1 hour
-    $this->io->set_cookie('username', 'alice', 3600);
+    $this->request->set_cookie('username', 'alice', 3600);
 
     // Cookie with custom options
-    $this->io->set_cookie('username', 'alice', 3600, [
+    $this->request->set_cookie('username', 'alice', 3600, [
         'path'     => '/',
         'domain'   => '.example.com',
         'secure'   => TRUE,
@@ -151,15 +151,15 @@ Reading Server Variables
 .. code-block:: php
 
     <?php
-    $host = $this->io->server('HTTP_HOST');
-    $uri  = $this->io->server('REQUEST_URI');
+    $host = $this->request->server('HTTP_HOST');
+    $uri  = $this->request->server('REQUEST_URI');
 
 **Get all server variables:**
 
 .. code-block:: php
 
     <?php
-    $server = $this->io->server();
+    $server = $this->request->server();
 
 Request Method
 --------------
@@ -170,10 +170,10 @@ Returns the current HTTP request method.
 
     <?php
     // Lowercase (default)
-    $method = $this->io->method();       // 'get', 'post', 'put', etc.
+    $method = $this->request->method();       // 'get', 'post', 'put', etc.
 
     // Uppercase
-    $method = $this->io->method(TRUE);   // 'GET', 'POST', 'PUT', etc.
+    $method = $this->request->method(TRUE);   // 'GET', 'POST', 'PUT', etc.
 
 **Practical example — method-based branching:**
 
@@ -182,8 +182,8 @@ Returns the current HTTP request method.
     <?php
     public function form()
     {
-        if ($this->io->method() === 'post') {
-            $name = $this->io->post('name');
+        if ($this->request->method() === 'post') {
+            $name = $this->request->post('name');
             // handle form submission
         } else {
             $this->call->view('form/create');
@@ -198,7 +198,7 @@ IP Address
 .. code-block:: php
 
     <?php
-    $ip = $this->io->ip_address();
+    $ip = $this->request->ip_address();
 
 .. note::
 
@@ -212,13 +212,13 @@ IP Address
 
     <?php
     // Validate any IP (v4 or v6)
-    $valid = $this->io->valid_ip('192.168.1.1');           // true
+    $valid = $this->request->valid_ip('192.168.1.1');           // true
 
     // Validate IPv4 only
-    $valid = $this->io->valid_ip('192.168.1.1', 'ipv4');   // true
+    $valid = $this->request->valid_ip('192.168.1.1', 'ipv4');   // true
 
     // Validate IPv6 only
-    $valid = $this->io->valid_ip('::1', 'ipv6');            // true
+    $valid = $this->request->valid_ip('::1', 'ipv6');            // true
 
 ``valid_ip()`` Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -247,8 +247,8 @@ Returns ``TRUE`` if the current request was made via XMLHttpRequest.
 .. code-block:: php
 
     <?php
-    if ($this->io->is_ajax()) {
-        $this->io->send_json(['status' => 'ok']);
+    if ($this->request->is_ajax()) {
+        $this->request->send_json(['status' => 'ok']);
     } else {
         $this->call->view('page/index');
     }
@@ -268,34 +268,34 @@ Method Reference
    * - Method
      - Returns
      - Description
-   * - ``post(?string $index)``
+   * - ``post($index)``
      - string|array
      - Returns a single POST value or all POST data
-   * - ``get(?string $index)``
+   * - ``get($index)``
      - string|array
      - Returns a single GET value or all GET data
-   * - ``post_get(?string $index)``
+   * - ``post_get($index)``
      - string
      - Checks POST first, then GET
-   * - ``get_post(?string $index)``
+   * - ``get_post($index)``
      - string
      - Checks GET first, then POST
-   * - ``cookie(?string $index)``
+   * - ``cookie($index)``
      - string|array
      - Returns a single cookie value or all cookies
-   * - ``set_cookie(string $name, string $value, int $exp, array $opts)``
+   * - ``set_cookie($name, $value, $exp, $opts)``
      - void
      - Sets a cookie with optional config-backed defaults
-   * - ``server(?string $index)``
+   * - ``server($index)``
      - string|array
      - Returns a single ``$_SERVER`` value or all server data
-   * - ``method(bool $upper)``
+   * - ``method($upper)``
      - string
      - Returns the HTTP request method in lower or upper case
    * - ``ip_address()``
      - string
      - Returns the client IP address
-   * - ``valid_ip(string $ip, string $which)``
+   * - ``valid_ip($ip, string $which)``
      - bool
      - Validates an IP address (optionally enforces IPv4 or IPv6)
    * - ``is_ajax()``

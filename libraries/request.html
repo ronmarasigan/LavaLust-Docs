@@ -137,12 +137,12 @@ on every request when the <code class="docutils literal notranslate"><span class
 <h2>Reading POST Data<a class="headerlink" href="#reading-post-data" title="Link to this heading"></a></h2>
 <p><strong>Get a single POST value:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Get all POST values:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
 <span class="c1">// Returns: [&#39;name&#39; =&gt; &#39;Alice&#39;, &#39;email&#39; =&gt; &#39;alice@example.com&#39;, ...]</span>
 </pre></div>
 </div>
@@ -151,12 +151,12 @@ on every request when the <code class="docutils literal notranslate"><span class
 <h2>Reading GET Data<a class="headerlink" href="#reading-get-data" title="Link to this heading"></a></h2>
 <p><strong>Get a single GET value:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+<span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Get all GET values:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$params</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="nv">$params</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 <span class="c1">// Returns: [&#39;page&#39; =&gt; &#39;2&#39;, &#39;sort&#39; =&gt; &#39;asc&#39;, ...]</span>
 </pre></div>
 </div>
@@ -166,12 +166,12 @@ on every request when the <code class="docutils literal notranslate"><span class
 <p>Use these when a value may come from either <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">GET</span></code>.</p>
 <p><strong>post_get</strong> — checks POST first, falls back to GET:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>get_post</strong> — checks GET first, falls back to POST:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
+<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -179,12 +179,12 @@ on every request when the <code class="docutils literal notranslate"><span class
 <h2>Reading Cookies<a class="headerlink" href="#reading-cookies" title="Link to this heading"></a></h2>
 <p><strong>Get a single cookie value:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$token</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;remember_token&#39;</span><span class="p">);</span>
+<span class="nv">$token</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;remember_token&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Get all cookies:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$cookies</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">();</span>
+<span class="nv">$cookies</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
@@ -192,13 +192,13 @@ on every request when the <code class="docutils literal notranslate"><span class
 <h2>Setting Cookies<a class="headerlink" href="#setting-cookies" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Simple cookie (expires at end of session)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">);</span>
 
 <span class="c1">// Cookie that expires in 1 hour</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">);</span>
 
 <span class="c1">// Cookie with custom options</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="p">[</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="p">[</span>
     <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
     <span class="s1">&#39;domain&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;.example.com&#39;</span><span class="p">,</span>
     <span class="s1">&#39;secure&#39;</span>   <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
@@ -251,13 +251,13 @@ config values (<code class="docutils literal notranslate"><span class="pre">cook
 <h2>Reading Server Variables<a class="headerlink" href="#reading-server-variables" title="Link to this heading"></a></h2>
 <p><strong>Get a single server variable:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$host</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">);</span>
-<span class="nv">$uri</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">);</span>
+<span class="nv">$host</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">);</span>
+<span class="nv">$uri</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Get all server variables:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$server</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">();</span>
+<span class="nv">$server</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
@@ -266,18 +266,18 @@ config values (<code class="docutils literal notranslate"><span class="pre">cook
 <p>Returns the current HTTP request method.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Lowercase (default)</span>
-<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>       <span class="c1">// &#39;get&#39;, &#39;post&#39;, &#39;put&#39;, etc.</span>
+<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>       <span class="c1">// &#39;get&#39;, &#39;post&#39;, &#39;put&#39;, etc.</span>
 
 <span class="c1">// Uppercase</span>
-<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span>   <span class="c1">// &#39;GET&#39;, &#39;POST&#39;, &#39;PUT&#39;, etc.</span>
+<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span>   <span class="c1">// &#39;GET&#39;, &#39;POST&#39;, &#39;PUT&#39;, etc.</span>
 </pre></div>
 </div>
 <p><strong>Practical example — method-based branching:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">form</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
         <span class="c1">// handle form submission</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;form/create&#39;</span><span class="p">);</span>
@@ -290,7 +290,7 @@ config values (<code class="docutils literal notranslate"><span class="pre">cook
 <h2>IP Address<a class="headerlink" href="#ip-address" title="Link to this heading"></a></h2>
 <p><strong>Get the client IP address:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -302,13 +302,13 @@ that pass <code class="docutils literal notranslate"><span class="pre">FILTER_VA
 <p><strong>Validate an IP address:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Validate any IP (v4 or v6)</span>
-<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">);</span>           <span class="c1">// true</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">);</span>           <span class="c1">// true</span>
 
 <span class="c1">// Validate IPv4 only</span>
-<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv4&#39;</span><span class="p">);</span>   <span class="c1">// true</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv4&#39;</span><span class="p">);</span>   <span class="c1">// true</span>
 
 <span class="c1">// Validate IPv6 only</span>
-<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;::1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv6&#39;</span><span class="p">);</span>            <span class="c1">// true</span>
+<span class="nv">$valid</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;::1&#39;</span><span class="p">,</span> <span class="s1">&#39;ipv6&#39;</span><span class="p">);</span>            <span class="c1">// true</span>
 </pre></div>
 </div>
 <section id="valid-ip-parameters">
@@ -340,8 +340,8 @@ that pass <code class="docutils literal notranslate"><span class="pre">FILTER_VA
 <h2>AJAX Detection<a class="headerlink" href="#ajax-detection" title="Link to this heading"></a></h2>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> if the current request was made via XMLHttpRequest.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">())</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ok&#39;</span><span class="p">]);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ok&#39;</span><span class="p">]);</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;page/index&#39;</span><span class="p">);</span>
 <span class="p">}</span>
@@ -364,35 +364,35 @@ native <code class="docutils literal notranslate"><span class="pre">fetch()</spa
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post($index)</span></code></p></td>
 <td><p>string|array</p></td>
 <td><p>Returns a single POST value or all POST data</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get($index)</span></code></p></td>
 <td><p>string|array</p></td>
 <td><p>Returns a single GET value or all GET data</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post_get(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">post_get($index)</span></code></p></td>
 <td><p>string</p></td>
 <td><p>Checks POST first, then GET</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_post(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_post($index)</span></code></p></td>
 <td><p>string</p></td>
 <td><p>Checks GET first, then POST</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cookie(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cookie($index)</span></code></p></td>
 <td><p>string|array</p></td>
 <td><p>Returns a single cookie value or all cookies</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_cookie(string</span> <span class="pre">$name,</span> <span class="pre">string</span> <span class="pre">$value,</span> <span class="pre">int</span> <span class="pre">$exp,</span> <span class="pre">array</span> <span class="pre">$opts)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_cookie($name,</span> <span class="pre">$value,</span> <span class="pre">$exp,</span> <span class="pre">$opts)</span></code></p></td>
 <td><p>void</p></td>
 <td><p>Sets a cookie with optional config-backed defaults</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">server(?string</span> <span class="pre">$index)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">server($index)</span></code></p></td>
 <td><p>string|array</p></td>
 <td><p>Returns a single <code class="docutils literal notranslate"><span class="pre">$_SERVER</span></code> value or all server data</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">method(bool</span> <span class="pre">$upper)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">method($upper)</span></code></p></td>
 <td><p>string</p></td>
 <td><p>Returns the HTTP request method in lower or upper case</p></td>
 </tr>
@@ -400,7 +400,7 @@ native <code class="docutils literal notranslate"><span class="pre">fetch()</spa
 <td><p>string</p></td>
 <td><p>Returns the client IP address</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_ip(string</span> <span class="pre">$ip,</span> <span class="pre">string</span> <span class="pre">$which)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_ip($ip,</span> <span class="pre">string</span> <span class="pre">$which)</span></code></p></td>
 <td><p>bool</p></td>
 <td><p>Validates an IP address (optionally enforces IPv4 or IPv6)</p></td>
 </tr>

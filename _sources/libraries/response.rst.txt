@@ -18,9 +18,9 @@ A typical response is built in three steps:
 .. code-block:: php
 
     <?php
-    $this->io->set_status_code(200);
-    $this->io->set_html_content('<h1>Hello World</h1>');
-    $this->io->send();
+    $this->response->set_status_code(200);
+    $this->response->set_html_content('<h1>Hello World</h1>');
+    $this->response->send();
 
 Setting a Status Code
 ---------------------
@@ -28,13 +28,13 @@ Setting a Status Code
 .. code-block:: php
 
     <?php
-    $this->io->set_status_code(200);   // OK
-    $this->io->set_status_code(201);   // Created
-    $this->io->set_status_code(400);   // Bad Request
-    $this->io->set_status_code(401);   // Unauthorized
-    $this->io->set_status_code(403);   // Forbidden
-    $this->io->set_status_code(404);   // Not Found
-    $this->io->set_status_code(500);   // Internal Server Error
+    $this->response->set_status_code(200);   // OK
+    $this->response->set_status_code(201);   // Created
+    $this->response->set_status_code(400);   // Bad Request
+    $this->response->set_status_code(401);   // Unauthorized
+    $this->response->set_status_code(403);   // Forbidden
+    $this->response->set_status_code(404);   // Not Found
+    $this->response->set_status_code(500);   // Internal Server Error
 
 Adding Headers
 --------------
@@ -44,14 +44,14 @@ Adding Headers
 .. code-block:: php
 
     <?php
-    $this->io->add_header('Cache-Control', 'no-cache');
+    $this->response->add_header('Cache-Control', 'no-cache');
 
 **Multiple headers at once (pass an array):**
 
 .. code-block:: php
 
     <?php
-    $this->io->add_header([
+    $this->response->add_header([
         'Cache-Control'             => 'no-store',
         'X-Content-Type-Options'    => 'nosniff',
         'X-Frame-Options'           => 'DENY',
@@ -69,14 +69,14 @@ Setting Content
 .. code-block:: php
 
     <?php
-    $this->io->set_content('<p>Hello</p>');
+    $this->response->set_content('<p>Hello</p>');
 
 **HTML content (automatically adds ``Content-Type: text/html``):**
 
 .. code-block:: php
 
     <?php
-    $this->io->set_html_content('<h1>Welcome</h1>');
+    $this->response->set_html_content('<h1>Welcome</h1>');
 
 Sending the Response
 --------------------
@@ -86,10 +86,10 @@ Sending the Response
 .. code-block:: php
 
     <?php
-    $this->io->set_status_code(200);
-    $this->io->add_header('X-Custom-Header', 'value');
-    $this->io->set_html_content('<p>Response body</p>');
-    $this->io->send();
+    $this->response->set_status_code(200);
+    $this->response->add_header('X-Custom-Header', 'value');
+    $this->response->set_html_content('<p>Response body</p>');
+    $this->response->send();
 
 Sending a JSON Response
 -----------------------
@@ -100,8 +100,8 @@ and calls ``send()``:
 .. code-block:: php
 
     <?php
-    $this->io->set_status_code(200);
-    $this->io->send_json([
+    $this->response->set_status_code(200);
+    $this->response->send_json([
         'status'  => 'success',
         'message' => 'User created',
         'id'      => 42,
@@ -112,8 +112,8 @@ and calls ``send()``:
 .. code-block:: php
 
     <?php
-    $this->io->set_status_code(422);
-    $this->io->send_json([
+    $this->response->set_status_code(422);
+    $this->response->send_json([
         'status'  => 'error',
         'message' => 'Validation failed',
         'errors'  => [
@@ -135,12 +135,12 @@ Common Response Patterns
         $user = $this->UserModel->find($id);
 
         if (!$user) {
-            $this->io->set_status_code(404);
-            $this->io->send_json(['message' => 'User not found']);
+            $this->response->set_status_code(404);
+            $this->response->send_json(['message' => 'User not found']);
         }
 
-        $this->io->set_status_code(200);
-        $this->io->send_json($user);
+        $this->response->set_status_code(200);
+        $this->response->send_json($user);
     }
 
 **201 Created after insert:**
@@ -151,10 +151,10 @@ Common Response Patterns
     public function store()
     {
         $this->call->model('UserModel');
-        $id = $this->UserModel->insert($this->io->post());
+        $id = $this->UserModel->insert($this->response->post());
 
-        $this->io->set_status_code(201);
-        $this->io->send_json(['message' => 'Created', 'id' => $id]);
+        $this->response->set_status_code(201);
+        $this->response->send_json(['message' => 'Created', 'id' => $id]);
     }
 
 **204 No Content after delete:**
@@ -167,8 +167,8 @@ Common Response Patterns
         $this->call->model('UserModel');
         $this->UserModel->delete($id);
 
-        $this->io->set_status_code(204);
-        $this->io->send();
+        $this->response->set_status_code(204);
+        $this->response->send();
     }
 
 **HTML response with custom headers:**
@@ -178,10 +178,10 @@ Common Response Patterns
     <?php
     public function page()
     {
-        $this->io->set_status_code(200);
-        $this->io->add_header('X-Frame-Options', 'SAMEORIGIN');
-        $this->io->set_html_content('<h1>Hello from LavaLust</h1>');
-        $this->io->send();
+        $this->response->set_status_code(200);
+        $this->response->add_header('X-Frame-Options', 'SAMEORIGIN');
+        $this->response->set_html_content('<h1>Hello from LavaLust</h1>');
+        $this->response->send();
     }
 
 **Redirect using a header:**
@@ -191,9 +191,9 @@ Common Response Patterns
     <?php
     public function old_page()
     {
-        $this->io->set_status_code(301);
-        $this->io->add_header('Location', '/new-page');
-        $this->io->send();
+        $this->response->set_status_code(301);
+        $this->response->add_header('Location', '/new-page');
+        $this->response->send();
     }
 
 Method Reference
@@ -205,21 +205,21 @@ Method Reference
    * - Method
      - Returns
      - Description
-   * - ``set_status_code(int $code)``
+   * - ``set_status_code($code)``
      - void
      - Sets the HTTP response status code
-   * - ``add_header(string|array $name, string $value)``
+   * - ``add_header($name, $value)``
      - void
      - Queues one or more response headers
-   * - ``set_content(mixed $content)``
+   * - ``set_content($content)``
      - void
      - Sets the raw response body
-   * - ``set_html_content(mixed $content)``
+   * - ``set_html_content($content)``
      - void
      - Sets the response body and adds ``Content-Type: text/html``
    * - ``send()``
      - void
      - Sends the status code, all queued headers, and the content body
-   * - ``send_json(mixed $data)``
+   * - ``send_json($data)``
      - void
      - Encodes ``$data`` as JSON, sets ``Content-Type: application/json``, and sends
