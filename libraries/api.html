@@ -54,9 +54,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#folder-structure">Folder Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cors-request-helpers">CORS &amp; Request Helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#responses">Responses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rate-limiting">Rate Limiting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jwt-authentication">JWT Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#token-system">Token System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basic-authentication">Basic Authentication</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#database-structure">Database Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#controller-example">Controller Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rate-limiting-usage">Rate Limiting Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#using-postman-with-php-api-controller">Using Postman with PHP API Controller</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#login">Login</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#logout">Logout</a></li>
@@ -122,12 +131,13 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">Api</span></code> library provides helper methods for building secure RESTful APIs in LavaLust.
 It supports:</p>
 <ul class="simple">
-<li><p>CORS headers</p></li>
-<li><p>Parsing JSON/form bodies</p></li>
+<li><p>CORS headers (with single origin or array of allowed origins)</p></li>
+<li><p>Parsing and sanitizing JSON/form bodies</p></li>
 <li><p>Standard API responses</p></li>
 <li><p>JWT-based authentication (access/refresh token system)</p></li>
 <li><p>Basic authentication</p></li>
-<li><p>Refresh token encryption and storage</p></li>
+<li><p>Rate limiting (with cache-backed sliding window)</p></li>
+<li><p>Refresh token hashing and rotation</p></li>
 </ul>
 <p>This library is automatically configured using values from <code class="docutils literal notranslate"><span class="pre">app/config/api.php</span></code>.</p>
 <section id="folder-structure">
@@ -145,14 +155,37 @@ It supports:</p>
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>Set the following values in <code class="docutils literal notranslate"><span class="pre">app/config/api.php</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;api_helper_enabled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;payload_token_expiration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">900</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_expiration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">604800</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_secret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l99H8TM4Q4JXFM3Hr8LN&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;BDswlrEaYWAgeJ4VurGe&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;allow_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_table&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;refresh_tokens&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;api_helper_enabled&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+
+<span class="c1">// Token expiration (seconds)</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;payload_token_expiration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">900</span><span class="p">;</span>       <span class="c1">// 15 minutes</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_expiration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">604800</span><span class="p">;</span>    <span class="c1">// 7 days</span>
+
+<span class="c1">// Signing keys (minimum 32 characters each)</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_secret&#39;</span><span class="p">]</span>               <span class="o">=</span> <span class="s1">&#39;your-32-char-minimum-secret-key!!&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_key&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;your-32-char-minimum-refresh-key!&#39;</span><span class="p">;</span>
+
+<span class="c1">// JWT claims</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_issuer&#39;</span><span class="p">]</span>               <span class="o">=</span> <span class="s1">&#39;https://yourdomain.com&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_audience&#39;</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">&#39;https://yourdomain.com&#39;</span><span class="p">;</span>
+
+<span class="c1">// CORS: single origin or array of allowed origins</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;allow_origin&#39;</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
+<span class="c1">// $config[&#39;allow_origin&#39;]          = [&#39;https://app.example.com&#39;, &#39;https://admin.example.com&#39;];</span>
+
+<span class="c1">// Refresh token table</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;refresh_token_table&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">&#39;refresh_tokens&#39;</span><span class="p">;</span>
+
+<span class="c1">// Rate limiting</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;rate_limit_enabled&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;rate_limit_requests&#39;</span><span class="p">]</span>      <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>    <span class="c1">// max requests per window</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;rate_limit_seconds&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>    <span class="c1">// window size in seconds</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">jwt_secret</span></code> and <code class="docutils literal notranslate"><span class="pre">refresh_token_key</span></code> must each be at least <strong>32 characters</strong> long.
+The library will call <code class="docutils literal notranslate"><span class="pre">show_error()</span></code> on startup if either key is missing or too short.</p>
 </div>
 </section>
 <section id="properties">
@@ -182,23 +215,44 @@ It supports:</p>
 <td><p>Lifetime of refresh tokens in seconds</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$allow_origin</span></code></p></td>
-<td><p>string</p></td>
-<td><p>Allowed origin for CORS</p></td>
+<td><p>string|array</p></td>
+<td><p>Allowed origin(s) for CORS. Accepts <code class="docutils literal notranslate"><span class="pre">'*'</span></code>, a single origin string, or an array of origins.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$jwt_secret</span></code></p></td>
 <td><p>string</p></td>
-<td><p>Secret key used for signing JWT tokens</p></td>
+<td><p>Secret key used for signing JWT tokens (min 32 chars)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$refresh_token_key</span></code></p></td>
 <td><p>string</p></td>
-<td><p>Key used for encrypting refresh tokens</p></td>
+<td><p>Key used for HMAC-hashing refresh tokens before DB storage (min 32 chars)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$jwt_issuer</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">iss</span></code> claim added to every JWT</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$jwt_audience</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">aud</span></code> claim added to every JWT and validated on decode</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$rate_limit_enabled</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>Enable or disable rate limiting globally</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$rate_limit_requests</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>Maximum number of requests allowed per window</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$rate_limit_seconds</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>Rate limit window size in seconds</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h2>
-<p><strong>CORS &amp; Request Helpers</strong></p>
+<section id="cors-request-helpers">
+<h3>CORS &amp; Request Helpers<a class="headerlink" href="#cors-request-helpers" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
@@ -207,20 +261,22 @@ It supports:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">handle_cors()</span></code></p></td>
-<td><p>Sets CORS headers. Called automatically in the constructor.</p></td>
+<td><p>Sets CORS headers. Called automatically in the constructor. Supports <code class="docutils literal notranslate"><span class="pre">*</span></code>, a single origin, or an array of allowed origins.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">body():</span> <span class="pre">array</span></code></p></td>
-<td><p>Parses JSON or form-encoded request body and returns it as an array.</p></td>
+<td><p>Parses and sanitizes JSON or form-encoded request body. Returns an array.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_query_params():</span> <span class="pre">array</span></code></p></td>
-<td><p>Returns URL query parameters as an associative array.</p></td>
+<td><p>Returns sanitized URL query parameters (<code class="docutils literal notranslate"><span class="pre">$_GET</span></code>) as an associative array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">require_method(string</span> <span class="pre">$method)</span></code></p></td>
-<td><p>Enforces a specific HTTP method. Sends 405 if not matched.</p></td>
+<td><p>Enforces a specific HTTP method. Sends <code class="docutils literal notranslate"><span class="pre">405</span> <span class="pre">Method</span> <span class="pre">Not</span> <span class="pre">Allowed</span></code> if not matched.</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Responses</strong></p>
+</section>
+<section id="responses">
+<h3>Responses<a class="headerlink" href="#responses" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
@@ -229,14 +285,31 @@ It supports:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">respond(mixed</span> <span class="pre">$data,</span> <span class="pre">int</span> <span class="pre">$code</span> <span class="pre">=</span> <span class="pre">200)</span></code></p></td>
-<td><p>Sends a JSON response with HTTP status code.</p></td>
+<td><p>Sends a JSON response with the given HTTP status code and exits.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">respond_error(string</span> <span class="pre">$message,</span> <span class="pre">int</span> <span class="pre">$code</span> <span class="pre">=</span> <span class="pre">400)</span></code></p></td>
-<td><p>Sends an error response with a message and status code.</p></td>
+<td><p>Sends a JSON error response with <code class="docutils literal notranslate"><span class="pre">error</span></code> and <code class="docutils literal notranslate"><span class="pre">status</span></code> fields.</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>JWT Authentication</strong></p>
+</section>
+<section id="rate-limiting">
+<h3>Rate Limiting<a class="headerlink" href="#rate-limiting" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rate_limit(?string</span> <span class="pre">$key,</span> <span class="pre">?int</span> <span class="pre">$requests,</span> <span class="pre">?int</span> <span class="pre">$seconds)</span></code></p></td>
+<td><p>Enforces a rate limit using the cache library. Falls back to config defaults when parameters are <code class="docutils literal notranslate"><span class="pre">null</span></code>. Uses the client IP as key if <code class="docutils literal notranslate"><span class="pre">$key</span></code> is <code class="docutils literal notranslate"><span class="pre">null</span></code>. Sets <code class="docutils literal notranslate"><span class="pre">X-RateLimit-Limit</span></code>, <code class="docutils literal notranslate"><span class="pre">X-RateLimit-Remaining</span></code>, and <code class="docutils literal notranslate"><span class="pre">X-RateLimit-Reset</span></code> response headers. Responds with <code class="docutils literal notranslate"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">Many</span> <span class="pre">Requests</span></code> when the limit is exceeded.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="jwt-authentication">
+<h3>JWT Authentication<a class="headerlink" href="#jwt-authentication" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
@@ -245,23 +318,25 @@ It supports:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encode_jwt(array</span> <span class="pre">$payload):</span> <span class="pre">string</span></code></p></td>
-<td><p>Encodes data into a signed JWT.</p></td>
+<td><p>Encodes a payload into a signed HS256 JWT. Automatically adds <code class="docutils literal notranslate"><span class="pre">iat</span></code>, <code class="docutils literal notranslate"><span class="pre">exp</span></code>, <code class="docutils literal notranslate"><span class="pre">iss</span></code>, <code class="docutils literal notranslate"><span class="pre">aud</span></code>, and a unique <code class="docutils literal notranslate"><span class="pre">jti</span></code> claim.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decode_jwt(string</span> <span class="pre">$token):</span> <span class="pre">array|false</span></code></p></td>
-<td><p>Decodes and verifies a JWT.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decode_jwt(string</span> <span class="pre">$token):</span> <span class="pre">array|null</span></code></p></td>
+<td><p>Decodes and verifies the signature of a JWT. Returns the payload array or <code class="docutils literal notranslate"><span class="pre">null</span></code> on failure.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validate_jwt(string</span> <span class="pre">$token):</span> <span class="pre">array|false</span></code></p></td>
-<td><p>Validates structure and expiration of a JWT.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validate_jwt(string</span> <span class="pre">$token):</span> <span class="pre">array|null</span></code></p></td>
+<td><p>Decodes the JWT and additionally validates <code class="docutils literal notranslate"><span class="pre">exp</span></code>, <code class="docutils literal notranslate"><span class="pre">iat</span></code>, <code class="docutils literal notranslate"><span class="pre">iss</span></code>, and <code class="docutils literal notranslate"><span class="pre">aud</span></code> claims. Returns the payload or <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_bearer_token():</span> <span class="pre">?string</span></code></p></td>
-<td><p>Extracts a JWT bearer token from the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header.</p></td>
+<td><p>Extracts a JWT bearer token from the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header (supports Apache <code class="docutils literal notranslate"><span class="pre">apache_request_headers()</span></code> fallback).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">require_jwt():</span> <span class="pre">array</span></code></p></td>
-<td><p>Validates the current bearer token and returns its payload.</p></td>
+<td><p>Validates the current bearer token and returns its payload. Responds with <code class="docutils literal notranslate"><span class="pre">401</span> <span class="pre">Unauthorized</span></code> on failure.</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Token System</strong></p>
+</section>
+<section id="token-system">
+<h3>Token System<a class="headerlink" href="#token-system" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
@@ -270,20 +345,22 @@ It supports:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">issue_tokens(array</span> <span class="pre">$user_data):</span> <span class="pre">array</span></code></p></td>
-<td><p>Issues an access token and a refresh token, stores the refresh token in the database.</p></td>
+<td><p>Issues an access token and a refresh token. The refresh token is HMAC-hashed before being stored in the database. Cleans up expired tokens for the user before inserting. Returns <code class="docutils literal notranslate"><span class="pre">access_token</span></code>, <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>, <code class="docutils literal notranslate"><span class="pre">expires_in</span></code>, and <code class="docutils literal notranslate"><span class="pre">token_type</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">refresh_access_token(string</span> <span class="pre">$refresh_token)</span></code></p></td>
-<td><p>Validates and rotates a refresh token, issues new tokens.</p></td>
+<td><p>Validates the refresh token, revokes it, and issues a new token pair (rotation). Responds directly with the new tokens.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">revoke_refresh_token(string</span> <span class="pre">$refresh_token)</span></code></p></td>
-<td><p>Deletes a refresh token from the database.</p></td>
+<td><p>HMAC-hashes the token and deletes the matching row from the database.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cleanup_expired_refresh_tokens(int</span> <span class="pre">$user_id)</span></code></p></td>
-<td><p>Deletes expired refresh tokens for a user.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cleanup_expired_refresh_tokens(?int</span> <span class="pre">$user_id)</span></code></p></td>
+<td><p>Deletes all expired refresh tokens. If <code class="docutils literal notranslate"><span class="pre">$user_id</span></code> is provided, only that user’s tokens are cleaned up.</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Basic Authentication</strong></p>
+</section>
+<section id="basic-authentication">
+<h3>Basic Authentication<a class="headerlink" href="#basic-authentication" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
@@ -292,13 +369,14 @@ It supports:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_basic_auth(string</span> <span class="pre">$user,</span> <span class="pre">string</span> <span class="pre">$pass):</span> <span class="pre">bool</span></code></p></td>
-<td><p>Verifies provided basic auth credentials.</p></td>
+<td><p>Verifies HTTP Basic Auth credentials using constant-time comparison.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">require_basic_auth(string</span> <span class="pre">$user,</span> <span class="pre">string</span> <span class="pre">$pass)</span></code></p></td>
-<td><p>Requires valid basic auth, otherwise sends a 401 Unauthorized response.</p></td>
+<td><p>Requires valid basic auth credentials. Sends <code class="docutils literal notranslate"><span class="pre">401</span> <span class="pre">Unauthorized</span></code> with a <code class="docutils literal notranslate"><span class="pre">WWW-Authenticate</span></code> header if credentials do not match.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
 </section>
 <section id="database-structure">
 <h2>Database Structure<a class="headerlink" href="#database-structure" title="Link to this heading"></a></h2>
@@ -370,11 +448,15 @@ It supports:</p>
 </tr>
 <tr class="row-even"><td><p>token</p></td>
 <td><p>TEXT</p></td>
-<td><p>Encrypted refresh token</p></td>
+<td><p>HMAC-hashed refresh token (never stored in plain text)</p></td>
 </tr>
 <tr class="row-odd"><td><p>expires_at</p></td>
 <td><p>DATETIME</p></td>
 <td><p>Expiration date of the refresh token</p></td>
+</tr>
+<tr class="row-even"><td><p>jti</p></td>
+<td><p>VARCHAR(64)</p></td>
+<td><p>Unique JWT ID from the refresh token payload</p></td>
 </tr>
 </tbody>
 </table>
@@ -383,24 +465,24 @@ It supports:</p>
 <h2>Controller Example<a class="headerlink" href="#controller-example" title="Link to this heading"></a></h2>
 <p><strong>Routes</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::login&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::logout&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::create&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;update/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::update&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;delete/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::delete&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::list&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;profile&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::profile&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;refresh&#39;</span><span class="p">,</span> <span class="s1">&#39;ApiController::refresh&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span>          <span class="s1">&#39;ApiController::login&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">,</span>         <span class="s1">&#39;ApiController::logout&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span>         <span class="s1">&#39;ApiController::create&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;update/{id}&#39;</span><span class="p">,</span>     <span class="s1">&#39;ApiController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;delete/{id}&#39;</span><span class="p">,</span>  <span class="s1">&#39;ApiController::delete&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;list&#39;</span><span class="p">,</span>            <span class="s1">&#39;ApiController::list&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;profile&#39;</span><span class="p">,</span>         <span class="s1">&#39;ApiController::profile&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;refresh&#39;</span><span class="p">,</span>        <span class="s1">&#39;ApiController::refresh&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Controller</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="nv">$user_id</span><span class="p">;</span>
-
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span>
+    <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">);</span>
-        <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
+        <span class="nv">$input</span>    <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
         <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
         <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
 
@@ -408,74 +490,135 @@ It supports:</p>
         <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">FETCH_ASSOC</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span> <span class="o">&amp;&amp;</span> <span class="nb">password_verify</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nv">$tokens</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">issue_tokens</span><span class="p">([</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]]);</span>
+            <span class="nv">$tokens</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">issue_tokens</span><span class="p">([</span>
+                <span class="s1">&#39;id&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span>
+            <span class="p">]);</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">(</span><span class="nv">$tokens</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond_error</span><span class="p">(</span><span class="s1">&#39;Invalid credentials&#39;</span><span class="p">,</span> <span class="mi">401</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span>
+    <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">);</span>
         <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
-        <span class="nv">$token</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;refresh_token&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">revoke_refresh_token</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">revoke_refresh_token</span><span class="p">(</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;refresh_token&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Logged out&#39;</span><span class="p">]);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">list</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-                         <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, username, email, role, created_at&#39;</span><span class="p">)</span>
-                         <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">(</span><span class="nv">$stmt</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">list</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Apply rate limiting before processing</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">rate_limit</span><span class="p">();</span>
+
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+                          <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, username, email, role, created_at&#39;</span><span class="p">)</span>
+                          <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">(</span><span class="nv">$users</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">);</span>
         <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
+
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
             <span class="s2">&quot;INSERT INTO users (username, email, password, role, created_at)</span>
 <span class="s2">             VALUES (?, ?, ?, ?, NOW())&quot;</span><span class="p">,</span>
-            <span class="p">[</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="nb">password_hash</span><span class="p">(</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">),</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]]</span>
+            <span class="p">[</span>
+                <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+                <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+                <span class="nb">password_hash</span><span class="p">(</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="nx">PASSWORD_BCRYPT</span><span class="p">),</span>
+                <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+            <span class="p">]</span>
         <span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User created&#39;</span><span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User created&#39;</span><span class="p">],</span> <span class="mi">201</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;PUT&#39;</span><span class="p">);</span>
         <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;UPDATE users SET username=?, email=?, role=? WHERE id=?&quot;</span><span class="p">,</span>
-            <span class="p">[</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span> <span class="nv">$id</span><span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
+            <span class="s2">&quot;UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span> <span class="nv">$id</span><span class="p">]</span>
+        <span class="p">);</span>
+
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User updated&#39;</span><span class="p">]);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;DELETE&#39;</span><span class="p">);</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;DELETE FROM users WHERE id = ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nv">$id</span><span class="p">]);</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User deleted&#39;</span><span class="p">]);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">()</span>
+    <span class="p">{</span>
         <span class="nv">$auth</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_jwt</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_id</span> <span class="o">=</span> <span class="nv">$auth</span><span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">];</span>
+
         <span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
             <span class="s2">&quot;SELECT id, username, email, role, created_at FROM users WHERE id = ?&quot;</span><span class="p">,</span>
-            <span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_id</span><span class="p">]</span>
+            <span class="p">[</span><span class="nv">$auth</span><span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">]]</span>
         <span class="p">);</span>
         <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">FETCH_ASSOC</span><span class="p">);</span>
+
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond</span><span class="p">(</span><span class="nv">$user</span> <span class="o">?:</span> <span class="p">[</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User not found&#39;</span><span class="p">]);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span>
+    <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">);</span>
         <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
-        <span class="nv">$refresh_token</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;refresh_token&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">refresh_access_token</span><span class="p">(</span><span class="nv">$refresh_token</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">refresh_access_token</span><span class="p">(</span><span class="nv">$input</span><span class="p">[</span><span class="s1">&#39;refresh_token&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
+<section id="rate-limiting-usage">
+<h2>Rate Limiting Usage<a class="headerlink" href="#rate-limiting-usage" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">rate_limit()</span></code> can be called with no arguments (uses config defaults and client IP as key),
+or with custom parameters per route:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Use config defaults (IP-based key)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">rate_limit</span><span class="p">();</span>
+
+<span class="c1">// Custom limit: 10 requests per 30 seconds, keyed by IP</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">rate_limit</span><span class="p">(</span><span class="k">null</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+
+<span class="c1">// Custom key (e.g. per user ID to limit authenticated endpoints)</span>
+<span class="nv">$auth</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_jwt</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">rate_limit</span><span class="p">(</span><span class="s1">&#39;user_&#39;</span> <span class="o">.</span> <span class="nv">$auth</span><span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">],</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>When the limit is exceeded the library automatically responds with <code class="docutils literal notranslate"><span class="pre">429</span></code> and exits:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>HTTP/1.1 429 Too Many Requests
+Retry-After: 42
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1720000060
+
+{
+  &quot;error&quot;: &quot;Too many requests. Please try again later.&quot;,
+  &quot;limit&quot;: 60,
+  &quot;used&quot;: 61,
+  &quot;remaining&quot;: 0,
+  &quot;reset_at&quot;: &quot;2025-01-01T00:01:00+00:00&quot;,
+  &quot;retry_after&quot;: 42
+}
+</pre></div>
+</div>
+</section>
 <section id="using-postman-with-php-api-controller">
 <h2>Using Postman with PHP API Controller<a class="headerlink" href="#using-postman-with-php-api-controller" title="Link to this heading"></a></h2>
-<p>This guide shows how to test each endpoint of your PHP API using <strong>Postman</strong>, either in VS Code (via Postman extension) or the standalone Postman app.</p>
+<p>This guide shows how to test each endpoint of your PHP API using <strong>Postman</strong>, either in VS Code
+(via the Postman extension) or the standalone Postman app.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Use your actual base URL (e.g. <code class="docutils literal notranslate"><span class="pre">http://localhost/ApiController/...</span></code>) when testing.</p>
@@ -486,18 +629,20 @@ It supports:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/login
 </pre></div>
 </div>
-<p><strong>Request Body:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;username&quot;: &quot;admin&quot;,
-  &quot;password&quot;: &quot;your_password&quot;
-}
+<p><strong>Request Body (JSON):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_password&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Expected Response:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;,
-  &quot;refresh_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">900</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -507,16 +652,16 @@ It supports:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/logout
 </pre></div>
 </div>
-<p><strong>Request Body:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;refresh_token&quot;: &quot;your_refresh_token&quot;
-}
+<p><strong>Request Body (JSON):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_refresh_token&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Expected Response:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;message&quot;: &quot;Logged out&quot;
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Logged out&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -531,16 +676,15 @@ It supports:</p>
 </pre></div>
 </div>
 <p><strong>Expected Response:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[
-  {
-    &quot;id&quot;: 1,
-    &quot;username&quot;: &quot;admin&quot;,
-    &quot;email&quot;: &quot;admin@example.com&quot;,
-    &quot;role&quot;: &quot;admin&quot;,
-    &quot;created_at&quot;: &quot;2025-08-01 12:00:00&quot;
-  },
-  ...
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-01 12:00:00&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -555,13 +699,19 @@ It supports:</p>
 Content-Type: application/json
 </pre></div>
 </div>
-<p><strong>Request Body:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;username&quot;: &quot;newuser&quot;,
-  &quot;email&quot;: &quot;newuser@example.com&quot;,
-  &quot;password&quot;: &quot;secure123&quot;,
-  &quot;role&quot;: &quot;user&quot;
-}
+<p><strong>Request Body (JSON):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;newuser&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;newuser@example.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;secure123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Expected Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User created&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -576,12 +726,18 @@ Content-Type: application/json
 Content-Type: application/json
 </pre></div>
 </div>
-<p><strong>Request Body:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;username&quot;: &quot;updateduser&quot;,
-  &quot;email&quot;: &quot;updated@example.com&quot;,
-  &quot;role&quot;: &quot;editor&quot;
-}
+<p><strong>Request Body (JSON):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;updateduser&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;updated@example.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;editor&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Expected Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User updated&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -595,6 +751,12 @@ Content-Type: application/json
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Authorization: Bearer your_access_token
 </pre></div>
 </div>
+<p><strong>Expected Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User deleted&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="profile">
 <h3>Profile<a class="headerlink" href="#profile" title="Link to this heading"></a></h3>
@@ -606,6 +768,16 @@ Content-Type: application/json
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Authorization: Bearer your_access_token
 </pre></div>
 </div>
+<p><strong>Expected Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin@example.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-01 12:00:00&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="refresh-token">
 <h3>Refresh Token<a class="headerlink" href="#refresh-token" title="Link to this heading"></a></h3>
@@ -613,10 +785,22 @@ Content-Type: application/json
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /ApiController/refresh
 </pre></div>
 </div>
-<p><strong>Request Body:</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
-  &quot;refresh_token&quot;: &quot;your_refresh_token&quot;
-}
+<p><strong>Request Body (JSON):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_refresh_token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Expected Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tokens refreshed successfully&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">900</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -625,16 +809,25 @@ Content-Type: application/json
 <h2>Tips<a class="headerlink" href="#tips" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Use <strong>Postman collections</strong> to save all these endpoints.</p></li>
-<li><p>Use <strong>environment variables</strong> for <code class="docutils literal notranslate"><span class="pre">{{base_url}}</span></code>, <code class="docutils literal notranslate"><span class="pre">{{access_token}}</span></code>, and <code class="docutils literal notranslate"><span class="pre">{{refresh_token}}</span></code> to streamline testing and token management.</p></li>
+<li><p>Use <strong>environment variables</strong> for <code class="docutils literal notranslate"><span class="pre">{{base_url}}</span></code>, <code class="docutils literal notranslate"><span class="pre">{{access_token}}</span></code>, and <code class="docutils literal notranslate"><span class="pre">{{refresh_token}}</span></code>
+to streamline testing and token management.</p></li>
+<li><p>Use Postman’s <strong>Tests</strong> tab to automatically extract and save <code class="docutils literal notranslate"><span class="pre">access_token</span></code> and
+<code class="docutils literal notranslate"><span class="pre">refresh_token</span></code> from the login response into environment variables.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Notes
-- Configure values such as <code class="docutils literal notranslate"><span class="pre">jwt_secret</span></code>, <code class="docutils literal notranslate"><span class="pre">refresh_token_key</span></code>, and expiration times in <code class="docutils literal notranslate"><span class="pre">app/config/api.php</span></code>.
-- CORS is automatically handled on every request.
-- <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> requests are automatically responded with <code class="docutils literal notranslate"><span class="pre">200</span></code> and exit.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">jwt_secret</span></code> and <code class="docutils literal notranslate"><span class="pre">refresh_token_key</span></code> must each be at least 32 random characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jwt_issuer</span></code> and <code class="docutils literal notranslate"><span class="pre">jwt_audience</span></code> are validated on every <code class="docutils literal notranslate"><span class="pre">validate_jwt()</span></code> call.</p></li>
+<li><p>CORS is automatically handled on every request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> preflight requests are automatically answered with <code class="docutils literal notranslate"><span class="pre">204</span></code> and execution stops.</p></li>
+<li><p>Refresh tokens are <strong>never stored in plain text</strong> — they are HMAC-hashed before insertion.</p></li>
+<li><p>Token rotation is enforced: each <code class="docutils literal notranslate"><span class="pre">refresh_access_token()</span></code> call revokes the old token
+and issues a brand new pair.</p></li>
+</ul>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">Api</span></code> library simplifies authentication, token management, and secure API development in LavaLust.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Api</span></code> library simplifies authentication, rate limiting, token management, and secure API
+development in LavaLust.</p>
 </section>
 </section>
 
