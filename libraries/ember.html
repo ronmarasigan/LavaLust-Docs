@@ -83,9 +83,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-Ember_registrar">Ember Registrar</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Ember_registrar.Ember_registrar"><code class="docutils literal notranslate"><span class="pre">Ember_registrar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#globals">Globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#filters">Filters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extending-the-registrar">Extending the Registrar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
@@ -418,9 +415,6 @@ Renders a template with the provided context data.</p>
 <p>It acts as a registration hub where you can define custom filters, functions, and global variables that become available to all templates rendered through the Ember engine.</p>
 <p>This class is automatically called inside the <code class="xref py py-class docutils literal notranslate"><span class="pre">Ember</span></code> class upon initialization.</p>
 <hr class="docutils" />
-<section id="globals">
-<h2>Globals<a class="headerlink" href="#globals" title="Link to this heading"></a></h2>
-<p>These are automatically accessible inside templates:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
@@ -433,124 +427,6 @@ Renders a template with the provided context data.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>app_name</p></td>
-<td><p>Application name (from config or fallback)</p></td>
-</tr>
-<tr class="row-odd"><td><p>base_url</p></td>
-<td><p>Base URL of the application</p></td>
-</tr>
-<tr class="row-even"><td><p>site_url</p></td>
-<td><p>Site URL with index.php if not removed</p></td>
-</tr>
-</tbody>
-</table>
-<p>Example:</p>
-<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">app_name</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">site_url</span> <span class="cp">}}</span><span class="s">/dashboard&quot;</span><span class="p">&gt;</span>Dashboard<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-</section>
-<hr class="docutils" />
-<section id="filters">
-<h2>Filters<a class="headerlink" href="#filters" title="Link to this heading"></a></h2>
-<p>Filters are applied using the pipe <code class="docutils literal notranslate"><span class="pre">|</span></code> operator in templates:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 80.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Filter Name</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>upper</p></td>
-<td><p>Converts string to uppercase</p></td>
-</tr>
-<tr class="row-odd"><td><p>lower</p></td>
-<td><p>Converts string to lowercase</p></td>
-</tr>
-<tr class="row-even"><td><p>title</p></td>
-<td><p>Converts string to title case</p></td>
-</tr>
-<tr class="row-odd"><td><p>capitalize</p></td>
-<td><p>Capitalizes first letter</p></td>
-</tr>
-<tr class="row-even"><td><p>trim</p></td>
-<td><p>Removes whitespace</p></td>
-</tr>
-<tr class="row-odd"><td><p>reverse</p></td>
-<td><p>Reverses string or array</p></td>
-</tr>
-<tr class="row-even"><td><p>escape / e</p></td>
-<td><p>Escapes HTML characters</p></td>
-</tr>
-<tr class="row-odd"><td><p>raw</p></td>
-<td><p>Outputs value without escaping</p></td>
-</tr>
-<tr class="row-even"><td><p>nl2br</p></td>
-<td><p>Converts newlines to &lt;br&gt;</p></td>
-</tr>
-<tr class="row-odd"><td><p>length</p></td>
-<td><p>Returns length of string or array</p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td><p>Returns default if value is empty</p></td>
-</tr>
-<tr class="row-odd"><td><p>join</p></td>
-<td><p>Joins array elements</p></td>
-</tr>
-<tr class="row-even"><td><p>slice</p></td>
-<td><p>Extracts substring or sub-array</p></td>
-</tr>
-<tr class="row-odd"><td><p>number_format</p></td>
-<td><p>Formats number</p></td>
-</tr>
-<tr class="row-even"><td><p>abs</p></td>
-<td><p>Returns absolute value</p></td>
-</tr>
-<tr class="row-odd"><td><p>round</p></td>
-<td><p>Rounds a number</p></td>
-</tr>
-<tr class="row-even"><td><p>date</p></td>
-<td><p>Formats date</p></td>
-</tr>
-<tr class="row-odd"><td><p>json_encode</p></td>
-<td><p>Converts value to JSON</p></td>
-</tr>
-<tr class="row-even"><td><p>replace</p></td>
-<td><p>Performs key-value replacement</p></td>
-</tr>
-<tr class="row-odd"><td><p>money</p></td>
-<td><p>Formats number as currency (₱ by default)</p></td>
-</tr>
-<tr class="row-even"><td><p>slug</p></td>
-<td><p>Converts string to URL slug</p></td>
-</tr>
-<tr class="row-odd"><td><p>pluralize</p></td>
-<td><p>Adds “s” if count not 1</p></td>
-</tr>
-</tbody>
-</table>
-<p>Example:</p>
-<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">username</span> <span class="o">|</span> <span class="nf">upper</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">message</span> <span class="o">|</span> <span class="nf">escape</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="m">123456.789</span> <span class="o">|</span> <span class="nf">money</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="m">5</span> <span class="o">|</span> <span class="nf">pluralize</span><span class="o">(</span><span class="s2">&quot;apple&quot;</span><span class="o">)</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
-<p>Functions can be called in templates:</p>
-<table class="docutils align-default" id="id1">
-<caption><span class="caption-text">:header-rows: 1
- :widths: 25 75</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
-<tbody>
-<tr class="row-odd"><td><p>Name</p></td>
-<td><p>Description</p></td>
-</tr>
-<tr class="row-even"><td><p>app_name</p></td>
 <td><p>Application name from config (default: “LavaLust App”)</p></td>
 </tr>
 <tr class="row-odd"><td><p>base_url</p></td>
@@ -562,30 +438,50 @@ Renders a template with the provided context data.</p>
 <tr class="row-odd"><td><p>csp_nonce</p></td>
 <td><p>Content Security Policy nonce for inline scripts/styles</p></td>
 </tr>
-<tr class="row-even"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>upper</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>upper</p></td>
 <td><p>Converts string to uppercase</p></td>
 </tr>
-<tr class="row-even"><td><p>lower</p></td>
+<tr class="row-odd"><td><p>lower</p></td>
 <td><p>Converts string to lowercase</p></td>
 </tr>
-<tr class="row-odd"><td><p>title</p></td>
+<tr class="row-even"><td><p>title</p></td>
 <td><p>Converts string to Title Case</p></td>
 </tr>
-<tr class="row-even"><td><p>capitalize</p></td>
+<tr class="row-odd"><td><p>capitalize</p></td>
 <td><p>Capitalizes first letter</p></td>
 </tr>
-<tr class="row-odd"><td><p>trim</p></td>
+<tr class="row-even"><td><p>trim</p></td>
 <td><p>Removes whitespace from both ends</p></td>
 </tr>
-<tr class="row-even"><td><p>reverse</p></td>
+<tr class="row-odd"><td><p>reverse</p></td>
 <td><p>Reverses string or array</p></td>
 </tr>
-<tr class="row-odd"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>escape / e</p></td>
 <td><p>Escapes output (recommended for safety)</p></td>
 </tr>
@@ -598,24 +494,44 @@ Renders a template with the provided context data.</p>
 <tr class="row-odd"><td><p>striptags</p></td>
 <td><p>Removes HTML tags</p></td>
 </tr>
-<tr class="row-even"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>length</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>length</p></td>
 <td><p>Counts items in array or characters in string</p></td>
 </tr>
-<tr class="row-even"><td><p>default(value)</p></td>
+<tr class="row-odd"><td><p>default(value)</p></td>
 <td><p>Returns default if value is empty</p></td>
 </tr>
-<tr class="row-odd"><td><p>join(separator)</p></td>
+<tr class="row-even"><td><p>join(separator)</p></td>
 <td><p>Joins array into string</p></td>
 </tr>
-<tr class="row-even"><td><p>slice(start, length)</p></td>
+<tr class="row-odd"><td><p>slice(start, length)</p></td>
 <td><p>Extracts part of array or string</p></td>
 </tr>
-<tr class="row-odd"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>number_format(decimals)</p></td>
 <td><p>Formats number with decimals</p></td>
 </tr>
@@ -625,105 +541,215 @@ Renders a template with the provided context data.</p>
 <tr class="row-even"><td><p>round(precision)</p></td>
 <td><p>Rounds number</p></td>
 </tr>
-<tr class="row-odd"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>date(format)</p></td>
 <td><p>Formats date/time value</p></td>
 </tr>
-<tr class="row-odd"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>json(pretty)</p></td>
 <td><p>Converts value to JSON string</p></td>
 </tr>
 <tr class="row-odd"><td><p>replace(search, replace)</p></td>
 <td><p>Replaces text inside string</p></td>
 </tr>
-<tr class="row-even"><td><p>Filter</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Filter</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>money(symbol)</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>money(symbol)</p></td>
 <td><p>Formats number as currency (default ₱)</p></td>
 </tr>
-<tr class="row-even"><td><p>slug</p></td>
+<tr class="row-odd"><td><p>slug</p></td>
 <td><p>Converts string to URL-friendly slug</p></td>
 </tr>
-<tr class="row-odd"><td><p>pluralize(word)</p></td>
+<tr class="row-even"><td><p>pluralize(word)</p></td>
 <td><p>Adds “s” if count is not 1</p></td>
 </tr>
-<tr class="row-even"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>url(path)</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>url(path)</p></td>
 <td><p>Returns a clean relative URL (prepends “/”)</p></td>
 </tr>
-<tr class="row-even"><td><p>asset(path)</p></td>
+<tr class="row-odd"><td><p>asset(path)</p></td>
 <td><p>Returns URL from <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory</p></td>
 </tr>
-<tr class="row-odd"><td><p>site_url(path)</p></td>
+<tr class="row-even"><td><p>site_url(path)</p></td>
 <td><p>Returns routed URL</p></td>
 </tr>
-<tr class="row-even"><td><p>base_url(path)</p></td>
+<tr class="row-odd"><td><p>base_url(path)</p></td>
 <td><p>Returns base URL + path</p></td>
 </tr>
-<tr class="row-odd"><td><p>active(route)</p></td>
+<tr class="row-even"><td><p>active(route)</p></td>
 <td><p>Returns “active” if route matches current URL</p></td>
 </tr>
-<tr class="row-even"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>config(key)</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>config(key)</p></td>
 <td><p>Returns config value</p></td>
 </tr>
-<tr class="row-even"><td><p>session(key)</p></td>
+<tr class="row-odd"><td><p>session(key)</p></td>
 <td><p>Returns session value; returns all if key is null</p></td>
 </tr>
-<tr class="row-odd"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>upper(str)</p></td>
 <td><p>Converts string to uppercase</p></td>
 </tr>
 <tr class="row-odd"><td><p>repeat(str, n)</p></td>
 <td><p>Repeats string n times</p></td>
 </tr>
-<tr class="row-even"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>now()</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>now()</p></td>
 <td><p>Returns current datetime (Y-m-d H:i:s)</p></td>
 </tr>
-<tr class="row-even"><td><p>date(format, timestamp)</p></td>
+<tr class="row-odd"><td><p>date(format, timestamp)</p></td>
 <td><p>Formats timestamp</p></td>
 </tr>
-<tr class="row-odd"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>include(template, vars)</p></td>
 <td><p>Renders another template with variables</p></td>
 </tr>
 <tr class="row-odd"><td><p>dump(value, die=false)</p></td>
 <td><p>Prints formatted debug output; optionally stops execution</p></td>
 </tr>
-<tr class="row-even"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p>csrf_field()</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>csrf_field()</p></td>
 <td><p>Outputs hidden CSRF input field</p></td>
 </tr>
-<tr class="row-even"><td><p>old(key, default)</p></td>
+<tr class="row-odd"><td><p>old(key, default)</p></td>
 <td><p>Returns previously submitted form value</p></td>
 </tr>
-<tr class="row-odd"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>nonce()</p></td>
 <td><p>Returns CSP nonce for inline scripts/styles</p></td>
 </tr>
-<tr class="row-odd"><td><p>Function Name</p></td>
-<td><p>Description</p></td>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function Name</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p>asset_version(path)</p></td>
 <td><p>Returns asset URL with cache-busting version (?v=timestamp)</p></td>
 </tr>
@@ -737,7 +763,6 @@ Renders a template with the provided context data.</p>
 <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">now</span><span class="o">()</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
 </pre></div>
 </div>
-</section>
 <hr class="docutils" />
 <section id="extending-the-registrar">
 <h2>Extending the Registrar<a class="headerlink" href="#extending-the-registrar" title="Link to this heading"></a></h2>

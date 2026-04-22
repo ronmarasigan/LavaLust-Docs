@@ -313,11 +313,6 @@ This class is automatically called inside the :class:`Ember` class upon initiali
 
 -------------------------------------------------------------------
 
-Globals
--------
-
-These are automatically accessible inside templates:
-
 .. list-table::
    :header-rows: 1
    :widths: 25 75
@@ -325,215 +320,198 @@ These are automatically accessible inside templates:
    * - Name
      - Description
    * - app_name
-     - Application name (from config or fallback)
+     - Application name from config (default: "LavaLust App")
    * - base_url
      - Base URL of the application
    * - site_url
-     - Site URL with index.php if not removed
-
-Example:
-
-.. code-block:: html+jinja
-
-    <title>{{ app_name }}</title>
-    <a href="{{ site_url }}/dashboard">Dashboard</a>
-
--------------------------------------------------------------------
-
-Filters
--------
-
-Filters are applied using the pipe ``|`` operator in templates:
+     - Site URL with index.php (if applicable)
+   * - csp_nonce
+     - Content Security Policy nonce for inline scripts/styles
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 80
+   :widths: 25 75
 
-   * - Filter Name
+   * - Filter
      - Description
    * - upper
      - Converts string to uppercase
    * - lower
      - Converts string to lowercase
    * - title
-     - Converts string to title case
+     - Converts string to Title Case
    * - capitalize
      - Capitalizes first letter
    * - trim
-     - Removes whitespace
+     - Removes whitespace from both ends
    * - reverse
      - Reverses string or array
-   * - escape / e
-     - Escapes HTML characters
-   * - raw
-     - Outputs value without escaping
-   * - nl2br
-     - Converts newlines to <br>
-   * - length
-     - Returns length of string or array
-   * - default
-     - Returns default if value is empty
-   * - join
-     - Joins array elements
-   * - slice
-     - Extracts substring or sub-array
-   * - number_format
-     - Formats number
-   * - abs
-     - Returns absolute value
-   * - round
-     - Rounds a number
-   * - date
-     - Formats date
-   * - json_encode
-     - Converts value to JSON
-   * - replace
-     - Performs key-value replacement
-   * - money
-     - Formats number as currency (₱ by default)
-   * - slug
-     - Converts string to URL slug
-   * - pluralize
-     - Adds "s" if count not 1
-
-Example:
-
-.. code-block:: html+jinja
-
-    <p>{{ username | upper }}</p>
-    <p>{{ message | escape }}</p>
-    <p>{{ 123456.789 | money }}</p>
-    <p>{{ 5 | pluralize("apple") }}</p>
-
-Functions
----------
-
-Functions can be called in templates:
 
 .. list-table::
    :header-rows: 1
    :widths: 25 75
 
-  * - Name
-    - Description
-  * - app_name
-    - Application name from config (default: "LavaLust App")
-  * - base_url
-    - Base URL of the application
-  * - site_url
-    - Site URL with index.php (if applicable)
-  * - csp_nonce
-    - Content Security Policy nonce for inline scripts/styles
-  * - Filter
-    - Description
-  * - upper
-    - Converts string to uppercase
-  * - lower
-    - Converts string to lowercase
-  * - title
-    - Converts string to Title Case
-  * - capitalize
-    - Capitalizes first letter
-  * - trim
-    - Removes whitespace from both ends
-  * - reverse
-    - Reverses string or array
-  * - Filter
-    - Description
-  * - escape / e
-    - Escapes output (recommended for safety)
-  * - raw
-    - Outputs raw HTML (dangerous, use carefully)
-  * - nl2br
-    - Converts newlines to <br>
-  * - striptags
-    - Removes HTML tags
-  * - Filter
-    - Description
-  * - length
-    - Counts items in array or characters in string
-  * - default(value)
-    - Returns default if value is empty
-  * - join(separator)
-    - Joins array into string
-  * - slice(start, length)
-    - Extracts part of array or string
-  * - Filter
-    - Description
-  * - number_format(decimals)
-    - Formats number with decimals
-  * - abs
-    - Absolute value
-  * - round(precision)
-    - Rounds number
-  * - Filter
-    - Description
-  * - date(format)
-    - Formats date/time value
-  * - Filter
-    - Description
-  * - json(pretty)
-    - Converts value to JSON string
-  * - replace(search, replace)
-    - Replaces text inside string
-  * - Filter
-    - Description
-  * - money(symbol)
-    - Formats number as currency (default ₱)
-  * - slug
-    - Converts string to URL-friendly slug
-  * - pluralize(word)
-    - Adds "s" if count is not 1
-  * - Function Name
-    - Description
-  * - url(path)
-    - Returns a clean relative URL (prepends "/")
-  * - asset(path)
-    - Returns URL from ``public/`` directory
-  * - site_url(path)
-    - Returns routed URL
-  * - base_url(path)
-    - Returns base URL + path
-  * - active(route)
-    - Returns "active" if route matches current URL
-  * - Function Name
-    - Description
-  * - config(key)
-    - Returns config value
-  * - session(key)
-    - Returns session value; returns all if key is null
-  * - Function Name
-    - Description
-  * - upper(str)
-    - Converts string to uppercase
-  * - repeat(str, n)
-    - Repeats string n times
-  * - Function Name
-    - Description
-  * - now()
-    - Returns current datetime (Y-m-d H:i:s)
-  * - date(format, timestamp)
-    - Formats timestamp
-  * - Function Name
-    - Description
-  * - include(template, vars)
-    - Renders another template with variables
-  * - dump(value, die=false)
-    - Prints formatted debug output; optionally stops execution
-  * - Function Name
-    - Description
-  * - csrf_field()
-    - Outputs hidden CSRF input field
-  * - old(key, default)
-    - Returns previously submitted form value
-  * - Function Name
-    - Description
-  * - nonce()
-    - Returns CSP nonce for inline scripts/styles
-  * - Function Name
-    - Description
-  * - asset_version(path)
-    - Returns asset URL with cache-busting version (?v=timestamp)
+   * - Filter
+     - Description
+   * - escape / e
+     - Escapes output (recommended for safety)
+   * - raw
+     - Outputs raw HTML (dangerous, use carefully)
+   * - nl2br
+     - Converts newlines to <br>
+   * - striptags
+     - Removes HTML tags
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Filter
+     - Description
+   * - length
+     - Counts items in array or characters in string
+   * - default(value)
+     - Returns default if value is empty
+   * - join(separator)
+     - Joins array into string
+   * - slice(start, length)
+     - Extracts part of array or string
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Filter
+     - Description
+   * - number_format(decimals)
+     - Formats number with decimals
+   * - abs
+     - Absolute value
+   * - round(precision)
+     - Rounds number
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Filter
+     - Description
+   * - date(format)
+     - Formats date/time value
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Filter
+     - Description
+   * - json(pretty)
+     - Converts value to JSON string
+   * - replace(search, replace)
+     - Replaces text inside string
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Filter
+     - Description
+   * - money(symbol)
+     - Formats number as currency (default ₱)
+   * - slug
+     - Converts string to URL-friendly slug
+   * - pluralize(word)
+     - Adds "s" if count is not 1
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - url(path)
+     - Returns a clean relative URL (prepends "/")
+   * - asset(path)
+     - Returns URL from ``public/`` directory
+   * - site_url(path)
+     - Returns routed URL
+   * - base_url(path)
+     - Returns base URL + path
+   * - active(route)
+     - Returns "active" if route matches current URL
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - config(key)
+     - Returns config value
+   * - session(key)
+     - Returns session value; returns all if key is null
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - upper(str)
+     - Converts string to uppercase
+   * - repeat(str, n)
+     - Repeats string n times
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - now()
+     - Returns current datetime (Y-m-d H:i:s)
+   * - date(format, timestamp)
+     - Formats timestamp
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - include(template, vars)
+     - Renders another template with variables
+   * - dump(value, die=false)
+     - Prints formatted debug output; optionally stops execution
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - csrf_field()
+     - Outputs hidden CSRF input field
+   * - old(key, default)
+     - Returns previously submitted form value
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - nonce()
+     - Returns CSP nonce for inline scripts/styles
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function Name
+     - Description
+   * - asset_version(path)
+     - Returns asset URL with cache-busting version (?v=timestamp)
 
 Example:
 
