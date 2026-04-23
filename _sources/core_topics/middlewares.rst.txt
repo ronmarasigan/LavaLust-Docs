@@ -32,7 +32,7 @@ Each key maps to a middleware class loaded from the ``middlewares`` directory.
 .. code-block:: php
 
     <?php
-    $config['middleware'] = array(
+    $config['middlewares'] = array(
         // AuthMiddleware and AdminMiddleware are classes inside app/middlewares
         // You can add more middlewares here
         'auth'  => load_class('AuthMiddleware', 'middlewares'),

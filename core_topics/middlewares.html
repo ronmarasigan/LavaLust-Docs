@@ -185,7 +185,7 @@ a <code class="docutils literal notranslate"><span class="pre">handle(Closure</s
 <p>Middleware mappings are defined in <strong>app/config/middleware.php</strong>.
 Each key maps to a middleware class loaded from the <code class="docutils literal notranslate"><span class="pre">middlewares</span></code> directory.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;middleware&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;middlewares&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
     <span class="c1">// AuthMiddleware and AdminMiddleware are classes inside app/middlewares</span>
     <span class="c1">// You can add more middlewares here</span>
     <span class="s1">&#39;auth&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>

@@ -28,4 +28,4 @@ LavaLust uses a **segment-based** approach:
 
 .. note::
 
-   By default, the ``index.php`` file is included in the URL, but it can be removed using a simple ``.htaccess`` file.
+   By default, the ``public/index.php`` file is included in the URL, but it can be removed using a simple ``.htaccess`` file.
