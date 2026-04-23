@@ -29,7 +29,9 @@ Before using the upload features, load it via:
 Class Methods
 -------------
 
-.. list-table:: Upload Class Methods
+Upload Class Methods
+
+.. list-table:: 
    :header-rows: 1
    :widths: 25 20 10 45
 
@@ -188,7 +190,9 @@ Default Values
 
 The Upload class comes with the following default configurations:
 
-.. list-table:: Default Allowed Extensions
+Default Allowed Extensions
+
+.. list-table:: 
    :header-rows: 1
    :widths: 50 50
 
@@ -203,7 +207,9 @@ The Upload class comes with the following default configurations:
    * - ``png``
      - PNG images
 
-.. list-table:: Default Allowed MIME Types
+Default Allowed MIME Types
+
+.. list-table:: 
    :header-rows: 1
    :widths: 50 50
 
@@ -462,7 +468,9 @@ Security Considerations
 Troubleshooting
 -----------------
 
-.. list-table:: Common Issues and Solutions
+Common Issues and Solutions
+
+.. list-table:: 
    :header-rows: 1
    :widths: 30 70
 
