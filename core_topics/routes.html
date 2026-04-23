@@ -115,6 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
@@ -150,71 +160,276 @@
              
   <section id="routes">
 <h1>Routes<a class="headerlink" href="#routes" title="Link to this heading"></a></h1>
-<p>LavaLust provides a simple and flexible way to define routes using <strong>closures</strong> (anonymous functions).
-Closures allow you to define the logic for a route directly when registering it, without creating a separate controller.</p>
-<section id="basic-route-with-closure">
-<h2>Basic Route with Closure<a class="headerlink" href="#basic-route-with-closure" title="Link to this heading"></a></h2>
-<p>You can create a simple GET route using a closure like this:
-Navigate to <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code></p>
+<p>LavaLust provides a simple and flexible routing system supporting closures, controllers,
+middleware, route groups, named routes, parameter constraints, and more.</p>
+<p>All routes are defined in <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code>.</p>
+<section id="http-method-routes">
+<h2>HTTP Method Routes<a class="headerlink" href="#http-method-routes" title="Link to this heading"></a></h2>
+<p>Each method registers a route that responds to a specific HTTP verb.</p>
+<p><strong>GET:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Define a GET route for the home page</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Welcome to LavaLust!&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;List of users&quot;</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
-<p><strong>Explanation:</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">$router-&gt;get()</span></code> defines a route that responds to HTTP GET requests.</p></li>
-<li><p>The first parameter <code class="docutils literal notranslate"><span class="pre">'/'</span></code> is the URI path.</p></li>
-<li><p>The second parameter is the closure that runs when the route is accessed.</p></li>
-</ul>
-</section>
-<section id="accessing-the-route">
-<h2>Accessing the Route<a class="headerlink" href="#accessing-the-route" title="Link to this heading"></a></h2>
-<p>Once the route is defined, you can access it in your browser:</p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">yourdomain</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span>
-</pre></div>
-</div>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">Welcome</span> <span class="nx">to</span> <span class="nx">LavaLust</span><span class="o">!</span>
-</pre></div>
-</div>
-</section>
-<section id="passing-parameters-to-routes">
-<h2>Passing Parameters to Routes<a class="headerlink" href="#passing-parameters-to-routes" title="Link to this heading"></a></h2>
-<p>Routes can include dynamic segments which are passed as parameters to the closure:</p>
+<p><strong>POST:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;User ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Create a user&quot;</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
-<p><strong>Accessing this route:</strong></p>
-<p><code class="docutils literal notranslate"><span class="pre">http://yourdomain.com/user/42</span></code></p>
-<p><strong>Output:</strong></p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">User</span> <span class="nx">ID</span><span class="o">:</span> <span class="mi">42</span>
+<p><strong>PUT:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Update user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>PATCH:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Partially update user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>DELETE:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Delete user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Options for users&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>HTTP Verb</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>GET</p></td>
+<td><p>Registers a route for GET requests</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">post($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>POST</p></td>
+<td><p>Registers a route for POST requests</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">put($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>PUT</p></td>
+<td><p>Registers a route for PUT requests</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">patch($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>PATCH</p></td>
+<td><p>Registers a route for PATCH requests</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delete($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>DELETE</p></td>
+<td><p>Registers a route for DELETE requests</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">options($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>OPTIONS</p></td>
+<td><p>Registers a route for OPTIONS requests</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="matching-multiple-methods">
+<h2>Matching Multiple Methods<a class="headerlink" href="#matching-multiple-methods" title="Link to this heading"></a></h2>
+<p><strong>match</strong> — respond to a specific set of HTTP methods:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/contact&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Handles GET and POST&quot;</span><span class="p">;</span>
+<span class="p">},</span> <span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>any</strong> — respond to all HTTP methods (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">any</span><span class="p">(</span><span class="s1">&#39;/ping&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Responds to any method&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">match($url,</span> <span class="pre">$callback,</span> <span class="pre">$methods)</span></code></p></td>
+<td><p>Registers a route for an array of HTTP methods</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">any($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a route that responds to all HTTP methods</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="using-controllers">
+<h2>Using Controllers<a class="headerlink" href="#using-controllers" title="Link to this heading"></a></h2>
+<p>Instead of closures you can point a route to a controller method using <code class="docutils literal notranslate"><span class="pre">::</span></code> , <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> ,
+or <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> as a separator:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Recommended separator</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>       <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span><span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
+
+<span class="c1">// Alternative separators (all equivalent)</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController-&gt;index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController@index&#39;</span><span class="p">);</span>
+
+<span class="c1">// Controller with no method — calls index() by default</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="s1">&#39;HomeController&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Dynamic parameters are defined in curly braces <code class="docutils literal notranslate"><span class="pre">{}</span></code> and are automatically injected into the closure.</p>
+<p>The controller file must exist at <code class="docutils literal notranslate"><span class="pre">app/controllers/ControllerName.php</span></code>.
+A <code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code> is thrown if the controller file or method cannot be found.</p>
 </div>
 </section>
-<section id="using-multiple-http-methods">
-<h2>Using Multiple HTTP Methods<a class="headerlink" href="#using-multiple-http-methods" title="Link to this heading"></a></h2>
-<p>You can define a route that responds to multiple HTTP methods:</p>
+<section id="dynamic-route-parameters">
+<h2>Dynamic Route Parameters<a class="headerlink" href="#dynamic-route-parameters" title="Link to this heading"></a></h2>
+<p>Define dynamic segments using curly braces <code class="docutils literal notranslate"><span class="pre">{}</span></code>. They are automatically injected
+into the closure or controller method as arguments.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/contact&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;This route works with GET and POST requests.&quot;</span><span class="p">;</span>
-<span class="p">},</span> <span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">]);</span>
+<span class="c1">// Single parameter</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;User ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="c1">// Multiple parameters</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/post/{year}/{slug}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$year</span><span class="p">,</span> <span class="nv">$slug</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Post: &quot;</span> <span class="o">.</span> <span class="nv">$slug</span> <span class="o">.</span> <span class="s2">&quot; (&quot;</span> <span class="o">.</span> <span class="nv">$year</span> <span class="o">.</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="c1">// Optional parameter (append ?)</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{tab?}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$tab</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;User: &quot;</span> <span class="o">.</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">&quot; Tab: &quot;</span> <span class="o">.</span> <span class="nv">$tab</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>Accessing ``http://yourdomain.com/user/42``:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>User ID: 42
 </pre></div>
 </div>
 </section>
+<section id="regular-expression-constraints">
+<h2>Regular Expression Constraints<a class="headerlink" href="#regular-expression-constraints" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">where()</span></code> to constrain the format of route parameters.</p>
+<p><strong>Single constraint:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;[A-Za-z]+&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Multiple constraints via array:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">&quot; - &quot;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[a-z]+&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the incoming request does not match the constraint pattern, a <strong>404</strong> response
+is returned automatically.</p>
+</div>
+<section id="constraint-helper-methods">
+<h3>Constraint Helper Methods<a class="headerlink" href="#constraint-helper-methods" title="Link to this heading"></a></h3>
+<p>For common patterns, shorthand helpers are available and can be chained:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Numeric only</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
+
+<span class="c1">// Alphabetic only</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+
+<span class="c1">// Alphanumeric</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{username}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$username</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alphanumeric</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+
+<span class="c1">// UUID</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/order/{uuid}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$uuid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_uuid</span><span class="p">(</span><span class="s1">&#39;uuid&#39;</span><span class="p">);</span>
+
+<span class="c1">// ULID</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/item/{ulid}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$ulid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_ulid</span><span class="p">(</span><span class="s1">&#39;ulid&#39;</span><span class="p">);</span>
+
+<span class="c1">// Enumerated values</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/category/{type}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_in</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span><span class="p">,</span> <span class="s1">&#39;painting&#39;</span><span class="p">]);</span>
+
+<span class="c1">// Chaining multiple helpers</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where($param,</span> <span class="pre">$pattern)</span></code></p></td>
+<td><p>Applies a custom regex constraint to a parameter. Accepts a string or an associative array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_number($param)</span></code></p></td>
+<td><p>Constrains parameter to numeric digits only: <code class="docutils literal notranslate"><span class="pre">[0-9]+</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_alpha($param)</span></code></p></td>
+<td><p>Constrains parameter to alphabetic characters only: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z]+</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_alphanumeric($param)</span></code></p></td>
+<td><p>Constrains parameter to letters and digits: <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9]+</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_uuid($param)</span></code></p></td>
+<td><p>Constrains parameter to UUID v4 format</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_ulid($param)</span></code></p></td>
+<td><p>Constrains parameter to ULID format</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_in($param,</span> <span class="pre">$values)</span></code></p></td>
+<td><p>Constrains parameter to one of the provided values</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="grouping-routes">
 <h2>Grouping Routes<a class="headerlink" href="#grouping-routes" title="Link to this heading"></a></h2>
-<p>Closures can also be used in route groups for better organization:</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">group()</span></code> to apply a shared prefix and/or middleware to a set of routes.</p>
+<p><strong>Prefix only:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">echo</span> <span class="s2">&quot;Admin Dashboard&quot;</span><span class="p">;</span>
@@ -225,67 +440,226 @@ Navigate to <code class="docutils literal notranslate"><span class="pre">app/con
     <span class="p">});</span>
 
 <span class="p">});</span>
+
+<span class="c1">// Registered routes: /admin/dashboard, /admin/users</span>
+</pre></div>
+</div>
+<p><strong>Prefix with middleware:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::dashboard&#39;</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::settings&#39;</span><span class="p">);</span>
+
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>Nested groups:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/api&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/v1&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ApiMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;Api\UserController::index&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+<span class="p">});</span>
+
+<span class="c1">// Registered route: /api/v1/users</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>All routes inside the group will be prefixed with <cite>/admin</cite>.</p>
+<p>Group prefix and middleware are restored automatically after the group callback
+executes, so they do not leak into routes defined outside the group.</p>
 </div>
 </section>
-<section id="regular-expression-constraints">
-<h2>Regular Expression Constraints<a class="headerlink" href="#regular-expression-constraints" title="Link to this heading"></a></h2>
-<p>You may constrain the format of your route parameters using the <code class="docutils literal notranslate"><span class="pre">where</span></code> method on a route instance.
-The <code class="docutils literal notranslate"><span class="pre">where</span></code> method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:</p>
+<section id="middleware">
+<h2>Middleware<a class="headerlink" href="#middleware" title="Link to this heading"></a></h2>
+<p>Middleware can be applied globally, per group, or per individual route.</p>
+<p><strong>Per-route middleware:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">string</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;[A-Za-z]+&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;DashboardController::index&#39;</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">);</span>
 
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">string</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;[0-9]+&#39;</span><span class="p">);</span>
-
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">string</span> <span class="nv">$id</span><span class="p">,</span> <span class="nx">string</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[a-z]+&#39;</span><span class="p">]);</span>
+<span class="c1">// Multiple middleware</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::index&#39;</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;RoleMiddleware&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
-<p>For convenience, some commonly used regular expression patterns have helper methods
-that allow you to quickly add pattern constraints to your routes:</p>
+<p><strong>Global middleware (runs on every request):</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">(</span><span class="s1">&#39;CorsMiddleware&#39;</span><span class="p">);</span>
 
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_alphanumeric</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
-
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_uuid</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
-
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_ulid</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
-
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/category/{category}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$category</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_in</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span><span class="p">,</span> <span class="s1">&#39;painting&#39;</span><span class="p">]);</span>
+<span class="c1">// Multiple global middleware</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">([</span><span class="s1">&#39;CorsMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;LogMiddleware&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If the incoming request does not match the route pattern constraints,
-a <strong>404 HTTP response</strong> will be returned.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">middleware($middleware)</span></code></p></td>
+<td><p>Attaches middleware to the last registered route. Accepts a string or array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_global_middleware($middleware)</span></code></p></td>
+<td><p>Registers middleware that runs on every matched route. Accepts a string or array.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="named-routes">
+<h2>Named Routes<a class="headerlink" href="#named-routes" title="Link to this heading"></a></h2>
+<p>Assign a name to a route for easy reference and lookup.</p>
+<p><strong>Naming a route:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/profile&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::profile&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">);</span>
+</pre></div>
 </div>
+<p><strong>Looking up a route by name:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$route</span> <span class="o">=</span> <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_name</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">);</span>
+<span class="c1">// Returns the full route array, or null if not found</span>
+</pre></div>
+</div>
+<p><strong>Checking if a route exists (by name or URL):</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;Route exists&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">&#39;/user/profile&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;URL is registered&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name($name)</span></code></p></td>
+<td><p>Assigns a name to the last registered route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">route_name($name)</span></code></p></td>
+<td><p>Returns the route array matching the given name, or <code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">route_exists($name_or_url)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if a route with the given name or URL is registered</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="complete-method-reference">
+<h2>Complete Method Reference<a class="headerlink" href="#complete-method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a GET route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">post($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a POST route</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">put($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a PUT route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">patch($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a PATCH route</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delete($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a DELETE route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">options($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers an OPTIONS route</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">match($url,</span> <span class="pre">$callback,</span> <span class="pre">$methods)</span></code></p></td>
+<td><p>Registers a route for a specific set of HTTP methods</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">any($url,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Registers a route that responds to all HTTP methods</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group($options,</span> <span class="pre">$callback)</span></code></p></td>
+<td><p>Groups routes under a shared prefix and/or middleware</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">middleware($middleware)</span></code></p></td>
+<td><p>Attaches middleware to the last registered route</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">add_global_middleware($middleware)</span></code></p></td>
+<td><p>Registers middleware that applies to every route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where($param,</span> <span class="pre">$pattern)</span></code></p></td>
+<td><p>Applies a regex constraint to a route parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_number($param)</span></code></p></td>
+<td><p>Constrains parameter to digits only</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_alpha($param)</span></code></p></td>
+<td><p>Constrains parameter to alphabetic characters only</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_alphanumeric($param)</span></code></p></td>
+<td><p>Constrains parameter to alphanumeric characters only</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_uuid($param)</span></code></p></td>
+<td><p>Constrains parameter to UUID format</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_ulid($param)</span></code></p></td>
+<td><p>Constrains parameter to ULID format</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_in($param,</span> <span class="pre">$values)</span></code></p></td>
+<td><p>Constrains parameter to one of the given values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name($name)</span></code></p></td>
+<td><p>Assigns a name to the last registered route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">route_name($name)</span></code></p></td>
+<td><p>Retrieves a route array by its assigned name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">route_exists($name_or_url)</span></code></p></td>
+<td><p>Checks if a route with the given name or URL is registered</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sanitize_url($url)</span></code></p></td>
+<td><p>Strips trailing slashes and sanitizes a URL string</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">initiate($url,</span> <span class="pre">$method)</span></code></p></td>
+<td><p>Dispatches the request; called internally by the framework</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="tips-and-best-practices">
 <h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Use <strong>closures</strong> for small, simple routes or quick prototypes.</p></li>
-<li><p>For larger applications, consider using <strong>controllers</strong> to keep your code organized.</p></li>
-<li><p>Always validate route parameters when using dynamic segments.</p></li>
+<li><p>Use <strong>controllers</strong> for anything beyond a few lines of logic to keep your code organized.</p></li>
+<li><p>Apply <strong>middleware</strong> at the group level rather than per-route when multiple routes share
+the same access rules.</p></li>
+<li><p>Use <strong>named routes</strong> (<code class="docutils literal notranslate"><span class="pre">name()</span></code>) instead of hardcoding URLs so a single path change
+does not break your application.</p></li>
+<li><p>Use <strong>constraint helpers</strong> (<code class="docutils literal notranslate"><span class="pre">where_number</span></code>, <code class="docutils literal notranslate"><span class="pre">where_uuid</span></code>, etc.) instead of raw
+<code class="docutils literal notranslate"><span class="pre">where()</span></code> regex for cleaner, more readable route definitions.</p></li>
+<li><p>Always validate route parameters inside controllers even when constraints are set —
+constraints only control URL matching, not business-level validation.</p></li>
 </ul>
 </section>
 </section>

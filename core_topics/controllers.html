@@ -115,6 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
@@ -150,81 +160,383 @@
              
   <section id="controllers">
 <h1>Controllers<a class="headerlink" href="#controllers" title="Link to this heading"></a></h1>
-<p>Controllers are classes that handle HTTP requests, interact with models, and return responses or views.
-They provide better organization than defining all logic in route closures, especially for larger applications.</p>
+<p>Controllers are classes that handle HTTP requests, interact with models, and return responses
+or views. They provide better organization than defining all logic in route closures, especially
+for larger applications.</p>
+<p>Controllers live in <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code> and must extend the base <code class="docutils literal notranslate"><span class="pre">Controller</span></code> class.</p>
+<section id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/
+└── controllers/
+    ├── UserController.php
+    ├── PostController.php
+    └── AdminController.php
+</pre></div>
+</div>
+</section>
 <section id="creating-a-controller">
 <h2>Creating a Controller<a class="headerlink" href="#creating-a-controller" title="Link to this heading"></a></h2>
-<p>A basic controller class should extend the base <cite>Controller</cite> class:</p>
+<p>A basic controller extends the base <code class="docutils literal notranslate"><span class="pre">Controller</span></code> class. Each public method can be mapped
+to a route, and dynamic route parameters are automatically injected as method arguments.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
-    <span class="c1">// Method to show a user profile</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;List all users&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">echo</span> <span class="s2">&quot;User Profile ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;Show create user form&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;Handle form submission&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;Edit user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;Delete user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Explanation:</strong></p>
-<ul class="simple">
-<li><p>The class must extend <cite>Controller</cite>.</p></li>
-<li><p>Each <strong>public method</strong> can be mapped to a route.</p></li>
-<li><p>Parameters in the method correspond to route dynamic segments.</p></li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only <strong>public</strong> methods are callable via routes. Private and protected methods
+are not accessible from the router.</p>
+</div>
 </section>
-<section id="mapping-routes-to-controller-methods">
-<h2>Mapping Routes to Controller Methods<a class="headerlink" href="#mapping-routes-to-controller-methods" title="Link to this heading"></a></h2>
-<p>You can map a route to a controller method instead of a closure: Navigate to <code class="docutils literal notranslate"><span class="pre">app/config/routes</span></code></p>
+<section id="mapping-routes-to-controllers">
+<h2>Mapping Routes to Controllers<a class="headerlink" href="#mapping-routes-to-controllers" title="Link to this heading"></a></h2>
+<p>Navigate to <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code> and point routes at controller methods.
+The <code class="docutils literal notranslate"><span class="pre">::</span></code> symbol separates the controller class name from the method name.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::profile&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>           <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>      <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/create&#39;</span><span class="p">,</span>    <span class="s1">&#39;UserController::create&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>          <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}/edit&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::edit&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>&gt; The <code class="docutils literal notranslate"><span class="pre">`::`</span></code> symbol separates the controller class and the method name.</p>
+<p>Alternative separators — all three are equivalent:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>  <span class="c1">// recommended</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController-&gt;index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController@index&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If no method is specified, <code class="docutils literal notranslate"><span class="pre">index()</span></code> is called by default:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController&#39;</span><span class="p">);</span>  <span class="c1">// calls UserController::index()</span>
+</pre></div>
+</div>
 </section>
 <section id="controller-constructor">
 <h2>Controller Constructor<a class="headerlink" href="#controller-constructor" title="Link to this heading"></a></h2>
-<p>Controllers can have a constructor to initialize shared resources:</p>
+<p>Use the constructor to load shared libraries, models, or helpers that are used
+across multiple methods. Always call <code class="docutils literal notranslate"><span class="pre">parent::__construct()</span></code> first.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
-            <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+
+        <span class="c1">// Load a model</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Load libraries</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Load a helper</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;User ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Use case:</strong> loading libraries, models, or middleware that will be used across multiple methods.</p>
 </section>
-<section id="returning-views-from-controllers">
-<h2>Returning Views from Controllers<a class="headerlink" href="#returning-views-from-controllers" title="Link to this heading"></a></h2>
-<p>Controllers can return HTML views using the <cite>view</cite> method:</p>
+<section id="loading-resources">
+<h2>Loading Resources<a class="headerlink" href="#loading-resources" title="Link to this heading"></a></h2>
+<p>Resources can be loaded in the constructor (shared across all methods) or inside
+individual methods (loaded only when needed).</p>
+<p><strong>Loading a model:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Loading multiple models at once:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;UserModel&#39;</span><span class="p">,</span> <span class="s1">&#39;PostModel&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Loading a library:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Loading a helper:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="returning-views">
+<h2>Returning Views<a class="headerlink" href="#returning-views" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;view()</span></code> to render a template file from <code class="docutils literal notranslate"><span class="pre">app/views/</span></code>.
+Pass data as an associative array — each key becomes a variable inside the view.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/profile&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/profile&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">&#39;user&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User Profile&#39;</span><span class="p">,</span>
+    <span class="p">]);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">$data</span></code> is an associative array passed to the view.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">view()</span></code> method renders the specified template file.</p></li>
-</ul>
+<p>Inside <code class="docutils literal notranslate"><span class="pre">app/views/user/profile.php</span></code> the variables are available directly:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$title</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;Name: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Email: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="handling-request-data">
+<h2>Handling Request Data<a class="headerlink" href="#handling-request-data" title="Link to this heading"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">Request</span></code> class (available via <code class="docutils literal notranslate"><span class="pre">$this-&gt;request</span></code>) to access input data
+inside controller methods.</p>
+<p><strong>Reading POST data:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$name</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+    <span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
+        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$email</span><span class="p">,</span>
+    <span class="p">]);</span>
+
+    <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Reading GET parameters:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="nv">$page</span><span class="p">);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="nv">$result</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Detecting the request method:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">form</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// handle submission</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/form&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="full-crud-controller-example">
+<h2>Full CRUD Controller Example<a class="headerlink" href="#full-crud-controller-example" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">UserController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// GET /users</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// GET /users/{id}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">show_404</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/show&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// GET /users/create</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/create&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// POST /users</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+        <span class="p">];</span>
+
+        <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// GET /users/{id}/edit</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/edit&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// PUT /users/{id}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+        <span class="p">];</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// DELETE /users/{id}</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Routes for the above controller:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>             <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/create&#39;</span><span class="p">,</span>      <span class="s1">&#39;UserController::create&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>            <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}/edit&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::edit&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>     <span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="controller-with-route-groups-and-middleware">
+<h2>Controller with Route Groups and Middleware<a class="headerlink" href="#controller-with-route-groups-and-middleware" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/config/routes.php</span>
+
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>           <span class="s1">&#39;Admin\UserController::index&#39;</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>      <span class="s1">&#39;Admin\UserController::show&#39;</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;Admin\UserController::destroy&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="method-reference">
+<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<p>Methods and properties available inside any controller that extends <code class="docutils literal notranslate"><span class="pre">Controller</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method / Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parent::__construct()</span></code></p></td>
+<td><p>Must be called first in a controller constructor to boot the framework</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;model($name)</span></code></p></td>
+<td><p>Loads a model; accessible as <code class="docutils literal notranslate"><span class="pre">$this-&gt;ModelName</span></code> after loading</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library($name)</span></code></p></td>
+<td><p>Loads a library; accessible as <code class="docutils literal notranslate"><span class="pre">$this-&gt;libraryname</span></code> after loading</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;helper($name)</span></code></p></td>
+<td><p>Loads a helper file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;view($path,</span> <span class="pre">$data)</span></code></p></td>
+<td><p>Renders a view file from <code class="docutils literal notranslate"><span class="pre">app/views/</span></code> with optional data array</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;request-&gt;post($key)</span></code></p></td>
+<td><p>Returns a POST input value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;request-&gt;get($key)</span></code></p></td>
+<td><p>Returns a GET query parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;request-&gt;method()</span></code></p></td>
+<td><p>Returns the current HTTP method in lowercase</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code></p></td>
+<td><p>Direct access to the database query builder</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">show_404()</span></code></p></td>
+<td><p>Triggers the 404 error page</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">redirect($url)</span></code></p></td>
+<td><p>Redirects to the given URL</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="tips-and-best-practices">
 <h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Use controllers for <strong>complex routes</strong> and logic.</p></li>
-<li><p>Keep each controller focused on a specific resource or feature (e.g., <cite>UserController</cite>, <cite>PostController</cite>).</p></li>
-<li><p>Use <strong>models</strong> for database operations, <strong>views</strong> for presentation, and <strong>controllers</strong> to coordinate them (MVC pattern).</p></li>
+<li><p>Always call <code class="docutils literal notranslate"><span class="pre">parent::__construct()</span></code> as the first line of a controller constructor.</p></li>
+<li><p>Load models and libraries in the constructor when they are needed across multiple methods;
+load them inline when only one method needs them.</p></li>
+<li><p>Keep controllers thin — delegate database logic to models and presentation to views.</p></li>
+<li><p>Name controllers after the resource they manage (e.g., <code class="docutils literal notranslate"><span class="pre">UserController</span></code>, <code class="docutils literal notranslate"><span class="pre">PostController</span></code>).</p></li>
+<li><p>One controller should handle one resource. Avoid mixing unrelated logic in a single controller.</p></li>
+<li><p>Use route groups with middleware to protect sets of controller routes rather than adding
+auth checks inside every method.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">show_404()</span></code> when a requested record does not exist instead of returning an empty view.</p></li>
 </ul>
 </section>
 </section>

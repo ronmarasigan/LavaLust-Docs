@@ -1,45 +1,62 @@
 Middleware
 ==========
 
-.. method:: Middleware::run(array $middlewares, Closure $destination) -> mixed
+Middleware provides a structured way to filter HTTP requests before they reach a route
+callback or controller action. Middleware are executed in sequence using a **pipeline
+pattern** — each middleware decides whether to continue execution by calling ``$next()``.
 
-    The **Middleware system** provides a structured way to filter HTTP requests
-    before they reach their final destination (such as a route or controller
-    action). Middleware are executed in sequence using a **pipeline pattern**,
-    allowing each middleware to decide whether execution should continue.
+Middleware are commonly used for:
 
-    Middleware are commonly used for:
+- Authentication and session checks
+- Role-based authorization
+- CSRF and security enforcement
+- Request logging and preprocessing
+- Access control and route guards
 
-    - Authentication checks
-    - Authorization and role validation
-    - CSRF or security enforcement
-    - Request preprocessing
-    - Access control and guards
+Folder Structure
+-----------------
 
-    Middleware are resolved using a configuration-based map and must implement
-    a ``handle(Closure $next)`` method.
+.. code-block:: text
 
-    :param array $middlewares: A list of middleware keys to execute in order.
-    :param Closure $destination: The final callback executed after all middleware pass.
-    :return mixed: The return value of the final destination or middleware.
+    app/
+    ├── middlewares/
+    │   ├── AuthMiddleware.php
+    │   ├── AdminMiddleware.php
+    │   └── RoleMiddleware.php
+    │
+    └── config/
+        └── middleware.php
 
 Configuration
--------------
+--------------
 
-Middleware mappings are defined in **app/config/middleware.php**.  
-Each key maps to a middleware class loaded from the ``middlewares`` directory.
+Register all middleware in ``app/config/middleware.php``. Each key is the alias
+you reference when attaching middleware to routes or controllers.
 
 .. code-block:: php
 
     <?php
     $config['middlewares'] = array(
-        // AuthMiddleware and AdminMiddleware are classes inside app/middlewares
-        // You can add more middlewares here
-        'auth'  => load_class('AuthMiddleware', 'middlewares'),
+        'auth'  => load_class('AuthMiddleware',  'middlewares'),
         'admin' => load_class('AdminMiddleware', 'middlewares'),
+        'role'  => load_class('RoleMiddleware',  'middlewares'),
+        'guest' => load_class('GuestMiddleware', 'middlewares'),
     );
 
-Each middleware class must define a ``handle()`` method:
+.. note::
+
+   Each value must be a class instance loaded via ``load_class()``. The class file
+   must exist in ``app/middlewares/`` and define a ``handle(Closure $next)`` method.
+
+Writing Middleware
+------------------
+
+Every middleware class must implement a single ``handle(Closure $next)`` method.
+Call ``$next()`` to pass execution to the next middleware or the final route callback.
+Omitting ``$next()`` stops the pipeline entirely.
+
+Basic Example
+~~~~~~~~~~~~~~
 
 .. code-block:: php
 
@@ -56,18 +73,138 @@ Each middleware class must define a ``handle()`` method:
         }
     }
 
-Usage
------
-
-Middleware usage inside a controller
-
-Middleware in Controller
--------------------------
+Role-Based Authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: php
 
     <?php
+    class AdminMiddleware
+    {
+        public function handle(Closure $next)
+        {
+            if (!isset($_SESSION['user'])) {
+                redirect('login');
+            }
 
+            if ($_SESSION['user']['role'] !== 'admin') {
+                show_error('403 Forbidden', 'You do not have access to this page.', 'error_general', 403);
+            }
+
+            return $next();
+        }
+    }
+
+Dynamic Role Middleware
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+A single middleware that accepts a role parameter via the session or config:
+
+.. code-block:: php
+
+    <?php
+    class RoleMiddleware
+    {
+        protected $allowed_roles = ['admin', 'editor'];
+
+        public function handle(Closure $next)
+        {
+            $user = $_SESSION['user'] ?? null;
+
+            if (!$user) {
+                redirect('login');
+            }
+
+            if (!in_array($user['role'], $this->allowed_roles)) {
+                show_error('403 Forbidden', 'Insufficient permissions.', 'error_general', 403);
+            }
+
+            return $next();
+        }
+    }
+
+Guest Middleware (redirect if already logged in)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    class GuestMiddleware
+    {
+        public function handle(Closure $next)
+        {
+            if (isset($_SESSION['user'])) {
+                redirect('dashboard');
+            }
+
+            return $next();
+        }
+    }
+
+Attaching Middleware to Routes
+--------------------------------
+
+Route Group Middleware
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Apply one or more middleware to all routes inside a group in ``app/config/routes.php``.
+Middleware keys are resolved from ``app/config/middleware.php``.
+
+.. code-block:: php
+
+    <?php
+    // Single middleware on a group
+    $router->group(
+        ['prefix' => '/dashboard', 'middleware' => 'auth'],
+        function ($router) {
+            $router->get('/home',     'DashboardController::index');
+            $router->get('/settings', 'DashboardController::settings');
+        }
+    );
+
+    // Multiple middleware on a group (executed in order)
+    $router->group(
+        ['prefix' => '/admin', 'middleware' => ['auth', 'admin']],
+        function ($router) {
+
+            $router->get('/users',         'Admin\UserController::index');
+            $router->get('/users/{id}',    'Admin\UserController::show');
+            $router->delete('/users/{id}', 'Admin\UserController::destroy');
+
+        }
+    );
+
+Single Route Middleware
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Attach middleware to an individual route by chaining ``->middleware()``:
+
+.. code-block:: php
+
+    <?php
+    // Single middleware
+    $router->get('/admin/panel', function () {
+        echo 'Admin panel';
+    })->middleware('admin');
+
+    // Multiple middleware chained
+    $router->get('/reports', 'ReportController::index')
+           ->middleware(['auth', 'admin']);
+
+    // With parameter constraint
+    $router->get('/user/{id}', 'UserController::show')
+           ->where_number('id')
+           ->middleware('auth');
+
+Middleware in Controllers
+--------------------------
+
+Middleware can also be run programmatically inside a controller method using
+``$this->middleware->run()``:
+
+.. code-block:: php
+
+    <?php
     class DashboardController extends Controller
     {
         public function index()
@@ -75,73 +212,122 @@ Middleware in Controller
             return $this->middleware->run(
                 ['auth'],
                 function () {
-                    $this->call->view('dashboard');
+                    $this->call->view('dashboard/index');
+                }
+            );
+        }
+
+        public function admin_panel()
+        {
+            return $this->middleware->run(
+                ['auth', 'admin'],
+                function () {
+                    $this->call->view('admin/panel');
                 }
             );
         }
     }
 
-Middleware can be applied directly to routes or route groups via the router.
+.. note::
 
-Route Group Middleware
-----------------------
-
-Apply one or more middleware to a group of routes in **app/config/routes.php**:
-
-.. code-block:: php
-
-    <?php
-    // Protected user routes
-    $router->group(
-        ['prefix' => '/user', 'middleware' => ['auth', 'admin']],
-        function ($router) {
-
-            $router->get('/profile/{id}', function ($id) {
-                echo 'Hello userid ! ' . $id;
-            })->where_number('id');
-
-            $router->get('/dashboard', function () {
-                echo 'User dashboard';
-            });
-
-        }
-    );
-
-All routes inside the group will execute the ``auth`` middleware first,
-followed by the ``admin`` middleware, before reaching the route callback.
-
-Single Route Middleware
------------------------
-
-Middleware can also be applied to an individual route:
-
-.. code-block:: php
-
-    <?php
-    // Admin-only route
-    $router->get('/adminpanel', function () {
-        echo 'Admin panel';
-    })->middleware('admin');
-
-In this case, only the ``admin`` middleware will be executed before
-the route callback.
+   Running middleware inside a controller is useful when you need conditional
+   or method-level protection without modifying routes.
 
 Execution Flow
---------------
+---------------
 
-1. Incoming request is matched to a route
-2. Assigned middleware are resolved from configuration
-3. Middleware are executed in order
-4. Each middleware calls ``$next()`` to continue
-5. Final route callback is executed
+.. code-block:: text
 
-If a middleware does **not** call ``$next()``, execution stops immediately.
+    Incoming Request
+         │
+         ▼
+    Route Matched
+         │
+         ▼
+    Middleware #1 ──── fails? ──► Stop (redirect / error)
+         │ $next()
+         ▼
+    Middleware #2 ──── fails? ──► Stop (redirect / error)
+         │ $next()
+         ▼
+    Middleware #N ──── fails? ──► Stop (redirect / error)
+         │ $next()
+         ▼
+    Route Callback / Controller Action
+         │
+         ▼
+    Response
 
-Summary
--------
+1. The incoming request is matched to a route.
+2. Assigned middleware aliases are resolved from ``app/config/middleware.php``.
+3. Middleware are executed in the order they are listed.
+4. Each middleware calls ``$next()`` to pass control to the next stage.
+5. If a middleware does **not** call ``$next()``, execution stops immediately —
+   no further middleware or route callback runs.
+6. The final route callback or controller method executes.
 
-- Middleware are registered in configuration
-- They are executed using a pipeline pattern
-- Can be applied per-route or per-group
-- Ideal for authentication, authorization, and request filtering
-- Keeps route logic clean and reusable
+Middleware Method Reference
+----------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Method / Usage
+     - Description
+   * - ``handle(Closure $next)``
+     - Required method on every middleware class. Call ``$next()`` to continue the pipeline.
+   * - ``$this->middleware->run($keys, $fn)``
+     - Runs an array of middleware keys then executes ``$fn`` if all pass.
+   * - ``->middleware('key')``
+     - Attaches a single middleware alias to the last registered route.
+   * - ``->middleware(['key1', 'key2'])``
+     - Attaches multiple middleware aliases to the last registered route.
+   * - ``['middleware' => 'key']``
+     - Attaches middleware to all routes inside a ``group()``.
+   * - ``['middleware' => ['key1', 'key2']]``
+     - Attaches multiple middleware to all routes inside a ``group()``.
+
+Common Middleware Patterns
+---------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - Use Case
+     - Middleware Name
+     - What it checks
+   * - Require login
+     - ``AuthMiddleware``
+     - ``$_SESSION['user']`` exists
+   * - Require admin role
+     - ``AdminMiddleware``
+     - ``$_SESSION['user']['role'] === 'admin'``
+   * - Redirect logged-in users
+     - ``GuestMiddleware``
+     - ``$_SESSION['user']`` does **not** exist
+   * - Role-based access
+     - ``RoleMiddleware``
+     - User role is in an allowed list
+   * - CSRF protection
+     - ``CsrfMiddleware``
+     - Token in POST matches session token
+   * - Request logging
+     - ``LogMiddleware``
+     - Logs request method and URI before calling ``$next()``
+
+Tips and Best Practices
+------------------------
+
+- Register all middleware in ``app/config/middleware.php`` using short, descriptive aliases.
+- Apply middleware at the **group level** when multiple routes share the same protection —
+  avoids repeating ``->middleware()`` on every route.
+- Always call ``return $next()`` at the end of a middleware unless you explicitly intend
+  to stop the pipeline (redirect, error, etc.).
+- Keep each middleware focused on a **single responsibility** — one class for auth,
+  another for role checks, another for logging.
+- Avoid heavy database queries inside middleware; use the session or a lightweight cache
+  check instead.
+- Order matters — list middleware from most fundamental to most specific
+  (e.g., ``['auth', 'admin']`` not ``['admin', 'auth']``).

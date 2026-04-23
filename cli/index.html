@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Tool &mdash; LavaLust Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=cc8a4273"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/lavatheme.js?v=667fea26"></script>
+      <script src="../_static/js/carbon.js?v=35530795"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../example/index.html" />
+    <link rel="prev" title="URL &amp; Asset Helper" href="../helpers/url.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+<a href="../index.html">
+  <img src="../_static/images/logo.png" class="logo" alt="Logo">
+</a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../general/welcome.html">What is LavaLust?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/license.html">MIT License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/changelog.html">LavaLust Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/guide.html">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/before_action.html">before_action Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/middlewares.html">Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database/database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/query_builder.html">Database Query Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/request.html">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html">Ember Template Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html#module-Ember_registrar">Ember Registrar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CLI Tool</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cli-tool">
+<h1>CLI Tool<a class="headerlink" href="#cli-tool" title="Link to this heading"></a></h1>
+<p>LavaLust includes a built-in <strong>command-line interface (CLI)</strong> tool called <code class="docutils literal notranslate"><span class="pre">lava</span></code> for
+scaffolding application files and running the development server. It eliminates the need
+to manually create boilerplate files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava</span></code> script lives in your project root and is executed via PHP from your terminal.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>php lava &lt;command&gt; [argument]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava</span></code> script is <strong>CLI-only</strong>. Accessing it through a web browser will be blocked
+automatically.</p>
+</div>
+<section id="available-commands">
+<h2>Available Commands<a class="headerlink" href="#available-commands" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">[port]</span></code></p></td>
+<td><p>Starts the PHP built-in development server (default port: 3000)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">make:controller</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a controller class in <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make:model</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a model class in <code class="docutils literal notranslate"><span class="pre">app/models/</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">make:helper</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a helper file in <code class="docutils literal notranslate"><span class="pre">app/helpers/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make:library</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a library class in <code class="docutils literal notranslate"><span class="pre">app/libraries/</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">make:view</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a view file in <code class="docutils literal notranslate"><span class="pre">app/views/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make:language</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a language file in <code class="docutils literal notranslate"><span class="pre">app/language/</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">make:config</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a config file in <code class="docutils literal notranslate"><span class="pre">app/config/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make:middleware</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Generates a middleware class in <code class="docutils literal notranslate"><span class="pre">app/middlewares/</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="development-server">
+<h2>Development Server<a class="headerlink" href="#development-server" title="Link to this heading"></a></h2>
+<section id="run-port">
+<h3><code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">[port]</span></code><a class="headerlink" href="#run-port" title="Link to this heading"></a></h3>
+<p>Starts the PHP built-in development server pointing to the <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory.
+The default port is <code class="docutils literal notranslate"><span class="pre">3000</span></code> if none is specified.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start on default port 3000</span>
+php<span class="w"> </span>lava<span class="w"> </span>run
+
+<span class="c1"># Start on a custom port</span>
+php<span class="w"> </span>lava<span class="w"> </span>run<span class="w"> </span><span class="m">8080</span>
+php<span class="w"> </span>lava<span class="w"> </span>run<span class="w"> </span><span class="m">4545</span>
+</pre></div>
+</div>
+<p><strong>Output:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Starting LavaLust development server...
+Server running on: http://127.0.0.1:3000
+Press Ctrl+C to stop the server.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The server requires a <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory in your project root. An error is shown
+if it cannot be found.</p>
+</div>
+</section>
+</section>
+<section id="generating-files">
+<h2>Generating Files<a class="headerlink" href="#generating-files" title="Link to this heading"></a></h2>
+<p>All <code class="docutils literal notranslate"><span class="pre">make:*</span></code> commands accept a name argument. Forward slashes (<code class="docutils literal notranslate"><span class="pre">/</span></code>) create
+subdirectories inside the target folder. Generated files include boilerplate code
+and will not overwrite existing files.</p>
+<section id="make-controller">
+<h3>make:controller<a class="headerlink" href="#make-controller" title="Link to this heading"></a></h3>
+<p>Creates a controller class extending <code class="docutils literal notranslate"><span class="pre">Controller</span></code> in <code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:controller<span class="w"> </span>Dashboard
+php<span class="w"> </span>lava<span class="w"> </span>make:controller<span class="w"> </span>Admin/UserController
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/controllers/Dashboard.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Controller: Dashboard</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Dashboard</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="make-model">
+<h3>make:model<a class="headerlink" href="#make-model" title="Link to this heading"></a></h3>
+<p>Creates a model class extending <code class="docutils literal notranslate"><span class="pre">Model</span></code> in <code class="docutils literal notranslate"><span class="pre">app/models/</span></code>. Includes default
+<code class="docutils literal notranslate"><span class="pre">$table</span></code>, <code class="docutils literal notranslate"><span class="pre">$primary_key</span></code>, <code class="docutils literal notranslate"><span class="pre">$fillable</span></code>, and <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> properties.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:model<span class="w"> </span>UserModel
+php<span class="w"> </span>lava<span class="w"> </span>make:model<span class="w"> </span>Blog/PostModel
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/models/UserModel.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Model: UserModel</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span> <span class="p">{</span>
+
+    <span class="k">protected</span> <span class="nv">$table</span>       <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$fillable</span>    <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">protected</span> <span class="nv">$guarded</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">];</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="make-helper">
+<h3>make:helper<a class="headerlink" href="#make-helper" title="Link to this heading"></a></h3>
+<p>Creates a helper file with a starter function in <code class="docutils literal notranslate"><span class="pre">app/helpers/</span></code>.
+The filename is suffixed with <code class="docutils literal notranslate"><span class="pre">_helper.php</span></code> automatically.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:helper<span class="w"> </span>text
+php<span class="w"> </span>lava<span class="w"> </span>make:helper<span class="w"> </span>String/format
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/helpers/text_helper.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Helper: text_helper.php</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+<span class="k">function</span> <span class="nf">text_helper</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Your helper logic here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="make-library">
+<h3>make:library<a class="headerlink" href="#make-library" title="Link to this heading"></a></h3>
+<p>Creates a standalone library class in <code class="docutils literal notranslate"><span class="pre">app/libraries/</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:library<span class="w"> </span>PDF
+php<span class="w"> </span>lava<span class="w"> </span>make:library<span class="w"> </span>Payment/Stripe
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/libraries/PDF.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Library: PDF</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">PDF</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Library initialized</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="make-view">
+<h3>make:view<a class="headerlink" href="#make-view" title="Link to this heading"></a></h3>
+<p>Creates an HTML view file in <code class="docutils literal notranslate"><span class="pre">app/views/</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:view<span class="w"> </span>homepage
+php<span class="w"> </span>lava<span class="w"> </span>make:view<span class="w"> </span>user/profile
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/views/homepage.php</span></code>):</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Homepage<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Welcome to Homepage View<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="make-language">
+<h3>make:language<a class="headerlink" href="#make-language" title="Link to this heading"></a></h3>
+<p>Creates a language file in <code class="docutils literal notranslate"><span class="pre">app/language/</span></code>. Useful for multi-language support.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:language<span class="w"> </span>en-US
+php<span class="w"> </span>lava<span class="w"> </span>make:language<span class="w"> </span>tag-PH
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/language/en-US.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+    <span class="sd">/**</span>
+<span class="sd">     * Other strings to be translated here</span>
+<span class="sd">     */</span>
+    <span class="s1">&#39;welcome&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello {username} {type}&#39;</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="make-config">
+<h3>make:config<a class="headerlink" href="#make-config" title="Link to this heading"></a></h3>
+<p>Creates a blank configuration file in <code class="docutils literal notranslate"><span class="pre">app/config/</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:config<span class="w"> </span>auth
+php<span class="w"> </span>lava<span class="w"> </span>make:config<span class="w"> </span>payment
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/config/auth.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Config: auth</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+
+<span class="c1">// Add your configuration here</span>
+</pre></div>
+</div>
+</section>
+<section id="make-middleware">
+<h3>make:middleware<a class="headerlink" href="#make-middleware" title="Link to this heading"></a></h3>
+<p>Creates a middleware class in <code class="docutils literal notranslate"><span class="pre">app/middlewares/</span></code>. The class name is automatically
+suffixed with <code class="docutils literal notranslate"><span class="pre">Middleware</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>make:middleware<span class="w"> </span>Auth
+php<span class="w"> </span>lava<span class="w"> </span>make:middleware<span class="w"> </span>Admin/Role
+</pre></div>
+</div>
+<p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/middlewares/AuthMiddleware.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="k">use</span> <span class="nx">Closure</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Middleware: AuthMiddleware</span>
+<span class="sd"> *</span>
+<span class="sd"> * Automatically generated via CLI.</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">AuthMiddleware</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * Handle the incoming request</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param Closure $next</span>
+<span class="sd">     * @return mixed</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// TODO: Add your middleware logic here (authentication, authorization, etc.)</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After generating a middleware, register it in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code>
+before attaching it to routes.</p>
+</div>
+</section>
+</section>
+<section id="subdirectory-support">
+<h2>Subdirectory Support<a class="headerlink" href="#subdirectory-support" title="Link to this heading"></a></h2>
+<p>All <code class="docutils literal notranslate"><span class="pre">make:*</span></code> commands support nested subdirectories using forward slashes.
+The CLI creates any missing intermediate directories automatically.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Generated Path</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">make:controller</span> <span class="pre">Admin/UserController</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/controllers/Admin/UserController.php</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">make:model</span> <span class="pre">Blog/PostModel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/models/Blog/PostModel.php</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">make:view</span> <span class="pre">user/profile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/views/user/profile.php</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">make:middleware</span> <span class="pre">Admin/Role</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/middlewares/Admin/RoleMiddleware.php</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">make:library</span> <span class="pre">Payment/Stripe</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/libraries/Payment/Stripe.php</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="file-overwrite-protection">
+<h2>File Overwrite Protection<a class="headerlink" href="#file-overwrite-protection" title="Link to this heading"></a></h2>
+<p>If a file already exists at the target path, the CLI will <strong>not overwrite it</strong>.
+An error message is shown instead:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Controller &quot;Dashboard&quot; already exists.
+</pre></div>
+</div>
+<p>To regenerate a file, delete the existing one manually first.</p>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<p>Running <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span></code> with no arguments prints the full command reference:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava
+</pre></div>
+</div>
+<p><strong>Output:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>LavaLust CLI Code Generator
+Usage: php lava &lt;command&gt; [options]
+
+Available Commands:
+
+  run [port]          → Start PHP built-in development server (default: 3000)
+    Example: php lava run
+    Example: php lava run 4545
+    Example: php lava run 8080
+
+  make:controller     → Creates a controller
+    Example: php lava make:controller Dashboard
+
+  make:model          → Creates a model
+    Example: php lava make:model Blog/PostModel
+
+  make:helper         → Creates a helper
+    Example: php lava make:helper text
+
+  make:library        → Creates a library
+    Example: php lava make:library PDF
+
+  make:view           → Creates a view file
+    Example: php lava make:view homepage
+
+  make:language       → Creates a language file
+    Example: php lava make:language tag-PH
+
+  make:config         → Creates a config file
+    Example: php lava make:config auth
+
+  make:middleware     → Creates a middleware
+    Example: php lava make:middleware Auth
+    Example: php lava make:middleware Admin/Role
+</pre></div>
+</div>
+</section>
+<section id="tips-and-best-practices">
+<h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span></code> during development instead of configuring a full web server.</p></li>
+<li><p>Use subdirectory syntax (e.g. <code class="docutils literal notranslate"><span class="pre">Admin/UserController</span></code>) from the start to keep large
+applications organized.</p></li>
+<li><p>After generating a model, set <code class="docutils literal notranslate"><span class="pre">$table</span></code>, <code class="docutils literal notranslate"><span class="pre">$fillable</span></code>, and <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> before using it.</p></li>
+<li><p>After generating middleware, always register it in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code> before
+attaching it to routes.</p></li>
+<li><p>Generated files are a starting point — add your own logic after scaffolding.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">make:config</span></code> for any feature-specific settings instead of adding everything to
+the main <code class="docutils literal notranslate"><span class="pre">config.php</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../helpers/url.html" class="btn btn-neutral float-left" title="URL &amp; Asset Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../example/index.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

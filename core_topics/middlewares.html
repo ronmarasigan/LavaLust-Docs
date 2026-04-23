@@ -115,6 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
@@ -150,50 +160,56 @@
              
   <section id="middleware">
 <h1>Middleware<a class="headerlink" href="#middleware" title="Link to this heading"></a></h1>
-<dl class="py method">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">Middleware::run(array</span> <span class="pre">$middlewares,</span> <span class="pre">Closure</span> <span class="pre">$destination)</span> <span class="pre">-&gt;</span> <span class="pre">mixed</span></span></dt>
-<dd><p>The <strong>Middleware system</strong> provides a structured way to filter HTTP requests
-before they reach their final destination (such as a route or controller
-action). Middleware are executed in sequence using a <strong>pipeline pattern</strong>,
-allowing each middleware to decide whether execution should continue.</p>
+<p>Middleware provides a structured way to filter HTTP requests before they reach a route
+callback or controller action. Middleware are executed in sequence using a <strong>pipeline
+pattern</strong> — each middleware decides whether to continue execution by calling <code class="docutils literal notranslate"><span class="pre">$next()</span></code>.</p>
 <p>Middleware are commonly used for:</p>
 <ul class="simple">
-<li><p>Authentication checks</p></li>
-<li><p>Authorization and role validation</p></li>
-<li><p>CSRF or security enforcement</p></li>
-<li><p>Request preprocessing</p></li>
-<li><p>Access control and guards</p></li>
+<li><p>Authentication and session checks</p></li>
+<li><p>Role-based authorization</p></li>
+<li><p>CSRF and security enforcement</p></li>
+<li><p>Request logging and preprocessing</p></li>
+<li><p>Access control and route guards</p></li>
 </ul>
-<p>Middleware are resolved using a configuration-based map and must implement
-a <code class="docutils literal notranslate"><span class="pre">handle(Closure</span> <span class="pre">$next)</span></code> method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>$middlewares</strong> (<em>array</em>) – A list of middleware keys to execute in order.</p></li>
-<li><p><strong>$destination</strong> (<em>Closure</em>) – The final callback executed after all middleware pass.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return mixed<span class="colon">:</span></dt>
-<dd class="field-even"><p>The return value of the final destination or middleware.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/
+├── middlewares/
+│   ├── AuthMiddleware.php
+│   ├── AdminMiddleware.php
+│   └── RoleMiddleware.php
+│
+└── config/
+    └── middleware.php
+</pre></div>
+</div>
+</section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
-<p>Middleware mappings are defined in <strong>app/config/middleware.php</strong>.
-Each key maps to a middleware class loaded from the <code class="docutils literal notranslate"><span class="pre">middlewares</span></code> directory.</p>
+<p>Register all middleware in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code>. Each key is the alias
+you reference when attaching middleware to routes or controllers.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;middlewares&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="c1">// AuthMiddleware and AdminMiddleware are classes inside app/middlewares</span>
-    <span class="c1">// You can add more middlewares here</span>
-    <span class="s1">&#39;auth&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;auth&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span>  <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
     <span class="s1">&#39;admin&#39;</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AdminMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;role&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;RoleMiddleware&#39;</span><span class="p">,</span>  <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;guest&#39;</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;GuestMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>Each middleware class must define a <code class="docutils literal notranslate"><span class="pre">handle()</span></code> method:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each value must be a class instance loaded via <code class="docutils literal notranslate"><span class="pre">load_class()</span></code>. The class file
+must exist in <code class="docutils literal notranslate"><span class="pre">app/middlewares/</span></code> and define a <code class="docutils literal notranslate"><span class="pre">handle(Closure</span> <span class="pre">$next)</span></code> method.</p>
+</div>
+</section>
+<section id="writing-middleware">
+<h2>Writing Middleware<a class="headerlink" href="#writing-middleware" title="Link to this heading"></a></h2>
+<p>Every middleware class must implement a single <code class="docutils literal notranslate"><span class="pre">handle(Closure</span> <span class="pre">$next)</span></code> method.
+Call <code class="docutils literal notranslate"><span class="pre">$next()</span></code> to pass execution to the next middleware or the final route callback.
+Omitting <code class="docutils literal notranslate"><span class="pre">$next()</span></code> stops the pipeline entirely.</p>
+<section id="basic-example">
+<h3>Basic Example<a class="headerlink" href="#basic-example" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">AuthMiddleware</span>
 <span class="p">{</span>
@@ -209,14 +225,127 @@ Each key maps to a middleware class loaded from the <code class="docutils litera
 </pre></div>
 </div>
 </section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
-<p>Middleware usage inside a controller</p>
-</section>
-<section id="middleware-in-controller">
-<h2>Middleware in Controller<a class="headerlink" href="#middleware-in-controller" title="Link to this heading"></a></h2>
+<section id="role-based-authorization">
+<h3>Role-Based Authorization<a class="headerlink" href="#role-based-authorization" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">AdminMiddleware</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
 
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;403 Forbidden&#39;</span><span class="p">,</span> <span class="s1">&#39;You do not have access to this page.&#39;</span><span class="p">,</span> <span class="s1">&#39;error_general&#39;</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dynamic-role-middleware">
+<h3>Dynamic Role Middleware<a class="headerlink" href="#dynamic-role-middleware" title="Link to this heading"></a></h3>
+<p>A single middleware that accepts a role parameter via the session or config:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">RoleMiddleware</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$allowed_roles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">];</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="k">null</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">allowed_roles</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;403 Forbidden&#39;</span><span class="p">,</span> <span class="s1">&#39;Insufficient permissions.&#39;</span><span class="p">,</span> <span class="s1">&#39;error_general&#39;</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="guest-middleware-redirect-if-already-logged-in">
+<h3>Guest Middleware (redirect if already logged in)<a class="headerlink" href="#guest-middleware-redirect-if-already-logged-in" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">GuestMiddleware</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="attaching-middleware-to-routes">
+<h2>Attaching Middleware to Routes<a class="headerlink" href="#attaching-middleware-to-routes" title="Link to this heading"></a></h2>
+<section id="route-group-middleware">
+<h3>Route Group Middleware<a class="headerlink" href="#route-group-middleware" title="Link to this heading"></a></h3>
+<p>Apply one or more middleware to all routes inside a group in <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code>.
+Middleware keys are resolved from <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code>.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Single middleware on a group</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;auth&#39;</span><span class="p">],</span>
+    <span class="k">function</span> <span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span>     <span class="s1">&#39;DashboardController::index&#39;</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="s1">&#39;DashboardController::settings&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="c1">// Multiple middleware on a group (executed in order)</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">]],</span>
+    <span class="k">function</span> <span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>         <span class="s1">&#39;Admin\UserController::index&#39;</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>    <span class="s1">&#39;Admin\UserController::show&#39;</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;Admin\UserController::destroy&#39;</span><span class="p">);</span>
+
+    <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="single-route-middleware">
+<h3>Single Route Middleware<a class="headerlink" href="#single-route-middleware" title="Link to this heading"></a></h3>
+<p>Attach middleware to an individual route by chaining <code class="docutils literal notranslate"><span class="pre">-&gt;middleware()</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Single middleware</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/admin/panel&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Admin panel&#39;</span><span class="p">;</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">);</span>
+
+<span class="c1">// Multiple middleware chained</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/reports&#39;</span><span class="p">,</span> <span class="s1">&#39;ReportController::index&#39;</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">]);</span>
+
+<span class="c1">// With parameter constraint</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::show&#39;</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="middleware-in-controllers">
+<h2>Middleware in Controllers<a class="headerlink" href="#middleware-in-controllers" title="Link to this heading"></a></h2>
+<p>Middleware can also be run programmatically inside a controller method using
+<code class="docutils literal notranslate"><span class="pre">$this-&gt;middleware-&gt;run()</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">DashboardController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
@@ -224,71 +353,152 @@ Each key maps to a middleware class loaded from the <code class="docutils litera
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">(</span>
             <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">],</span>
             <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;dashboard/index&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">admin_panel</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">],</span>
+            <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;admin/panel&#39;</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Middleware can be applied directly to routes or route groups via the router.</p>
-</section>
-<section id="route-group-middleware">
-<h2>Route Group Middleware<a class="headerlink" href="#route-group-middleware" title="Link to this heading"></a></h2>
-<p>Apply one or more middleware to a group of routes in <strong>app/config/routes.php</strong>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Protected user routes</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">]],</span>
-    <span class="k">function</span> <span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
-
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/profile/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">echo</span> <span class="s1">&#39;Hello userid ! &#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
-        <span class="p">})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
-
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-            <span class="k">echo</span> <span class="s1">&#39;User dashboard&#39;</span><span class="p">;</span>
-        <span class="p">});</span>
-
-    <span class="p">}</span>
-<span class="p">);</span>
-</pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Running middleware inside a controller is useful when you need conditional
+or method-level protection without modifying routes.</p>
 </div>
-<p>All routes inside the group will execute the <code class="docutils literal notranslate"><span class="pre">auth</span></code> middleware first,
-followed by the <code class="docutils literal notranslate"><span class="pre">admin</span></code> middleware, before reaching the route callback.</p>
-</section>
-<section id="single-route-middleware">
-<h2>Single Route Middleware<a class="headerlink" href="#single-route-middleware" title="Link to this heading"></a></h2>
-<p>Middleware can also be applied to an individual route:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Admin-only route</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/adminpanel&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s1">&#39;Admin panel&#39;</span><span class="p">;</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>In this case, only the <code class="docutils literal notranslate"><span class="pre">admin</span></code> middleware will be executed before
-the route callback.</p>
 </section>
 <section id="execution-flow">
 <h2>Execution Flow<a class="headerlink" href="#execution-flow" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Incoming Request
+     │
+     ▼
+Route Matched
+     │
+     ▼
+Middleware #1 ──── fails? ──► Stop (redirect / error)
+     │ $next()
+     ▼
+Middleware #2 ──── fails? ──► Stop (redirect / error)
+     │ $next()
+     ▼
+Middleware #N ──── fails? ──► Stop (redirect / error)
+     │ $next()
+     ▼
+Route Callback / Controller Action
+     │
+     ▼
+Response
+</pre></div>
+</div>
 <ol class="arabic simple">
-<li><p>Incoming request is matched to a route</p></li>
-<li><p>Assigned middleware are resolved from configuration</p></li>
-<li><p>Middleware are executed in order</p></li>
-<li><p>Each middleware calls <code class="docutils literal notranslate"><span class="pre">$next()</span></code> to continue</p></li>
-<li><p>Final route callback is executed</p></li>
+<li><p>The incoming request is matched to a route.</p></li>
+<li><p>Assigned middleware aliases are resolved from <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code>.</p></li>
+<li><p>Middleware are executed in the order they are listed.</p></li>
+<li><p>Each middleware calls <code class="docutils literal notranslate"><span class="pre">$next()</span></code> to pass control to the next stage.</p></li>
+<li><p>If a middleware does <strong>not</strong> call <code class="docutils literal notranslate"><span class="pre">$next()</span></code>, execution stops immediately —
+no further middleware or route callback runs.</p></li>
+<li><p>The final route callback or controller method executes.</p></li>
 </ol>
-<p>If a middleware does <strong>not</strong> call <code class="docutils literal notranslate"><span class="pre">$next()</span></code>, execution stops immediately.</p>
 </section>
-<section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<section id="middleware-method-reference">
+<h2>Middleware Method Reference<a class="headerlink" href="#middleware-method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method / Usage</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">handle(Closure</span> <span class="pre">$next)</span></code></p></td>
+<td><p>Required method on every middleware class. Call <code class="docutils literal notranslate"><span class="pre">$next()</span></code> to continue the pipeline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;middleware-&gt;run($keys,</span> <span class="pre">$fn)</span></code></p></td>
+<td><p>Runs an array of middleware keys then executes <code class="docutils literal notranslate"><span class="pre">$fn</span></code> if all pass.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-&gt;middleware('key')</span></code></p></td>
+<td><p>Attaches a single middleware alias to the last registered route.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-&gt;middleware(['key1',</span> <span class="pre">'key2'])</span></code></p></td>
+<td><p>Attaches multiple middleware aliases to the last registered route.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">['middleware'</span> <span class="pre">=&gt;</span> <span class="pre">'key']</span></code></p></td>
+<td><p>Attaches middleware to all routes inside a <code class="docutils literal notranslate"><span class="pre">group()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">['middleware'</span> <span class="pre">=&gt;</span> <span class="pre">['key1',</span> <span class="pre">'key2']]</span></code></p></td>
+<td><p>Attaches multiple middleware to all routes inside a <code class="docutils literal notranslate"><span class="pre">group()</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="common-middleware-patterns">
+<h2>Common Middleware Patterns<a class="headerlink" href="#common-middleware-patterns" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 35.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Use Case</p></th>
+<th class="head"><p>Middleware Name</p></th>
+<th class="head"><p>What it checks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Require login</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AuthMiddleware</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$_SESSION['user']</span></code> exists</p></td>
+</tr>
+<tr class="row-odd"><td><p>Require admin role</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AdminMiddleware</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$_SESSION['user']['role']</span> <span class="pre">===</span> <span class="pre">'admin'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Redirect logged-in users</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GuestMiddleware</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$_SESSION['user']</span></code> does <strong>not</strong> exist</p></td>
+</tr>
+<tr class="row-odd"><td><p>Role-based access</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">RoleMiddleware</span></code></p></td>
+<td><p>User role is in an allowed list</p></td>
+</tr>
+<tr class="row-even"><td><p>CSRF protection</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CsrfMiddleware</span></code></p></td>
+<td><p>Token in POST matches session token</p></td>
+</tr>
+<tr class="row-odd"><td><p>Request logging</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LogMiddleware</span></code></p></td>
+<td><p>Logs request method and URI before calling <code class="docutils literal notranslate"><span class="pre">$next()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tips-and-best-practices">
+<h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Middleware are registered in configuration</p></li>
-<li><p>They are executed using a pipeline pattern</p></li>
-<li><p>Can be applied per-route or per-group</p></li>
-<li><p>Ideal for authentication, authorization, and request filtering</p></li>
-<li><p>Keeps route logic clean and reusable</p></li>
+<li><p>Register all middleware in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code> using short, descriptive aliases.</p></li>
+<li><p>Apply middleware at the <strong>group level</strong> when multiple routes share the same protection —
+avoids repeating <code class="docutils literal notranslate"><span class="pre">-&gt;middleware()</span></code> on every route.</p></li>
+<li><p>Always call <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">$next()</span></code> at the end of a middleware unless you explicitly intend
+to stop the pipeline (redirect, error, etc.).</p></li>
+<li><p>Keep each middleware focused on a <strong>single responsibility</strong> — one class for auth,
+another for role checks, another for logging.</p></li>
+<li><p>Avoid heavy database queries inside middleware; use the session or a lightweight cache
+check instead.</p></li>
+<li><p>Order matters — list middleware from most fundamental to most specific
+(e.g., <code class="docutils literal notranslate"><span class="pre">['auth',</span> <span class="pre">'admin']</span></code> not <code class="docutils literal notranslate"><span class="pre">['admin',</span> <span class="pre">'auth']</span></code>).</p></li>
 </ul>
 </section>
 </section>

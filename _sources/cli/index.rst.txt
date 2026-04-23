@@ -1,0 +1,422 @@
+CLI Tool
+========
+
+LavaLust includes a built-in **command-line interface (CLI)** tool called ``lava`` for
+scaffolding application files and running the development server. It eliminates the need
+to manually create boilerplate files.
+
+The ``lava`` script lives in your project root and is executed via PHP from your terminal.
+
+.. code-block:: text
+
+   php lava <command> [argument]
+
+.. note::
+
+   The ``lava`` script is **CLI-only**. Accessing it through a web browser will be blocked
+   automatically.
+
+Available Commands
+-------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 72
+
+   * - Command
+     - Description
+   * - ``run [port]``
+     - Starts the PHP built-in development server (default port: 3000)
+   * - ``make:controller <name>``
+     - Generates a controller class in ``app/controllers/``
+   * - ``make:model <name>``
+     - Generates a model class in ``app/models/``
+   * - ``make:helper <name>``
+     - Generates a helper file in ``app/helpers/``
+   * - ``make:library <name>``
+     - Generates a library class in ``app/libraries/``
+   * - ``make:view <name>``
+     - Generates a view file in ``app/views/``
+   * - ``make:language <name>``
+     - Generates a language file in ``app/language/``
+   * - ``make:config <name>``
+     - Generates a config file in ``app/config/``
+   * - ``make:middleware <name>``
+     - Generates a middleware class in ``app/middlewares/``
+
+Development Server
+-------------------
+
+``run [port]``
+~~~~~~~~~~~~~~~
+
+Starts the PHP built-in development server pointing to the ``public/`` directory.
+The default port is ``3000`` if none is specified.
+
+.. code-block:: bash
+
+   # Start on default port 3000
+   php lava run
+
+   # Start on a custom port
+   php lava run 8080
+   php lava run 4545
+
+**Output:**
+
+.. code-block:: text
+
+   Starting LavaLust development server...
+   Server running on: http://127.0.0.1:3000
+   Press Ctrl+C to stop the server.
+
+.. note::
+
+   The server requires a ``public/`` directory in your project root. An error is shown
+   if it cannot be found.
+
+Generating Files
+-----------------
+
+All ``make:*`` commands accept a name argument. Forward slashes (``/``) create
+subdirectories inside the target folder. Generated files include boilerplate code
+and will not overwrite existing files.
+
+make:controller
+~~~~~~~~~~~~~~~~
+
+Creates a controller class extending ``Controller`` in ``app/controllers/``.
+
+.. code-block:: bash
+
+   php lava make:controller Dashboard
+   php lava make:controller Admin/UserController
+
+**Generated file** (``app/controllers/Dashboard.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Controller: Dashboard
+    *
+    * Automatically generated via CLI.
+    */
+   class Dashboard extends Controller {
+
+       public function __construct()
+       {
+           parent::__construct();
+       }
+   }
+
+make:model
+~~~~~~~~~~~
+
+Creates a model class extending ``Model`` in ``app/models/``. Includes default
+``$table``, ``$primary_key``, ``$fillable``, and ``$guarded`` properties.
+
+.. code-block:: bash
+
+   php lava make:model UserModel
+   php lava make:model Blog/PostModel
+
+**Generated file** (``app/models/UserModel.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Model: UserModel
+    *
+    * Automatically generated via CLI.
+    */
+   class UserModel extends Model {
+
+       protected $table       = '';
+       protected $primary_key = 'id';
+       protected $fillable    = [];
+       protected $guarded     = ['id'];
+
+       public function __construct()
+       {
+           parent::__construct();
+       }
+   }
+
+make:helper
+~~~~~~~~~~~~
+
+Creates a helper file with a starter function in ``app/helpers/``.
+The filename is suffixed with ``_helper.php`` automatically.
+
+.. code-block:: bash
+
+   php lava make:helper text
+   php lava make:helper String/format
+
+**Generated file** (``app/helpers/text_helper.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Helper: text_helper.php
+    *
+    * Automatically generated via CLI.
+    */
+   function text_helper()
+   {
+       // Your helper logic here
+   }
+
+make:library
+~~~~~~~~~~~~~
+
+Creates a standalone library class in ``app/libraries/``.
+
+.. code-block:: bash
+
+   php lava make:library PDF
+   php lava make:library Payment/Stripe
+
+**Generated file** (``app/libraries/PDF.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Library: PDF
+    *
+    * Automatically generated via CLI.
+    */
+   class PDF {
+
+       public function __construct()
+       {
+           // Library initialized
+       }
+   }
+
+make:view
+~~~~~~~~~~
+
+Creates an HTML view file in ``app/views/``.
+
+.. code-block:: bash
+
+   php lava make:view homepage
+   php lava make:view user/profile
+
+**Generated file** (``app/views/homepage.php``):
+
+.. code-block:: html
+
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Homepage</title>
+   </head>
+   <body>
+       <h1>Welcome to Homepage View</h1>
+   </body>
+   </html>
+
+make:language
+~~~~~~~~~~~~~~
+
+Creates a language file in ``app/language/``. Useful for multi-language support.
+
+.. code-block:: bash
+
+   php lava make:language en-US
+   php lava make:language tag-PH
+
+**Generated file** (``app/language/en-US.php``):
+
+.. code-block:: php
+
+   <?php
+   return array(
+       /**
+        * Other strings to be translated here
+        */
+       'welcome' => 'Hello {username} {type}',
+   );
+
+make:config
+~~~~~~~~~~~~
+
+Creates a blank configuration file in ``app/config/``.
+
+.. code-block:: bash
+
+   php lava make:config auth
+   php lava make:config payment
+
+**Generated file** (``app/config/auth.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Config: auth
+    *
+    * Automatically generated via CLI.
+    */
+
+   // Add your configuration here
+
+make:middleware
+~~~~~~~~~~~~~~~~
+
+Creates a middleware class in ``app/middlewares/``. The class name is automatically
+suffixed with ``Middleware``.
+
+.. code-block:: bash
+
+   php lava make:middleware Auth
+   php lava make:middleware Admin/Role
+
+**Generated file** (``app/middlewares/AuthMiddleware.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   use Closure;
+
+   /**
+    * Middleware: AuthMiddleware
+    *
+    * Automatically generated via CLI.
+    */
+   class AuthMiddleware
+   {
+       /**
+        * Handle the incoming request
+        *
+        * @param Closure $next
+        * @return mixed
+        */
+       public function handle(Closure $next)
+       {
+           // TODO: Add your middleware logic here (authentication, authorization, etc.)
+
+           return $next();
+       }
+   }
+
+.. note::
+
+   After generating a middleware, register it in ``app/config/middleware.php``
+   before attaching it to routes.
+
+Subdirectory Support
+---------------------
+
+All ``make:*`` commands support nested subdirectories using forward slashes.
+The CLI creates any missing intermediate directories automatically.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 45 55
+
+   * - Command
+     - Generated Path
+   * - ``php lava make:controller Admin/UserController``
+     - ``app/controllers/Admin/UserController.php``
+   * - ``php lava make:model Blog/PostModel``
+     - ``app/models/Blog/PostModel.php``
+   * - ``php lava make:view user/profile``
+     - ``app/views/user/profile.php``
+   * - ``php lava make:middleware Admin/Role``
+     - ``app/middlewares/Admin/RoleMiddleware.php``
+   * - ``php lava make:library Payment/Stripe``
+     - ``app/libraries/Payment/Stripe.php``
+
+File Overwrite Protection
+--------------------------
+
+If a file already exists at the target path, the CLI will **not overwrite it**.
+An error message is shown instead:
+
+.. code-block:: text
+
+   Controller "Dashboard" already exists.
+
+To regenerate a file, delete the existing one manually first.
+
+Getting Help
+-------------
+
+Running ``php lava`` with no arguments prints the full command reference:
+
+.. code-block:: bash
+
+   php lava
+
+**Output:**
+
+.. code-block:: text
+
+   LavaLust CLI Code Generator
+   Usage: php lava <command> [options]
+
+   Available Commands:
+
+     run [port]          → Start PHP built-in development server (default: 3000)
+       Example: php lava run
+       Example: php lava run 4545
+       Example: php lava run 8080
+
+     make:controller     → Creates a controller
+       Example: php lava make:controller Dashboard
+
+     make:model          → Creates a model
+       Example: php lava make:model Blog/PostModel
+
+     make:helper         → Creates a helper
+       Example: php lava make:helper text
+
+     make:library        → Creates a library
+       Example: php lava make:library PDF
+
+     make:view           → Creates a view file
+       Example: php lava make:view homepage
+
+     make:language       → Creates a language file
+       Example: php lava make:language tag-PH
+
+     make:config         → Creates a config file
+       Example: php lava make:config auth
+
+     make:middleware     → Creates a middleware
+       Example: php lava make:middleware Auth
+       Example: php lava make:middleware Admin/Role
+
+Tips and Best Practices
+------------------------
+
+- Run ``php lava run`` during development instead of configuring a full web server.
+- Use subdirectory syntax (e.g. ``Admin/UserController``) from the start to keep large
+  applications organized.
+- After generating a model, set ``$table``, ``$fillable``, and ``$guarded`` before using it.
+- After generating middleware, always register it in ``app/config/middleware.php`` before
+  attaching it to routes.
+- Generated files are a starting point — add your own logic after scaffolding.
+- Use ``make:config`` for any feature-specific settings instead of adding everything to
+  the main ``config.php``.

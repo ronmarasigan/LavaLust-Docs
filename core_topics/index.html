@@ -115,6 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
@@ -152,20 +162,29 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="routes.html">Routes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="routes.html#basic-route-with-closure">Basic Route with Closure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="routes.html#accessing-the-route">Accessing the Route</a></li>
-<li class="toctree-l2"><a class="reference internal" href="routes.html#passing-parameters-to-routes">Passing Parameters to Routes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="routes.html#using-multiple-http-methods">Using Multiple HTTP Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="routes.html#grouping-routes">Grouping Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#http-method-routes">HTTP Method Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#matching-multiple-methods">Matching Multiple Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#using-controllers">Using Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#dynamic-route-parameters">Dynamic Route Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="routes.html#regular-expression-constraints">Regular Expression Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#grouping-routes">Grouping Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#middleware">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#named-routes">Named Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes.html#complete-method-reference">Complete Method Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="routes.html#tips-and-best-practices">Tips and Best Practices</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#folder-structure">Folder Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controllers.html#creating-a-controller">Creating a Controller</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controllers.html#mapping-routes-to-controller-methods">Mapping Routes to Controller Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#mapping-routes-to-controllers">Mapping Routes to Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controllers.html#controller-constructor">Controller Constructor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="controllers.html#returning-views-from-controllers">Returning Views from Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#loading-resources">Loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#returning-views">Returning Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#handling-request-data">Handling Request Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#full-crud-controller-example">Full CRUD Controller Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#controller-with-route-groups-and-middleware">Controller with Route Groups and Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html#method-reference">Method Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controllers.html#tips-and-best-practices">Tips and Best Practices</a></li>
 </ul>
 </li>
@@ -238,13 +257,15 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="middlewares.html">Middleware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#folder-structure">Folder Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="middlewares.html#configuration">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middlewares.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middlewares.html#middleware-in-controller">Middleware in Controller</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middlewares.html#route-group-middleware">Route Group Middleware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middlewares.html#single-route-middleware">Single Route Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#writing-middleware">Writing Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#attaching-middleware-to-routes">Attaching Middleware to Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#middleware-in-controllers">Middleware in Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="middlewares.html#execution-flow">Execution Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middlewares.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#middleware-method-reference">Middleware Method Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#common-middleware-patterns">Common Middleware Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html#tips-and-best-practices">Tips and Best Practices</a></li>
 </ul>
 </li>
 </ul>

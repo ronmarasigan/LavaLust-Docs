@@ -1,1006 +1,1066 @@
 Database Query Reference
 =========================
 
-LavaLust provides a powerful and lightweight **Database Class** that uses a **fluent query builder**.  
-It lets you run SQL queries, retrieve results, and perform inserts, updates, and deletes easily without writing raw SQL directly.
+LavaLust provides a powerful and lightweight **Database Class** that uses a **fluent query builder**
+backed by PDO. It supports MySQL, PostgreSQL, SQLite, and SQL Server, letting you build and execute
+queries without writing raw SQL directly.
 
+Supported Drivers
+------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Driver key
+     - Database
+   * - ``mysql``
+     - MySQL / MariaDB
+   * - ``pgsql``
+     - PostgreSQL
+   * - ``sqlite``
+     - SQLite (requires ``path`` instead of ``hostname``)
+   * - ``sqlsrv``
+     - Microsoft SQL Server
 
 Database Configuration
-------------------------
+-----------------------
 
-Database settings are defined in:
-
-``app/config/database.php``
-
-Example configuration:
+Database settings are defined in ``app/config/database.php``.
 
 .. code-block:: php
 
    <?php
-
    $database['main'] = array(
-        'driver'	=> '',
-        'hostname'	=> '',
-        'port'		=> '',
-        'username'	=> '',
-        'password'	=> '',
-        'database'	=> '',
-        'charset'	=> '',
-        'dbprefix'	=> '',
-        // Optional for SQLite
-        'path'      => ''
-    );
+       'driver'   => 'mysql',
+       'hostname' => 'localhost',
+       'port'     => '3306',
+       'username' => 'root',
+       'password' => '',
+       'database' => 'myapp',
+       'charset'  => 'utf8mb4',
+       'dbprefix' => '',
+       // Required for SQLite only:
+       'path'     => '',
+   );
 
-Make sure you set the correct credentials for your environment.
-
+   // Optional second connection
+   $database['secondary'] = array(
+       'driver'   => 'pgsql',
+       'hostname' => 'db.example.com',
+       'port'     => '5432',
+       'username' => 'pguser',
+       'password' => 'secret',
+       'database' => 'analytics',
+       'charset'  => 'utf8',
+       'dbprefix' => '',
+   );
 
 Getting a Database Instance
-----------------------------------
+----------------------------
 
-You can get the database instance using the ``$this->db`` property from within controllers, models, and libraries:
+The default (``main``) connection is available as ``$this->db`` inside any controller, model,
+or library:
 
 .. code-block:: php
 
    <?php
+   $users = $this->db->table('users')->get_all();
 
-   class UserController extends Controller
-   {
-       public function index()
-       {
-           $users = $this->db->table('users')->get();
-           print_r($users);
-       }
-   }
+To use a named connection defined in ``database.php``:
+
+.. code-block:: php
+
+   <?php
+   $db2 = Database::instance('secondary');
+   $rows = $db2->table('events')->get_all();
 
 .. note::
 
-   ``$this->db->table('users')`` initializes a query builder for the `users` table.
+   ``table()`` resets the internal query builder state, so always call it first when
+   starting a new query.
 
-
-raw($query, $args = array())
-----------------------------
-
-**Description:**  
-Executes a raw SQL query with optional bound parameters.
-
-**Example:**
-
-.. code-block:: php
-
-   <?php 
-
-   $result = $this->db->raw("SELECT * FROM users WHERE id = ?", [1]);
-   $user = $result->fetch();
-
-
-count()
--------
-
-**Description:**  
-Returns the number of rows in the current table with applied where conditions.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $total = $this->db->table('users')
-               ->where('status', 'active')
-               ->count();
-   echo "Total active users: $total";
-
-bulk_insert($records)
-----------------------
-
-**Description:**  
-Inserts multiple records at once into the current table.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $data = [
-     ['name' => 'John', 'email' => 'john@example.com'],
-     ['name' => 'Jane', 'email' => 'jane@example.com']
-   ];
-
-   $this->db->table('users')->bulk_insert($data);
-
-
-bulk_update($records, $primaryKey = 'id')
-------------------------------------------
-
-**Description:**  
-Updates multiple records at once based on the primary key field.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-
-   $updates = [
-     ['id' => 1, 'status' => 'active'],
-     ['id' => 2, 'status' => 'inactive']
-   ];
-
-   $this->db->table('users')->bulk_update($updates, 'id');
-
-
-delete()
----------
-
-**Description:**  
-Deletes records from the current table with applied where conditions.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-
-   $this->db->table('users')->where('id', 5)->delete();
-
-
-update($fields = [])
-----------------------
-
-**Description:**  
-Updates a single record or multiple records matching where conditions.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('id', 1)
-      ->update(['name' => 'Johnny']);
-
-
-insert($fields = [])
-----------------------
-
-**Description:**  
-Inserts a new record into the current table.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php
-   
-   $this->db->table('users')
-      ->insert(['name' => 'John', 'email' => 'john@example.com']);
-
-
-last_id()
-----------
-
-**Description:**  
-Returns the last inserted ID from the previous ``insert()`` or ``exec()`` operation.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-
-   $id = $this->db->last_id();
-
-
-table($table_name)
--------------------
-
-**Description:**  
-Specifies the table to be used for the current query.  
-Resets the internal query builder state.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users');
-
-
-select($columns)
------------------
-
-**Description:**  
-Specifies which columns to select in the query.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $users = $this->db->table('users')
-               ->select('id, name, email')
-               ->get_all();
-
-
-select_max($column, $alias = NULL)
------------------------------------
-
-**Description:**  
-Selects the maximum value of a column. Optionally sets an alias for the result column.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('orders')
-                ->select_max('amount', 'max_amount')
-                ->get();
-   echo $result['max_amount'];
-
-
-select_min($column, $alias = NULL)
------------------------------------
-
-**Description:**  
-Selects the minimum value of a column. Optionally sets an alias for the result column.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php 
-
-   $result = $this->db->table('orders')
-                ->select_min('amount', 'min_amount')
-                ->get();
-   echo $result['min_amount'];
-
-
-select_sum($column, $alias = NULL)
------------------------------------
-
-**Description:**  
-Selects the sum of all values in a column.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-
-   $result = $this->db->table('orders')
-                ->select_sum('amount', 'total_amount')
-                ->get();
-   echo $result['total_amount'];
-
-
-select_count($column = '*', $alias = 'total')
------------------------------------------------
-
-**Description:**  
-Counts the number of rows or specific column values.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php 
-
-   $result = $this->db->table('users')
-                ->select_count('id', 'user_count')
-                ->get();
-   echo $result['user_count'];
-
-
-select_avg($column, $alias = NULL)
------------------------------------
-
-**Description:**  
-Selects the average value of a column.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php
-
-   $result = $this->db->table('orders')
-                ->select_avg('amount', 'average_amount')
-                ->get();
-   echo $result['average_amount'];
-
-
-select_distinct($columns)
----------------------------
-
-**Description:**  
-Selects distinct (unique) values from a column.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('users')
-                ->select_distinct('email')
-                ->get_all();
-
-
-join($table, $condition, $type = 'INNER')
--------------------------------------------
-
-**Description:**  
-Performs a SQL JOIN between the current table and another table.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('orders')
-                ->join('users', 'orders.user_id = users.id')
-                ->get_all();
-
-
-inner_join($table, $condition)
--------------------------------
-
-**Description:**  
-Shortcut for ``join()`` with INNER join.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('orders')
-                ->inner_join('users', 'orders.user_id = users.id')
-                ->get_all();
-
-
-left_join($table, $condition)
--------------------------------
-
-**Description:**  
-Performs a LEFT JOIN between the current table and another table.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('users')
-                ->left_join('profiles', 'users.id = profiles.user_id')
-                ->get_all();
-
-
-right_join($table, $condition)
---------------------------------
-
-**Description:**  
-Performs a RIGHT JOIN between the current table and another table.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $result = $this->db->table('users')
-                ->right_join('profiles', 'users.id = profiles.user_id')
-                ->get_all();
-
-
-full_outer_join($table, $condition)
-------------------------------------
-
-**Description:**  
-Performs a FULL OUTER JOIN between the current table and another table (if supported by your DB driver).
-
-**Example:**
-
-.. code-block:: php
-
-   $result = $this->db->table('table_a')
-                ->full_outer_join('table_b', 'table_a.id = table_b.id')
-                ->get_all();
-
-
-where($where, $op = NULL, $val = NULL, $type = '', $andOr = 'AND')
--------------------------------------------------------------------
-**Description:**  
-Adds a `WHERE` condition to the query.  
-Can be chained multiple times to add multiple conditions.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('status', 'active')
-      ->where('age', '>=', 18)
-      ->get_all();
-
-or_where($where, $op = NULL, $val = NULL)
-------------------------------------------
-**Description:**  
-Adds an `OR WHERE` condition to the query.  
-Used when you want alternative conditions in the `WHERE` clause.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('status', 'active')
-      ->or_where('status', 'pending')
-      ->get_all();
-
-not_where($where, $op = NULL, $val = NULL)
-------------------------------------------
-**Description:**  
-Adds a `WHERE NOT` condition to the query.  
-Negates the condition you specify.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->not_where('status', 'banned')
-      ->get_all();
-
-or_not_where($where, $op = NULL, $val = NULL)
-----------------------------------------------
-**Description:**  
-Adds an `OR WHERE NOT` condition to the query.  
-Used for alternative negative conditions in the `WHERE` clause.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('role', 'admin')
-      ->or_not_where('status', 'inactive')
-      ->get_all();
-
-
-like($field, $data, $type = '', $andOr = 'AND')
-------------------------------------------------
-**Description:**  
-Adds a `LIKE` condition to the query.  
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php 
-
-   $this->db->table('users')
-      ->like('username', 'john')
-      ->get_all();
-
-or_like($field, $data)
------------------------
-**Description:**  
-Adds an `OR LIKE` condition to the query.  
-Used to provide an alternative match condition.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->like('username', '%john%')
-      ->or_like('email', '%john%')
-      ->get_all();
-
-not_like($field, $data)
-------------------------
-**Description:**  
-Adds a `NOT LIKE` condition to the query.  
-Negates the match condition.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->not_like('username', '%admin%')
-      ->get_all();
-
-or_not_like($field, $data)
----------------------------
-**Description:**  
-Adds an `OR NOT LIKE` condition to the query.  
-Used as an alternative negated match condition.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->like('username', '%john%')
-      ->or_not_like('email', '%spam%')
-      ->get_all();
-
-
-in($field, array $keys, $type = '', $andOr = 'AND')
-----------------------------------------------------
-**Description:**  
-Adds a `WHERE IN` condition to the query.  
-Matches rows where the column's value is **in the given array**.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->in('role', ['admin', 'editor', 'author'])
-      ->get_all();
-
-not_in($field, array $keys)
-----------------------------
-**Description:**  
-Adds a `WHERE NOT IN` condition to the query.  
-Matches rows where the column's value is **not in the given array**.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->not_in('status', ['banned', 'inactive'])
-      ->get_all();
-
-or_in($field, array $keys)
----------------------------
-**Description:**  
-Adds an `OR WHERE IN` condition to the query.  
-Useful when combining multiple conditions where at least one should match.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('active', 1)
-      ->or_in('role', ['contributor', 'subscriber'])
-      ->get_all();
-
-or_not_in($field, array $keys)
--------------------------------
-**Description:**  
-Adds an `OR WHERE NOT IN` condition to the query.  
-Combines with other conditions to exclude values as an alternative condition.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->where('active', 1)
-      ->or_not_in('status', ['deleted', 'suspended'])
-      ->get_all();
-
-
-between($field, $value1, $value2, $type = '', $andOr = 'AND')
---------------------------------------------------------------
-**Description:**  
-Adds a `WHERE BETWEEN` condition to the query.  
-Matches rows where the column's value is **between the given start and end values (inclusive)**.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('orders')
-      ->between('created_at', '2024-01-01', '2024-12-31')
-      ->get_all();
-
-not_between($field, $value1, $value2)
---------------------------------------
-**Description:**  
-Adds a `WHERE NOT BETWEEN` condition to the query.  
-Matches rows where the column's value is **outside the given start and end values**.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('orders')
-      ->not_between('amount', 100, 500)
-      ->get_all();
-
-or_between($field, $value1, $value2)
--------------------------------------
-**Description:**  
-Adds an `OR WHERE BETWEEN` condition to the query.  
-Useful for combining conditions where **either another condition OR this range** must be true.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('orders')
-      ->where('status', 'pending')
-      ->or_between('created_at', '2024-06-01', '2024-06-30')
-      ->get_all();
-
-or_not_between($field, $value1, $value2)
------------------------------------------
-**Description:**  
-Adds an `OR WHERE NOT BETWEEN` condition to the query.  
-Used to combine with other conditions as an alternative to exclude values in a range.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php 
-
-   $this->db->table('orders')
-      ->where('status', 'completed')
-      ->or_not_between('amount', 50, 200)
-      ->get_all();
-
-pagination($perPage, $currentPage = 1)
-----------------------------------------
-**Description:**  
-Automatically applies **LIMIT** and **OFFSET** to the query based on the given  
-**items per page** and **current page number**.  
-This is helpful for paginating long result sets.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $page = $_GET['page'] ?? 1;
-
-   $users = $this->db->table('users')
-               ->pagination(10, $page)
-               ->get_all();
-
-**Note:**  
-Make sure to handle the current page number properly (e.g., from query string).
-
----
-
-limit($number)
----------------
-**Description:**  
-Limits the **maximum number of rows** returned from the query.  
-Usually used to control the result size.
-
-**Example:**
-
-    <?php 
-
-.. code-block:: php
-
-   $this->db->table('users')
-      ->limit(5)
-      ->get_all();
-
----
-
-offset($number)
+Query Execution
 ----------------
-**Description:**  
-Skips the given number of rows before starting to return the results.  
-Commonly used together with `limit()` for custom pagination logic.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->limit(10)
-      ->offset(20)
-      ->get_all();
-
-order_by($column, $direction = 'ASC')
----------------------------------------
-**Description:**  
-Specifies the column by which the result set should be **sorted**.  
-You can call this multiple times to order by multiple columns.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('users')
-      ->order_by('created_at', 'DESC')
-      ->order_by('name', 'ASC')
-      ->get_all();
-
-**Note:**  
-`$direction` can be either **ASC** (ascending) or **DESC** (descending).
-
----
-
-group_by($column)
--------------------
-**Description:**  
-Groups the query results by a specified column.  
-Useful when using aggregate functions like `COUNT()`, `SUM()`, etc.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php 
-
-   $this->db->table('orders')
-      ->select('customer_id, COUNT(*) as total_orders')
-      ->group_by('customer_id')
-      ->get_all();
-
----
-
-having($column, $value, $operator = '=')
-------------------------------------------
-**Description:**  
-Adds a **HAVING** condition to filter grouped results.  
-Used together with `group_by()` and aggregate functions.
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php 
-
-   $this->db->table('orders')
-      ->select('customer_id, COUNT(*) as total_orders')
-      ->group_by('customer_id')
-      ->having('total_orders', 5, '>')
-      ->get_all();
-
-grouped(Closure $obj)
-----------------------
-**Description:**  
-Wraps multiple WHERE conditions in **parentheses** by using a closure.  
-This is useful when you need to **group logical conditions** (especially when mixing `AND` / `OR`).
-
-**Example:**
-
-.. code-block:: php
-
-   $db->table('users')
-      ->grouped(function($q) {
-          $q->where('status', 'active')
-            ->or_where('status', 'pending');
-      })
-      ->where('age', 18, '>=')
-      ->get_all();
-
-**Generated SQL:**
-
-.. code-block:: sql
-
-   SELECT * FROM users 
-   WHERE (status = 'active' OR status = 'pending') 
-   AND age >= 18;
-
-grouped(Closure $obj)
-----------------------
-**Description:**  
-Wraps multiple WHERE conditions in **parentheses** by using a closure.  
-This is useful when you need to **group logical conditions** (especially when mixing `AND` / `OR`).
-
-**Example:**
-
-.. code-block:: php
-    
-    <?php
-
-   $this->db->table('users')
-      ->grouped(function($q) {
-          $q->where('status', 'active')
-            ->or_where('status', 'pending');
-      })
-      ->where('age', 18, '>=')
-      ->get_all();
-
-**Generated SQL:**
-
-.. code-block:: sql
-
-    <?php
-
-   SELECT * FROM users 
-   WHERE (status = 'active' OR status = 'pending') 
-   AND age >= 18;
-
 
 get()
--------
+~~~~~~
 
-**Description:**  
-Executes the built query and returns a raw database result object (driver-specific).
-
-**Example:**
+Executes the built query and returns the **first matching row** as an associative array,
+or ``false`` if no row is found.
 
 .. code-block:: php
 
-    <?php 
-
-   $row = $this->db->table('users')->get();
-   echo $row['name'];
-
+   <?php
+   $user = $this->db->table('users')->where('id', 1)->get();
+   echo $user['name'];
 
 get_all()
------------
+~~~~~~~~~~
 
-**Description:**  
-Executes the query and returns all rows as an array.
-
-**Example:**
+Executes the built query and returns **all matching rows** as an array of associative arrays.
 
 .. code-block:: php
 
-    <?php 
-
+   <?php
    $users = $this->db->table('users')->get_all();
    foreach ($users as $user) {
        echo $user['name'];
    }
 
-transaction()
-----------------
-**Description:**  
-Starts a **database transaction**.  
-This allows you to execute multiple queries as a single unit of work.  
-If any query fails, you can roll back the entire set of operations.
+raw($query, $args)
+~~~~~~~~~~~~~~~~~~~
 
-**Example:**
+Executes a raw SQL statement with optional bound parameters. Returns a PDOStatement.
 
 .. code-block:: php
-    
-    <?php 
 
-   $this->db->transaction();
+   <?php
+   // SELECT
+   $stmt = $this->db->raw("SELECT * FROM users WHERE id = ?", [1]);
+   $user = $stmt->fetch();
 
-   $this->db->table('users')->insert([
-       'name' => 'John Doe',
-       'email' => 'john@example.com'
-   ]);
+   // Multiple rows
+   $stmt  = $this->db->raw("SELECT * FROM users WHERE role = ?", ['admin']);
+   $users = $stmt->fetchAll();
 
-   $this->db->table('profiles')->insert([
-       'user_id' => 1,
-       'bio' => 'Hello world'
-   ]);
+   // Non-SELECT
+   $this->db->raw("DELETE FROM sessions WHERE expires_at < NOW()");
 
-   // Commit if all queries succeed
-   $this->db->commit();
-    commit()
-    -------------
-    **Description:**  
-    Commits all operations performed since the last `transaction()` call.  
-    This makes all the changes **permanent** in the database.
+get_sql()
+~~~~~~~~~~
 
-    **Example:**
+Returns the last SQL string that was built or executed. Useful for debugging.
 
-    .. code-block:: php
+.. code-block:: php
 
-    $this->db->transaction();
-    $this->db->table('users')->insert(['name' => 'Jane']);
-    $this->db->commit();
+   <?php
+   $this->db->table('users')->where('role', 'admin')->get_all();
+   echo $this->db->get_sql();
+   // SELECT * FROM users WHERE role = ?
 
-rollback()
+row_count()
+~~~~~~~~~~~~
+
+Returns the number of rows affected or returned by the last query.
+
+.. code-block:: php
+
+   <?php
+   $users = $this->db->table('users')->where('active', 1)->get_all();
+   echo $this->db->row_count(); // e.g. 42
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Method
+     - Description
+   * - ``get()``
+     - Returns the first matching row as an array, or ``false``
+   * - ``get_all()``
+     - Returns all matching rows as an array of arrays
+   * - ``raw($query, $args)``
+     - Executes raw SQL with bound parameters; returns PDOStatement
+   * - ``get_sql()``
+     - Returns the last built SQL string
+   * - ``row_count()``
+     - Returns the row count of the last executed query
+
+Selecting Data
 ---------------
-**Description:**  
-Rolls back all operations performed since the last `transaction()` call.  
-Use this to **undo** all changes if something goes wrong during the transaction.
 
-**Example:**
+table($name)
+~~~~~~~~~~~~~
+
+Sets the table for the current query and resets all builder state.
 
 .. code-block:: php
 
-    <?php 
-    
+   <?php
+   $this->db->table('users');
+
+select($columns)
+~~~~~~~~~~~~~~~~~
+
+Specifies which columns to fetch. Accepts a comma-separated string.
+
+.. code-block:: php
+
+   <?php
+   $users = $this->db->table('users')
+               ->select('id, name, email')
+               ->get_all();
+
+Aggregate Selects
+~~~~~~~~~~~~~~~~~~
+
+All aggregate methods accept a column name and an optional alias.
+
+.. code-block:: php
+
+   <?php
+   // MAX
+   $result = $this->db->table('orders')->select_max('amount', 'max_amount')->get();
+   echo $result['max_amount'];
+
+   // MIN
+   $result = $this->db->table('orders')->select_min('amount', 'min_amount')->get();
+
+   // SUM
+   $result = $this->db->table('orders')->select_sum('amount', 'total')->get();
+
+   // COUNT
+   $result = $this->db->table('users')->select_count('id', 'user_count')->get();
+
+   // AVG
+   $result = $this->db->table('orders')->select_avg('amount', 'avg_amount')->get();
+
+   // DISTINCT
+   $emails = $this->db->table('users')->select_distinct('email')->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``select($columns)``
+     - Comma-separated column list to fetch
+   * - ``select_max($col, $alias)``
+     - ``MAX(col) AS alias``
+   * - ``select_min($col, $alias)``
+     - ``MIN(col) AS alias``
+   * - ``select_sum($col, $alias)``
+     - ``SUM(col) AS alias``
+   * - ``select_count($col, $alias)``
+     - ``COUNT(col) AS alias``
+   * - ``select_avg($col, $alias)``
+     - ``AVG(col) AS alias``
+   * - ``select_distinct($col, $alias)``
+     - ``DISTINCT(col) AS alias``
+
+WHERE Conditions
+-----------------
+
+where()
+~~~~~~~~
+
+Adds an ``AND WHERE`` condition. Can be chained multiple times.
+
+.. code-block:: php
+
+   <?php
+   // Simple equality
+   $this->db->table('users')->where('status', 'active')->get_all();
+
+   // With operator
+   $this->db->table('users')->where('age', '>=', 18)->get_all();
+
+   // Array of conditions (all joined with AND)
+   $this->db->table('users')->where(['role' => 'admin', 'active' => 1])->get_all();
+
+   // Chained
+   $this->db->table('users')
+       ->where('status', 'active')
+       ->where('age', '>=', 18)
+       ->get_all();
+
+or_where() / not_where() / or_not_where()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // OR WHERE
+   $this->db->table('users')
+       ->where('status', 'active')
+       ->or_where('status', 'pending')
+       ->get_all();
+
+   // WHERE NOT
+   $this->db->table('users')->not_where('status', 'banned')->get_all();
+
+   // OR WHERE NOT
+   $this->db->table('users')
+       ->where('role', 'admin')
+       ->or_not_where('status', 'inactive')
+       ->get_all();
+
+where_null() / where_not_null()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // IS NULL
+   $this->db->table('users')->where_null('deleted_at')->get_all();
+
+   // IS NOT NULL
+   $this->db->table('users')->where_not_null('email_verified_at')->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``where($col, $op, $val)``
+     - ``AND WHERE col = ?`` or ``AND WHERE col op ?``
+   * - ``or_where($col, $op, $val)``
+     - ``OR WHERE col = ?``
+   * - ``not_where($col, $op, $val)``
+     - ``AND WHERE NOT col = ?``
+   * - ``or_not_where($col, $op, $val)``
+     - ``OR WHERE NOT col = ?``
+   * - ``where_null($col)``
+     - ``AND col IS NULL``
+   * - ``where_not_null($col)``
+     - ``AND col IS NOT NULL``
+
+LIKE Conditions
+----------------
+
+.. code-block:: php
+
+   <?php
+   // LIKE
+   $this->db->table('users')->like('username', '%john%')->get_all();
+
+   // OR LIKE
+   $this->db->table('users')
+       ->like('username', '%john%')
+       ->or_like('email', '%john%')
+       ->get_all();
+
+   // NOT LIKE
+   $this->db->table('users')->not_like('username', '%admin%')->get_all();
+
+   // OR NOT LIKE
+   $this->db->table('users')
+       ->like('username', '%john%')
+       ->or_not_like('email', '%spam%')
+       ->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Method
+     - Description
+   * - ``like($field, $data)``
+     - ``AND field LIKE ?``
+   * - ``or_like($field, $data)``
+     - ``OR field LIKE ?``
+   * - ``not_like($field, $data)``
+     - ``AND field NOT LIKE ?``
+   * - ``or_not_like($field, $data)``
+     - ``OR field NOT LIKE ?``
+
+IN Conditions
+--------------
+
+.. code-block:: php
+
+   <?php
+   // IN
+   $this->db->table('users')
+       ->in('role', ['admin', 'editor', 'author'])
+       ->get_all();
+
+   // NOT IN
+   $this->db->table('users')
+       ->not_in('status', ['banned', 'inactive'])
+       ->get_all();
+
+   // OR IN
+   $this->db->table('users')
+       ->where('active', 1)
+       ->or_in('role', ['contributor', 'subscriber'])
+       ->get_all();
+
+   // OR NOT IN
+   $this->db->table('users')
+       ->where('active', 1)
+       ->or_not_in('status', ['deleted', 'suspended'])
+       ->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``in($field, $array)``
+     - ``AND field IN (...)``
+   * - ``not_in($field, $array)``
+     - ``AND field NOT IN (...)``
+   * - ``or_in($field, $array)``
+     - ``OR field IN (...)``
+   * - ``or_not_in($field, $array)``
+     - ``OR field NOT IN (...)``
+
+BETWEEN Conditions
+-------------------
+
+.. code-block:: php
+
+   <?php
+   // BETWEEN
+   $this->db->table('orders')
+       ->between('created_at', '2024-01-01', '2024-12-31')
+       ->get_all();
+
+   // NOT BETWEEN
+   $this->db->table('orders')
+       ->not_between('amount', 100, 500)
+       ->get_all();
+
+   // OR BETWEEN
+   $this->db->table('orders')
+       ->where('status', 'pending')
+       ->or_between('created_at', '2024-06-01', '2024-06-30')
+       ->get_all();
+
+   // OR NOT BETWEEN
+   $this->db->table('orders')
+       ->where('status', 'completed')
+       ->or_not_between('amount', 50, 200)
+       ->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Method
+     - Description
+   * - ``between($field, $val1, $val2)``
+     - ``AND field BETWEEN ? AND ?``
+   * - ``not_between($field, $val1, $val2)``
+     - ``AND field NOT BETWEEN ? AND ?``
+   * - ``or_between($field, $val1, $val2)``
+     - ``OR field BETWEEN ? AND ?``
+   * - ``or_not_between($field, $val1, $val2)``
+     - ``OR field NOT BETWEEN ? AND ?``
+
+Grouped Conditions
+-------------------
+
+Use ``grouped()`` with a closure to wrap conditions inside parentheses. This is essential
+when mixing ``AND`` / ``OR`` logic.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')
+       ->grouped(function($q) {
+           $q->where('status', 'active')
+             ->or_where('status', 'pending');
+       })
+       ->where('age', '>=', 18)
+       ->get_all();
+
+**Generated SQL:**
+
+.. code-block:: sql
+
+   SELECT * FROM users
+   WHERE (status = 'active' OR status = 'pending')
+   AND age >= 18;
+
+**Nested groups:**
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('products')
+       ->grouped(function($q) {
+           $q->where('category', 'electronics')
+             ->or_where('category', 'computers');
+       })
+       ->grouped(function($q) {
+           $q->where('price', '>=', 100)
+             ->where('price', '<=', 1000);
+       })
+       ->get_all();
+
+Joins
+------
+
+.. code-block:: php
+
+   <?php
+   // Generic JOIN (defaults to INNER)
+   $this->db->table('orders')
+       ->join('users', 'orders.user_id = users.id')
+       ->get_all();
+
+   // INNER JOIN
+   $this->db->table('orders')
+       ->inner_join('users', 'orders.user_id = users.id')
+       ->select('orders.id, users.name, orders.amount')
+       ->get_all();
+
+   // LEFT JOIN
+   $this->db->table('users')
+       ->left_join('profiles', 'users.id = profiles.user_id')
+       ->get_all();
+
+   // RIGHT JOIN
+   $this->db->table('users')
+       ->right_join('profiles', 'users.id = profiles.user_id')
+       ->get_all();
+
+   // FULL OUTER JOIN
+   $this->db->table('table_a')
+       ->full_outer_join('table_b', 'table_a.id = table_b.id')
+       ->get_all();
+
+   // LEFT OUTER JOIN
+   $this->db->table('orders')
+       ->left_outer_join('coupons', 'orders.coupon_id = coupons.id')
+       ->get_all();
+
+   // RIGHT OUTER JOIN
+   $this->db->table('orders')
+       ->right_outer_join('products', 'orders.product_id = products.id')
+       ->get_all();
+
+   // Chaining multiple joins
+   $this->db->table('orders')
+       ->inner_join('users',    'orders.user_id = users.id')
+       ->left_join('coupons',   'orders.coupon_id = coupons.id')
+       ->select('orders.id, users.name, coupons.code')
+       ->get_all();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Method
+     - Description
+   * - ``join($table, $cond, $type)``
+     - Generic join; specify type as ``'INNER '``, ``'LEFT '``, etc.
+   * - ``inner_join($table, $cond)``
+     - ``INNER JOIN``
+   * - ``left_join($table, $cond)``
+     - ``LEFT JOIN``
+   * - ``right_join($table, $cond)``
+     - ``RIGHT JOIN``
+   * - ``full_outer_join($table, $cond)``
+     - ``FULL OUTER JOIN``
+   * - ``left_outer_join($table, $cond)``
+     - ``LEFT OUTER JOIN``
+   * - ``right_outer_join($table, $cond)``
+     - ``RIGHT OUTER JOIN``
+
+Ordering, Grouping & Limiting
+-------------------------------
+
+order_by($column, $direction)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Single column
+   $this->db->table('users')->order_by('created_at', 'DESC')->get_all();
+
+   // Multiple columns (chain calls)
+   $this->db->table('users')
+       ->order_by('created_at', 'DESC')
+       ->order_by('name', 'ASC')
+       ->get_all();
+
+   // Random order
+   $this->db->table('users')->order_by('rand()')->get_all();
+
+group_by($column)
+~~~~~~~~~~~~~~~~~~
+
+Accepts a string or an array of columns.
+
+.. code-block:: php
+
+   <?php
+   // Single column
+   $this->db->table('orders')
+       ->select('customer_id, COUNT(*) as total_orders')
+       ->group_by('customer_id')
+       ->get_all();
+
+   // Multiple columns
+   $this->db->table('orders')
+       ->select('customer_id, status, COUNT(*) as count')
+       ->group_by(['customer_id', 'status'])
+       ->get_all();
+
+having($column, $op, $value)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('orders')
+       ->select('customer_id, COUNT(*) as total_orders')
+       ->group_by('customer_id')
+       ->having('total_orders', '>', 5)
+       ->get_all();
+
+limit($number) / offset($number)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+   <?php
+   // Limit only
+   $this->db->table('users')->limit(10)->get_all();
+
+   // Limit + offset
+   $this->db->table('users')->limit(10)->offset(20)->get_all();
+
+pagination($perPage, $currentPage)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Automatically calculates ``LIMIT`` and ``OFFSET`` from a page number.
+
+.. code-block:: php
+
+   <?php
+   $page  = $_GET['page'] ?? 1;
+   $users = $this->db->table('users')->pagination(10, $page)->get_all();
+
+count()
+~~~~~~~~
+
+Returns the number of rows matching the current ``WHERE`` conditions.
+
+.. code-block:: php
+
+   <?php
+   $total = $this->db->table('users')
+               ->where('status', 'active')
+               ->count();
+   echo "Active users: $total";
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Method
+     - Description
+   * - ``order_by($col, $dir)``
+     - Orders results by column. Direction: ``ASC`` (default) or ``DESC``
+   * - ``group_by($col)``
+     - Groups results by a column or array of columns
+   * - ``having($col, $op, $val)``
+     - Filters grouped results using a ``HAVING`` clause
+   * - ``limit($n)``
+     - Limits the number of rows returned
+   * - ``offset($n)``
+     - Skips the first N rows
+   * - ``pagination($perPage, $page)``
+     - Applies ``LIMIT`` and ``OFFSET`` from a page number
+   * - ``count()``
+     - Returns the number of matching rows
+
+Inserting Data
+---------------
+
+insert($fields)
+~~~~~~~~~~~~~~~~
+
+Inserts a single record. Returns the last inserted ID.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')->insert([
+       'name'  => 'John',
+       'email' => 'john@example.com',
+   ]);
+
+   $id = $this->db->last_id();
+
+last_id()
+~~~~~~~~~~
+
+Returns the ID generated by the last ``insert()`` or ``exec()`` call.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')->insert(['name' => 'Alice', 'email' => 'alice@example.com']);
+   $id = $this->db->last_id();
+   echo "New user ID: $id";
+
+bulk_insert($records)
+~~~~~~~~~~~~~~~~~~~~~~
+
+Inserts multiple rows in a single query.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')->bulk_insert([
+       ['name' => 'John',  'email' => 'john@example.com'],
+       ['name' => 'Jane',  'email' => 'jane@example.com'],
+       ['name' => 'Alice', 'email' => 'alice@example.com'],
+   ]);
+
+Updating Data
+--------------
+
+update($fields)
+~~~~~~~~~~~~~~~~
+
+Updates records matching the current ``WHERE`` condition.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')
+       ->where('id', 1)
+       ->update(['name' => 'Johnny', 'email' => 'johnny@example.com']);
+
+bulk_update($records, $primaryKey)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates multiple rows using a ``CASE … WHEN`` statement. Each record must include
+the primary key value.
+
+.. code-block:: php
+
+   <?php
+   $this->db->table('users')->bulk_update([
+       ['id' => 1, 'status' => 'active'],
+       ['id' => 2, 'status' => 'inactive'],
+       ['id' => 3, 'status' => 'active'],
+   ], 'id');
+
+increment($column, $amount) / decrement($column, $amount)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Atomically increments or decrements a numeric column.
+
+.. code-block:: php
+
+   <?php
+   // Add 1 to views (default)
+   $this->db->table('posts')->where('id', 5)->increment('views');
+
+   // Add 10 to score
+   $this->db->table('users')->where('id', 3)->increment('score', 10);
+
+   // Subtract 1 from stock (default)
+   $this->db->table('products')->where('id', 7)->decrement('stock');
+
+   // Subtract 5 from credits
+   $this->db->table('users')->where('id', 3)->decrement('credits', 5);
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Method
+     - Description
+   * - ``insert($fields)``
+     - Inserts a single row; returns last inserted ID
+   * - ``last_id()``
+     - Returns the last inserted ID
+   * - ``bulk_insert($records)``
+     - Inserts multiple rows in one query
+   * - ``update($fields)``
+     - Updates rows matching the current WHERE clause
+   * - ``bulk_update($records, $pk)``
+     - Updates multiple rows using CASE WHEN
+   * - ``increment($col, $amount)``
+     - Adds ``$amount`` (default 1) to a column atomically
+   * - ``decrement($col, $amount)``
+     - Subtracts ``$amount`` (default 1) from a column atomically
+
+Deleting Data
+--------------
+
+delete()
+~~~~~~~~~
+
+Deletes rows matching the current ``WHERE`` condition.
+
+.. code-block:: php
+
+   <?php
+   // Delete by ID
+   $this->db->table('users')->where('id', 5)->delete();
+
+   // Delete by condition
+   $this->db->table('sessions')->where('expires_at', '<', date('Y-m-d H:i:s'))->delete();
+
+   // Delete all rows in table (use with caution)
+   $this->db->table('temp_logs')->delete();
+
+Transactions
+-------------
+
+Wrap multiple write operations in a transaction to ensure atomicity. LavaLust supports
+**nested transactions** via savepoints.
+
+.. code-block:: php
+
+   <?php
    $this->db->transaction();
 
    try {
-       $this->db->table('users')->insert(['name' => 'Error Test']);
-       throw new Exception('Something went wrong!');
+       $userId = $this->db->table('users')->insert([
+           'name'  => 'John Doe',
+           'email' => 'john@example.com',
+       ]);
+
+       $id = $this->db->last_id();
+
+       $this->db->table('profiles')->insert([
+           'user_id' => $id,
+           'bio'     => 'Hello world',
+       ]);
+
        $this->db->commit();
+
    } catch (Exception $e) {
-       $this->db->rollback();
+       $this->db->roll_back();
+       // Handle error...
    }
 
+.. note::
+
+   The rollback method is ``roll_back()`` (with an underscore), not ``rollback()``.
+
+**Nested transactions (savepoints):**
+
+.. code-block:: php
+
+   <?php
+   $this->db->transaction();       // BEGIN
+
+   $this->db->table('orders')->insert(['user_id' => 1, 'total' => 100]);
+
+   $this->db->transaction();       // SAVEPOINT trans2
+   $this->db->table('order_items')->insert(['order_id' => 1, 'product_id' => 5]);
+   $this->db->commit();            // release savepoint
+
+   $this->db->commit();            // COMMIT
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Method
+     - Description
+   * - ``transaction()``
+     - Begins a transaction. Subsequent calls create a savepoint.
+   * - ``commit()``
+     - Commits the transaction, or releases the innermost savepoint.
+   * - ``roll_back()``
+     - Rolls back to the innermost savepoint, or rolls back the entire transaction.
+
+Complete Method Reference
+--------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Method
+     - Description
+   * - ``table($name)``
+     - Sets the target table and resets builder state
+   * - ``select($columns)``
+     - Specifies columns to fetch
+   * - ``select_max($col, $alias)``
+     - Adds ``MAX()`` aggregate
+   * - ``select_min($col, $alias)``
+     - Adds ``MIN()`` aggregate
+   * - ``select_sum($col, $alias)``
+     - Adds ``SUM()`` aggregate
+   * - ``select_count($col, $alias)``
+     - Adds ``COUNT()`` aggregate
+   * - ``select_avg($col, $alias)``
+     - Adds ``AVG()`` aggregate
+   * - ``select_distinct($col, $alias)``
+     - Adds ``DISTINCT()`` select
+   * - ``join($table, $cond, $type)``
+     - Generic JOIN
+   * - ``inner_join($table, $cond)``
+     - INNER JOIN
+   * - ``left_join($table, $cond)``
+     - LEFT JOIN
+   * - ``right_join($table, $cond)``
+     - RIGHT JOIN
+   * - ``full_outer_join($table, $cond)``
+     - FULL OUTER JOIN
+   * - ``left_outer_join($table, $cond)``
+     - LEFT OUTER JOIN
+   * - ``right_outer_join($table, $cond)``
+     - RIGHT OUTER JOIN
+   * - ``where($col, $op, $val)``
+     - AND WHERE condition
+   * - ``or_where($col, $op, $val)``
+     - OR WHERE condition
+   * - ``not_where($col, $op, $val)``
+     - AND WHERE NOT condition
+   * - ``or_not_where($col, $op, $val)``
+     - OR WHERE NOT condition
+   * - ``where_null($col)``
+     - AND col IS NULL
+   * - ``where_not_null($col)``
+     - AND col IS NOT NULL
+   * - ``like($field, $data)``
+     - AND LIKE condition
+   * - ``or_like($field, $data)``
+     - OR LIKE condition
+   * - ``not_like($field, $data)``
+     - AND NOT LIKE condition
+   * - ``or_not_like($field, $data)``
+     - OR NOT LIKE condition
+   * - ``in($field, $array)``
+     - AND IN condition
+   * - ``not_in($field, $array)``
+     - AND NOT IN condition
+   * - ``or_in($field, $array)``
+     - OR IN condition
+   * - ``or_not_in($field, $array)``
+     - OR NOT IN condition
+   * - ``between($field, $v1, $v2)``
+     - AND BETWEEN condition
+   * - ``not_between($field, $v1, $v2)``
+     - AND NOT BETWEEN condition
+   * - ``or_between($field, $v1, $v2)``
+     - OR BETWEEN condition
+   * - ``or_not_between($field, $v1, $v2)``
+     - OR NOT BETWEEN condition
+   * - ``grouped(Closure $fn)``
+     - Wraps conditions in parentheses
+   * - ``order_by($col, $dir)``
+     - Sorts results
+   * - ``group_by($col)``
+     - Groups results
+   * - ``having($col, $op, $val)``
+     - Filters grouped results
+   * - ``limit($n)``
+     - Limits rows returned
+   * - ``offset($n)``
+     - Skips N rows
+   * - ``pagination($perPage, $page)``
+     - Applies LIMIT + OFFSET from page number
+   * - ``count()``
+     - Returns matching row count
+   * - ``insert($fields)``
+     - Inserts a single row
+   * - ``bulk_insert($records)``
+     - Inserts multiple rows
+   * - ``last_id()``
+     - Returns last inserted ID
+   * - ``update($fields)``
+     - Updates matching rows
+   * - ``bulk_update($records, $pk)``
+     - Updates multiple rows
+   * - ``increment($col, $amount)``
+     - Atomically increments a column
+   * - ``decrement($col, $amount)``
+     - Atomically decrements a column
+   * - ``delete()``
+     - Deletes matching rows
+   * - ``raw($query, $args)``
+     - Executes raw SQL
+   * - ``get()``
+     - Returns first matching row
+   * - ``get_all()``
+     - Returns all matching rows
+   * - ``get_sql()``
+     - Returns last built SQL string
+   * - ``row_count()``
+     - Returns row count of last query
+   * - ``transaction()``
+     - Begins a transaction or savepoint
+   * - ``commit()``
+     - Commits transaction or savepoint
+   * - ``roll_back()``
+     - Rolls back transaction or savepoint
 
 Best Practices
 ---------------
 
-Follow these guidelines to ensure safe, maintainable, and performant database queries when using LavaLust's database query builder:
-
-`Use Query Builder Instead of Raw Queries`
-
-**Reason:** Prevents SQL injection and improves readability.
+**Use the query builder instead of raw queries:**
 
 .. code-block:: php
 
-    <?php 
-
-   // ✅ Safe
+   <?php
+   // Safe — parameterized
    $this->db->table('users')->where('id', $id)->get();
 
-   // ❌ Unsafe
-   $this->db->query("SELECT * FROM users WHERE id = $id");
+   // Unsafe — SQL injection risk
+   $this->db->raw("SELECT * FROM users WHERE id = $id");
 
-`Limit the Columns You Select``
-
-**Reason:** Improves performance by fetching only needed data.
+**Select only the columns you need:**
 
 .. code-block:: php
 
-    <?php 
+   <?php
+   // Efficient
+   $this->db->table('users')->select('id, name, email')->get_all();
 
+   // Fetches unnecessary data
+   $this->db->table('users')->get_all();
+
+**Use pagination for large datasets:**
+
+.. code-block:: php
+
+   <?php
+   $page  = $_GET['page'] ?? 1;
+   $users = $this->db->table('users')->pagination(50, $page)->get_all();
+
+**Wrap related writes in transactions:**
+
+.. code-block:: php
+
+   <?php
+   $this->db->transaction();
+   try {
+       $this->db->table('orders')->insert($orderData);
+       $this->db->table('order_items')->bulk_insert($items);
+       $this->db->commit();
+   } catch (Exception $e) {
+       $this->db->roll_back();
+   }
+
+**Use increment/decrement instead of read-then-write:**
+
+.. code-block:: php
+
+   <?php
+   // Atomic — safe under concurrent requests
+   $this->db->table('posts')->where('id', $id)->increment('views');
+
+   // Race condition risk
+   $post = $this->db->table('posts')->where('id', $id)->get();
+   $this->db->table('posts')->where('id', $id)->update(['views' => $post['views'] + 1]);
+
+**Use grouped() when mixing AND / OR:**
+
+.. code-block:: php
+
+   <?php
+   // Correct — parentheses enforce intended logic
    $this->db->table('users')
-      ->select('id, name, email')
-      ->get_all();
+       ->grouped(function($q) {
+           $q->where('role', 'admin')->or_where('role', 'editor');
+       })
+       ->where('active', 1)
+       ->get_all();
 
-`Use Pagination for Large Datasets``
-
-**Reason:** Avoids memory overhead when fetching many rows.
-
-.. code-block:: php
-
-    <?php 
-    
-   $users = $this->db->table('users')
-               ->limit(50)
-               ->offset(0)
-               ->get_all();
-
-`Use Transactions for Critical Operations``
-
-**Reason:** Ensures data integrity when performing multiple related operations.
-
-.. cod
+   // Ambiguous — AND/OR precedence may not match your intent
+   $this->db->table('users')
+       ->where('role', 'admin')
+       ->or_where('role', 'editor')
+       ->where('active', 1)
+       ->get_all();

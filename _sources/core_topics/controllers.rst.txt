@@ -1,51 +1,107 @@
 Controllers
 ============
 
-Controllers are classes that handle HTTP requests, interact with models, and return responses or views.  
-They provide better organization than defining all logic in route closures, especially for larger applications.
+Controllers are classes that handle HTTP requests, interact with models, and return responses
+or views. They provide better organization than defining all logic in route closures, especially
+for larger applications.
 
+Controllers live in ``app/controllers/`` and must extend the base ``Controller`` class.
+
+Folder Structure
+-----------------
+
+.. code-block:: text
+
+    app/
+    └── controllers/
+        ├── UserController.php
+        ├── PostController.php
+        └── AdminController.php
 
 Creating a Controller
 ----------------------
 
-A basic controller class should extend the base `Controller` class:
+A basic controller extends the base ``Controller`` class. Each public method can be mapped
+to a route, and dynamic route parameters are automatically injected as method arguments.
 
 .. code-block:: php
 
     <?php
     class UserController extends Controller
     {
-        // Method to show a user profile
-        public function profile($id)
+        public function index()
+        {
+            echo "List all users";
+        }
+
+        public function show($id)
         {
             echo "User Profile ID: " . $id;
         }
+
+        public function create()
+        {
+            echo "Show create user form";
+        }
+
+        public function store()
+        {
+            echo "Handle form submission";
+        }
+
+        public function edit($id)
+        {
+            echo "Edit user " . $id;
+        }
+
+        public function destroy($id)
+        {
+            echo "Delete user " . $id;
+        }
     }
 
-**Explanation:**
+.. note::
 
-- The class must extend `Controller`.  
-- Each **public method** can be mapped to a route.  
-- Parameters in the method correspond to route dynamic segments.
+   Only **public** methods are callable via routes. Private and protected methods
+   are not accessible from the router.
 
+Mapping Routes to Controllers
+-------------------------------
 
-Mapping Routes to Controller Methods
--------------------------------------
-
-You can map a route to a controller method instead of a closure: Navigate to ``app/config/routes``
+Navigate to ``app/config/routes.php`` and point routes at controller methods.
+The ``::`` symbol separates the controller class name from the method name.
 
 .. code-block:: php
-    
+
     <?php
-    $router->get('/user/{id}', 'UserController::profile');
+    $router->get('/users',           'UserController::index');
+    $router->get('/users/{id}',      'UserController::show');
+    $router->get('/users/create',    'UserController::create');
+    $router->post('/users',          'UserController::store');
+    $router->get('/users/{id}/edit', 'UserController::edit');
+    $router->delete('/users/{id}',   'UserController::destroy');
 
-> The ```::``` symbol separates the controller class and the method name.
+Alternative separators — all three are equivalent:
 
+.. code-block:: php
+
+    <?php
+    $router->get('/users', 'UserController::index');  // recommended
+    $router->get('/users', 'UserController->index');
+    $router->get('/users', 'UserController@index');
+
+If no method is specified, ``index()`` is called by default:
+
+.. code-block:: php
+
+    <?php
+    $router->get('/users', 'UserController');  // calls UserController::index()
 
 Controller Constructor
 -----------------------
 
-Controllers can have a constructor to initialize shared resources:
+Use the constructor to load shared libraries, models, or helpers that are used
+across multiple methods. Always call ``parent::__construct()`` first.
 
 .. code-block:: php
 
@@ -54,40 +110,292 @@ Controllers can have a constructor to initialize shared resources:
     {
         public function __construct()
         {
-                parent::__construct();
-                $this->call->library('session');
+            parent::__construct();
+
+            // Load a model
+            $this->call->model('UserModel');
+
+            // Load libraries
+            $this->call->library('session');
+            $this->call->library('form_validation');
+
+            // Load a helper
+            $this->call->helper('url');
         }
 
-        public function profile($id)
+        public function index()
         {
-            echo "User ID: " . $id;
+            $users = $this->UserModel->all();
+            $this->call->view('user/index', ['users' => $users]);
         }
     }
 
-**Use case:** loading libraries, models, or middleware that will be used across multiple methods.
+Loading Resources
+------------------
 
+Resources can be loaded in the constructor (shared across all methods) or inside
+individual methods (loaded only when needed).
 
-Returning Views from Controllers
----------------------------------
-
-Controllers can return HTML views using the `view` method:
+**Loading a model:**
 
 .. code-block:: php
 
     <?php
-    public function profile($id)
+    $this->call->model('UserModel');
+    $users = $this->UserModel->all();
+
+**Loading multiple models at once:**
+
+.. code-block:: php
+
+    <?php
+    $this->call->model(['UserModel', 'PostModel']);
+
+**Loading a library:**
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('session');
+    $this->call->library('form_validation');
+
+**Loading a helper:**
+
+.. code-block:: php
+
+    <?php
+    $this->call->helper('url');
+
+Returning Views
+----------------
+
+Use ``$this->call->view()`` to render a template file from ``app/views/``.
+Pass data as an associative array — each key becomes a variable inside the view.
+
+.. code-block:: php
+
+    <?php
+    public function show($id)
     {
-        $data['user'] = $this->UserModel->find($id);
-        $this->view('user/profile', $data);
+        $this->call->model('UserModel');
+        $user = $this->UserModel->find($id);
+
+        $this->call->view('user/profile', [
+            'user'  => $user,
+            'title' => 'User Profile',
+        ]);
     }
 
-- ``$data`` is an associative array passed to the view.  
-- The ``view()`` method renders the specified template file.
+Inside ``app/views/user/profile.php`` the variables are available directly:
 
+.. code-block:: php
+
+    <h1><?= $title ?></h1>
+    <p>Name: <?= $user['name'] ?></p>
+    <p>Email: <?= $user['email'] ?></p>
+
+Handling Request Data
+----------------------
+
+Use the ``Request`` class (available via ``$this->request``) to access input data
+inside controller methods.
+
+**Reading POST data:**
+
+.. code-block:: php
+
+    <?php
+    public function store()
+    {
+        $name  = $this->request->post('name');
+        $email = $this->request->post('email');
+
+        $this->call->model('UserModel');
+        $id = $this->UserModel->insert([
+            'name'  => $name,
+            'email' => $email,
+        ]);
+
+        redirect('/users/' . $id);
+    }
+
+**Reading GET parameters:**
+
+.. code-block:: php
+
+    <?php
+    public function index()
+    {
+        $page = $this->request->get('page') ?? 1;
+
+        $this->call->model('UserModel');
+        $result = $this->UserModel->paginate(15, $page);
+
+        $this->call->view('user/index', $result);
+    }
+
+**Detecting the request method:**
+
+.. code-block:: php
+
+    <?php
+    public function form()
+    {
+        if ($this->request->method() === 'post') {
+            // handle submission
+        } else {
+            $this->call->view('user/form');
+        }
+    }
+
+Full CRUD Controller Example
+-----------------------------
+
+.. code-block:: php
+
+    <?php
+    class UserController extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->model('UserModel');
+        }
+
+        // GET /users
+        public function index()
+        {
+            $users = $this->UserModel->all();
+            $this->call->view('user/index', ['users' => $users]);
+        }
+
+        // GET /users/{id}
+        public function show($id)
+        {
+            $user = $this->UserModel->find($id);
+
+            if (!$user) {
+                show_404();
+            }
+
+            $this->call->view('user/show', ['user' => $user]);
+        }
+
+        // GET /users/create
+        public function create()
+        {
+            $this->call->view('user/create');
+        }
+
+        // POST /users
+        public function store()
+        {
+            $data = [
+                'name'  => $this->request->post('name'),
+                'email' => $this->request->post('email'),
+            ];
+
+            $id = $this->UserModel->insert($data);
+            redirect('/users/' . $id);
+        }
+
+        // GET /users/{id}/edit
+        public function edit($id)
+        {
+            $user = $this->UserModel->find($id);
+            $this->call->view('user/edit', ['user' => $user]);
+        }
+
+        // PUT /users/{id}
+        public function update($id)
+        {
+            $data = [
+                'name'  => $this->request->post('name'),
+                'email' => $this->request->post('email'),
+            ];
+
+            $this->UserModel->update($id, $data);
+            redirect('/users/' . $id);
+        }
+
+        // DELETE /users/{id}
+        public function destroy($id)
+        {
+            $this->UserModel->delete($id);
+            redirect('/users');
+        }
+    }
+
+Routes for the above controller:
+
+.. code-block:: php
+
+    <?php
+    $router->get('/users',             'UserController::index');
+    $router->get('/users/create',      'UserController::create');
+    $router->get('/users/{id}',        'UserController::show');
+    $router->post('/users',            'UserController::store');
+    $router->get('/users/{id}/edit',   'UserController::edit');
+    $router->put('/users/{id}',        'UserController::update');
+    $router->delete('/users/{id}',     'UserController::destroy');
+
+Controller with Route Groups and Middleware
+--------------------------------------------
+
+.. code-block:: php
+
+    <?php
+    // app/config/routes.php
+
+    $router->group(['prefix' => '/admin', 'middleware' => 'AuthMiddleware'], function($router) {
+        $router->get('/users',           'Admin\UserController::index');
+        $router->get('/users/{id}',      'Admin\UserController::show');
+        $router->delete('/users/{id}',   'Admin\UserController::destroy');
+    });
+
+Method Reference
+-----------------
+
+Methods and properties available inside any controller that extends ``Controller``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method / Property
+     - Description
+   * - ``parent::__construct()``
+     - Must be called first in a controller constructor to boot the framework
+   * - ``$this->call->model($name)``
+     - Loads a model; accessible as ``$this->ModelName`` after loading
+   * - ``$this->call->library($name)``
+     - Loads a library; accessible as ``$this->libraryname`` after loading
+   * - ``$this->call->helper($name)``
+     - Loads a helper file
+   * - ``$this->call->view($path, $data)``
+     - Renders a view file from ``app/views/`` with optional data array
+   * - ``$this->request->post($key)``
+     - Returns a POST input value
+   * - ``$this->request->get($key)``
+     - Returns a GET query parameter
+   * - ``$this->request->method()``
+     - Returns the current HTTP method in lowercase
+   * - ``$this->db``
+     - Direct access to the database query builder
+   * - ``show_404()``
+     - Triggers the 404 error page
+   * - ``redirect($url)``
+     - Redirects to the given URL
 
 Tips and Best Practices
--------------------------
+------------------------
 
-- Use controllers for **complex routes** and logic.  
-- Keep each controller focused on a specific resource or feature (e.g., `UserController`, `PostController`).  
-- Use **models** for database operations, **views** for presentation, and **controllers** to coordinate them (MVC pattern).  
+- Always call ``parent::__construct()`` as the first line of a controller constructor.
+- Load models and libraries in the constructor when they are needed across multiple methods;
+  load them inline when only one method needs them.
+- Keep controllers thin — delegate database logic to models and presentation to views.
+- Name controllers after the resource they manage (e.g., ``UserController``, ``PostController``).
+- One controller should handle one resource. Avoid mixing unrelated logic in a single controller.
+- Use route groups with middleware to protect sets of controller routes rather than adding
+  auth checks inside every method.
+- Use ``show_404()`` when a requested record does not exist instead of returning an empty view.

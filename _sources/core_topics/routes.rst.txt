@@ -1,96 +1,279 @@
 Routes
 =======
 
-LavaLust provides a simple and flexible way to define routes using **closures** (anonymous functions).  
-Closures allow you to define the logic for a route directly when registering it, without creating a separate controller.
+LavaLust provides a simple and flexible routing system supporting closures, controllers,
+middleware, route groups, named routes, parameter constraints, and more.
 
+All routes are defined in ``app/config/routes.php``.
 
-Basic Route with Closure
--------------------------
+HTTP Method Routes
+------------------
 
-You can create a simple GET route using a closure like this:
-Navigate to ``app/config/routes.php``
+Each method registers a route that responds to a specific HTTP verb.
 
-.. code-block:: php
-
-    <?php
-    // Define a GET route for the home page
-    $router->get('/', function() {
-        echo "Welcome to LavaLust!";
-    });
-
-**Explanation:**
-
-- ``$router->get()`` defines a route that responds to HTTP GET requests.  
-- The first parameter ``'/'`` is the URI path.  
-- The second parameter is the closure that runs when the route is accessed.
-
-
-Accessing the Route
---------------------
-
-Once the route is defined, you can access it in your browser:
-
-::
-    
-    http://yourdomain.com/
-
-::
-    
-    Welcome to LavaLust!
-
-
-Passing Parameters to Routes
------------------------------
-
-Routes can include dynamic segments which are passed as parameters to the closure:
+**GET:**
 
 .. code-block:: php
 
     <?php
-    $router->get('/user/{id}', function($id) {
-        echo "User ID: " . $id;
+    $router->get('/users', function() {
+        echo "List of users";
     });
 
-**Accessing this route:**
+**POST:**
 
-``http://yourdomain.com/user/42``
+.. code-block:: php
 
-**Output:**
+    <?php
+    $router->post('/users', function() {
+        echo "Create a user";
+    });
 
-::
-    
-    User ID: 42
+**PUT:**
 
+.. code-block:: php
 
-.. note::
+    <?php
+    $router->put('/users/{id}', function($id) {
+        echo "Update user " . $id;
+    });
 
-   Dynamic parameters are defined in curly braces ``{}`` and are automatically injected into the closure.
+**PATCH:**
 
+.. code-block:: php
 
+    <?php
+    $router->patch('/users/{id}', function($id) {
+        echo "Partially update user " . $id;
+    });
 
-Using Multiple HTTP Methods
-----------------------------
+**DELETE:**
 
-You can define a route that responds to multiple HTTP methods:
+.. code-block:: php
+
+    <?php
+    $router->delete('/users/{id}', function($id) {
+        echo "Delete user " . $id;
+    });
+
+**OPTIONS:**
+
+.. code-block:: php
+
+    <?php
+    $router->options('/users', function() {
+        echo "Options for users";
+    });
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 60
+
+   * - Method
+     - HTTP Verb
+     - Description
+   * - ``get($url, $callback)``
+     - GET
+     - Registers a route for GET requests
+   * - ``post($url, $callback)``
+     - POST
+     - Registers a route for POST requests
+   * - ``put($url, $callback)``
+     - PUT
+     - Registers a route for PUT requests
+   * - ``patch($url, $callback)``
+     - PATCH
+     - Registers a route for PATCH requests
+   * - ``delete($url, $callback)``
+     - DELETE
+     - Registers a route for DELETE requests
+   * - ``options($url, $callback)``
+     - OPTIONS
+     - Registers a route for OPTIONS requests
+
+Matching Multiple Methods
+--------------------------
+
+**match** — respond to a specific set of HTTP methods:
 
 .. code-block:: php
 
     <?php
     $router->match('/contact', function() {
-        echo "This route works with GET and POST requests.";
+        echo "Handles GET and POST";
     }, ['get', 'post']);
 
-
-Grouping Routes
------------------
-
-Closures can also be used in route groups for better organization:
+**any** — respond to all HTTP methods (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS):
 
 .. code-block:: php
 
     <?php
-    $router->group('/admin', function() {
+    $router->any('/ping', function() {
+        echo "Responds to any method";
+    });
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``match($url, $callback, $methods)``
+     - Registers a route for an array of HTTP methods
+   * - ``any($url, $callback)``
+     - Registers a route that responds to all HTTP methods
+
+Using Controllers
+-----------------
+
+Instead of closures you can point a route to a controller method using ``::`` , ``->`` ,
+or ``@`` as a separator:
+
+.. code-block:: php
+
+    <?php
+    // Recommended separator
+    $router->get('/users',        'UserController::index');
+    $router->get('/users/{id}',   'UserController::show');
+    $router->post('/users',       'UserController::store');
+    $router->put('/users/{id}',   'UserController::update');
+    $router->delete('/users/{id}','UserController::destroy');
+
+    // Alternative separators (all equivalent)
+    $router->get('/users', 'UserController->index');
+    $router->get('/users', 'UserController@index');
+
+    // Controller with no method — calls index() by default
+    $router->get('/home', 'HomeController');
+
+.. note::
+
+   The controller file must exist at ``app/controllers/ControllerName.php``.
+   A ``RuntimeException`` is thrown if the controller file or method cannot be found.
+
+Dynamic Route Parameters
+-------------------------
+
+Define dynamic segments using curly braces ``{}``. They are automatically injected
+into the closure or controller method as arguments.
+
+.. code-block:: php
+
+    <?php
+    // Single parameter
+    $router->get('/user/{id}', function($id) {
+        echo "User ID: " . $id;
+    });
+
+    // Multiple parameters
+    $router->get('/post/{year}/{slug}', function($year, $slug) {
+        echo "Post: " . $slug . " (" . $year . ")";
+    });
+
+    // Optional parameter (append ?)
+    $router->get('/user/{id}/{tab?}', function($id, $tab = null) {
+        echo "User: " . $id . " Tab: " . $tab;
+    });
+
+**Accessing ``http://yourdomain.com/user/42``:**
+
+.. code-block:: text
+
+   User ID: 42
+
+Regular Expression Constraints
+--------------------------------
+
+Use ``where()`` to constrain the format of route parameters.
+
+**Single constraint:**
+
+.. code-block:: php
+
+    <?php
+    $router->get('/user/{name}', function($name) {
+        echo $name;
+    })->where('name', '[A-Za-z]+');
+
+**Multiple constraints via array:**
+
+.. code-block:: php
+
+    <?php
+    $router->get('/user/{id}/{name}', function($id, $name) {
+        echo $id . " - " . $name;
+    })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+.. note::
+
+   If the incoming request does not match the constraint pattern, a **404** response
+   is returned automatically.
+
+Constraint Helper Methods
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For common patterns, shorthand helpers are available and can be chained:
+
+.. code-block:: php
+
+    <?php
+    // Numeric only
+    $router->get('/user/{id}', function($id) {})->where_number('id');
+
+    // Alphabetic only
+    $router->get('/user/{name}', function($name) {})->where_alpha('name');
+
+    // Alphanumeric
+    $router->get('/user/{username}', function($username) {})->where_alphanumeric('username');
+
+    // UUID
+    $router->get('/order/{uuid}', function($uuid) {})->where_uuid('uuid');
+
+    // ULID
+    $router->get('/item/{ulid}', function($ulid) {})->where_ulid('ulid');
+
+    // Enumerated values
+    $router->get('/category/{type}', function($type) {
+        // ...
+    })->where_in('type', ['movie', 'song', 'painting']);
+
+    // Chaining multiple helpers
+    $router->get('/user/{id}/{name}', function($id, $name) {
+        // ...
+    })->where_number('id')->where_alpha('name');
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``where($param, $pattern)``
+     - Applies a custom regex constraint to a parameter. Accepts a string or an associative array.
+   * - ``where_number($param)``
+     - Constrains parameter to numeric digits only: ``[0-9]+``
+   * - ``where_alpha($param)``
+     - Constrains parameter to alphabetic characters only: ``[a-zA-Z]+``
+   * - ``where_alphanumeric($param)``
+     - Constrains parameter to letters and digits: ``[a-zA-Z0-9]+``
+   * - ``where_uuid($param)``
+     - Constrains parameter to UUID v4 format
+   * - ``where_ulid($param)``
+     - Constrains parameter to ULID format
+   * - ``where_in($param, $values)``
+     - Constrains parameter to one of the provided values
+
+Grouping Routes
+----------------
+
+Use ``group()`` to apply a shared prefix and/or middleware to a set of routes.
+
+**Prefix only:**
+
+.. code-block:: php
+
+    <?php
+    $router->group(['prefix' => '/admin'], function($router) {
 
         $router->get('/dashboard', function() {
             echo "Admin Dashboard";
@@ -102,66 +285,190 @@ Closures can also be used in route groups for better organization:
 
     });
 
-.. note::
+    // Registered routes: /admin/dashboard, /admin/users
 
-   All routes inside the group will be prefixed with `/admin`.
-
-Regular Expression Constraints
--------------------------------
-
-You may constrain the format of your route parameters using the ``where`` method on a route instance.  
-The ``where`` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+**Prefix with middleware:**
 
 .. code-block:: php
 
-   <?php
-   $router->get('/user/{name}', function (string $name) {
-       // ...
-   })->where('name', '[A-Za-z]+');
+    <?php
+    $router->group(['prefix' => '/admin', 'middleware' => 'AuthMiddleware'], function($router) {
 
-   $router->get('/user/{id}', function (string $id) {
-       // ...
-   })->where('id', '[0-9]+');
+        $router->get('/dashboard', 'AdminController::dashboard');
+        $router->get('/settings', 'AdminController::settings');
 
-   $router->get('/user/{id}/{name}', function (string $id, string $name) {
-       // ...
-   })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+    });
 
-For convenience, some commonly used regular expression patterns have helper methods  
-that allow you to quickly add pattern constraints to your routes:
+**Nested groups:**
 
 .. code-block:: php
 
-   <?php
-   $router->get('/user/{id}/{name}', function ($id, $name) {
-       // ...
-   })->where_number('id')->where_alpha('name');
+    <?php
+    $router->group(['prefix' => '/api'], function($router) {
 
-   $router->get('/user/{name}', function ($name) {
-       // ...
-   })->where_alphanumeric('name');
+        $router->group(['prefix' => '/v1', 'middleware' => 'ApiMiddleware'], function($router) {
+            $router->get('/users', 'Api\UserController::index');
+        });
 
-   $router->get('/user/{id}', function ($id) {
-       // ...
-   })->where_uuid('id');
+    });
 
-   $router->get('/user/{id}', function ($id) {
-       // ...
-   })->where_ulid('id');
-
-   $router->get('/category/{category}', function ($category) {
-       // ...
-   })->where_in('category', ['movie', 'song', 'painting']);
+    // Registered route: /api/v1/users
 
 .. note::
 
-   If the incoming request does not match the route pattern constraints,  
-   a **404 HTTP response** will be returned.
+   Group prefix and middleware are restored automatically after the group callback
+   executes, so they do not leak into routes defined outside the group.
 
+Middleware
+-----------
+
+Middleware can be applied globally, per group, or per individual route.
+
+**Per-route middleware:**
+
+.. code-block:: php
+
+    <?php
+    $router->get('/dashboard', 'DashboardController::index')
+           ->middleware('AuthMiddleware');
+
+    // Multiple middleware
+    $router->get('/admin', 'AdminController::index')
+           ->middleware(['AuthMiddleware', 'RoleMiddleware']);
+
+**Global middleware (runs on every request):**
+
+.. code-block:: php
+
+    <?php
+    $router->add_global_middleware('CorsMiddleware');
+
+    // Multiple global middleware
+    $router->add_global_middleware(['CorsMiddleware', 'LogMiddleware']);
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Method
+     - Description
+   * - ``middleware($middleware)``
+     - Attaches middleware to the last registered route. Accepts a string or array.
+   * - ``add_global_middleware($middleware)``
+     - Registers middleware that runs on every matched route. Accepts a string or array.
+
+Named Routes
+-------------
+
+Assign a name to a route for easy reference and lookup.
+
+**Naming a route:**
+
+.. code-block:: php
+
+    <?php
+    $router->get('/user/profile', 'UserController::profile')->name('user.profile');
+
+**Looking up a route by name:**
+
+.. code-block:: php
+
+    <?php
+    $route = $router->route_name('user.profile');
+    // Returns the full route array, or null if not found
+
+**Checking if a route exists (by name or URL):**
+
+.. code-block:: php
+
+    <?php
+    if ($router->route_exists('user.profile')) {
+        echo "Route exists";
+    }
+
+    if ($router->route_exists('/user/profile')) {
+        echo "URL is registered";
+    }
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Method
+     - Description
+   * - ``name($name)``
+     - Assigns a name to the last registered route
+   * - ``route_name($name)``
+     - Returns the route array matching the given name, or ``null``
+   * - ``route_exists($name_or_url)``
+     - Returns ``true`` if a route with the given name or URL is registered
+
+Complete Method Reference
+--------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Method
+     - Description
+   * - ``get($url, $callback)``
+     - Registers a GET route
+   * - ``post($url, $callback)``
+     - Registers a POST route
+   * - ``put($url, $callback)``
+     - Registers a PUT route
+   * - ``patch($url, $callback)``
+     - Registers a PATCH route
+   * - ``delete($url, $callback)``
+     - Registers a DELETE route
+   * - ``options($url, $callback)``
+     - Registers an OPTIONS route
+   * - ``match($url, $callback, $methods)``
+     - Registers a route for a specific set of HTTP methods
+   * - ``any($url, $callback)``
+     - Registers a route that responds to all HTTP methods
+   * - ``group($options, $callback)``
+     - Groups routes under a shared prefix and/or middleware
+   * - ``middleware($middleware)``
+     - Attaches middleware to the last registered route
+   * - ``add_global_middleware($middleware)``
+     - Registers middleware that applies to every route
+   * - ``where($param, $pattern)``
+     - Applies a regex constraint to a route parameter
+   * - ``where_number($param)``
+     - Constrains parameter to digits only
+   * - ``where_alpha($param)``
+     - Constrains parameter to alphabetic characters only
+   * - ``where_alphanumeric($param)``
+     - Constrains parameter to alphanumeric characters only
+   * - ``where_uuid($param)``
+     - Constrains parameter to UUID format
+   * - ``where_ulid($param)``
+     - Constrains parameter to ULID format
+   * - ``where_in($param, $values)``
+     - Constrains parameter to one of the given values
+   * - ``name($name)``
+     - Assigns a name to the last registered route
+   * - ``route_name($name)``
+     - Retrieves a route array by its assigned name
+   * - ``route_exists($name_or_url)``
+     - Checks if a route with the given name or URL is registered
+   * - ``sanitize_url($url)``
+     - Strips trailing slashes and sanitizes a URL string
+   * - ``initiate($url, $method)``
+     - Dispatches the request; called internally by the framework
 
 Tips and Best Practices
--------------------------
+------------------------
 
-- Use **closures** for small, simple routes or quick prototypes.  
-- For larger applications, consider using **controllers** to keep your code organized.  
-- Always validate route parameters when using dynamic segments.  
+- Use **closures** for small, simple routes or quick prototypes.
+- Use **controllers** for anything beyond a few lines of logic to keep your code organized.
+- Apply **middleware** at the group level rather than per-route when multiple routes share
+  the same access rules.
+- Use **named routes** (``name()``) instead of hardcoding URLs so a single path change
+  does not break your application.
+- Use **constraint helpers** (``where_number``, ``where_uuid``, etc.) instead of raw
+  ``where()`` regex for cleaner, more readable route definitions.
+- Always validate route parameters inside controllers even when constraints are set —
+  constraints only control URL matching, not business-level validation.

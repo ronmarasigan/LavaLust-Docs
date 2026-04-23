@@ -115,6 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
@@ -164,57 +174,23 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="query_builder.html">Database Query Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#supported-drivers">Supported Drivers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="query_builder.html#database-configuration">Database Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="query_builder.html#getting-a-database-instance">Getting a Database Instance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#raw-query-args-array">raw($query, $args = array())</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#count">count()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#bulk-insert-records">bulk_insert($records)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#bulk-update-records-primarykey-id">bulk_update($records, $primaryKey = ‘id’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#delete">delete()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#update-fields">update($fields = [])</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#insert-fields">insert($fields = [])</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#last-id">last_id()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#table-table-name">table($table_name)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-columns">select($columns)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-max-column-alias-null">select_max($column, $alias = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-min-column-alias-null">select_min($column, $alias = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-sum-column-alias-null">select_sum($column, $alias = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-count-column-alias-total">select_count($column = ‘*’, $alias = ‘total’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-avg-column-alias-null">select_avg($column, $alias = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#select-distinct-columns">select_distinct($columns)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#join-table-condition-type-inner">join($table, $condition, $type = ‘INNER’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#inner-join-table-condition">inner_join($table, $condition)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#left-join-table-condition">left_join($table, $condition)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#right-join-table-condition">right_join($table, $condition)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#full-outer-join-table-condition">full_outer_join($table, $condition)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#where-where-op-null-val-null-type-andor-and">where($where, $op = NULL, $val = NULL, $type = ‘’, $andOr = ‘AND’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-where-where-op-null-val-null">or_where($where, $op = NULL, $val = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-where-where-op-null-val-null">not_where($where, $op = NULL, $val = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-where-where-op-null-val-null">or_not_where($where, $op = NULL, $val = NULL)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#like-field-data-type-andor-and">like($field, $data, $type = ‘’, $andOr = ‘AND’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-like-field-data">or_like($field, $data)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-like-field-data">not_like($field, $data)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-like-field-data">or_not_like($field, $data)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#in-field-array-keys-type-andor-and">in($field, array $keys, $type = ‘’, $andOr = ‘AND’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-in-field-array-keys">not_in($field, array $keys)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-in-field-array-keys">or_in($field, array $keys)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-in-field-array-keys">or_not_in($field, array $keys)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#between-field-value1-value2-type-andor-and">between($field, $value1, $value2, $type = ‘’, $andOr = ‘AND’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#not-between-field-value1-value2">not_between($field, $value1, $value2)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-between-field-value1-value2">or_between($field, $value1, $value2)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#or-not-between-field-value1-value2">or_not_between($field, $value1, $value2)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#pagination-perpage-currentpage-1">pagination($perPage, $currentPage = 1)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#limit-number">limit($number)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#offset-number">offset($number)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#order-by-column-direction-asc">order_by($column, $direction = ‘ASC’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#group-by-column">group_by($column)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#having-column-value-operator">having($column, $value, $operator = ‘=’)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#grouped-closure-obj">grouped(Closure $obj)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#id1">grouped(Closure $obj)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#get">get()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#get-all">get_all()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#transaction">transaction()</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html#rollback">rollback()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#query-execution">Query Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#selecting-data">Selecting Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#where-conditions">WHERE Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#like-conditions">LIKE Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#in-conditions">IN Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#between-conditions">BETWEEN Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#grouped-conditions">Grouped Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#joins">Joins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#ordering-grouping-limiting">Ordering, Grouping &amp; Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#inserting-data">Inserting Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#updating-data">Updating Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#deleting-data">Deleting Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#transactions">Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html#complete-method-reference">Complete Method Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="query_builder.html#best-practices">Best Practices</a></li>
 </ul>
 </li>

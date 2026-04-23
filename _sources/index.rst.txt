@@ -12,4 +12,5 @@ LavaLust's User Guide
    database/index
    libraries/index
    helpers/index
+   cli/index
    example/index
