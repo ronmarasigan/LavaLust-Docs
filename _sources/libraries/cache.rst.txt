@@ -32,7 +32,9 @@ You can specify the cache storage directory by changing the configuration in you
 Class Methods
 -------------
 
-.. list-table:: Cache Class Methods
+Cache Class Methods
+
+.. list-table::
    :header-rows: 1
    :widths: 20 15 10 55
 
@@ -260,7 +262,9 @@ This will remove the cached version of the specified method. The next call will 
 Method Parameters Reference
 ----------------------------
 
-.. list-table:: library() and model() Parameters
+library() and model() Parameters
+
+.. list-table::
    :header-rows: 1
    :widths: 20 15 10 55
 
@@ -285,7 +289,9 @@ Method Parameters Reference
      - NULL
      - Expiration time in minutes. Use -1 to delete cache, NULL for indefinite
 
-.. list-table:: write() Parameters
+write() Parameters
+
+.. list-table::
    :header-rows: 1
    :widths: 20 15 10 55
 
@@ -359,7 +365,9 @@ Performance Considerations
 Troubleshooting
 -----------------
 
-.. list-table:: Common Issues and Solutions
+Common Issues and Solutions
+
+.. list-table::
    :header-rows: 1
    :widths: 30 70
 

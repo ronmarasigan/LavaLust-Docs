@@ -2,7 +2,7 @@ Upload Class
 ============
 
 The **Upload** class allows you to **upload files** safely in LavaLust.  
-You can define various preferences, such as allowed file types, size restrictions, and automatic filename encryption.
+You can define various preferences, such as allowed file types, size restrictions, automatic filename encryption, and MIME type validation.
 
 The Process
 ------------
@@ -11,8 +11,212 @@ Uploading a file involves the following general process:
 
 1. An upload form is displayed, allowing the user to select a file.
 2. When the form is submitted, the file is uploaded to the destination directory.
-3. The file is validated based on the preferences you set.
+3. The file is validated based on the preferences you set (extension, MIME type, size, etc.).
 4. On success, a confirmation is displayed. Otherwise, errors are shown.
+
+Loading the Upload Library
+--------------------------
+
+Before using the upload features, load it via:
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+
+**Note:** The second parameter passes the uploaded file data to the constructor for processing.
+
+Class Methods
+-------------
+
+.. list-table:: Upload Class Methods
+   :header-rows: 1
+   :widths: 25 20 10 45
+
+   * - Method
+     - Parameters
+     - Return
+     - Description
+   * - ``allowed_extensions()``
+     - ``$ext`` (array)
+     - object (method chaining)
+     - Sets allowed file extensions. Overrides default extensions
+   * - ``allowed_mimes()``
+     - ``$mimes`` (array)
+     - object (method chaining)
+     - Sets allowed MIME types. Overrides default MIME types
+   * - ``set_dir()``
+     - ``$dir`` (string)
+     - object (method chaining)
+     - Sets upload directory. Creates directory if it doesn't exist
+   * - ``max_size()``
+     - ``$size`` (int)
+     - object (method chaining)
+     - Sets maximum file size in MB
+   * - ``min_size()``
+     - ``$size`` (int)
+     - object (method chaining)
+     - Sets minimum file size in MB
+   * - ``is_image()``
+     - None
+     - object (method chaining)
+     - Restricts uploads to valid image files only
+   * - ``encrypt_name()``
+     - None
+     - object (method chaining)
+     - Automatically renames uploaded file to a random encrypted filename using SHA1
+   * - ``do_upload()``
+     - ``$overwrite`` (bool, optional), ``$no_extension`` (bool, optional)
+     - bool
+     - Performs the upload process. Returns TRUE on success, FALSE on failure
+   * - ``get_errors()``
+     - None
+     - array
+     - Returns an array of error messages
+   * - ``get_filename()``
+     - None
+     - string
+     - Returns the final uploaded filename
+   * - ``get_size()``
+     - None
+     - int
+     - Returns the size of the uploaded file in bytes
+   * - ``get_extension()``
+     - None
+     - string
+     - Returns the file extension of the uploaded file
+
+Method Parameters Reference
+---------------------------
+
+allowed_extensions() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$ext``
+     - array
+     - —
+     - Array of allowed file extensions (e.g., ``['jpg', 'png', 'pdf']``)
+
+allowed_mimes() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$mimes``
+     - array
+     - —
+     - Array of allowed MIME types (e.g., ``['image/jpeg', 'application/pdf']``)
+
+set_dir() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$dir``
+     - string
+     - —
+     - Directory path where files will be saved (e.g., ``'uploads/images'``)
+
+max_size() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$size``
+     - int
+     - —
+     - Maximum file size in megabytes (MB)
+
+min_size() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$size``
+     - int
+     - —
+     - Minimum file size in megabytes (MB)
+
+do_upload() Parameters
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$overwrite``
+     - bool
+     - FALSE
+     - If TRUE, overwrites existing files with the same name
+   * - ``$no_extension``
+     - bool
+     - FALSE
+     - If TRUE, saves file without extension
+
+Default Values
+---------------
+
+The Upload class comes with the following default configurations:
+
+.. list-table:: Default Allowed Extensions
+   :header-rows: 1
+   :widths: 50 50
+
+   * - Extension
+     - Description
+   * - ``gif``
+     - GIF images
+   * - ``jpg``
+     - JPEG images
+   * - ``jpeg``
+     - JPEG images
+   * - ``png``
+     - PNG images
+
+.. list-table:: Default Allowed MIME Types
+   :header-rows: 1
+   :widths: 50 50
+
+   * - MIME Type
+     - Description
+   * - ``image/gif``
+     - GIF images
+   * - ``image/jpg``
+     - JPEG images
+   * - ``image/jpeg``
+     - JPEG images
+   * - ``image/png``
+     - PNG images
 
 Creating the Upload Form
 -------------------------
@@ -21,22 +225,26 @@ Create a view file called ``upload_form.php`` inside your ``app/views/`` directo
 
 .. code-block:: php
 
-   <html>
-   <head>
-      <title>Upload Form</title>
-   </head>
-   <body>
+    <html>
+    <head>
+        <title>Upload Form</title>
+    </head>
+    <body>
 
-   <?php foreach($errors as $error) { echo $error; } ?>
+    <?php if (!empty($errors)): ?>
+        <?php foreach($errors as $error): ?>
+            <div style="color: red;"><?php echo $error; ?></div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
-   <form action="<?php echo site_url('upload/do_upload');?>" method="post" enctype="multipart/form-data">
-      <input type="file" name="userfile" size="20" />
-      <br><br>
-      <input type="submit" value="upload" />
-   </form>
+    <form action="<?php echo site_url('upload/do_upload'); ?>" method="post" enctype="multipart/form-data">
+        <input type="file" name="userfile" size="20" />
+        <br><br>
+        <input type="submit" value="Upload" />
+    </form>
 
-   </body>
-   </html>
+    </body>
+    </html>
 
 The Success Page
 -----------------
@@ -45,18 +253,19 @@ Create another view file called ``upload_success.php`` in the same folder:
 
 .. code-block:: php
 
-   <html>
-   <head>
-      <title>Upload Success</title>
-   </head>
-   <body>
+    <html>
+    <head>
+        <title>Upload Success</title>
+    </head>
+    <body>
 
-   <h3>Your file was successfully uploaded!</h3>
+    <h3>Your file was successfully uploaded!</h3>
+    <p>Filename: <?php echo $filename; ?></p>
+    <p>Size: <?php echo $size; ?> bytes</p>
+    <p>Extension: <?php echo $extension; ?></p>
 
-   <?php echo $filename; ?>
-
-   </body>
-   </html>
+    </body>
+    </html>
 
 The Controller
 ---------------
@@ -65,109 +274,265 @@ Create a controller called ``UploadController.php`` inside your ``app/controller
 
 .. code-block:: php
 
-   <?php
-   class UploadController extends Controller {
+    <?php
+    class UploadController extends Controller {
 
-      public function upload() {
-         $this->call->library('upload', $_FILES["userfile"]);
+        public function upload_form() {
+            $this->call->view('upload_form');
+        }
 
-         $this->upload
-            ->max_size(5)
-            ->min_size(1)
-            ->set_dir('public')
-            ->allowed_extensions(['jpg'])
-            ->allowed_mimes(['image/jpeg'])
-            ->is_image()
-            ->encrypt_name();
+        public function do_upload() {
+            $this->call->library('upload', $_FILES["userfile"]);
 
-         if ($this->upload->do_upload()) {
-            $data['filename'] = $this->upload->get_filename();
-            $this->call->view('upload_success', $data);
-         } else {
-            $data['errors'] = $this->upload->get_errors();
-            $this->call->view('upload_form', $data);
-         }
-      }
-   }
+            $this->upload
+                ->max_size(5)
+                ->min_size(1)
+                ->set_dir('uploads')
+                ->allowed_extensions(['jpg', 'jpeg', 'png'])
+                ->allowed_mimes(['image/jpeg', 'image/png'])
+                ->is_image()
+                ->encrypt_name();
+
+            if ($this->upload->do_upload()) {
+                $data['filename'] = $this->upload->get_filename();
+                $data['size'] = $this->upload->get_size();
+                $data['extension'] = $this->upload->get_extension();
+                $this->call->view('upload_success', $data);
+            } else {
+                $data['errors'] = $this->upload->get_errors();
+                $this->call->view('upload_form', $data);
+            }
+        }
+    }
 
 The Upload Directory
 ---------------------
 
 You will need a destination directory for your uploaded files.  
-Create a directory called ``uploads`` in the root of your LavaLust installation and set its permissions to **777**.
+Create a directory (e.g., ``uploads``) and the system will attempt to create it if it doesn't exist. Ensure the directory is **writable** by the web server.
 
-Initialization
----------------
+**To manually create the directory:**
 
-Like most other classes in LavaLust, the Upload class is initialized in your controller using:
+.. code-block:: bash
 
-.. code-block:: php
-
-   <?php
-   $this->call->library('upload');
-
-Once the Upload class is loaded, you can access it via:
-
-.. code-block:: php
-
-   <?php
-   $this->upload;
+    mkdir uploads
+    chmod 755 uploads
 
 Setting Preferences
 --------------------
 
 You control what is allowed to be uploaded through various preference methods.  
-Example:
+All preference methods support **method chaining** for cleaner code.
+
+**Basic Example:**
 
 .. code-block:: php
 
-   <?php
-   $this->call->library('upload', $_FILES["userfile"]);
-   $this->upload
-      ->max_size(5)
-      ->min_size(1)
-      ->set_dir('public')
-      ->allowed_extensions(['jpg'])
-      ->allowed_mimes(['image/jpeg'])
-      ->is_image()
-      ->encrypt_name();
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+    $this->upload
+        ->max_size(5)              // 5 MB maximum
+        ->min_size(1)              // 1 MB minimum
+        ->set_dir('uploads/images') // Save to uploads/images/
+        ->allowed_extensions(['jpg', 'png']) // Only JPG and PNG
+        ->allowed_mimes(['image/jpeg', 'image/png']) // Only JPEG and PNG MIME types
+        ->is_image()               // Must be valid image
+        ->encrypt_name();          // Rename with SHA1 hash
 
-Available Methods
-------------------
+**Example with Overwrite:**
 
-.. list-table::
-   :widths: 30 70
+.. code-block:: php
+
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+    $this->upload
+        ->set_dir('uploads')
+        ->allowed_extensions(['pdf', 'doc', 'docx'])
+        ->max_size(10);
+
+    // Overwrite existing file with the same name
+    if ($this->upload->do_upload(TRUE)) {
+        echo "File uploaded (overwritten if existed)";
+    }
+
+**Example without Extension:**
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+    $this->upload
+        ->set_dir('uploads')
+        ->encrypt_name();
+
+    // Save file without extension
+    if ($this->upload->do_upload(FALSE, TRUE)) {
+        echo "File saved without extension";
+    }
+
+Method Chaining
+----------------
+
+All preference methods support **method chaining** for more concise code:
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+    
+    $this->upload->max_size(5)
+                 ->min_size(1)
+                 ->set_dir('uploads')
+                 ->allowed_extensions(['jpg', 'png'])
+                 ->is_image()
+                 ->encrypt_name()
+                 ->do_upload();
+
+Error Handling
+---------------
+
+Always check if the upload was successful and display appropriate error messages:
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('upload', $_FILES["userfile"]);
+    
+    $this->upload->max_size(5)->set_dir('uploads');
+    
+    if ($this->upload->do_upload()) {
+        // Success - proceed with success logic
+        $filename = $this->upload->get_filename();
+    } else {
+        // Failure - display errors
+        $errors = $this->upload->get_errors();
+        foreach ($errors as $error) {
+            echo $error . "<br>";
+        }
+    }
+
+Best Practices
+----------------
+
+- **Always validate file extensions and MIME types** to prevent malicious file uploads
+- **Use ``encrypt_name()``** to prevent filename collisions and hide original filenames
+- **Set appropriate size limits** (``max_size()`` and ``min_size()``) to control resource usage
+- **Use ``is_image()``** when expecting image uploads for additional validation
+- **Store uploads outside the web root** when possible for sensitive files
+- **Set proper directory permissions** (755 or 750) - never use 777 in production
+- **Sanitize filenames** - the class automatically sanitizes filenames using the security helper
+- **Use unique filenames** to prevent overwriting (unless intended with ``$overwrite = TRUE``)
+- **Limit allowed file types** based on your application's needs
+- **Implement additional server-side scanning** for virus/malware detection on uploads
+
+Security Considerations
+------------------------
+
+.. warning::
+
+    Never trust user-uploaded files. Always validate thoroughly before saving or serving them.
+
+**Security features built into the Upload class:**
+
+- Filename sanitization (removes dangerous characters)
+- Extension and MIME type validation
+- Image validation using ``getimagesize()`` when ``is_image()`` is enabled
+- Automatic directory creation with proper permissions (755)
+- File permission setting to 644 after upload
+
+**Additional security recommendations:**
+
+.. code-block:: php
+
+    <?php
+    // Restrict to specific image types only
+    $this->upload->allowed_extensions(['jpg', 'jpeg', 'png'])
+                 ->allowed_mimes(['image/jpeg', 'image/png'])
+                 ->is_image();
+    
+    // Use encrypted names to hide original filenames
+    $this->upload->encrypt_name();
+    
+    // Set reasonable size limits
+    $this->upload->max_size(5); // 5 MB max
+    
+    // Store in a non-public directory when possible
+    $this->upload->set_dir('/var/www/private/uploads/');
+
+Troubleshooting
+-----------------
+
+.. list-table:: Common Issues and Solutions
    :header-rows: 1
-   :class: longtable
+   :widths: 30 70
 
-   * - **Method**
-     - **Description**
-   * - ``allowed_extensions(array $exts)``
-     - Set allowed file extensions. Default: ``['gif','jpg','jpeg','png']``
-   * - ``allowed_mimes(array $mimes)``
-     - Set allowed MIME types. Default: ``['image/gif','image/jpg','image/jpeg','image/png']``
-   * - ``set_dir(string $path)``
-     - Directory where files will be saved.
-   * - ``max_size(int $mb)``
-     - Maximum file size in MB.
-   * - ``min_size(int $mb)``
-     - Minimum file size in MB.
-   * - ``is_image()``
-     - Restricts uploads to image files only.
-   * - ``encrypt_name()``
-     - Automatically rename uploaded file to a random encrypted filename.
-   * - ``do_upload()``
-     - Performs the upload process. Returns **true** on success.
-   * - ``get_errors()``
-     - Returns an array of error messages.
-   * - ``get_filename()``
-     - Returns the final uploaded filename.
-   * - ``get_size()``
-     - Returns the size of the uploaded file.
-   * - ``get_extension()``
-     - Returns the file extension of the uploaded file.
+   * - Issue
+     - Possible Solution
+   * - Upload fails with "No valid file selected"
+     - Ensure your form has ``enctype="multipart/form-data"`` and the file input has name ``userfile``
+   * - "Upload directory is not writable"
+     - Check directory permissions. Run ``chmod 755 uploads`` on the upload directory
+   * - "Invalid uploaded file extension"
+     - Add the file extension to ``allowed_extensions()`` array
+   * - "Invalid uploaded file MIME type"
+     - Add the MIME type to ``allowed_mimes()`` array or check if the file is corrupt
+   * - "Uploaded file is not a valid image"
+     - Enable ``is_image()`` only for actual image files, or disable it for non-images
+   * - "Uploaded file size is too large/small"
+     - Adjust ``max_size()`` or ``min_size()`` values or increase PHP's ``upload_max_filesize``
+   * - Files are being overwritten unexpectedly
+     - Set ``$overwrite = FALSE`` in ``do_upload()`` (default) or use ``encrypt_name()``
+   * - Filename contains special characters
+     - The class automatically sanitizes filenames using the security helper
+
+Complete Example
+-----------------
+
+Here's a complete example with form, validation, and file information display:
+
+.. code-block:: php
+
+    <?php
+    class GalleryController extends Controller {
+        
+        public function index() {
+            $this->call->view('gallery_upload');
+        }
+        
+        public function upload_image() {
+            $this->call->library('upload', $_FILES["gallery_image"]);
+            
+            $this->upload->set_dir('uploads/gallery')
+                         ->allowed_extensions(['jpg', 'jpeg', 'png', 'gif'])
+                         ->allowed_mimes(['image/jpeg', 'image/png', 'image/gif'])
+                         ->max_size(10)
+                         ->is_image()
+                         ->encrypt_name();
+            
+            if ($this->upload->do_upload()) {
+                // Save file info to database
+                $image_data = array(
+                    'filename' => $this->upload->get_filename(),
+                    'size' => $this->upload->get_size(),
+                    'extension' => $this->upload->get_extension(),
+                    'mime' => $this->upload->mime,
+                    'uploaded_at' => date('Y-m-d H:i:s')
+                );
+                
+                // $this->db->insert('gallery_images', $image_data);
+                
+                $data['success'] = true;
+                $data['file'] = $image_data;
+                $this->call->view('upload_success', $data);
+            } else {
+                $data['errors'] = $this->upload->get_errors();
+                $this->call->view('gallery_upload', $data);
+            }
+        }
+    }
 
 .. note::
 
-   Always validate the uploaded file’s extension and MIME type to ensure security.  
-   Avoid allowing executable file types (e.g. ``.php``, ``.exe``) to be uploaded.
+    Always validate the uploaded file's extension **and** MIME type to ensure security.  
+    Avoid allowing executable file types (e.g., ``.php``, ``.exe``, ``.sh``) to be uploaded.  
+    The default configuration only allows common image formats for safety.

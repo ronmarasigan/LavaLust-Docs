@@ -161,32 +161,328 @@
   <section id="upload-class">
 <h1>Upload Class<a class="headerlink" href="#upload-class" title="Link to this heading"></a></h1>
 <p>The <strong>Upload</strong> class allows you to <strong>upload files</strong> safely in LavaLust.
-You can define various preferences, such as allowed file types, size restrictions, and automatic filename encryption.</p>
+You can define various preferences, such as allowed file types, size restrictions, automatic filename encryption, and MIME type validation.</p>
 <section id="the-process">
 <h2>The Process<a class="headerlink" href="#the-process" title="Link to this heading"></a></h2>
 <p>Uploading a file involves the following general process:</p>
 <ol class="arabic simple">
 <li><p>An upload form is displayed, allowing the user to select a file.</p></li>
 <li><p>When the form is submitted, the file is uploaded to the destination directory.</p></li>
-<li><p>The file is validated based on the preferences you set.</p></li>
+<li><p>The file is validated based on the preferences you set (extension, MIME type, size, etc.).</p></li>
 <li><p>On success, a confirmation is displayed. Otherwise, errors are shown.</p></li>
 </ol>
+</section>
+<section id="loading-the-upload-library">
+<h2>Loading the Upload Library<a class="headerlink" href="#loading-the-upload-library" title="Link to this heading"></a></h2>
+<p>Before using the upload features, load it via:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> The second parameter passes the uploaded file data to the constructor for processing.</p>
+</section>
+<section id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Upload Class Methods</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 10.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Return</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_extensions()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$ext</span></code> (array)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets allowed file extensions. Overrides default extensions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_mimes()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$mimes</span></code> (array)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets allowed MIME types. Overrides default MIME types</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_dir()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$dir</span></code> (string)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets upload directory. Creates directory if it doesn’t exist</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_size()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$size</span></code> (int)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets maximum file size in MB</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_size()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$size</span></code> (int)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets minimum file size in MB</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_image()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Restricts uploads to valid image files only</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encrypt_name()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Automatically renames uploaded file to a random encrypted filename using SHA1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">do_upload()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$overwrite</span></code> (bool, optional), <code class="docutils literal notranslate"><span class="pre">$no_extension</span></code> (bool, optional)</p></td>
+<td><p>bool</p></td>
+<td><p>Performs the upload process. Returns TRUE on success, FALSE on failure</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_errors()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>array</p></td>
+<td><p>Returns an array of error messages</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_filename()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>string</p></td>
+<td><p>Returns the final uploaded filename</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_size()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>int</p></td>
+<td><p>Returns the size of the uploaded file in bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>string</p></td>
+<td><p>Returns the file extension of the uploaded file</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="method-parameters-reference">
+<h2>Method Parameters Reference<a class="headerlink" href="#method-parameters-reference" title="Link to this heading"></a></h2>
+<p>allowed_extensions() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$ext</span></code></p></td>
+<td><p>array</p></td>
+<td><p>—</p></td>
+<td><p>Array of allowed file extensions (e.g., <code class="docutils literal notranslate"><span class="pre">['jpg',</span> <span class="pre">'png',</span> <span class="pre">'pdf']</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+<p>allowed_mimes() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$mimes</span></code></p></td>
+<td><p>array</p></td>
+<td><p>—</p></td>
+<td><p>Array of allowed MIME types (e.g., <code class="docutils literal notranslate"><span class="pre">['image/jpeg',</span> <span class="pre">'application/pdf']</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+<p>set_dir() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$dir</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Directory path where files will be saved (e.g., <code class="docutils literal notranslate"><span class="pre">'uploads/images'</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+<p>max_size() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$size</span></code></p></td>
+<td><p>int</p></td>
+<td><p>—</p></td>
+<td><p>Maximum file size in megabytes (MB)</p></td>
+</tr>
+</tbody>
+</table>
+<p>min_size() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$size</span></code></p></td>
+<td><p>int</p></td>
+<td><p>—</p></td>
+<td><p>Minimum file size in megabytes (MB)</p></td>
+</tr>
+</tbody>
+</table>
+<p>do_upload() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$overwrite</span></code></p></td>
+<td><p>bool</p></td>
+<td><p>FALSE</p></td>
+<td><p>If TRUE, overwrites existing files with the same name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$no_extension</span></code></p></td>
+<td><p>bool</p></td>
+<td><p>FALSE</p></td>
+<td><p>If TRUE, saves file without extension</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="default-values">
+<h2>Default Values<a class="headerlink" href="#default-values" title="Link to this heading"></a></h2>
+<p>The Upload class comes with the following default configurations:</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Default Allowed Extensions</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Extension</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gif</span></code></p></td>
+<td><p>GIF images</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jpg</span></code></p></td>
+<td><p>JPEG images</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jpeg</span></code></p></td>
+<td><p>JPEG images</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">png</span></code></p></td>
+<td><p>PNG images</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Default Allowed MIME Types</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>MIME Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image/gif</span></code></p></td>
+<td><p>GIF images</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">image/jpg</span></code></p></td>
+<td><p>JPEG images</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image/jpeg</span></code></p></td>
+<td><p>JPEG images</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">image/png</span></code></p></td>
+<td><p>PNG images</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="creating-the-upload-form">
 <h2>Creating the Upload Form<a class="headerlink" href="#creating-the-upload-form" title="Link to this heading"></a></h2>
 <p>Create a view file called <code class="docutils literal notranslate"><span class="pre">upload_form.php</span></code> inside your <code class="docutils literal notranslate"><span class="pre">app/views/</span></code> directory:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;html&gt;</span>
 <span class="x">&lt;head&gt;</span>
-<span class="x">   &lt;title&gt;Upload Form&lt;/title&gt;</span>
+<span class="x">    &lt;title&gt;Upload Form&lt;/title&gt;</span>
 <span class="x">&lt;/head&gt;</span>
 <span class="x">&lt;body&gt;</span>
 
-<span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span> <span class="p">{</span> <span class="k">echo</span> <span class="nv">$error</span><span class="p">;</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$errors</span><span class="p">))</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">        &lt;div style=&quot;color: red;&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$error</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/div&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
 
-<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;upload/do_upload&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span>
-<span class="x">   &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;</span>
-<span class="x">   &lt;br&gt;&lt;br&gt;</span>
-<span class="x">   &lt;input type=&quot;submit&quot; value=&quot;upload&quot; /&gt;</span>
+<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;upload/do_upload&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span>
+<span class="x">    &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;</span>
+<span class="x">    &lt;br&gt;&lt;br&gt;</span>
+<span class="x">    &lt;input type=&quot;submit&quot; value=&quot;Upload&quot; /&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 
 <span class="x">&lt;/body&gt;</span>
@@ -199,13 +495,14 @@ You can define various preferences, such as allowed file types, size restriction
 <p>Create another view file called <code class="docutils literal notranslate"><span class="pre">upload_success.php</span></code> in the same folder:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;html&gt;</span>
 <span class="x">&lt;head&gt;</span>
-<span class="x">   &lt;title&gt;Upload Success&lt;/title&gt;</span>
+<span class="x">    &lt;title&gt;Upload Success&lt;/title&gt;</span>
 <span class="x">&lt;/head&gt;</span>
 <span class="x">&lt;body&gt;</span>
 
 <span class="x">&lt;h3&gt;Your file was successfully uploaded!&lt;/h3&gt;</span>
-
-<span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$filename</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">&lt;p&gt;Filename: </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$filename</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Size: </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$size</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"> bytes&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Extension: </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$extension</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 
 <span class="x">&lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
@@ -218,26 +515,32 @@ You can define various preferences, such as allowed file types, size restriction
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UploadController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
-   <span class="k">public</span> <span class="k">function</span> <span class="nf">upload</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">upload_form</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
-         <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-         <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-         <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
-         <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">])</span>
-         <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">])</span>
-         <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
-         <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">do_upload</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
 
-      <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
-         <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
-         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-         <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
-         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
-      <span class="p">}</span>
-   <span class="p">}</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
+            <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
+            <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span>
+            <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">();</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;extension&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -245,93 +548,231 @@ You can define various preferences, such as allowed file types, size restriction
 <section id="the-upload-directory">
 <h2>The Upload Directory<a class="headerlink" href="#the-upload-directory" title="Link to this heading"></a></h2>
 <p>You will need a destination directory for your uploaded files.
-Create a directory called <code class="docutils literal notranslate"><span class="pre">uploads</span></code> in the root of your LavaLust installation and set its permissions to <strong>777</strong>.</p>
-</section>
-<section id="initialization">
-<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
-<p>Like most other classes in LavaLust, the Upload class is initialized in your controller using:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Once the Upload class is loaded, you can access it via:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="p">;</span>
+Create a directory (e.g., <code class="docutils literal notranslate"><span class="pre">uploads</span></code>) and the system will attempt to create it if it doesn’t exist. Ensure the directory is <strong>writable</strong> by the web server.</p>
+<p><strong>To manually create the directory:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>uploads
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>uploads
 </pre></div>
 </div>
 </section>
 <section id="setting-preferences">
 <h2>Setting Preferences<a class="headerlink" href="#setting-preferences" title="Link to this heading"></a></h2>
 <p>You control what is allowed to be uploaded through various preference methods.
-Example:</p>
+All preference methods support <strong>method chaining</strong> for cleaner code.</p>
+<p><strong>Basic Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
-   <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
-   <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">])</span>
-   <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">])</span>
-   <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
-   <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+    <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>              <span class="c1">// 5 MB maximum</span>
+    <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>              <span class="c1">// 1 MB minimum</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads/images&#39;</span><span class="p">)</span> <span class="c1">// Save to uploads/images/</span>
+    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span> <span class="c1">// Only JPG and PNG</span>
+    <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span> <span class="c1">// Only JPEG and PNG MIME types</span>
+    <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>               <span class="c1">// Must be valid image</span>
+    <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>          <span class="c1">// Rename with SHA1 hash</span>
+</pre></div>
+</div>
+<p><strong>Example with Overwrite:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">,</span> <span class="s1">&#39;docx&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+<span class="c1">// Overwrite existing file with the same name</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">(</span><span class="k">TRUE</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;File uploaded (overwritten if existed)&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example without Extension:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+
+<span class="c1">// Save file without extension</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">(</span><span class="k">FALSE</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;File saved without extension&quot;</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="available-methods">
-<h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
-<table class="longtable docutils align-default">
+<section id="method-chaining">
+<h2>Method Chaining<a class="headerlink" href="#method-chaining" title="Link to this heading"></a></h2>
+<p>All preference methods support <strong>method chaining</strong> for more concise code:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
+             <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
+             <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">()</span>
+             <span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>Always check if the upload was successful and display appropriate error messages:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Success - proceed with success logic</span>
+    <span class="nv">$filename</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Failure - display errors</span>
+    <span class="nv">$errors</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$error</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Always validate file extensions and MIME types</strong> to prevent malicious file uploads</p></li>
+<li><p><strong>Use ``encrypt_name()``</strong> to prevent filename collisions and hide original filenames</p></li>
+<li><p><strong>Set appropriate size limits</strong> (<code class="docutils literal notranslate"><span class="pre">max_size()</span></code> and <code class="docutils literal notranslate"><span class="pre">min_size()</span></code>) to control resource usage</p></li>
+<li><p><strong>Use ``is_image()``</strong> when expecting image uploads for additional validation</p></li>
+<li><p><strong>Store uploads outside the web root</strong> when possible for sensitive files</p></li>
+<li><p><strong>Set proper directory permissions</strong> (755 or 750) - never use 777 in production</p></li>
+<li><p><strong>Sanitize filenames</strong> - the class automatically sanitizes filenames using the security helper</p></li>
+<li><p><strong>Use unique filenames</strong> to prevent overwriting (unless intended with <code class="docutils literal notranslate"><span class="pre">$overwrite</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>)</p></li>
+<li><p><strong>Limit allowed file types</strong> based on your application’s needs</p></li>
+<li><p><strong>Implement additional server-side scanning</strong> for virus/malware detection on uploads</p></li>
+</ul>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Never trust user-uploaded files. Always validate thoroughly before saving or serving them.</p>
+</div>
+<p><strong>Security features built into the Upload class:</strong></p>
+<ul class="simple">
+<li><p>Filename sanitization (removes dangerous characters)</p></li>
+<li><p>Extension and MIME type validation</p></li>
+<li><p>Image validation using <code class="docutils literal notranslate"><span class="pre">getimagesize()</span></code> when <code class="docutils literal notranslate"><span class="pre">is_image()</span></code> is enabled</p></li>
+<li><p>Automatic directory creation with proper permissions (755)</p></li>
+<li><p>File permission setting to 644 after upload</p></li>
+</ul>
+<p><strong>Additional security recommendations:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Restrict to specific image types only</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
+             <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span>
+             <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">();</span>
+
+<span class="c1">// Use encrypted names to hide original filenames</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+
+<span class="c1">// Set reasonable size limits</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// 5 MB max</span>
+
+<span class="c1">// Store in a non-public directory when possible</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;/var/www/private/uploads/&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Common Issues and Solutions</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 30.0%" />
 <col style="width: 70.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
-<th class="head"><p><strong>Description</strong></p></th>
+<tr class="row-odd"><th class="head"><p>Issue</p></th>
+<th class="head"><p>Possible Solution</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_extensions(array</span> <span class="pre">$exts)</span></code></p></td>
-<td><p>Set allowed file extensions. Default: <code class="docutils literal notranslate"><span class="pre">['gif','jpg','jpeg','png']</span></code></p></td>
+<tr class="row-even"><td><p>Upload fails with “No valid file selected”</p></td>
+<td><p>Ensure your form has <code class="docutils literal notranslate"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></code> and the file input has name <code class="docutils literal notranslate"><span class="pre">userfile</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">allowed_mimes(array</span> <span class="pre">$mimes)</span></code></p></td>
-<td><p>Set allowed MIME types. Default: <code class="docutils literal notranslate"><span class="pre">['image/gif','image/jpg','image/jpeg','image/png']</span></code></p></td>
+<tr class="row-odd"><td><p>“Upload directory is not writable”</p></td>
+<td><p>Check directory permissions. Run <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">755</span> <span class="pre">uploads</span></code> on the upload directory</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_dir(string</span> <span class="pre">$path)</span></code></p></td>
-<td><p>Directory where files will be saved.</p></td>
+<tr class="row-even"><td><p>“Invalid uploaded file extension”</p></td>
+<td><p>Add the file extension to <code class="docutils literal notranslate"><span class="pre">allowed_extensions()</span></code> array</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_size(int</span> <span class="pre">$mb)</span></code></p></td>
-<td><p>Maximum file size in MB.</p></td>
+<tr class="row-odd"><td><p>“Invalid uploaded file MIME type”</p></td>
+<td><p>Add the MIME type to <code class="docutils literal notranslate"><span class="pre">allowed_mimes()</span></code> array or check if the file is corrupt</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_size(int</span> <span class="pre">$mb)</span></code></p></td>
-<td><p>Minimum file size in MB.</p></td>
+<tr class="row-even"><td><p>“Uploaded file is not a valid image”</p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">is_image()</span></code> only for actual image files, or disable it for non-images</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_image()</span></code></p></td>
-<td><p>Restricts uploads to image files only.</p></td>
+<tr class="row-odd"><td><p>“Uploaded file size is too large/small”</p></td>
+<td><p>Adjust <code class="docutils literal notranslate"><span class="pre">max_size()</span></code> or <code class="docutils literal notranslate"><span class="pre">min_size()</span></code> values or increase PHP’s <code class="docutils literal notranslate"><span class="pre">upload_max_filesize</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">encrypt_name()</span></code></p></td>
-<td><p>Automatically rename uploaded file to a random encrypted filename.</p></td>
+<tr class="row-even"><td><p>Files are being overwritten unexpectedly</p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">$overwrite</span> <span class="pre">=</span> <span class="pre">FALSE</span></code> in <code class="docutils literal notranslate"><span class="pre">do_upload()</span></code> (default) or use <code class="docutils literal notranslate"><span class="pre">encrypt_name()</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">do_upload()</span></code></p></td>
-<td><p>Performs the upload process. Returns <strong>true</strong> on success.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_errors()</span></code></p></td>
-<td><p>Returns an array of error messages.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_filename()</span></code></p></td>
-<td><p>Returns the final uploaded filename.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_size()</span></code></p></td>
-<td><p>Returns the size of the uploaded file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></p></td>
-<td><p>Returns the file extension of the uploaded file.</p></td>
+<tr class="row-odd"><td><p>Filename contains special characters</p></td>
+<td><p>The class automatically sanitizes filenames using the security helper</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading"></a></h2>
+<p>Here’s a complete example with form, validation, and file information display:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">GalleryController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;gallery_upload&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">upload_image</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;gallery_image&quot;</span><span class="p">]);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads/gallery&#39;</span><span class="p">)</span>
+                     <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;gif&#39;</span><span class="p">])</span>
+                     <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">])</span>
+                     <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+                     <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
+                     <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
+            <span class="c1">// Save file info to database</span>
+            <span class="nv">$image_data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;filename&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">(),</span>
+                <span class="s1">&#39;size&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">(),</span>
+                <span class="s1">&#39;extension&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">(),</span>
+                <span class="s1">&#39;mime&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">mime</span><span class="p">,</span>
+                <span class="s1">&#39;uploaded_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
+            <span class="p">);</span>
+
+            <span class="c1">// $this-&gt;db-&gt;insert(&#39;gallery_images&#39;, $image_data);</span>
+
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$image_data</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;gallery_upload&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Always validate the uploaded file’s extension and MIME type to ensure security.
-Avoid allowing executable file types (e.g. <code class="docutils literal notranslate"><span class="pre">.php</span></code>, <code class="docutils literal notranslate"><span class="pre">.exe</span></code>) to be uploaded.</p>
+<p>Always validate the uploaded file’s extension <strong>and</strong> MIME type to ensure security.
+Avoid allowing executable file types (e.g., <code class="docutils literal notranslate"><span class="pre">.php</span></code>, <code class="docutils literal notranslate"><span class="pre">.exe</span></code>, <code class="docutils literal notranslate"><span class="pre">.sh</span></code>) to be uploaded.
+The default configuration only allows common image formats for safety.</p>
 </div>
 </section>
 </section>

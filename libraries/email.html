@@ -163,67 +163,377 @@
 <p>The Email class makes sending email <strong>simple and easy</strong>.
 It uses PHP’s built-in <code class="docutils literal notranslate"><span class="pre">mail()</span></code> function under the hood.</p>
 <p>If you are planning to use more advanced features (SMTP, authentication, HTML templates, etc.),
-you may integrate third-party libraries such as <strong>PHPMailer</strong> instead.</p>
+you may integrate third-party libraries such as <strong>PHPMailer</strong> or <strong>SwiftMailer</strong> instead.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Email class is designed for basic email functionality. For production applications with higher email volume or delivery requirements, consider using a dedicated email library or service.</p>
+</div>
+<section id="loading-the-email-library">
+<h2>Loading the Email Library<a class="headerlink" href="#loading-the-email-library" title="Link to this heading"></a></h2>
+<p>Before using the email features, load it via:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Link to this heading"></a></h2>
+<p>Email Class Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 10.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Return</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sender()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$sender_email</span></code> (string, required), <code class="docutils literal notranslate"><span class="pre">$sender_name</span></code> (string, optional)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets the sender’s email address and optionally the sender’s name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reply_to()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$reply_email</span></code> (string, required)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets the email address where replies should be sent</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">recipient()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$receiver_email</span></code> (string or array, required)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets the recipient’s email address. Can be a single email or an array of emails</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">subject()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$subject</span></code> (string, required)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets the email subject line</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">email_content()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code> (string, required), <code class="docutils literal notranslate"><span class="pre">$email_type</span></code> (string, optional)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Sets the email body content. <code class="docutils literal notranslate"><span class="pre">$email_type</span></code> can be ‘plain’ or ‘html’</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">attachment()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$path</span></code> (string, required)</p></td>
+<td><p>object (method chaining)</p></td>
+<td><p>Attaches a file to the email from the specified path</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
+<td><p>None</p></td>
+<td><p>bool</p></td>
+<td><p>Sends the composed email. Returns TRUE on success, FALSE on failure</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="method-parameters-reference">
+<h2>Method Parameters Reference<a class="headerlink" href="#method-parameters-reference" title="Link to this heading"></a></h2>
+<p>sender() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$sender_email</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Email address of the sender (required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$sender_name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>NULL</p></td>
+<td><p>Display name of the sender (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<p>recipient() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$receiver_email</span></code></p></td>
+<td><p>string or array</p></td>
+<td><p>—</p></td>
+<td><p>Email address(es) of the recipient(s). Can be a single email string or an array of email addresses</p></td>
+</tr>
+</tbody>
+</table>
+<p>email_content() Parameters</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>The content/body of the email (required)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$email_type</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘plain’</p></td>
+<td><p>Type of email content. Use ‘plain’ for plain text or ‘html’ for HTML content</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="basic-usage">
 <h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
-<p>Here is a basic example demonstrating how you might send email.
+<p>Here is a basic example demonstrating how you might send an email.
 <strong>Note:</strong> This example assumes you are sending the email from one of your controllers.</p>
+<p><strong>Plain Text Email Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;your@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Your Name&#39;</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;someone@example.com&#39;</span><span class="p">);</span>
-
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Email Test&#39;</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Testing the email class.&#39;</span><span class="p">);</span>
 
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Email sent successfully!&#39;</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Failed to send email.&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>HTML Email Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$html_content</span> <span class="o">=</span> <span class="s1">&#39;&lt;html&gt;</span>
+<span class="s1">    &lt;body&gt;</span>
+<span class="s1">        &lt;h1&gt;Welcome!&lt;/h1&gt;</span>
+<span class="s1">        &lt;p&gt;Thank you for registering with our service.&lt;/p&gt;</span>
+<span class="s1">        &lt;p&gt;&lt;strong&gt;Your account has been created successfully.&lt;/strong&gt;&lt;/p&gt;</span>
+<span class="s1">    &lt;/body&gt;</span>
+<span class="s1">&lt;/html&gt;&#39;</span><span class="p">;</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;noreply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My Website&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome to Our Website&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="nv">$html_content</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
+<p><strong>Email with Reply-To Address:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;noreply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Support Team&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">&#39;support@example.com&#39;</span><span class="p">);</span> <span class="c1">// Replies go here</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;customer@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your Support Ticket&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Your ticket has been received. We will respond within 24 hours.&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Sending to Multiple Recipients:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$recipients</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;user1@example.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;user2@example.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;user3@example.com&#39;</span>
+<span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;newsletter@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Weekly Newsletter&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$recipients</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;This Week\&#39;s Updates&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Here are the latest updates from our website...&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Sending Email with Attachment:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;admin@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Admin&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;client@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your Invoice&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Please find attached your invoice for this month.&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="s1">&#39;/path/to/invoice.pdf&#39;</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Invoice sent successfully!&#39;</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">&#39;Failed to send invoice.&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Complete Example with Error Handling:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ContactController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">send_contact_form</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+        <span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+        <span class="nv">$message</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Prepare email</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="nv">$email</span><span class="p">,</span> <span class="nv">$name</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="nv">$email</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;contact@example.com&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Contact Form Submission from &#39;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s2">&quot;Name: </span><span class="si">$name</span><span class="se">\n</span><span class="s2">Email: </span><span class="si">$email</span><span class="se">\n\n</span><span class="s2">Message:</span><span class="se">\n</span><span class="si">$message</span><span class="s2">&quot;</span><span class="p">);</span>
+
+        <span class="c1">// Send and handle response</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="s1">&#39;Thank you for contacting us!&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;contact/success&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Failed to send message. Please try again.&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;contact&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
-<section id="available-methods">
-<h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
-<th class="head"><p><strong>Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sender($sender_email,</span> <span class="pre">$sender_name)</span></code></p></td>
-<td><p><strong>$sender_email</strong> <em>(required)</em> — Email address of the sender
-<strong>$sender_name</strong> <em>(optional)</em> — Name of the sender</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reply_to($sender_email)</span></code></p></td>
-<td><p><strong>$sender_email</strong> — Email address where replies should go</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">recipient($receiver_email)</span></code></p></td>
-<td><p><strong>$receiver_email</strong> <em>(required)</em> — Email address of the recipient</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">subject($subject)</span></code></p></td>
-<td><p><strong>$subject</strong> <em>(required)</em> — The subject that will appear in the email</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">email_content($content,</span> <span class="pre">$email_type</span> <span class="pre">=</span> <span class="pre">'plain')</span></code></p></td>
-<td><p><strong>$content</strong> <em>(required)</em> — Content of the email
-<strong>$email_type</strong> <em>(optional)</em> — Defaults to <code class="docutils literal notranslate"><span class="pre">plain</span></code>. Use <code class="docutils literal notranslate"><span class="pre">html</span></code> for HTML content</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">attachment($path)</span></code></p></td>
-<td><p><strong>$path</strong> <em>(required)</em> — Path where your attachment file is located</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
-<td><p>Sends the composed email. Must be called last to actually send the email.</p></td>
-</tr>
-</tbody>
-</table>
+<section id="method-chaining">
+<h2>Method Chaining<a class="headerlink" href="#method-chaining" title="Link to this heading"></a></h2>
+<p>All email preparation methods (except <code class="docutils literal notranslate"><span class="pre">send()</span></code>) support <strong>method chaining</strong> for more concise code:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;noreply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Website&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome!&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Thank you for joining!&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You must call <code class="docutils literal notranslate"><span class="pre">$this-&gt;email-&gt;send()</span></code> at the end to actually send the email.
 All other methods just prepare the email before sending.</p>
 </div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Validate email addresses</strong> before sending to avoid delivery failures</p></li>
+<li><p><strong>Use descriptive subject lines</strong> that help recipients understand the email’s purpose</p></li>
+<li><p><strong>Always include a sender email address</strong> - many email servers reject emails without a valid sender</p></li>
+<li><p><strong>Set a reply-to address</strong> when the sender is a no-reply address so recipients can respond appropriately</p></li>
+<li><p><strong>Sanitize user input</strong> when using user-provided data in email headers to prevent header injection attacks</p></li>
+<li><p><strong>Test emails thoroughly</strong> before deploying to production</p></li>
+<li><p><strong>Consider rate limiting</strong> for contact forms to prevent spam</p></li>
+<li><p><strong>Use HTML emails carefully</strong> - ensure they have plain text alternatives for better compatibility</p></li>
+<li><p><strong>Log email sending attempts</strong> for debugging and audit purposes</p></li>
+</ul>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Never directly insert user input into email headers without proper validation and sanitization. This can lead to <strong>email header injection attacks</strong>.</p>
+</div>
+<p><strong>Safe way to use user input:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Validate email format</span>
+<span class="nv">$user_email</span> <span class="o">=</span> <span class="nb">filter_var</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="nx">FILTER_VALIDATE_EMAIL</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$user_email</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$user_email</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Sanitize subject and content</span>
+<span class="nv">$subject</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">],</span> <span class="nx">ENT_QUOTES</span><span class="p">,</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="nv">$subject</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p>Common Issues and Solutions</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Issue</p></th>
+<th class="head"><p>Possible Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Email not sending</p></td>
+<td><p>Check that PHP’s <code class="docutils literal notranslate"><span class="pre">mail()</span></code> function is enabled on your server. Check server error logs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Emails going to spam</p></td>
+<td><p>Use proper email headers, avoid spam trigger words, consider using SMTP with authentication</p></td>
+</tr>
+<tr class="row-even"><td><p>Attachments not working</p></td>
+<td><p>Verify the file path is correct and the file is readable by the web server</p></td>
+</tr>
+<tr class="row-odd"><td><p>HTML emails displaying as raw code</p></td>
+<td><p>Ensure you set the second parameter of <code class="docutils literal notranslate"><span class="pre">email_content()</span></code> to ‘html’</p></td>
+</tr>
+<tr class="row-even"><td><p>Multiple recipients not receiving email</p></td>
+<td><p>Verify the email addresses are valid and properly formatted in the array</p></td>
+</tr>
+<tr class="row-odd"><td><p>Headers injection warning</p></td>
+<td><p>Always validate and sanitize user input before using in email headers</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Uses PHP’s built-in <code class="docutils literal notranslate"><span class="pre">mail()</span></code> function which may be limited by server configuration</p></li>
+<li><p>Does not support SMTP authentication natively</p></li>
+<li><p>No built-in queue system for handling large volumes of emails</p></li>
+<li><p>No support for CC (Carbon Copy) or BCC (Blind Carbon Copy)</p></li>
+<li><p>Limited attachment handling capabilities</p></li>
+</ul>
+<p>For advanced email features, consider integrating:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/PHPMailer/PHPMailer">PHPMailer</a> - Full-featured email sending library with SMTP support</p></li>
+<li><p><a class="reference external" href="https://swiftmailer.symfony.com/">SwiftMailer</a> - Powerful email library with many features</p></li>
+<li><p>Transactional email services (SendGrid, Mailgun, Amazon SES) for production applications</p></li>
+</ul>
 </section>
 </section>
 
