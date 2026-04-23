@@ -178,830 +178,483 @@
 <h2>Class Methods<a class="headerlink" href="#class-methods" title="Link to this heading"></a></h2>
 <section id="input-methods">
 <h3>Input Methods<a class="headerlink" href="#input-methods" title="Link to this heading"></a></h3>
-<p>post()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve, or NULL for all POST data</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves POST variables. Returns all POST data as array when no index is specified.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Get all POST data</span>
-<span class="nv">$all_post</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#post" title="Link to this definition"></a></dt>
+<dd><p>Retrieves POST variables. Returns all POST data as array when no index is specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve, or NULL for all POST data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Get specific POST field</span>
-<span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get" title="Link to this definition"></a></dt>
+<dd><p>Retrieves GET variables (query string parameters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve, or NULL for all GET data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Check if POST field exists</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">NULL</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Process email</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>get()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve, or NULL for all GET data</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves GET variables (query string parameters).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Get all GET data</span>
-<span class="nv">$all_get</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="post_get">
+<span class="sig-name descname"><span class="pre">post_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#post_get" title="Link to this definition"></a></dt>
+<dd><p>Checks POST first, falls back to GET if not found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Get specific query parameter</span>
-<span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="get_post">
+<span class="sig-name descname"><span class="pre">get_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_post" title="Link to this definition"></a></dt>
+<dd><p>Checks GET first, falls back to POST if not found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// URL: http://example.com/users?id=5&amp;tab=profile</span>
-<span class="nv">$user_id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span> <span class="c1">// Returns 5</span>
-</pre></div>
-</div>
-<p>post_get()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Checks POST first, falls back to GET if not found.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Returns from POST if exists, otherwise from GET</span>
-<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">&#39;field_name&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>get_post()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Checks GET first, falls back to POST if not found.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Returns from GET if exists, otherwise from POST</span>
-<span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">&#39;field_name&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>put()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves PUT request data from raw input (supports JSON and form data).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// For RESTful API PUT requests</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">();</span>
-<span class="nv">$user_id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>patch()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves PATCH request data (alias of put()).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;field_name&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>delete()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific key to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves DELETE request data (alias of put()).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>all()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> array</p>
-<p><strong>Description:</strong> Returns all input data (GET + POST + PUT combined).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$all_input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$all_input</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">];</span>
-</pre></div>
-</div>
-<p>has()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$key</span></code></p></td>
-<td><p>string</p></td>
-<td><p>—</p></td>
-<td><p>The input key to check</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if input data has a specific key.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">has</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Email field exists in request</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>only()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$keys</span></code></p></td>
-<td><p>array</p></td>
-<td><p>—</p></td>
-<td><p>Array of keys to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> array</p>
-<p><strong>Description:</strong> Returns only the specified input fields.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">only</span><span class="p">([</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]);</span>
-<span class="c1">// Returns array with only these keys if they exist</span>
-</pre></div>
-</div>
-<p>except()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$keys</span></code></p></td>
-<td><p>array</p></td>
-<td><p>—</p></td>
-<td><p>Array of keys to exclude</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> array</p>
-<p><strong>Description:</strong> Returns all input data except the specified fields.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Get all input except password and token</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">except</span><span class="p">([</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;csrf_token&#39;</span><span class="p">]);</span>
-</pre></div>
-</div>
+<dl class="php function">
+<dt class="sig sig-object php" id="put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#put" title="Link to this definition"></a></dt>
+<dd><p>Retrieves PUT request data from raw input (supports JSON and form data).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="patch">
+<span class="sig-name descname"><span class="pre">patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#patch" title="Link to this definition"></a></dt>
+<dd><p>Retrieves PATCH request data (alias of put()).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#delete" title="Link to this definition"></a></dt>
+<dd><p>Retrieves DELETE request data (alias of put()).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific key to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#all" title="Link to this definition"></a></dt>
+<dd><p>Returns all input data (GET + POST + PUT combined).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="has">
+<span class="sig-name descname"><span class="pre">has</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#has" title="Link to this definition"></a></dt>
+<dd><p>Checks if input data has a specific key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$key</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The input key to check</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="only">
+<span class="sig-name descname"><span class="pre">only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$keys</span></em><span class="sig-paren">)</span><a class="headerlink" href="#only" title="Link to this definition"></a></dt>
+<dd><p>Returns only the specified input fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$keys</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array</span></code></span>) – Array of keys to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="except">
+<span class="sig-name descname"><span class="pre">except</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$keys</span></em><span class="sig-paren">)</span><a class="headerlink" href="#except" title="Link to this definition"></a></dt>
+<dd><p>Returns all input data except the specified fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$keys</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array</span></code></span>) – Array of keys to exclude</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="cookie-methods">
 <h3>Cookie Methods<a class="headerlink" href="#cookie-methods" title="Link to this heading"></a></h3>
-<p>cookie()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific cookie name to retrieve</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves cookie variables.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Get all cookies</span>
-<span class="nv">$all_cookies</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">();</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="cookie">
+<span class="sig-name descname"><span class="pre">cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#cookie" title="Link to this definition"></a></dt>
+<dd><p>Retrieves cookie variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific cookie name to retrieve</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Get specific cookie</span>
-<span class="nv">$session_id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;session_id&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>set_cookie()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
-<td><p>string</p></td>
-<td><p>—</p></td>
-<td><p>Cookie name</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$value</span></code></p></td>
-<td><p>string</p></td>
-<td><p>‘’</p></td>
-<td><p>Cookie value</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$expiration</span></code></p></td>
-<td><p>int</p></td>
-<td><p>0</p></td>
-<td><p>Lifetime in seconds (0 = session cookie)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$options</span></code></p></td>
-<td><p>array</p></td>
-<td><p>array()</p></td>
-<td><p>Additional options (prefix, path, domain, secure, httponly, samesite)</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> void</p>
-<p><strong>Description:</strong> Sets a cookie with security options.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Basic cookie</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;theme&#39;</span><span class="p">,</span> <span class="s1">&#39;dark&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">);</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="set_cookie">
+<span class="sig-name descname"><span class="pre">set_cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$name</span></em>, <em class="sig-param"><span class="pre">$value</span> <span class="pre">=</span> <span class="pre">''</span></em>, <em class="sig-param"><span class="pre">$expiration</span> <span class="pre">=</span> <span class="pre">0</span></em>, <em class="sig-param"><span class="pre">$options</span> <span class="pre">=</span> <span class="pre">array()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#set_cookie" title="Link to this definition"></a></dt>
+<dd><p>Sets a cookie with security options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$name</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The cookie name</p></li>
+<li><p><strong>$value</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The cookie value (default: empty string)</p></li>
+<li><p><strong>$expiration</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">int</span></code></span>) – Cookie expiration time in seconds (default: 0, meaning “until the browser is closed”)</p></li>
+<li><p><strong>$options</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array</span></code></span>) – Optional array of additional cookie settings such as <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">domain</span></code>, <code class="docutils literal notranslate"><span class="pre">secure</span></code>, <code class="docutils literal notranslate"><span class="pre">httponly</span></code>, <code class="docutils literal notranslate"><span class="pre">samesite</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Secure cookie with custom options</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;auth_token&#39;</span><span class="p">,</span> <span class="nv">$token</span><span class="p">,</span> <span class="mi">86400</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;secure&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
-    <span class="s1">&#39;httponly&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
-    <span class="s1">&#39;samesite&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Strict&#39;</span>
-<span class="p">));</span>
-</pre></div>
-</div>
-<p>delete_cookie()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
-<td><p>string</p></td>
-<td><p>—</p></td>
-<td><p>Cookie name to delete</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$options</span></code></p></td>
-<td><p>array</p></td>
-<td><p>array()</p></td>
-<td><p>Additional options matching set_cookie()</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> void</p>
-<p><strong>Description:</strong> Deletes a cookie by setting its expiration to the past.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">delete_cookie</span><span class="p">(</span><span class="s1">&#39;theme&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">delete_cookie</span><span class="p">(</span><span class="s1">&#39;session_id&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">));</span>
-</pre></div>
-</div>
+<dl class="php function">
+<dt class="sig sig-object php" id="delete_cookie">
+<span class="sig-name descname"><span class="pre">delete_cookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$name</span></em>, <em class="sig-param"><span class="pre">$options</span> <span class="pre">=</span> <span class="pre">array()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#delete_cookie" title="Link to this definition"></a></dt>
+<dd><p>Deletes a cookie by setting its expiration to the past.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$name</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Cookie name to delete</p></li>
+<li><p><strong>$options</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array</span></code></span>) – Optional array of additional cookie settings matching set_cookie()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="server-header-methods">
 <h3>Server &amp; Header Methods<a class="headerlink" href="#server-header-methods" title="Link to this heading"></a></h3>
-<p>server()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$index</span></code></p></td>
-<td><p>string|null</p></td>
-<td><p>NULL</p></td>
-<td><p>Specific server variable name</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> mixed (string, array, or NULL)</p>
-<p><strong>Description:</strong> Retrieves server variables ($_SERVER).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$user_agent</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">);</span>
-<span class="nv">$script_name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;SCRIPT_NAME&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>header()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
-<td><p>string</p></td>
-<td><p>—</p></td>
-<td><p>Header name (e.g., ‘Content-Type’, ‘Accept’)</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> string|null</p>
-<p><strong>Description:</strong> Retrieves a specific HTTP header value.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$content_type</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">header</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">);</span>
-<span class="nv">$auth_token</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">header</span><span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>headers()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> array</p>
-<p><strong>Description:</strong> Returns all HTTP headers as an associative array.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$all_headers</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">headers</span><span class="p">();</span>
-<span class="k">foreach</span> <span class="p">(</span><span class="nv">$all_headers</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;</span><span class="si">$name</span><span class="s2">: </span><span class="si">$value</span><span class="s2">&quot;</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<dl class="php function">
+<dt class="sig sig-object php" id="server">
+<span class="sig-name descname"><span class="pre">server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$index</span> <span class="pre">=</span> <span class="pre">NULL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#server" title="Link to this definition"></a></dt>
+<dd><p>Retrieves server variables ($_SERVER).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$index</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|null</span></code></span>) – Specific server variable name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixed (string, array, or NULL)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="header">
+<span class="sig-name descname"><span class="pre">header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#header" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a specific HTTP header value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$name</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Header name (e.g., ‘Content-Type’, ‘Accept’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string|null</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#headers" title="Link to this definition"></a></dt>
+<dd><p>Returns all HTTP headers as an associative array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="request-information-methods">
 <h3>Request Information Methods<a class="headerlink" href="#request-information-methods" title="Link to this heading"></a></h3>
-<p>method()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$upper</span></code></p></td>
-<td><p>boolean</p></td>
-<td><p>FALSE</p></td>
-<td><p>If TRUE, returns uppercase method name</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> string</p>
-<p><strong>Description:</strong> Returns the HTTP request method (GET, POST, PUT, PATCH, DELETE, etc.).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$method</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span> <span class="c1">// Returns &#39;get&#39;, &#39;post&#39;, etc.</span>
-<span class="nv">$method_upper</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span> <span class="c1">// Returns &#39;GET&#39;, &#39;POST&#39;, etc.</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="method">
+<span class="sig-name descname"><span class="pre">method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$upper</span> <span class="pre">=</span> <span class="pre">FALSE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#method" title="Link to this definition"></a></dt>
+<dd><p>Returns the HTTP request method (GET, POST, PUT, PATCH, DELETE, etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$upper</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – If TRUE, returns uppercase method name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;POST&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Handle POST request</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>is_method()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$methods</span></code></p></td>
-<td><p>string|array</p></td>
-<td><p>—</p></td>
-<td><p>Single method or array of methods to check</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method matches the given method(s).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Check single method</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_method</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Handle POST</span>
-<span class="p">}</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="is_method">
+<span class="sig-name descname"><span class="pre">is_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$methods</span></em><span class="sig-paren">)</span><a class="headerlink" href="#is_method" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method matches the given method(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$methods</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string|array</span></code></span>) – Single method or array of methods to check</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// Check multiple methods</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_method</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;put&#39;</span><span class="p">,</span> <span class="s1">&#39;patch&#39;</span><span class="p">)))</span> <span class="p">{</span>
-    <span class="c1">// Handle PUT or PATCH</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>is_get()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method is GET.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_get</span><span class="p">())</span> <span class="p">{</span>
-    <span class="c1">// Display form</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>is_post()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method is POST.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_post</span><span class="p">())</span> <span class="p">{</span>
-    <span class="c1">// Process form submission</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>is_put()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method is PUT.</p>
-<p>is_patch()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method is PATCH.</p>
-<p>is_delete()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request method is DELETE.</p>
-<p>is_ajax()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request is an AJAX request (via X-Requested-With header).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">())</span> <span class="p">{</span>
-    <span class="c1">// Return JSON response</span>
-    <span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-    <span class="k">return</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>wants_json()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the client expects a JSON response (via Accept header).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">wants_json</span><span class="p">())</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;html_view&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>is_secure()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Checks if the request is using HTTPS.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_secure</span><span class="p">())</span> <span class="p">{</span>
-    <span class="nx">redirect</span><span class="p">(</span><span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">url</span><span class="p">()));</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>ip_address()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$trust_proxy</span></code></p></td>
-<td><p>boolean</p></td>
-<td><p>FALSE</p></td>
-<td><p>Set to TRUE if behind a trusted proxy</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> string</p>
-<p><strong>Description:</strong> Gets the client’s IP address. Only trusts proxy headers when explicitly enabled.</p>
-<p><strong>Security Note:</strong> Never trust proxy headers by default. Only enable <code class="docutils literal notranslate"><span class="pre">$trust_proxy</span></code> when you control the proxy server.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Basic usage (does not trust proxy headers)</span>
-<span class="nv">$user_ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="is_get">
+<span class="sig-name descname"><span class="pre">is_get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_get" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method is GET.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="c1">// If behind trusted proxy (e.g., Cloudflare, Nginx)</span>
-<span class="nv">$user_ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>valid_ip()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$ip</span></code></p></td>
-<td><p>string</p></td>
-<td><p>—</p></td>
-<td><p>IP address to validate</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$which</span></code></p></td>
-<td><p>string</p></td>
-<td><p>‘’</p></td>
-<td><p>Protocol: ‘ipv4’, ‘ipv6’, or ‘’ for both</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> boolean</p>
-<p><strong>Description:</strong> Validates an IP address format.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="s1">&#39;ipv4&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="c1">// Valid IPv4 address</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>uri()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> string</p>
-<p><strong>Description:</strong> Returns the full request URI (including query string).</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$current_uri</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">();</span>
-<span class="c1">// Returns something like: /users/profile?id=5</span>
-</pre></div>
-</div>
-<p>url()</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 15.0%" />
-<col style="width: 10.0%" />
-<col style="width: 55.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Default</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$with_query</span></code></p></td>
-<td><p>boolean</p></td>
-<td><p>TRUE</p></td>
-<td><p>Whether to include query string</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> string</p>
-<p><strong>Description:</strong> Returns the full request URL.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$full_url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">url</span><span class="p">();</span>
-<span class="c1">// Returns: https://example.com/users/profile?id=5</span>
+<dl class="php function">
+<dt class="sig sig-object php" id="is_post">
+<span class="sig-name descname"><span class="pre">is_post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_post" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method is POST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
-<span class="nv">$url_without_query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">url</span><span class="p">(</span><span class="k">FALSE</span><span class="p">);</span>
-<span class="c1">// Returns: https://example.com/users/profile</span>
-</pre></div>
-</div>
-<p>referrer()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> string|null</p>
-<p><strong>Description:</strong> Returns the HTTP referrer URL if available.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$coming_from</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">referrer</span><span class="p">();</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$coming_from</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;You came from: </span><span class="si">$coming_from</span><span class="s2">&quot;</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>user_agent()</p>
-<p><strong>Parameters:</strong> None</p>
-<p><strong>Returns:</strong> string|null</p>
-<p><strong>Description:</strong> Returns the user agent string of the client.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$browser</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">user_agent</span><span class="p">();</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$browser</span><span class="p">,</span> <span class="s1">&#39;Mobile&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Load mobile view</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<dl class="php function">
+<dt class="sig sig-object php" id="is_put">
+<span class="sig-name descname"><span class="pre">is_put</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_put" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method is PUT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="is_patch">
+<span class="sig-name descname"><span class="pre">is_patch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_patch" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method is PATCH.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="is_delete">
+<span class="sig-name descname"><span class="pre">is_delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_delete" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request method is DELETE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="is_ajax">
+<span class="sig-name descname"><span class="pre">is_ajax</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_ajax" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request is an AJAX request (via X-Requested-With header).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="wants_json">
+<span class="sig-name descname"><span class="pre">wants_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wants_json" title="Link to this definition"></a></dt>
+<dd><p>Checks if the client expects a JSON response (via Accept header).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="is_secure">
+<span class="sig-name descname"><span class="pre">is_secure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#is_secure" title="Link to this definition"></a></dt>
+<dd><p>Checks if the request is using HTTPS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="ip_address">
+<span class="sig-name descname"><span class="pre">ip_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$trust_proxy</span> <span class="pre">=</span> <span class="pre">FALSE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ip_address" title="Link to this definition"></a></dt>
+<dd><p>Gets the client’s IP address. Only trusts proxy headers when explicitly enabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$trust_proxy</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – Set to TRUE if behind a trusted proxy</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="valid_ip">
+<span class="sig-name descname"><span class="pre">valid_ip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$ip</span></em>, <em class="sig-param"><span class="pre">$which</span> <span class="pre">=</span> <span class="pre">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#valid_ip" title="Link to this definition"></a></dt>
+<dd><p>Validates an IP address format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$ip</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – IP address to validate</p></li>
+<li><p><strong>$which</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Protocol: ‘ipv4’, ‘ipv6’, or ‘’ for both</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="uri">
+<span class="sig-name descname"><span class="pre">uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#uri" title="Link to this definition"></a></dt>
+<dd><p>Returns the full request URI (including query string).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="url">
+<span class="sig-name descname"><span class="pre">url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$with_query</span> <span class="pre">=</span> <span class="pre">TRUE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#url" title="Link to this definition"></a></dt>
+<dd><p>Returns the full request URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$with_query</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to include query string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="referrer">
+<span class="sig-name descname"><span class="pre">referrer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#referrer" title="Link to this definition"></a></dt>
+<dd><p>Returns the HTTP referrer URL if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string|null</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="user_agent">
+<span class="sig-name descname"><span class="pre">user_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#user_agent" title="Link to this definition"></a></dt>
+<dd><p>Returns the user agent string of the client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string|null</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 <section id="complete-examples">
@@ -1075,7 +728,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Secure Cookie Management:</strong></p>
+<p><strong>Setting Cookies with Request:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">AuthController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
@@ -1101,6 +754,62 @@
     <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span> <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">delete_cookie</span><span class="p">(</span><span class="s1">&#39;auth_token&#39;</span><span class="p">);</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Request Information Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">DebugController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">info</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;Method: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="k">TRUE</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;URI: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">uri</span><span class="p">()</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;URL: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">url</span><span class="p">()</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;IP Address: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">()</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;User Agent: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">user_agent</span><span class="p">()</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;Is AJAX: &quot;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">()</span> <span class="o">?</span> <span class="s1">&#39;Yes&#39;</span> <span class="o">:</span> <span class="s1">&#39;No&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">&quot;Is Secure: &quot;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_secure</span><span class="p">()</span> <span class="o">?</span> <span class="s1">&#39;Yes&#39;</span> <span class="o">:</span> <span class="s1">&#39;No&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">referrer</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s2">&quot;Referrer: &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">referrer</span><span class="p">()</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Working with Input Data:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ProductController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">save</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Get only specific fields</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">only</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">]);</span>
+
+        <span class="c1">// Check if required fields exist</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">has</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Product name is required&#39;</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Get all input except sensitive fields</span>
+        <span class="nv">$safe_data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">except</span><span class="p">([</span><span class="s1">&#39;csrf_token&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">]);</span>
+
+        <span class="c1">// Get combined input from different methods</span>
+        <span class="nv">$all_input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+
+        <span class="c1">// Process based on request method</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_put</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_patch</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Save product</span>
+        <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">product_model</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">([</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">],</span> <span class="s1">&#39;Product created&#39;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1139,12 +848,21 @@
 <span class="nv">$email</span> <span class="o">=</span> <span class="nb">filter_var</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span> <span class="nx">FILTER_VALIDATE_EMAIL</span><span class="p">);</span>
 <span class="nv">$name</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="nx">ENT_QUOTES</span><span class="p">);</span>
 
+<span class="c1">// DO: Use only() to whitelist fields</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">only</span><span class="p">([</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]);</span>
+
 <span class="c1">// DON&#39;T: Trust raw input directly</span>
 <span class="nv">$query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM users WHERE id = &quot;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
 
-<span class="c1">// DO: Use prepared statements or escaping</span>
+<span class="c1">// DO: Use prepared statements or casting</span>
 <span class="nv">$id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
 <span class="nv">$query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM users WHERE id = &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+
+<span class="c1">// DON&#39;T: Trust proxy headers by default</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span> <span class="c1">// Safe - proxy not trusted</span>
+
+<span class="c1">// DO: Only enable proxy trust when appropriate</span>
+<span class="nv">$ip</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">(</span><span class="k">TRUE</span><span class="p">);</span> <span class="c1">// Only if behind trusted proxy</span>
 </pre></div>
 </div>
 </section>
@@ -1179,6 +897,12 @@
 </tr>
 <tr class="row-odd"><td><p>CSRF validation fails</p></td>
 <td><p>Make sure your forms include the CSRF token field generated by the Security class</p></td>
+</tr>
+<tr class="row-even"><td><p>JSON input not parsed</p></td>
+<td><p>Ensure the request Content-Type header is set to <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Method override not working</p></td>
+<td><p>Send <code class="docutils literal notranslate"><span class="pre">X-HTTP-Method-Override</span></code> header with PUT, PATCH, or DELETE value</p></td>
 </tr>
 </tbody>
 </table>

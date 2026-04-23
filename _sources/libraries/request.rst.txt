@@ -26,817 +26,237 @@ Class Methods
 Input Methods
 ~~~~~~~~~~~~~
 
-post()
+.. php:function:: post($index = NULL)
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve, or NULL for all POST data
+    Retrieves POST variables. Returns all POST data as array when no index is specified.
 
-**Returns:** mixed (string, array, or NULL)
+    :param string|null $index: Specific key to retrieve, or NULL for all POST data
+    :returns: mixed (string, array, or NULL)
 
-**Description:** Retrieves POST variables. Returns all POST data as array when no index is specified.
+.. php:function:: get($index = NULL)
 
-**Example:**
+    Retrieves GET variables (query string parameters).
 
-.. code-block:: php
+    :param string|null $index: Specific key to retrieve, or NULL for all GET data
+    :returns: mixed (string, array, or NULL)
 
-    <?php
-    // Get all POST data
-    $all_post = $this->request->post();
-    
-    // Get specific POST field
-    $username = $this->request->post('username');
-    
-    // Check if POST field exists
-    if ($this->request->post('email') !== NULL) {
-        // Process email
-    }
+.. php:function:: post_get($index = NULL)
 
-get()
+    Checks POST first, falls back to GET if not found.
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+    :param string|null $index: Specific key to retrieve
+    :returns: mixed (string, array, or NULL)
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve, or NULL for all GET data
+.. php:function:: get_post($index = NULL)
 
-**Returns:** mixed (string, array, or NULL)
+    Checks GET first, falls back to POST if not found.
 
-**Description:** Retrieves GET variables (query string parameters).
+    :param string|null $index: Specific key to retrieve
+    :returns: mixed (string, array, or NULL)
 
-**Example:**
+.. php:function:: put($index = NULL)
 
-.. code-block:: php
+    Retrieves PUT request data from raw input (supports JSON and form data).
 
-    <?php
-    // Get all GET data
-    $all_get = $this->request->get();
-    
-    // Get specific query parameter
-    $page = $this->request->get('page');
-    
-    // URL: http://example.com/users?id=5&tab=profile
-    $user_id = $this->request->get('id'); // Returns 5
+    :param string|null $index: Specific key to retrieve
+    :returns: mixed (string, array, or NULL)
 
-post_get()
+.. php:function:: patch($index = NULL)
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+    Retrieves PATCH request data (alias of put()).
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve
+    :param string|null $index: Specific key to retrieve
+    :returns: mixed (string, array, or NULL)
 
-**Returns:** mixed (string, array, or NULL)
+.. php:function:: delete($index = NULL)
 
-**Description:** Checks POST first, falls back to GET if not found.
+    Retrieves DELETE request data (alias of put()).
 
-**Example:**
+    :param string|null $index: Specific key to retrieve
+    :returns: mixed (string, array, or NULL)
 
-.. code-block:: php
+.. php:function:: all()
 
-    <?php
-    // Returns from POST if exists, otherwise from GET
-    $value = $this->request->post_get('field_name');
+    Returns all input data (GET + POST + PUT combined).
 
-get_post()
+    :returns: array
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+.. php:function:: has($key)
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve
+    Checks if input data has a specific key.
 
-**Returns:** mixed (string, array, or NULL)
+    :param string $key: The input key to check
+    :returns: boolean
 
-**Description:** Checks GET first, falls back to POST if not found.
+.. php:function:: only($keys)
 
-**Example:**
+    Returns only the specified input fields.
 
-.. code-block:: php
+    :param array $keys: Array of keys to retrieve
+    :returns: array
 
-    <?php
-    // Returns from GET if exists, otherwise from POST
-    $value = $this->request->get_post('field_name');
+.. php:function:: except($keys)
 
-put()
+    Returns all input data except the specified fields.
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve
-
-**Returns:** mixed (string, array, or NULL)
-
-**Description:** Retrieves PUT request data from raw input (supports JSON and form data).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // For RESTful API PUT requests
-    $data = $this->request->put();
-    $user_id = $this->request->put('user_id');
-
-patch()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve
-
-**Returns:** mixed (string, array, or NULL)
-
-**Description:** Retrieves PATCH request data (alias of put()).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $data = $this->request->patch('field_name');
-
-delete()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific key to retrieve
-
-**Returns:** mixed (string, array, or NULL)
-
-**Description:** Retrieves DELETE request data (alias of put()).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $id = $this->request->delete('id');
-
-all()
-
-**Parameters:** None
-
-**Returns:** array
-
-**Description:** Returns all input data (GET + POST + PUT combined).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $all_input = $this->request->all();
-    echo $all_input['username'];
-
-has()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$key``
-     - string
-     - —
-     - The input key to check
-
-**Returns:** boolean
-
-**Description:** Checks if input data has a specific key.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    if ($this->request->has('email')) {
-        // Email field exists in request
-    }
-
-only()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$keys``
-     - array
-     - —
-     - Array of keys to retrieve
-
-**Returns:** array
-
-**Description:** Returns only the specified input fields.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $data = $this->request->only(['username', 'email', 'age']);
-    // Returns array with only these keys if they exist
-
-except()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$keys``
-     - array
-     - —
-     - Array of keys to exclude
-
-**Returns:** array
-
-**Description:** Returns all input data except the specified fields.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // Get all input except password and token
-    $data = $this->request->except(['password', 'csrf_token']);
+    :param array $keys: Array of keys to exclude
+    :returns: array
 
 Cookie Methods
 ~~~~~~~~~~~~~~
 
-cookie()
+.. php:function:: cookie($index = NULL)
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+    Retrieves cookie variables.
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific cookie name to retrieve
+    :param string|null $index: Specific cookie name to retrieve
+    :returns: mixed (string, array, or NULL)
 
-**Returns:** mixed (string, array, or NULL)
+.. php:function:: set_cookie($name, $value = '', $expiration = 0, $options = array())
 
-**Description:** Retrieves cookie variables.
+    Sets a cookie with security options.
 
-**Example:**
+    :param string $name: The cookie name
+    :param string $value: The cookie value (default: empty string)
+    :param int $expiration: Cookie expiration time in seconds (default: 0, meaning "until the browser is closed")
+    :param array $options: Optional array of additional cookie settings such as ``prefix``, ``path``, ``domain``, ``secure``, ``httponly``, ``samesite``
+    :returns: void
 
-.. code-block:: php
+.. php:function:: delete_cookie($name, $options = array())
 
-    <?php
-    // Get all cookies
-    $all_cookies = $this->request->cookie();
-    
-    // Get specific cookie
-    $session_id = $this->request->cookie('session_id');
+    Deletes a cookie by setting its expiration to the past.
 
-set_cookie()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$name``
-     - string
-     - —
-     - Cookie name
-   * - ``$value``
-     - string
-     - ''
-     - Cookie value
-   * - ``$expiration``
-     - int
-     - 0
-     - Lifetime in seconds (0 = session cookie)
-   * - ``$options``
-     - array
-     - array()
-     - Additional options (prefix, path, domain, secure, httponly, samesite)
-
-**Returns:** void
-
-**Description:** Sets a cookie with security options.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // Basic cookie
-    $this->request->set_cookie('theme', 'dark', 3600);
-    
-    // Secure cookie with custom options
-    $this->request->set_cookie('auth_token', $token, 86400, array(
-        'secure' => TRUE,
-        'httponly' => TRUE,
-        'samesite' => 'Strict'
-    ));
-
-delete_cookie()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$name``
-     - string
-     - —
-     - Cookie name to delete
-   * - ``$options``
-     - array
-     - array()
-     - Additional options matching set_cookie()
-
-**Returns:** void
-
-**Description:** Deletes a cookie by setting its expiration to the past.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $this->request->delete_cookie('theme');
-    $this->request->delete_cookie('session_id', array('path' => '/'));
+    :param string $name: Cookie name to delete
+    :param array $options: Optional array of additional cookie settings matching set_cookie()
+    :returns: void
 
 Server & Header Methods
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-server()
+.. php:function:: server($index = NULL)
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+    Retrieves server variables ($_SERVER).
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$index``
-     - string|null
-     - NULL
-     - Specific server variable name
+    :param string|null $index: Specific server variable name
+    :returns: mixed (string, array, or NULL)
 
-**Returns:** mixed (string, array, or NULL)
+.. php:function:: header($name)
 
-**Description:** Retrieves server variables ($_SERVER).
+    Retrieves a specific HTTP header value.
 
-**Example:**
+    :param string $name: Header name (e.g., 'Content-Type', 'Accept')
+    :returns: string|null
 
-.. code-block:: php
+.. php:function:: headers()
 
-    <?php
-    $user_agent = $this->request->server('HTTP_USER_AGENT');
-    $script_name = $this->request->server('SCRIPT_NAME');
+    Returns all HTTP headers as an associative array.
 
-header()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$name``
-     - string
-     - —
-     - Header name (e.g., 'Content-Type', 'Accept')
-
-**Returns:** string|null
-
-**Description:** Retrieves a specific HTTP header value.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $content_type = $this->request->header('Content-Type');
-    $auth_token = $this->request->header('Authorization');
-
-headers()
-
-**Parameters:** None
-
-**Returns:** array
-
-**Description:** Returns all HTTP headers as an associative array.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $all_headers = $this->request->headers();
-    foreach ($all_headers as $name => $value) {
-        echo "$name: $value";
-    }
+    :returns: array
 
 Request Information Methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-method()
+.. php:function:: method($upper = FALSE)
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+    Returns the HTTP request method (GET, POST, PUT, PATCH, DELETE, etc.).
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$upper``
-     - boolean
-     - FALSE
-     - If TRUE, returns uppercase method name
+    :param bool $upper: If TRUE, returns uppercase method name
+    :returns: string
 
-**Returns:** string
+.. php:function:: is_method($methods)
 
-**Description:** Returns the HTTP request method (GET, POST, PUT, PATCH, DELETE, etc.).
+    Checks if the request method matches the given method(s).
 
-**Example:**
+    :param string|array $methods: Single method or array of methods to check
+    :returns: boolean
 
-.. code-block:: php
+.. php:function:: is_get()
 
-    <?php
-    $method = $this->request->method(); // Returns 'get', 'post', etc.
-    $method_upper = $this->request->method(TRUE); // Returns 'GET', 'POST', etc.
-    
-    if ($this->request->method(TRUE) === 'POST') {
-        // Handle POST request
-    }
+    Checks if the request method is GET.
 
-is_method()
+    :returns: boolean
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
+.. php:function:: is_post()
 
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$methods``
-     - string|array
-     - —
-     - Single method or array of methods to check
+    Checks if the request method is POST.
 
-**Returns:** boolean
+    :returns: boolean
 
-**Description:** Checks if the request method matches the given method(s).
+.. php:function:: is_put()
 
-**Example:**
+    Checks if the request method is PUT.
 
-.. code-block:: php
+    :returns: boolean
 
-    <?php
-    // Check single method
-    if ($this->request->is_method('post')) {
-        // Handle POST
-    }
-    
-    // Check multiple methods
-    if ($this->request->is_method(array('put', 'patch'))) {
-        // Handle PUT or PATCH
-    }
+.. php:function:: is_patch()
 
-is_get()
+    Checks if the request method is PATCH.
 
-**Parameters:** None
+    :returns: boolean
 
-**Returns:** boolean
+.. php:function:: is_delete()
 
-**Description:** Checks if the request method is GET.
+    Checks if the request method is DELETE.
 
-**Example:**
+    :returns: boolean
 
-.. code-block:: php
+.. php:function:: is_ajax()
 
-    <?php
-    if ($this->request->is_get()) {
-        // Display form
-    }
+    Checks if the request is an AJAX request (via X-Requested-With header).
 
-is_post()
+    :returns: boolean
 
-**Parameters:** None
+.. php:function:: wants_json()
 
-**Returns:** boolean
+    Checks if the client expects a JSON response (via Accept header).
 
-**Description:** Checks if the request method is POST.
+    :returns: boolean
 
-**Example:**
+.. php:function:: is_secure()
 
-.. code-block:: php
+    Checks if the request is using HTTPS.
 
-    <?php
-    if ($this->request->is_post()) {
-        // Process form submission
-    }
+    :returns: boolean
 
-is_put()
+.. php:function:: ip_address($trust_proxy = FALSE)
 
-**Parameters:** None
+    Gets the client's IP address. Only trusts proxy headers when explicitly enabled.
 
-**Returns:** boolean
+    :param bool $trust_proxy: Set to TRUE if behind a trusted proxy
+    :returns: string
 
-**Description:** Checks if the request method is PUT.
+.. php:function:: valid_ip($ip, $which = '')
 
-is_patch()
+    Validates an IP address format.
 
-**Parameters:** None
+    :param string $ip: IP address to validate
+    :param string $which: Protocol: 'ipv4', 'ipv6', or '' for both
+    :returns: boolean
 
-**Returns:** boolean
+.. php:function:: uri()
 
-**Description:** Checks if the request method is PATCH.
+    Returns the full request URI (including query string).
 
-is_delete()
+    :returns: string
 
-**Parameters:** None
+.. php:function:: url($with_query = TRUE)
 
-**Returns:** boolean
+    Returns the full request URL.
 
-**Description:** Checks if the request method is DELETE.
+    :param bool $with_query: Whether to include query string
+    :returns: string
 
-is_ajax()
+.. php:function:: referrer()
 
-**Parameters:** None
+    Returns the HTTP referrer URL if available.
 
-**Returns:** boolean
+    :returns: string|null
 
-**Description:** Checks if the request is an AJAX request (via X-Requested-With header).
+.. php:function:: user_agent()
 
-**Example:**
+    Returns the user agent string of the client.
 
-.. code-block:: php
-
-    <?php
-    if ($this->request->is_ajax()) {
-        // Return JSON response
-        echo json_encode($data);
-        return;
-    }
-
-wants_json()
-
-**Parameters:** None
-
-**Returns:** boolean
-
-**Description:** Checks if the client expects a JSON response (via Accept header).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    if ($this->request->wants_json()) {
-        $this->response->json($data);
-    } else {
-        $this->call->view('html_view', $data);
-    }
-
-is_secure()
-
-**Parameters:** None
-
-**Returns:** boolean
-
-**Description:** Checks if the request is using HTTPS.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    if ( ! $this->request->is_secure()) {
-        redirect(str_replace('http://', 'https://', $this->request->url()));
-    }
-
-ip_address()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$trust_proxy``
-     - boolean
-     - FALSE
-     - Set to TRUE if behind a trusted proxy
-
-**Returns:** string
-
-**Description:** Gets the client's IP address. Only trusts proxy headers when explicitly enabled.
-
-**Security Note:** Never trust proxy headers by default. Only enable ``$trust_proxy`` when you control the proxy server.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // Basic usage (does not trust proxy headers)
-    $user_ip = $this->request->ip_address();
-    
-    // If behind trusted proxy (e.g., Cloudflare, Nginx)
-    $user_ip = $this->request->ip_address(TRUE);
-
-valid_ip()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$ip``
-     - string
-     - —
-     - IP address to validate
-   * - ``$which``
-     - string
-     - ''
-     - Protocol: 'ipv4', 'ipv6', or '' for both
-
-**Returns:** boolean
-
-**Description:** Validates an IP address format.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    if ($this->request->valid_ip($ip, 'ipv4')) {
-        // Valid IPv4 address
-    }
-
-uri()
-
-**Parameters:** None
-
-**Returns:** string
-
-**Description:** Returns the full request URI (including query string).
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $current_uri = $this->request->uri();
-    // Returns something like: /users/profile?id=5
-
-url()
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$with_query``
-     - boolean
-     - TRUE
-     - Whether to include query string
-
-**Returns:** string
-
-**Description:** Returns the full request URL.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $full_url = $this->request->url();
-    // Returns: https://example.com/users/profile?id=5
-    
-    $url_without_query = $this->request->url(FALSE);
-    // Returns: https://example.com/users/profile
-
-referrer()
-
-**Parameters:** None
-
-**Returns:** string|null
-
-**Description:** Returns the HTTP referrer URL if available.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $coming_from = $this->request->referrer();
-    if ($coming_from) {
-        echo "You came from: $coming_from";
-    }
-
-user_agent()
-
-**Parameters:** None
-
-**Returns:** string|null
-
-**Description:** Returns the user agent string of the client.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $browser = $this->request->user_agent();
-    if (strpos($browser, 'Mobile') !== FALSE) {
-        // Load mobile view
-    }
+    :returns: string|null
 
 Complete Examples
 -----------------
@@ -914,7 +334,7 @@ Complete Examples
         }
     }
 
-**Secure Cookie Management:**
+**Setting Cookies with Request:**
 
 .. code-block:: php
 
@@ -943,6 +363,66 @@ Complete Examples
         public function logout() {
             $this->request->delete_cookie('auth_token');
             $this->response->redirect('login');
+        }
+    }
+
+**Request Information Example:**
+
+.. code-block:: php
+
+    <?php
+    class DebugController extends Controller {
+        
+        public function info() {
+            echo "Method: " . $this->request->method(TRUE) . "<br>";
+            echo "URI: " . $this->request->uri() . "<br>";
+            echo "URL: " . $this->request->url() . "<br>";
+            echo "IP Address: " . $this->request->ip_address() . "<br>";
+            echo "User Agent: " . $this->request->user_agent() . "<br>";
+            echo "Is AJAX: " . ($this->request->is_ajax() ? 'Yes' : 'No') . "<br>";
+            echo "Is Secure: " . ($this->request->is_secure() ? 'Yes' : 'No') . "<br>";
+            
+            if ($this->request->referrer()) {
+                echo "Referrer: " . $this->request->referrer() . "<br>";
+            }
+        }
+    }
+
+**Working with Input Data:**
+
+.. code-block:: php
+
+    <?php
+    class ProductController extends Controller {
+        
+        public function save() {
+            // Get only specific fields
+            $data = $this->request->only(['name', 'price', 'category']);
+            
+            // Check if required fields exist
+            if ( ! $this->request->has('name')) {
+                $this->response->send_json_error('Product name is required');
+                return;
+            }
+            
+            // Get all input except sensitive fields
+            $safe_data = $this->request->except(['csrf_token', 'password']);
+            
+            // Get combined input from different methods
+            $all_input = $this->request->all();
+            
+            // Process based on request method
+            if ($this->request->is_put()) {
+                $data = $this->request->put();
+            } elseif ($this->request->is_patch()) {
+                $data = $this->request->patch();
+            } else {
+                $data = $this->request->post();
+            }
+            
+            // Save product
+            $id = $this->product_model->create($data);
+            $this->response->send_json_success(['id' => $id], 'Product created');
         }
     }
 
@@ -982,12 +462,21 @@ Security Considerations
     $email = filter_var($this->request->post('email'), FILTER_VALIDATE_EMAIL);
     $name = htmlspecialchars($this->request->post('name'), ENT_QUOTES);
     
+    // DO: Use only() to whitelist fields
+    $data = $this->request->only(['username', 'email', 'age']);
+    
     // DON'T: Trust raw input directly
     $query = "SELECT * FROM users WHERE id = " . $this->request->get('id');
     
-    // DO: Use prepared statements or escaping
+    // DO: Use prepared statements or casting
     $id = (int) $this->request->get('id');
     $query = "SELECT * FROM users WHERE id = " . $id;
+    
+    // DON'T: Trust proxy headers by default
+    $ip = $this->request->ip_address(); // Safe - proxy not trusted
+    
+    // DO: Only enable proxy trust when appropriate
+    $ip = $this->request->ip_address(TRUE); // Only if behind trusted proxy
 
 Troubleshooting
 -----------------
@@ -1010,3 +499,7 @@ Troubleshooting
      - Only enable ``$trust_proxy`` if behind a trusted proxy. Check your proxy configuration
    * - CSRF validation fails
      - Make sure your forms include the CSRF token field generated by the Security class
+   * - JSON input not parsed
+     - Ensure the request Content-Type header is set to ``application/json``
+   * - Method override not working
+     - Send ``X-HTTP-Method-Override`` header with PUT, PATCH, or DELETE value
