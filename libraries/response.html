@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Response &mdash; LavaLust Documentation</title>
+  <title>Response Class &mdash; LavaLust Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Language Class" href="language.html" />
-    <link rel="prev" title="Request" href="request.html" /> 
+    <link rel="prev" title="Request Class" href="request.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -91,8 +91,8 @@
 <li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io.html">Input and Output Class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="request.html">Request</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html">Request Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Response Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="migration.html">Migration Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
@@ -149,7 +149,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
-      <li class="breadcrumb-item active">Response</li>
+      <li class="breadcrumb-item active">Response Class</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -158,208 +158,1096 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="response">
-<h1>Response<a class="headerlink" href="#response" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">Response</span></code> library also handles HTTP responses — setting status codes, headers, content,
-and sending JSON or HTML back to the client.</p>
-<p>It is available in controllers via <code class="docutils literal notranslate"><span class="pre">$this-&gt;response</span></code>.</p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>A typical response is built in three steps:</p>
-<ol class="arabic simple">
-<li><p>Set a status code with <code class="docutils literal notranslate"><span class="pre">set_status_code()</span></code></p></li>
-<li><p>Set headers and content</p></li>
-<li><p>Call <code class="docutils literal notranslate"><span class="pre">send()</span></code> to flush everything to the client</p></li>
-</ol>
+  <section id="response-class">
+<h1>Response Class<a class="headerlink" href="#response-class" title="Link to this heading"></a></h1>
+<p>The <strong>Response</strong> class handles HTTP responses, status codes, headers, content types, and provides convenient methods for common response formats like JSON, HTML, XML, file downloads, and redirects.</p>
+<section id="loading-the-response-class">
+<h2>Loading the Response Class<a class="headerlink" href="#loading-the-response-class" title="Link to this heading"></a></h2>
+<p>The Response class is automatically loaded by the LavaLust framework and is accessible via:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello World&lt;/h1&gt;&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="p">;</span>
 </pre></div>
 </div>
+<p>No manual loading is required as it’s available globally.</p>
 </section>
-<section id="setting-a-status-code">
-<h2>Setting a Status Code<a class="headerlink" href="#setting-a-status-code" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>   <span class="c1">// OK</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>   <span class="c1">// Created</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>   <span class="c1">// Bad Request</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">401</span><span class="p">);</span>   <span class="c1">// Unauthorized</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">403</span><span class="p">);</span>   <span class="c1">// Forbidden</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>   <span class="c1">// Not Found</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>   <span class="c1">// Internal Server Error</span>
-</pre></div>
-</div>
-</section>
-<section id="adding-headers">
-<h2>Adding Headers<a class="headerlink" href="#adding-headers" title="Link to this heading"></a></h2>
-<p><strong>Single header:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Cache-Control&#39;</span><span class="p">,</span> <span class="s1">&#39;no-cache&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p><strong>Multiple headers at once (pass an array):</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">([</span>
-    <span class="s1">&#39;Cache-Control&#39;</span>             <span class="o">=&gt;</span> <span class="s1">&#39;no-store&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;X-Content-Type-Options&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;nosniff&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;X-Frame-Options&#39;</span>           <span class="o">=&gt;</span> <span class="s1">&#39;DENY&#39;</span><span class="p">,</span>
-<span class="p">]);</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Headers are queued internally and only sent when <code class="docutils literal notranslate"><span class="pre">send()</span></code> is called.</p>
-</div>
-</section>
-<section id="setting-content">
-<h2>Setting Content<a class="headerlink" href="#setting-content" title="Link to this heading"></a></h2>
-<p><strong>Plain or HTML content:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hello&lt;/p&gt;&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p><strong>HTML content (automatically adds ``Content-Type: text/html``):</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Welcome&lt;/h1&gt;&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</section>
-<section id="sending-the-response">
-<h2>Sending the Response<a class="headerlink" href="#sending-the-response" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">send()</span></code> flushes the status code, all queued headers, and the content body:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Custom-Header&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Response body&lt;/p&gt;&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
-<section id="sending-a-json-response">
-<h2>Sending a JSON Response<a class="headerlink" href="#sending-a-json-response" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">send_json()</span></code> automatically sets <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">application/json</span></code>, encodes the data,
-and calls <code class="docutils literal notranslate"><span class="pre">send()</span></code>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span>
-    <span class="s1">&#39;status&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User created&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;id&#39;</span>      <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">,</span>
-<span class="p">]);</span>
-</pre></div>
-</div>
-<p><strong>JSON error response:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">422</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span>
-    <span class="s1">&#39;status&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Validation failed&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;errors&#39;</span>  <span class="o">=&gt;</span> <span class="p">[</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;The email field is required.&#39;</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">]);</span>
-</pre></div>
-</div>
-</section>
-<section id="common-response-patterns">
-<h2>Common Response Patterns<a class="headerlink" href="#common-response-patterns" title="Link to this heading"></a></h2>
-<p><strong>200 OK with JSON data:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
-    <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User not found&#39;</span><span class="p">]);</span>
-    <span class="p">}</span>
-
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>201 Created after insert:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
-    <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">());</span>
-
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">([</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Created&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">]);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>204 No Content after delete:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">204</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>HTML response with custom headers:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">page</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Frame-Options&#39;</span><span class="p">,</span> <span class="s1">&#39;SAMEORIGIN&#39;</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello from LavaLust&lt;/h1&gt;&#39;</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Redirect using a header:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">public</span> <span class="k">function</span> <span class="nf">old_page</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">301</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Location&#39;</span><span class="p">,</span> <span class="s1">&#39;/new-page&#39;</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="method-reference">
-<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<section id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Link to this heading"></a></h2>
+<section id="status-code-methods">
+<h3>Status Code Methods<a class="headerlink" href="#status-code-methods" title="Link to this heading"></a></h3>
+<p>set_status_code()</p>
 <table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Returns</p></th>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_status_code($code)</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Sets the HTTP response status code</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>—</p></td>
+<td><p>HTTP status code (200, 404, 500, etc.)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_header($name,</span> <span class="pre">$value)</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Queues one or more response headers</p></td>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Sets the HTTP status code for the response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">201</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>get_status_code()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> int|null</p>
+<p><strong>Description:</strong> Returns the current HTTP status code.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$code</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">get_status_code</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$code</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Success</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="header-methods">
+<h3>Header Methods<a class="headerlink" href="#header-methods" title="Link to this heading"></a></h3>
+<p>add_header()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_content($content)</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Sets the raw response body</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
+<td><p>string|array</p></td>
+<td><p>—</p></td>
+<td><p>Header name or associative array of headers</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_html_content($content)</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Sets the response body and adds <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">text/html</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$value</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Header value (required if $name is string)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Sends the status code, all queued headers, and the content body</p></td>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Adds one or more HTTP headers to the response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Single header</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+
+<span class="c1">// Multiple headers</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;X-Custom-Header&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Cache-Control&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;no-cache&#39;</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<p>remove_header()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">send_json($data)</span></code></p></td>
-<td><p>void</p></td>
-<td><p>Encodes <code class="docutils literal notranslate"><span class="pre">$data</span></code> as JSON, sets <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">application/json</span></code>, and sends</p></td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Header name to remove</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Removes a previously set header.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">remove_header</span><span class="p">(</span><span class="s1">&#39;X-Debug-Info&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>get_headers()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> array</p>
+<p><strong>Description:</strong> Returns all currently set headers.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$headers</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">get_headers</span><span class="p">();</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$headers</span> <span class="k">as</span> <span class="nv">$name</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&quot;</span><span class="si">$name</span><span class="s2">: </span><span class="si">$value</span><span class="s2">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="content-methods">
+<h3>Content Methods<a class="headerlink" href="#content-methods" title="Link to this heading"></a></h3>
+<p>set_content()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>Response content (string, array, object, etc.)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Sets the response content.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello World&lt;/h1&gt;&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>get_content()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> mixed</p>
+<p><strong>Description:</strong> Returns the current response content.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$content</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">get_content</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$content</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>append_content()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>Content to append</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Appends content to existing response content.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;Hello &#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">append_content</span><span class="p">(</span><span class="s1">&#39;World!&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>set_html_content()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>HTML content</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Sets HTML content and automatically adds Content-Type: text/html header.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>set_json_content()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$data</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>Data to encode as JSON</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$options</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>JSON encoding options (JSON_PRETTY_PRINT, etc.)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Sets JSON content and automatically adds Content-Type: application/json header.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_json_content</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_json_content</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nx">JSON_PRETTY_PRINT</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="response-sending-methods">
+<h3>Response Sending Methods<a class="headerlink" href="#response-sending-methods" title="Link to this heading"></a></h3>
+<p>send()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends the response including status code, headers, and content.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Powered-By&#39;</span><span class="p">,</span> <span class="s1">&#39;LavaLust&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>send_json()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$data</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>Data to encode as JSON</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>200</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$options</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>JSON encoding options</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends a JSON response immediately.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">));</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>send_json_success()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$data</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>NULL</p></td>
+<td><p>Additional data to include</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$message</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘Success’</p></td>
+<td><p>Success message</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>200</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends a standardized JSON success response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Basic success</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">();</span>
+
+<span class="c1">// With data</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">123</span><span class="p">),</span> <span class="s1">&#39;User created&#39;</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>send_json_error()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$message</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Error message</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>400</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$additional_data</span></code></p></td>
+<td><p>array</p></td>
+<td><p>array()</p></td>
+<td><p>Additional error data</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends a standardized JSON error response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Invalid email address&#39;</span><span class="p">,</span> <span class="mi">400</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Not found&#39;</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;user&#39;</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>send_html()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>mixed</p></td>
+<td><p>—</p></td>
+<td><p>HTML content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>200</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends an HTML response immediately.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello World&lt;/h1&gt;&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_html</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">),</span> <span class="mi">200</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>send_text()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Plain text content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>200</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends a plain text response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_text</span><span class="p">(</span><span class="s1">&#39;Operation completed successfully&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>send_xml()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$xml</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>XML content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>200</p></td>
+<td><p>HTTP status code</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends an XML response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$xml</span> <span class="o">=</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot;?&gt;&lt;user&gt;&lt;id&gt;1&lt;/id&gt;&lt;name&gt;John&lt;/name&gt;&lt;/user&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_xml</span><span class="p">(</span><span class="nv">$xml</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>send_no_content()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends a 204 No Content response (no response body).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_no_content</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="redirect-methods">
+<h3>Redirect Methods<a class="headerlink" href="#redirect-methods" title="Link to this heading"></a></h3>
+<p>redirect()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$url</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>URL to redirect to</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$status_code</span></code></p></td>
+<td><p>int</p></td>
+<td><p>302</p></td>
+<td><p>Redirect status code (301, 302, 303, 307, 308)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Redirects the client to another URL.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Temporary redirect</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+
+<span class="c1">// Permanent redirect</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;https://example.com&#39;</span><span class="p">,</span> <span class="mi">301</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>back()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$fallback</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘/’</p></td>
+<td><p>Fallback URL if referrer not available</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Redirects back to the previous page.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Redirect back to previous page</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">back</span><span class="p">();</span>
+
+<span class="c1">// With fallback</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">back</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="file-methods">
+<h3>File Methods<a class="headerlink" href="#file-methods" title="Link to this heading"></a></h3>
+<p>download()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$filepath</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Path to the file to download</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$filename</span></code></p></td>
+<td><p>string</p></td>
+<td><p>NULL</p></td>
+<td><p>Custom filename for download</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$headers</span></code></p></td>
+<td><p>array</p></td>
+<td><p>array()</p></td>
+<td><p>Additional headers to send</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Forces a file download.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Download with original filename</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">download</span><span class="p">(</span><span class="s1">&#39;/path/to/file.pdf&#39;</span><span class="p">);</span>
+
+<span class="c1">// Download with custom filename</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">download</span><span class="p">(</span><span class="s1">&#39;/path/to/file.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;invoice.pdf&#39;</span><span class="p">);</span>
+
+<span class="c1">// Download with additional headers</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">download</span><span class="p">(</span><span class="s1">&#39;/path/to/file.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;report.pdf&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;X-Download-Source&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;system&#39;</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<p>stream()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$callback</span></code></p></td>
+<td><p>callable</p></td>
+<td><p>—</p></td>
+<td><p>Function that outputs content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$headers</span></code></p></td>
+<td><p>array</p></td>
+<td><p>array()</p></td>
+<td><p>Additional headers to send</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Streams content to the browser in chunks.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Stream large file</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">stream</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nv">$handle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">&#39;/path/to/large-file.log&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$handle</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$handle</span><span class="p">,</span> <span class="mi">8192</span><span class="p">);</span>
+        <span class="nb">flush</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$handle</span><span class="p">);</span>
+<span class="p">},</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="cookie-methods">
+<h3>Cookie Methods<a class="headerlink" href="#cookie-methods" title="Link to this heading"></a></h3>
+<p>set_cookie()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Cookie name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$value</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Cookie value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$expiration</span></code></p></td>
+<td><p>int</p></td>
+<td><p>0</p></td>
+<td><p>Expiration time in seconds (0 = session cookie)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$path</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Cookie path</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$domain</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Cookie domain</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$secure</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>FALSE</p></td>
+<td><p>Send cookie only over HTTPS</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$httponly</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>FALSE</p></td>
+<td><p>Accessible only via HTTP (not JavaScript)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$samesite</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘Lax’</p></td>
+<td><p>SameSite policy (Lax, Strict, None)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Sets a cookie to be sent with the response.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Simple cookie</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;theme&#39;</span><span class="p">,</span> <span class="s1">&#39;dark&#39;</span><span class="p">,</span> <span class="mi">86400</span><span class="p">);</span>
+
+<span class="c1">// Secure cookie</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="nv">$token</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">,</span> <span class="s1">&#39;Strict&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>delete_cookie()</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 10.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>—</p></td>
+<td><p>Cookie name to delete</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$path</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Cookie path</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$domain</span></code></p></td>
+<td><p>string</p></td>
+<td><p>‘’</p></td>
+<td><p>Cookie domain</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Deletes a cookie by setting its expiration to the past.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">delete_cookie</span><span class="p">(</span><span class="s1">&#39;theme&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">delete_cookie</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="utility-methods">
+<h3>Utility Methods<a class="headerlink" href="#utility-methods" title="Link to this heading"></a></h3>
+<p>send_headers()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> void</p>
+<p><strong>Description:</strong> Sends all queued headers and cookies without sending content.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;X-Custom&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">send_headers</span><span class="p">();</span>
+<span class="c1">// Continue with custom output</span>
+</pre></div>
+</div>
+<p>clear()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> object (method chaining)</p>
+<p><strong>Description:</strong> Clears all response data (status code, headers, content, cookies).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;Old data&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">clear</span><span class="p">()</span>
+               <span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;New data&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>__toString()</p>
+<p><strong>Parameters:</strong> None</p>
+<p><strong>Returns:</strong> string</p>
+<p><strong>Description:</strong> Magic method that returns response content as string when the object is treated as a string.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="p">;</span> <span class="c1">// Outputs response content</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="complete-examples">
+<h2>Complete Examples<a class="headerlink" href="#complete-examples" title="Link to this heading"></a></h2>
+<p><strong>Basic JSON API Endpoint:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">users</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_model</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$users</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span><span class="nv">$users</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;No users found&#39;</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">create_user</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">validate_user</span><span class="p">(</span><span class="nv">$data</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_model</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">),</span>
+                <span class="s1">&#39;User created successfully&#39;</span><span class="p">,</span>
+                <span class="mi">201</span>
+            <span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Invalid user data&#39;</span><span class="p">,</span> <span class="mi">422</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>File Upload with Response:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">FileController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">upload</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_post</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">405</span><span class="p">)</span>
+                           <span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Method not allowed&#39;</span><span class="p">,</span> <span class="mi">405</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">]);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;filename&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">(),</span>
+                <span class="s1">&#39;size&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">()</span>
+            <span class="p">),</span> <span class="s1">&#39;File uploaded successfully&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">(),</span> <span class="mi">400</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">download</span><span class="p">(</span><span class="nv">$filename</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$filepath</span> <span class="o">=</span> <span class="s1">&#39;uploads/&#39;</span> <span class="o">.</span> <span class="nv">$filename</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$filepath</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">download</span><span class="p">(</span><span class="nv">$filepath</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+                           <span class="o">-&gt;</span><span class="na">send_html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;File not found&lt;/h1&gt;&#39;</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Form Submission with Redirect:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ContactController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">submit</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">is_post</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">back</span><span class="p">();</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+        <span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+        <span class="nv">$message</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">||</span> <span class="k">empty</span><span class="p">(</span><span class="nv">$email</span><span class="p">)</span> <span class="o">||</span> <span class="k">empty</span><span class="p">(</span><span class="nv">$message</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;All fields are required&#39;</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">back</span><span class="p">();</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Send email or save to database</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email_model</span><span class="o">-&gt;</span><span class="na">send_contact</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$email</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
+
+        <span class="c1">// Set success message and redirect</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="s1">&#39;Message sent successfully&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;contact/thank-you&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">thank_you</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;thank_you&#39;</span><span class="p">))</span>
+                       <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>RESTful API with Different Formats:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ProductController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$products</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">product_model</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+        <span class="c1">// Check if client wants JSON</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">wants_json</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span><span class="nv">$products</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;products&#39;</span> <span class="o">=&gt;</span> <span class="nv">$products</span><span class="p">),</span> <span class="k">TRUE</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$product</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">product_model</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$product</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">wants_json</span><span class="p">())</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Product not found&#39;</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+                               <span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;404 - Product Not Found&lt;/h1&gt;&#39;</span><span class="p">)</span>
+                               <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">wants_json</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json_success</span><span class="p">(</span><span class="nv">$product</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;product&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;product&#39;</span> <span class="o">=&gt;</span> <span class="nv">$product</span><span class="p">),</span> <span class="k">TRUE</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Always set appropriate status codes</strong> for responses (200 for success, 404 for not found, 500 for errors)</p></li>
+<li><p><strong>Use JSON helpers</strong> (<code class="docutils literal notranslate"><span class="pre">send_json_success()</span></code> and <code class="docutils literal notranslate"><span class="pre">send_json_error()</span></code>) for consistent API responses</p></li>
+<li><p><strong>Chain methods</strong> for cleaner and more readable code</p></li>
+<li><p><strong>Set secure cookie flags</strong> (<code class="docutils literal notranslate"><span class="pre">secure</span></code>, <code class="docutils literal notranslate"><span class="pre">httponly</span></code>, <code class="docutils literal notranslate"><span class="pre">samesite</span></code>) for sensitive data</p></li>
+<li><p><strong>Use ``send_no_content()``</strong> for DELETE operations that return no data</p></li>
+<li><p><strong>Stream large files</strong> instead of loading them entirely into memory</p></li>
+<li><p><strong>Validate files exist</strong> before attempting to download</p></li>
+<li><p><strong>Use ``back()`` method</strong> for form submissions to improve user experience</p></li>
+<li><p><strong>Clear response</strong> when reusing the response object in complex operations</p></li>
+</ul>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always validate and sanitize data before including it in responses, especially when outputting HTML or JSON that will be rendered by clients.</p>
+</div>
+<p><strong>Security Features:</strong></p>
+<ul class="simple">
+<li><p>Automatic header injection prevention through proper header handling</p></li>
+<li><p>Secure cookie options support (httponly, secure, samesite)</p></li>
+<li><p>Status code validation for redirects (only allows safe codes)</p></li>
+<li><p>File path validation in download method</p></li>
+</ul>
+<p><strong>Security Checklist:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// DO: Set secure cookies for sessions</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">,</span> <span class="nv">$token</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">,</span> <span class="s1">&#39;Strict&#39;</span><span class="p">);</span>
+
+<span class="c1">// DO: Use appropriate status codes</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send_json_error</span><span class="p">(</span><span class="s1">&#39;Access denied&#39;</span><span class="p">);</span>
+
+<span class="c1">// DO: Sanitize output</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$user_input</span><span class="p">,</span> <span class="nx">ENT_QUOTES</span><span class="p">,</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;</span><span class="si">$name</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// DON&#39;T: Output raw user input</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;</span><span class="si">{</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Common Issues and Solutions</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Issue</p></th>
+<th class="head"><p>Possible Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Headers already sent error</p></td>
+<td><p>Ensure no output is sent before calling send() methods. Check for whitespace in PHP files</p></td>
+</tr>
+<tr class="row-odd"><td><p>JSON encoding fails</p></td>
+<td><p>Use json_last_error_msg() to debug. Ensure data contains UTF-8 encoded strings</p></td>
+</tr>
+<tr class="row-even"><td><p>File download not working</p></td>
+<td><p>Verify file path is correct and file is readable. Check PHP memory limits for large files</p></td>
+</tr>
+<tr class="row-odd"><td><p>Redirect not working</p></td>
+<td><p>Ensure no output is sent before redirect. Check that headers haven’t been sent</p></td>
+</tr>
+<tr class="row-even"><td><p>Cookie not being set</p></td>
+<td><p>Verify cookie name has no invalid characters. Check path and domain settings</p></td>
+</tr>
+<tr class="row-odd"><td><p>404 pages not showing</p></td>
+<td><p>Set status code before sending content. Use set_status_code(404) before send()</p></td>
+</tr>
+<tr class="row-even"><td><p>AJAX response not parsed</p></td>
+<td><p>Ensure Content-Type header is set correctly (application/json for JSON responses)</p></td>
 </tr>
 </tbody>
 </table>
@@ -370,7 +1258,7 @@ and calls <code class="docutils literal notranslate"><span class="pre">send()</s
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="request.html" class="btn btn-neutral float-left" title="Request" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="request.html" class="btn btn-neutral float-left" title="Request Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="language.html" class="btn btn-neutral float-right" title="Language Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

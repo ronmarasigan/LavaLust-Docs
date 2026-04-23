@@ -1,225 +1,1041 @@
-Response
-========
+Response Class
+==============
 
-The ``Response`` library also handles HTTP responses — setting status codes, headers, content,
-and sending JSON or HTML back to the client.
+The **Response** class handles HTTP responses, status codes, headers, content types, and provides convenient methods for common response formats like JSON, HTML, XML, file downloads, and redirects.
 
-It is available in controllers via ``$this->response``.
+Loading the Response Class
+--------------------------
 
-Overview
---------
-
-A typical response is built in three steps:
-
-1. Set a status code with ``set_status_code()``
-2. Set headers and content
-3. Call ``send()`` to flush everything to the client
+The Response class is automatically loaded by the LavaLust framework and is accessible via:
 
 .. code-block:: php
 
     <?php
-    $this->response->set_status_code(200);
-    $this->response->set_html_content('<h1>Hello World</h1>');
-    $this->response->send();
+    $this->response;
 
-Setting a Status Code
----------------------
+No manual loading is required as it's available globally.
 
-.. code-block:: php
+Class Methods
+-------------
 
-    <?php
-    $this->response->set_status_code(200);   // OK
-    $this->response->set_status_code(201);   // Created
-    $this->response->set_status_code(400);   // Bad Request
-    $this->response->set_status_code(401);   // Unauthorized
-    $this->response->set_status_code(403);   // Forbidden
-    $this->response->set_status_code(404);   // Not Found
-    $this->response->set_status_code(500);   // Internal Server Error
+Status Code Methods
+~~~~~~~~~~~~~~~~~~~
 
-Adding Headers
---------------
-
-**Single header:**
-
-.. code-block:: php
-
-    <?php
-    $this->response->add_header('Cache-Control', 'no-cache');
-
-**Multiple headers at once (pass an array):**
-
-.. code-block:: php
-
-    <?php
-    $this->response->add_header([
-        'Cache-Control'             => 'no-store',
-        'X-Content-Type-Options'    => 'nosniff',
-        'X-Frame-Options'           => 'DENY',
-    ]);
-
-.. note::
-
-   Headers are queued internally and only sent when ``send()`` is called.
-
-Setting Content
----------------
-
-**Plain or HTML content:**
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_content('<p>Hello</p>');
-
-**HTML content (automatically adds ``Content-Type: text/html``):**
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_html_content('<h1>Welcome</h1>');
-
-Sending the Response
---------------------
-
-``send()`` flushes the status code, all queued headers, and the content body:
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_status_code(200);
-    $this->response->add_header('X-Custom-Header', 'value');
-    $this->response->set_html_content('<p>Response body</p>');
-    $this->response->send();
-
-Sending a JSON Response
------------------------
-
-``send_json()`` automatically sets ``Content-Type: application/json``, encodes the data,
-and calls ``send()``:
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_status_code(200);
-    $this->response->send_json([
-        'status'  => 'success',
-        'message' => 'User created',
-        'id'      => 42,
-    ]);
-
-**JSON error response:**
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_status_code(422);
-    $this->response->send_json([
-        'status'  => 'error',
-        'message' => 'Validation failed',
-        'errors'  => [
-            'email' => 'The email field is required.',
-        ],
-    ]);
-
-Common Response Patterns
-------------------------
-
-**200 OK with JSON data:**
-
-.. code-block:: php
-
-    <?php
-    public function show($id)
-    {
-        $this->call->model('UserModel');
-        $user = $this->UserModel->find($id);
-
-        if (!$user) {
-            $this->response->set_status_code(404);
-            $this->response->send_json(['message' => 'User not found']);
-        }
-
-        $this->response->set_status_code(200);
-        $this->response->send_json($user);
-    }
-
-**201 Created after insert:**
-
-.. code-block:: php
-
-    <?php
-    public function store()
-    {
-        $this->call->model('UserModel');
-        $id = $this->UserModel->insert($this->response->post());
-
-        $this->response->set_status_code(201);
-        $this->response->send_json(['message' => 'Created', 'id' => $id]);
-    }
-
-**204 No Content after delete:**
-
-.. code-block:: php
-
-    <?php
-    public function destroy($id)
-    {
-        $this->call->model('UserModel');
-        $this->UserModel->delete($id);
-
-        $this->response->set_status_code(204);
-        $this->response->send();
-    }
-
-**HTML response with custom headers:**
-
-.. code-block:: php
-
-    <?php
-    public function page()
-    {
-        $this->response->set_status_code(200);
-        $this->response->add_header('X-Frame-Options', 'SAMEORIGIN');
-        $this->response->set_html_content('<h1>Hello from LavaLust</h1>');
-        $this->response->send();
-    }
-
-**Redirect using a header:**
-
-.. code-block:: php
-
-    <?php
-    public function old_page()
-    {
-        $this->response->set_status_code(301);
-        $this->response->add_header('Location', '/new-page');
-        $this->response->send();
-    }
-
-Method Reference
-----------------
+set_status_code()
 
 .. list-table::
    :header-rows: 1
+   :widths: 20 15 10 55
 
-   * - Method
-     - Returns
+   * - Parameter
+     - Type
+     - Default
      - Description
-   * - ``set_status_code($code)``
-     - void
-     - Sets the HTTP response status code
-   * - ``add_header($name, $value)``
-     - void
-     - Queues one or more response headers
-   * - ``set_content($content)``
-     - void
-     - Sets the raw response body
-   * - ``set_html_content($content)``
-     - void
-     - Sets the response body and adds ``Content-Type: text/html``
-   * - ``send()``
-     - void
-     - Sends the status code, all queued headers, and the content body
-   * - ``send_json($data)``
-     - void
-     - Encodes ``$data`` as JSON, sets ``Content-Type: application/json``, and sends
+   * - ``$status_code``
+     - int
+     - —
+     - HTTP status code (200, 404, 500, etc.)
+
+**Returns:** object (method chaining)
+
+**Description:** Sets the HTTP status code for the response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_status_code(404);
+    $this->response->set_status_code(201)->send_json($data);
+
+get_status_code()
+
+**Parameters:** None
+
+**Returns:** int|null
+
+**Description:** Returns the current HTTP status code.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $code = $this->response->get_status_code();
+    if ($code === 200) {
+        // Success
+    }
+
+Header Methods
+~~~~~~~~~~~~~~
+
+add_header()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$name``
+     - string|array
+     - —
+     - Header name or associative array of headers
+   * - ``$value``
+     - string
+     - ''
+     - Header value (required if $name is string)
+
+**Returns:** object (method chaining)
+
+**Description:** Adds one or more HTTP headers to the response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Single header
+    $this->response->add_header('Content-Type', 'application/json');
+    
+    // Multiple headers
+    $this->response->add_header(array(
+        'X-Custom-Header' => 'value',
+        'Cache-Control' => 'no-cache'
+    ));
+
+remove_header()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$name``
+     - string
+     - —
+     - Header name to remove
+
+**Returns:** object (method chaining)
+
+**Description:** Removes a previously set header.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->remove_header('X-Debug-Info');
+
+get_headers()
+
+**Parameters:** None
+
+**Returns:** array
+
+**Description:** Returns all currently set headers.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $headers = $this->response->get_headers();
+    foreach ($headers as $name => $value) {
+        echo "$name: $value";
+    }
+
+Content Methods
+~~~~~~~~~~~~~~~
+
+set_content()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$content``
+     - mixed
+     - —
+     - Response content (string, array, object, etc.)
+
+**Returns:** object (method chaining)
+
+**Description:** Sets the response content.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_content('<h1>Hello World</h1>');
+
+get_content()
+
+**Parameters:** None
+
+**Returns:** mixed
+
+**Description:** Returns the current response content.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $content = $this->response->get_content();
+    echo $content;
+
+append_content()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$content``
+     - mixed
+     - —
+     - Content to append
+
+**Returns:** object (method chaining)
+
+**Description:** Appends content to existing response content.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_content('Hello ');
+    $this->response->append_content('World!');
+
+set_html_content()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$content``
+     - mixed
+     - —
+     - HTML content
+
+**Returns:** object (method chaining)
+
+**Description:** Sets HTML content and automatically adds Content-Type: text/html header.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_html_content($this->call->view('home', $data, TRUE));
+
+set_json_content()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$data``
+     - mixed
+     - —
+     - Data to encode as JSON
+   * - ``$options``
+     - int
+     - 0
+     - JSON encoding options (JSON_PRETTY_PRINT, etc.)
+
+**Returns:** object (method chaining)
+
+**Description:** Sets JSON content and automatically adds Content-Type: application/json header.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $data = array('user' => 'John', 'id' => 1);
+    $this->response->set_json_content($data);
+    $this->response->set_json_content($data, JSON_PRETTY_PRINT);
+
+Response Sending Methods
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+send()
+
+**Parameters:** None
+
+**Returns:** void
+
+**Description:** Sends the response including status code, headers, and content.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_content('Hello World')
+                   ->add_header('X-Powered-By', 'LavaLust')
+                   ->send();
+
+send_json()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$data``
+     - mixed
+     - —
+     - Data to encode as JSON
+   * - ``$status_code``
+     - int
+     - 200
+     - HTTP status code
+   * - ``$options``
+     - int
+     - 0
+     - JSON encoding options
+
+**Returns:** void
+
+**Description:** Sends a JSON response immediately.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_json(array('user' => 'John', 'id' => 1));
+    $this->response->send_json($data, 201);
+
+send_json_success()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$data``
+     - mixed
+     - NULL
+     - Additional data to include
+   * - ``$message``
+     - string
+     - 'Success'
+     - Success message
+   * - ``$status_code``
+     - int
+     - 200
+     - HTTP status code
+
+**Returns:** void
+
+**Description:** Sends a standardized JSON success response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Basic success
+    $this->response->send_json_success();
+    
+    // With data
+    $this->response->send_json_success(array('id' => 123), 'User created', 201);
+
+send_json_error()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$message``
+     - string
+     - —
+     - Error message
+   * - ``$status_code``
+     - int
+     - 400
+     - HTTP status code
+   * - ``$additional_data``
+     - array
+     - array()
+     - Additional error data
+
+**Returns:** void
+
+**Description:** Sends a standardized JSON error response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_json_error('Invalid email address', 400);
+    $this->response->send_json_error('Not found', 404, array('resource' => 'user'));
+
+send_html()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$content``
+     - mixed
+     - —
+     - HTML content
+   * - ``$status_code``
+     - int
+     - 200
+     - HTTP status code
+
+**Returns:** void
+
+**Description:** Sends an HTML response immediately.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_html('<h1>Hello World</h1>');
+    $this->response->send_html($this->call->view('page', $data), 200);
+
+send_text()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$content``
+     - string
+     - —
+     - Plain text content
+   * - ``$status_code``
+     - int
+     - 200
+     - HTTP status code
+
+**Returns:** void
+
+**Description:** Sends a plain text response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_text('Operation completed successfully');
+
+send_xml()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$xml``
+     - string
+     - —
+     - XML content
+   * - ``$status_code``
+     - int
+     - 200
+     - HTTP status code
+
+**Returns:** void
+
+**Description:** Sends an XML response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $xml = '<?xml version="1.0"?><user><id>1</id><name>John</name></user>';
+    $this->response->send_xml($xml);
+
+send_no_content()
+
+**Parameters:** None
+
+**Returns:** void
+
+**Description:** Sends a 204 No Content response (no response body).
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_no_content();
+
+Redirect Methods
+~~~~~~~~~~~~~~~~
+
+redirect()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$url``
+     - string
+     - —
+     - URL to redirect to
+   * - ``$status_code``
+     - int
+     - 302
+     - Redirect status code (301, 302, 303, 307, 308)
+
+**Returns:** void
+
+**Description:** Redirects the client to another URL.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Temporary redirect
+    $this->response->redirect('dashboard');
+    
+    // Permanent redirect
+    $this->response->redirect('https://example.com', 301);
+
+back()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$fallback``
+     - string
+     - '/'
+     - Fallback URL if referrer not available
+
+**Returns:** void
+
+**Description:** Redirects back to the previous page.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Redirect back to previous page
+    $this->response->back();
+    
+    // With fallback
+    $this->response->back('home');
+
+File Methods
+~~~~~~~~~~~~
+
+download()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$filepath``
+     - string
+     - —
+     - Path to the file to download
+   * - ``$filename``
+     - string
+     - NULL
+     - Custom filename for download
+   * - ``$headers``
+     - array
+     - array()
+     - Additional headers to send
+
+**Returns:** void
+
+**Description:** Forces a file download.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Download with original filename
+    $this->response->download('/path/to/file.pdf');
+    
+    // Download with custom filename
+    $this->response->download('/path/to/file.pdf', 'invoice.pdf');
+    
+    // Download with additional headers
+    $this->response->download('/path/to/file.pdf', 'report.pdf', array(
+        'X-Download-Source' => 'system'
+    ));
+
+stream()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$callback``
+     - callable
+     - —
+     - Function that outputs content
+   * - ``$headers``
+     - array
+     - array()
+     - Additional headers to send
+
+**Returns:** void
+
+**Description:** Streams content to the browser in chunks.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Stream large file
+    $this->response->stream(function() {
+        $handle = fopen('/path/to/large-file.log', 'rb');
+        while (!feof($handle)) {
+            echo fread($handle, 8192);
+            flush();
+        }
+        fclose($handle);
+    }, array('Content-Type' => 'text/plain'));
+
+Cookie Methods
+~~~~~~~~~~~~~~
+
+set_cookie()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$name``
+     - string
+     - —
+     - Cookie name
+   * - ``$value``
+     - string
+     - ''
+     - Cookie value
+   * - ``$expiration``
+     - int
+     - 0
+     - Expiration time in seconds (0 = session cookie)
+   * - ``$path``
+     - string
+     - ''
+     - Cookie path
+   * - ``$domain``
+     - string
+     - ''
+     - Cookie domain
+   * - ``$secure``
+     - boolean
+     - FALSE
+     - Send cookie only over HTTPS
+   * - ``$httponly``
+     - boolean
+     - FALSE
+     - Accessible only via HTTP (not JavaScript)
+   * - ``$samesite``
+     - string
+     - 'Lax'
+     - SameSite policy (Lax, Strict, None)
+
+**Returns:** object (method chaining)
+
+**Description:** Sets a cookie to be sent with the response.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // Simple cookie
+    $this->response->set_cookie('theme', 'dark', 86400);
+    
+    // Secure cookie
+    $this->response->set_cookie('auth', $token, 3600, '/', '', TRUE, TRUE, 'Strict');
+
+delete_cookie()
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$name``
+     - string
+     - —
+     - Cookie name to delete
+   * - ``$path``
+     - string
+     - ''
+     - Cookie path
+   * - ``$domain``
+     - string
+     - ''
+     - Cookie domain
+
+**Returns:** object (method chaining)
+
+**Description:** Deletes a cookie by setting its expiration to the past.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->delete_cookie('theme');
+    $this->response->delete_cookie('session', '/');
+
+Utility Methods
+~~~~~~~~~~~~~~~
+
+send_headers()
+
+**Parameters:** None
+
+**Returns:** void
+
+**Description:** Sends all queued headers and cookies without sending content.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->add_header('X-Custom', 'value')
+                   ->send_headers();
+    // Continue with custom output
+
+clear()
+
+**Parameters:** None
+
+**Returns:** object (method chaining)
+
+**Description:** Clears all response data (status code, headers, content, cookies).
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_content('Old data')
+                   ->clear()
+                   ->set_content('New data')
+                   ->send();
+
+__toString()
+
+**Parameters:** None
+
+**Returns:** string
+
+**Description:** Magic method that returns response content as string when the object is treated as a string.
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    echo $this->response; // Outputs response content
+
+Complete Examples
+-----------------
+
+**Basic JSON API Endpoint:**
+
+.. code-block:: php
+
+    <?php
+    class ApiController extends Controller {
+        
+        public function users() {
+            $users = $this->user_model->get_all();
+            
+            if ($users) {
+                $this->response->send_json_success($users);
+            } else {
+                $this->response->send_json_error('No users found', 404);
+            }
+        }
+        
+        public function create_user() {
+            $data = $this->request->post();
+            
+            if ($this->validate_user($data)) {
+                $id = $this->user_model->create($data);
+                $this->response->send_json_success(
+                    array('id' => $id),
+                    'User created successfully',
+                    201
+                );
+            } else {
+                $this->response->send_json_error('Invalid user data', 422);
+            }
+        }
+    }
+
+**File Upload with Response:**
+
+.. code-block:: php
+
+    <?php
+    class FileController extends Controller {
+        
+        public function upload() {
+            if ( ! $this->request->is_post()) {
+                $this->response->set_status_code(405)
+                               ->send_json_error('Method not allowed', 405);
+                return;
+            }
+            
+            $this->call->library('upload', $_FILES['file']);
+            $this->upload->set_dir('uploads')->allowed_extensions(['jpg', 'png']);
+            
+            if ($this->upload->do_upload()) {
+                $this->response->send_json_success(array(
+                    'filename' => $this->upload->get_filename(),
+                    'size' => $this->upload->get_size()
+                ), 'File uploaded successfully');
+            } else {
+                $this->response->send_json_error($this->upload->get_errors(), 400);
+            }
+        }
+        
+        public function download($filename) {
+            $filepath = 'uploads/' . $filename;
+            
+            if (file_exists($filepath)) {
+                $this->response->download($filepath);
+            } else {
+                $this->response->set_status_code(404)
+                               ->send_html('<h1>File not found</h1>', 404);
+            }
+        }
+    }
+
+**Form Submission with Redirect:**
+
+.. code-block:: php
+
+    <?php
+    class ContactController extends Controller {
+        
+        public function submit() {
+            if ( ! $this->request->is_post()) {
+                $this->response->back();
+                return;
+            }
+            
+            $name = $this->request->post('name');
+            $email = $this->request->post('email');
+            $message = $this->request->post('message');
+            
+            if (empty($name) || empty($email) || empty($message)) {
+                $this->session->set_flashdata('error', 'All fields are required');
+                $this->response->back();
+                return;
+            }
+            
+            // Send email or save to database
+            $this->email_model->send_contact($name, $email, $message);
+            
+            // Set success message and redirect
+            $this->session->set_flashdata('success', 'Message sent successfully');
+            $this->response->redirect('contact/thank-you');
+        }
+        
+        public function thank_you() {
+            $this->response->set_html_content($this->call->view('thank_you'))
+                           ->send();
+        }
+    }
+
+**RESTful API with Different Formats:**
+
+.. code-block:: php
+
+    <?php
+    class ProductController extends Controller {
+        
+        public function index() {
+            $products = $this->product_model->get_all();
+            
+            // Check if client wants JSON
+            if ($this->request->wants_json()) {
+                $this->response->send_json_success($products);
+            } else {
+                $this->response->set_html_content(
+                    $this->call->view('products', array('products' => $products), TRUE)
+                )->send();
+            }
+        }
+        
+        public function show($id) {
+            $product = $this->product_model->find($id);
+            
+            if ( ! $product) {
+                if ($this->request->wants_json()) {
+                    $this->response->send_json_error('Product not found', 404);
+                } else {
+                    $this->response->set_status_code(404)
+                                   ->set_html_content('<h1>404 - Product Not Found</h1>')
+                                   ->send();
+                }
+                return;
+            }
+            
+            if ($this->request->wants_json()) {
+                $this->response->send_json_success($product);
+            } else {
+                $this->response->set_html_content(
+                    $this->call->view('product', array('product' => $product), TRUE)
+                )->send();
+            }
+        }
+    }
+
+Best Practices
+---------------
+
+- **Always set appropriate status codes** for responses (200 for success, 404 for not found, 500 for errors)
+- **Use JSON helpers** (``send_json_success()`` and ``send_json_error()``) for consistent API responses
+- **Chain methods** for cleaner and more readable code
+- **Set secure cookie flags** (``secure``, ``httponly``, ``samesite``) for sensitive data
+- **Use ``send_no_content()``** for DELETE operations that return no data
+- **Stream large files** instead of loading them entirely into memory
+- **Validate files exist** before attempting to download
+- **Use ``back()`` method** for form submissions to improve user experience
+- **Clear response** when reusing the response object in complex operations
+
+Security Considerations
+------------------------
+
+.. warning::
+
+    Always validate and sanitize data before including it in responses, especially when outputting HTML or JSON that will be rendered by clients.
+
+**Security Features:**
+
+- Automatic header injection prevention through proper header handling
+- Secure cookie options support (httponly, secure, samesite)
+- Status code validation for redirects (only allows safe codes)
+- File path validation in download method
+
+**Security Checklist:**
+
+.. code-block:: php
+
+    <?php
+    // DO: Set secure cookies for sessions
+    $this->response->set_cookie('session', $token, 3600, '/', '', TRUE, TRUE, 'Strict');
+    
+    // DO: Use appropriate status codes
+    $this->response->set_status_code(403)->send_json_error('Access denied');
+    
+    // DO: Sanitize output
+    $name = htmlspecialchars($user_input, ENT_QUOTES, 'UTF-8');
+    $this->response->set_html_content("<h1>$name</h1>");
+    
+    // DON'T: Output raw user input
+    $this->response->set_html_content("<h1>{$_POST['name']}</h1>");
+
+Troubleshooting
+-----------------
+
+.. list-table:: Common Issues and Solutions
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Issue
+     - Possible Solution
+   * - Headers already sent error
+     - Ensure no output is sent before calling send() methods. Check for whitespace in PHP files
+   * - JSON encoding fails
+     - Use json_last_error_msg() to debug. Ensure data contains UTF-8 encoded strings
+   * - File download not working
+     - Verify file path is correct and file is readable. Check PHP memory limits for large files
+   * - Redirect not working
+     - Ensure no output is sent before redirect. Check that headers haven't been sent
+   * - Cookie not being set
+     - Verify cookie name has no invalid characters. Check path and domain settings
+   * - 404 pages not showing
+     - Set status code before sending content. Use set_status_code(404) before send()
+   * - AJAX response not parsed
+     - Ensure Content-Type header is set correctly (application/json for JSON responses)
