@@ -1,19 +1,20 @@
 Cache Class
 ===========
 
-LavaLust provides a simple **caching system** that can boost the performance of your application.  
-You can cache **libraries, models, objects, or array data** to avoid expensive recomputation or repeated database queries.
+LavaLust provides a powerful **caching system** that can significantly boost your application's performance.  
+You can cache **libraries, models, objects, arrays, or any serializable data** to avoid expensive recomputation or repeated database queries.
+
+The caching system stores serialized data with metadata including creation time, expiration time, and dependencies to ensure cache integrity.
 
 Loading the Cache Library
----------------------------
+-------------------------
 
 Before using the cache features, load it via:
 
 .. code-block:: php
-    
-    <?php
 
-   $this->call->library('cache');
+    <?php
+    $this->call->library('cache');
 
 Cache Directory Configuration
 ------------------------------
@@ -23,26 +24,84 @@ You can specify the cache storage directory by changing the configuration in you
 .. code-block:: php
 
     <?php
+    $config['cache_dir'] = 'runtime/cache/';
+    $config['cache_default_expires'] = 0; // Default expiration in minutes (0 = no expiration)
 
-   $config['cache_dir'] = 'runtime/cache/';
+**Note:** Ensure the specified folder is **writable** by the web server. The system will attempt to create the directory if it doesn't exist.
 
-**Note:** Ensure the specified folder is **writable** by the web server.
+Class Methods
+-------------
+
+.. list-table:: Cache Class Methods
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Method
+     - Parameters
+     - Return
+     - Description
+   * - ``library()``
+     - ``$library`` (string), ``$method`` (string), ``$arguments`` (array, optional), ``$expires`` (int, optional)
+     - mixed
+     - Calls a library's cached result or creates new cache. If expiration is -1, deletes the cache.
+   * - ``model()``
+     - ``$model`` (string), ``$method`` (string), ``$arguments`` (array, optional), ``$expires`` (int, optional)
+     - mixed
+     - Calls a model's cached result or creates new cache. If expiration is -1, deletes the cache.
+   * - ``get()``
+     - ``$filename`` (string, optional), ``$use_expires`` (bool, optional)
+     - mixed or FALSE
+     - Retrieves a cache file. Returns FALSE if cache doesn't exist or is expired.
+   * - ``write()``
+     - ``$contents`` (mixed, optional), ``$filename`` (string, optional), ``$expires`` (int, optional), ``$dependencies`` (array, optional)
+     - void
+     - Writes data to a cache file with optional expiration and dependencies.
+   * - ``delete()``
+     - ``$filename`` (string, optional)
+     - void
+     - Deletes a specific cache file.
+   * - ``delete_group()``
+     - ``$group`` (string)
+     - void or FALSE
+     - Deletes all cache files whose names start with the given group prefix.
+   * - ``delete_all()``
+     - ``$dirname`` (string, optional)
+     - void or FALSE
+     - Deletes all cache files or files in a specific subdirectory.
+   * - ``set_dependencies()``
+     - ``$dependencies`` (mixed)
+     - object (method chaining)
+     - Sets dependencies for the next cache write operation.
+   * - ``add_dependencies()``
+     - ``$dependencies`` (mixed)
+     - object (method chaining)
+     - Adds one or more dependencies to existing dependencies.
+   * - ``get_dependencies()``
+     - None
+     - array
+     - Returns the current dependencies array.
+   * - ``get_created()``
+     - None
+     - int or NULL
+     - Returns the cache creation timestamp.
 
 Caching a Model
 -----------------
 
-You can cache method results from models to improve performance.
+You can cache method results from models to improve performance. The cache key is automatically generated based on the model name, method name, and serialized arguments.
 
 **Example:**
 
 .. code-block:: php
 
     <?php
-
-   $this->cache->model('news_model', 'get_news', array($param1, $param2), 120);
+    // Cache for 120 minutes (2 hours)
+    $this->cache->model('news_model', 'get_news', array($param1, $param2), 120);
 
 In the example above, the ``get_news()`` method of the ``news_model`` class will be cached for **120 minutes**.  
 The fourth parameter sets the expiration time in **minutes**.
+
+If the method is called again within the cache period, the cached result is returned instead of executing the database query again.
 
 Caching a Library
 -------------------
@@ -54,33 +113,78 @@ Similar to models, you can also cache library method results.
 .. code-block:: php
 
     <?php
+    // Cached indefinitely (no expiration)
+    $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla));
+    
+    // Cached for 60 minutes
+    $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla), 60);
 
-   $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla));
-
-If the fourth parameter (expiration time) is **not specified**, it will be cached **indefinitely**.  
+If the fourth parameter (expiration time) is **not specified**, it will be cached **indefinitely** (or until the default expiration if configured).  
 This behavior is the same for caching models.
 
 Caching Array or Object Data
 ------------------------------
 
-You can directly store arbitrary data (arrays, objects, strings, etc.) into the cache.
+You can directly store arbitrary data (arrays, objects, strings, integers, etc.) into the cache using the ``write()`` method.
 
 **Example:**
 
 .. code-block:: php
 
     <?php
+    $data = array(
+        'id' => 1,
+        'username' => 'acidcore',
+        'email' => 'user@example.com'
+    );
+    
+    // Storing the data in a cache with the name "user_profile"
+    $this->cache->write($data, 'user_profile');
+    
+    // Storing with expiration (30 minutes)
+    $this->cache->write($data, 'user_profile', 30);
+    
+    // Retrieving a cache by its name
+    $data = $this->cache->get('user_profile');
+    
+    if ($data !== FALSE) {
+        echo $data['username']; // Outputs: acidcore
+    }
 
-   $data = array(
-       'id' => 1,
-       'username' => 'acidcore'
-   );
+**Cache with Dependencies:**
 
-   // Storing the data in a cache with the name "cached_name"
-   $this->cache->write($data, 'cached_name');
+You can create cache dependencies to automatically invalidate related caches:
 
-   // Retrieving a cache by its name "cached_name"
-   $data = $this->cache->get('cached_name');
+.. code-block:: php
+
+    <?php
+    // Set dependencies before writing
+    $this->cache->set_dependencies('main_config');
+    $this->cache->write($data, 'user_profile', 60);
+    
+    // Or add multiple dependencies
+    $this->cache->add_dependencies('theme_settings');
+    $this->cache->add_dependencies('user_roles');
+    $this->cache->write($data, 'dashboard_data', 120);
+
+When a dependency cache is updated or deleted, any cache that depends on it will automatically be invalidated.
+
+Retrieving Cache with Metadata
+--------------------------------
+
+You can access cache metadata after retrieving a cache entry:
+
+.. code-block:: php
+
+    <?php
+    $data = $this->cache->get('user_profile');
+    
+    if ($data !== FALSE) {
+        // Access cache metadata
+        $created = $this->cache->get_created(); // Unix timestamp when cache was created
+        $dependencies = $this->cache->get_dependencies(); // Array of dependencies
+        // Use your data...
+    }
 
 Deleting a Specific Cache Entry
 ---------------------------------
@@ -90,10 +194,9 @@ Deleting a Specific Cache Entry
 .. code-block:: php
 
     <?php
+    $this->cache->delete('user_profile');
 
-   $this->cache->delete('cached_name');
-
-The above code will find and delete the cache file named ``cached_name``.
+The above code will find and delete the cache file named ``user_profile``.
 
 Deleting All Cache
 --------------------
@@ -103,10 +206,17 @@ Deleting All Cache
 .. code-block:: php
 
     <?php
-
-   $this->cache->delete_all();
+    $this->cache->delete_all();
 
 This will delete **all cache files** stored inside the cache directory.
+
+**Delete specific subdirectory:**
+
+.. code-block:: php
+
+    <?php
+    // Delete all caches in the 'temp' subdirectory
+    $this->cache->delete_all('temp');
 
 Deleting Cache by Group
 -------------------------
@@ -118,12 +228,12 @@ You can delete multiple cache files using a **group prefix**.
 .. code-block:: php
 
     <?php
+    $this->cache->write($data, 'nav_header');
+    $this->cache->write($data, 'nav_footer');
+    $this->cache->write($data, 'nav_sidebar');
+    $this->cache->delete_group('nav_');
 
-   $this->cache->write($data, 'nav_header');
-   $this->cache->write($data, 'nav_footer');
-   $this->cache->delete_group('nav_');
-
-This will delete all cache entries whose names start with ``nav_``.
+This will delete all cache entries whose names start with ``nav_`` (e.g., ``nav_header``, ``nav_footer``, ``nav_sidebar``).
 
 Deleting Cached Model or Library
 ----------------------------------
@@ -135,21 +245,148 @@ To delete an existing cached model or library method, pass **-1** as the expirat
 .. code-block:: php
 
     <?php
+    // Delete cached version of get_news method
+    $this->cache->model('news_model', 'get_news', array($param1, $param2), -1);
+    
+    // Delete cached library method
+    $this->cache->library('some_library', 'calculate_something', array($foo, $bar), -1);
 
-   $this->cache->model('news', 'get_news', array($param1, $param2), -1);
-
-This will remove the cached version of the ``get_news()`` method from the ``news`` model.  
-This also works for library classes using ``$this->cache->library()``.
+This will remove the cached version of the specified method. The next call will execute the actual method and recache the result.
 
 .. note::
 
-    Model or library cache entries will be stored **indefinitely** if you do **not** specify the expiration time. The expiration time is set as the **fourth parameter** in both ``$this->cache->model()`` and ``$this->cache->library()``.
+    Model or library cache entries will be stored **indefinitely** if you do **not** specify the expiration time or if the default expiration is set to 0. The expiration time is set as the **fourth parameter** in both ``$this->cache->model()`` and ``$this->cache->library()``.
+
+Method Parameters Reference
+----------------------------
+
+.. list-table:: library() and model() Parameters
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$library`` / ``$model``
+     - string
+     - —
+     - The name of the library or model class to cache
+   * - ``$method``
+     - string
+     - —
+     - The method name to call and cache
+   * - ``$arguments``
+     - array
+     - array()
+     - Optional array of arguments to pass to the method
+   * - ``$expires``
+     - int
+     - NULL
+     - Expiration time in minutes. Use -1 to delete cache, NULL for indefinite
+
+.. list-table:: write() Parameters
+   :header-rows: 1
+   :widths: 20 15 10 55
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``$contents``
+     - mixed
+     - NULL
+     - The data to cache (array, object, string, etc.)
+   * - ``$filename``
+     - string
+     - NULL
+     - Unique cache file name
+   * - ``$expires``
+     - int
+     - NULL
+     - Expiration time in minutes (NULL uses default)
+   * - ``$dependencies``
+     - array
+     - array()
+     - Array of cache names this cache depends on
+
+How Cache Keys Are Generated
+-----------------------------
+
+For model and library caching, the cache filename is automatically generated using:
+
+.. code-block:: text
+
+    {model/library_name}/{sha1_hash_of_method_and_serialized_arguments}
+
+For example, calling:
+
+.. code-block:: php
+
+    <?php
+    $this->cache->model('news_model', 'get_news', array(5, 'active'), 60);
+
+Might generate a cache file like: ``news_model/5f4dcc3b5aa765d61d8327deb882cf99.cache``
+
+This ensures unique cache keys for different parameter combinations.
 
 Best Practices
 ----------------
 
-- Use **clear and unique cache names** to avoid conflicts  
-- Always **invalidate or clear related cache** after updating database records  
-- Use **group prefixes** to simplify cache invalidation (e.g., `user_`, `post_`)  
-- Avoid caching **sensitive or personal user data**  
-- Ensure the cache directory is **writable** and **secured from public access**
+- Use **clear and unique cache names** to avoid conflicts. Namespace your caches (e.g., ``user_123_profile``, ``product_listing_page2``)
+- Always **invalidate or clear related cache** after updating database records to prevent stale data
+- Use **group prefixes** to simplify cache invalidation (e.g., `user_`, `post_`, `product_`)
+- Avoid caching **sensitive or personal user data** such as passwords, credit card numbers, or personal identification information
+- Ensure the cache directory is **writable** and **secured from public access** (place it outside the web root if possible)
+- Set **appropriate expiration times** based on how frequently your data changes:
+  
+  - Static configuration: indefinite or very long (days/weeks)
+  - Frequently changing data: short (minutes/hours)
+  - User-specific data: match session duration
+
+- Use **dependencies** to create smart cache invalidation chains when multiple caches are related
+- Monitor **cache directory size** and implement regular cleanup for expired caches
+- Consider **cache granularity** - caching smaller, reusable pieces is often better than caching large, monolithic blocks
+
+Performance Considerations
+----------------------------
+
+- The caching system uses file-based storage with serialization, which is suitable for small to medium applications
+- For high-traffic applications, consider implementing a memory-based cache (e.g., Redis, Memcached) as a complement
+- Cache files are locked during read/write operations to prevent corruption in concurrent requests
+- The system automatically handles subdirectory creation for organized cache storage
+
+Troubleshooting
+-----------------
+
+.. list-table:: Common Issues and Solutions
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Issue
+     - Possible Solution
+   * - Cache not working
+     - Check if cache directory exists and is writable by the web server
+   * - Stale data being served
+     - Verify expiration times and dependency chains are correctly configured
+   * - Cache files not being deleted
+     - Check file permissions on the cache directory (needs write permission)
+   * - ``get()`` returns FALSE unexpectedly
+     - Cache may have expired, doesn't exist, or dependencies were invalidated - handle gracefully with fallback logic
+   * - Performance degradation
+     - Monitor cache directory size; consider implementing a cache cleanup routine
+
+**Example with error handling:**
+
+.. code-block:: php
+
+    <?php
+    $data = $this->cache->get('user_profile');
+    
+    if ($data === FALSE) {
+        // Cache miss - generate fresh data
+        $data = $this->user_model->get_profile($user_id);
+        $this->cache->write($data, 'user_profile', 30);
+    }
+    
+    return $data;
