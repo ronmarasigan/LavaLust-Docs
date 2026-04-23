@@ -1,7 +1,7 @@
 Response
 ========
 
-The ``Io`` library also handles HTTP responses — setting status codes, headers, content,
+The ``Response`` library also handles HTTP responses — setting status codes, headers, content,
 and sending JSON or HTML back to the client.
 
 It is available in controllers via ``$this->io``.

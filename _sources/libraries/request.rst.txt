@@ -1,7 +1,7 @@
 Request
 =======
 
-The ``Io`` library provides access to HTTP request data including ``POST``, ``GET``, cookies,
+The ``Request`` library provides access to HTTP request data including ``POST``, ``GET``, cookies,
 server variables, IP addresses, and request method detection.
 
 It is available in controllers via ``$this->io``.
