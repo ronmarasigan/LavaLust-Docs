@@ -1,27 +1,12 @@
 /* RTD Theme ---------------------------------------------------------------- */
 
 @import 'theme.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 
 /* General ------------------------------------------------------------------ */
 
 body, p, legend {
-	font-family: 'Inter', sans-serif;
-}
-
-/* smoother feel */
-* {
-  transition: all 0.15s ease;
-}
-
-/* better spacing */
-p {
-  margin: 1em 0;
-}
-
-/* cleaner lists */
-ul li {
-  margin: 6px 0;
+	font-family: "Raleway","Helvetica", "Arial", sans-serif;
 }
 
 .wy-nav-content {

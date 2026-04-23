@@ -1,0 +1,80 @@
+/* Top navigation bar and sidebar */
+.wy-side-nav-search, .wy-nav-top {
+    background: #dd4814;
+}
+.wy-side-nav-search a,
+.wy-side-nav-search a:visited,
+.wy-side-nav-search a:active,
+.wy-side-nav-search a:hover {
+    color: #fff !important;
+}
+
+/* Breadcrumb (like "Libraries / Cache Library") */
+.wy-breadcrumbs a {
+    color: #dd4814;
+}
+
+.wy-breadcrumbs a:visited {
+    color: #dd4814;
+}
+
+.wy-breadcrumbs a:active {
+    color: #dd4814;
+    background-color: #fff;
+}
+.wy-breadcrumbs a:hover {
+    color: inherit;
+}
+
+/* Sidebar link hover - keep original text color (no color change) */
+.wy-menu-vertical a:hover,
+.wy-menu-vertical a:focus {
+    background: #494848; /* light gray highlight */
+    color: #fff; /* keep text dark */
+    text-decoration: none;
+}
+
+/* Sidebar link active (clicked) - highlight background */
+.wy-menu-vertical a:active {
+    background: #dd4814;
+    color: #fff; /* make text white when active */
+}
+
+.rst-content a:visited {
+    color: #dd4814;
+}
+
+.rst-content a:active {
+    background: none;
+    color: #fff;
+}
+
+/* Make main content wider */
+.wy-nav-content {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Optional: remove padding */
+.document {
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+}
+
+/* Links in content area */
+a {
+    color: #dd4814;
+    text-decoration: none;
+    padding: 2px 4px; /* optional: gives a little button feel */
+}
+
+a:hover {
+    color: inherit; /* no color change on hover */
+}
+
+a:active {
+    background: #dd4814;
+    color: #fff; /* white text when clicked */
+}
+
+
