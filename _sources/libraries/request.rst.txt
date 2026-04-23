@@ -4,13 +4,13 @@ Request
 The ``Request`` library provides access to HTTP request data including ``POST``, ``GET``, cookies,
 server variables, IP addresses, and request method detection.
 
-It is available in controllers via ``$this->io``.
+It is available in controllers via ``$this->request``.
 
 CSRF Protection
 ---------------
 
 If ``csrf_protection`` is enabled in your config, ``csrf_validate()`` runs automatically
-on every request when the ``Io`` class is instantiated. No manual call is needed.
+on every request when the ``Request`` class is instantiated. No manual call is needed.
 
 .. code-block:: php
 

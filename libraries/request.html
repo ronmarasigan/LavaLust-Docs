@@ -152,11 +152,11 @@
 <h1>Request<a class="headerlink" href="#request" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">Request</span></code> library provides access to HTTP request data including <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">GET</span></code>, cookies,
 server variables, IP addresses, and request method detection.</p>
-<p>It is available in controllers via <code class="docutils literal notranslate"><span class="pre">$this-&gt;io</span></code>.</p>
+<p>It is available in controllers via <code class="docutils literal notranslate"><span class="pre">$this-&gt;request</span></code>.</p>
 <section id="csrf-protection">
 <h2>CSRF Protection<a class="headerlink" href="#csrf-protection" title="Link to this heading"></a></h2>
 <p>If <code class="docutils literal notranslate"><span class="pre">csrf_protection</span></code> is enabled in your config, <code class="docutils literal notranslate"><span class="pre">csrf_validate()</span></code> runs automatically
-on every request when the <code class="docutils literal notranslate"><span class="pre">Io</span></code> class is instantiated. No manual call is needed.</p>
+on every request when the <code class="docutils literal notranslate"><span class="pre">Request</span></code> class is instantiated. No manual call is needed.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/config/config.php</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;csrf_protection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
