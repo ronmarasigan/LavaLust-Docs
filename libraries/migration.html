@@ -7,9 +7,9 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Migration Class &mdash; LavaLust Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7736b493" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=113f7da8" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -29,26 +29,49 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+<a href="../index.html" class="logo">
+  
+</a>
 
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            LavaLust
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../general/welcome.html">What is LavaLust?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/license.html">MIT License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/changelog.html">LavaLust Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/guide.html">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/before_action.html">before_action Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/middlewares.html">Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database/database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/query_builder.html">Database Query Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Libraries</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="api.html">API Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
@@ -61,15 +84,7 @@
 <li class="toctree-l2"><a class="reference internal" href="request.html">Request</a></li>
 <li class="toctree-l2"><a class="reference internal" href="response.html">Response</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language Class</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Migration Class</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#enabling-and-loading-migration">Enabling and Loading Migration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#controller-example">Controller Example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#routes-example">Routes Example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-a-migration-file">Creating a Migration File</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#running-migrations">Running Migrations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#available-methods-reference">Available Methods Reference</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Migration Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="session.html">Session Class</a></li>
@@ -79,8 +94,24 @@
 <li class="toctree-l2"><a class="reference internal" href="ember.html#module-Ember_registrar">Ember Registrar</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -189,7 +220,7 @@ It provides a structured and versioned way to track and apply changes (such as c
 <section id="creating-a-migration-file">
 <h2>Creating a Migration File<a class="headerlink" href="#creating-a-migration-file" title="Link to this heading"></a></h2>
 <p>Visit the following URL to create a new migration file:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">http://localhost/project_name/create-migration/create_users_table</span>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">create</span><span class="o">-</span><span class="nx">migration</span><span class="o">/</span><span class="nx">create_users_table</span>
 </pre></div>
 </div>
 <p>This will generate a file like <code class="docutils literal notranslate"><span class="pre">app/migrations/001_create_users_table.php</span></code>.</p>
@@ -235,13 +266,13 @@ It provides a structured and versioned way to track and apply changes (such as c
 <ul>
 <li><p><strong>Run all pending migrations</strong></p>
 <p>Visit:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">http://localhost/project_name/migrate</span>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">migrate</span>
 </pre></div>
 </div>
 </li>
 <li><p><strong>Rollback the last migration batch</strong></p>
 <p>Visit:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">http://localhost/project_name/rollback</span>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">rollback</span>
 </pre></div>
 </div>
 </li>
@@ -302,7 +333,7 @@ and a <code class="docutils literal notranslate"><span class="pre">down()</span>
   </div>
   <script>
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.Navigation.enable(false);
       });
   </script> 
 
