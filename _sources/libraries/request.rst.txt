@@ -1,13 +1,11 @@
-Response
-=========
+Request
+========
 
-The ``Response`` class provides a fluent interface for building and sending HTTP responses.  
-It handles status codes, headers, cookies, content types, redirects, and common response formats  
-such as JSON, HTML, plain text, and XML.
+The ``Request`` class provides a clean, unified interface for reading incoming HTTP request data  
+including input variables, headers, cookies, uploaded files, and URL information.  
+CSRF protection is automatically applied when enabled in your configuration.
 
-The ``Response`` instance is available inside your controllers via ``$this->response``.
-
-All setter methods return ``$this``, so calls can be chained together before a final ``send()``.
+The ``Request`` instance is available inside your controllers via ``$this->request``.
 
 
 .. contents:: Sections
@@ -15,291 +13,310 @@ All setter methods return ``$this``, so calls can be chained together before a f
    :depth: 1
 
 
-Status Codes
--------------
+Input Retrieval
+----------------
 
-Set or retrieve the HTTP status code for the response.
+These methods read values submitted with the request — from query strings, form bodies, or raw request bodies.
 
-.. code-block:: php
+**Retrieving a single value**
 
-    <?php
-    // Set a status code
-    $this->response->set_status_code(404);
-
-    // Get the current status code
-    $code = $this->response->get_status_code(); // 404
-
-Status codes can be chained with other methods:
+Use ``input()`` to read a value from any source (GET, POST, or raw body) in one call:
 
 .. code-block:: php
 
     <?php
-    $this->response
-        ->set_status_code(422)
-        ->set_json_content(['error' => 'Validation failed'])
-        ->send();
+    // Returns the value of 'username' from any input source
+    $username = $this->request->input('username');
+
+    // With a default value if the key is missing
+    $page = $this->request->input('page', 1);
+
+**Retrieving typed values**
+
+Cast input directly to a specific type to avoid manual casting:
+
+.. code-block:: php
+
+    <?php
+    $id      = $this->request->integer('id');          // int
+    $price   = $this->request->float('price');         // float
+    $active  = $this->request->boolean('active');      // bool
+    $name    = $this->request->string('name');         // trimmed string
+
+**Retrieving by HTTP method**
+
+.. code-block:: php
+
+    <?php
+    $name    = $this->request->post('name');        // $_POST
+    $search  = $this->request->get('q');            // $_GET
+    $title   = $this->request->put('title');        // raw body (PUT)
+    $bio     = $this->request->patch('bio');        // raw body (PATCH)
+    $confirm = $this->request->delete('confirm');   // raw body (DELETE)
+
+Passing ``NULL`` (or no argument) returns the entire source array:
+
+.. code-block:: php
+
+    <?php
+    $all_post = $this->request->post();   // entire $_POST array
+    $all_get  = $this->request->get();    // entire $_GET array
+
+**Default values**
+
+All retrieval methods accept a ``$default`` parameter:
+
+.. code-block:: php
+
+    <?php
+    $sort = $this->request->get('sort', 'asc');
+    $qty  = $this->request->post('quantity', 1);
+
+**Fallback methods**
+
+.. code-block:: php
+
+    <?php
+    // Checks POST first, then GET
+    $value = $this->request->post_get('search');
+
+    // Checks GET first, then POST
+    $value = $this->request->get_post('search');
+
+**All input at once**
+
+``all()`` merges GET + POST + raw body into one array:
+
+.. code-block:: php
+
+    <?php
+    $data = $this->request->all();
+
+**Input method reference**
 
 .. list-table::
    :header-rows: 1
-   :widths: 30 40 30
+   :widths: 30 35 35
 
    * - Method
      - Signature
      - Description
-   * - ``set_status_code()``
-     - ``set_status_code($status_code)``
-     - Set the HTTP status code
-   * - ``get_status_code()``
-     - ``get_status_code()``
-     - Get the current HTTP status code
+   * - ``input()``
+     - ``input($key, $default = NULL)``
+     - Read a value from any source (GET + POST + raw body)
+   * - ``get()``
+     - ``get($index = NULL, $default = NULL)``
+     - Read from ``$_GET``
+   * - ``post()``
+     - ``post($index = NULL, $default = NULL)``
+     - Read from ``$_POST``
+   * - ``put()``
+     - ``put($index = NULL, $default = NULL)``
+     - Read from raw body (PUT requests)
+   * - ``patch()``
+     - ``patch($index = NULL, $default = NULL)``
+     - Read from raw body (PATCH requests)
+   * - ``delete()``
+     - ``delete($index = NULL, $default = NULL)``
+     - Read from raw body (DELETE requests)
+   * - ``post_get()``
+     - ``post_get($index = NULL)``
+     - POST with GET fallback
+   * - ``get_post()``
+     - ``get_post($index = NULL)``
+     - GET with POST fallback
+   * - ``all()``
+     - ``all()``
+     - All input merged (GET + POST + raw body)
+   * - ``integer()``
+     - ``integer($key, $default = 0)``
+     - Input cast to ``int``
+   * - ``float()``
+     - ``float($key, $default = 0.0)``
+     - Input cast to ``float``
+   * - ``boolean()``
+     - ``boolean($key, $default = FALSE)``
+     - Input cast to ``bool`` (1/true/on/yes → TRUE)
+   * - ``string()``
+     - ``string($key, $default = '')``
+     - Input cast to trimmed ``string``
 
 
-Headers
---------
+Filtering Input
+----------------
 
-Add, remove, or retrieve response headers.
+Use these methods to select or exclude specific fields from the input.
 
 .. code-block:: php
 
     <?php
-    // Add a single header
-    $this->response->add_header('X-Custom-Header', 'value');
+    // Only these keys
+    $data = $this->request->only(['name', 'email', 'password']);
 
-    // Add multiple headers at once using an array
-    $this->response->add_header([
-        'X-Frame-Options'        => 'DENY',
-        'X-Content-Type-Options' => 'nosniff',
-        'Cache-Control'          => 'no-store',
-    ]);
+    // Everything except these keys
+    $data = $this->request->except(['csrf_token', '_method']);
 
-    // Remove a header
-    $this->response->remove_header('X-Frame-Options');
+**Checking key presence**
 
-    // Get all headers
-    $headers = $this->response->get_headers();
+.. code-block:: php
+
+    <?php
+    // TRUE only if ALL keys are present
+    if ($this->request->has(['name', 'email']))
+    {
+        // both exist
+    }
+
+    // TRUE if ANY of the keys are present
+    if ($this->request->has_any(['token', 'api_key']))
+    {
+        // at least one exists
+    }
+
+    // TRUE if present AND not empty
+    if ($this->request->filled('name'))
+    {
+        // name is present and has a non-empty value
+    }
+
+    // TRUE if the key is missing
+    if ($this->request->missing('optional_field'))
+    {
+        // not in the request
+    }
 
 .. list-table::
    :header-rows: 1
-   :widths: 28 45 27
+   :widths: 25 40 35
 
    * - Method
      - Signature
      - Description
-   * - ``add_header()``
-     - ``add_header($name, $value = '')``
-     - Add one header or an associative array of headers
-   * - ``remove_header()``
-     - ``remove_header($name)``
-     - Remove a header by name
-   * - ``get_headers()``
-     - ``get_headers()``
-     - Return all queued headers as an array
+   * - ``has()``
+     - ``has($key)``
+     - All keys present (string or array)
+   * - ``has_any()``
+     - ``has_any($keys)``
+     - At least one key present
+   * - ``filled()``
+     - ``filled($key)``
+     - Key present and value is not empty
+   * - ``missing()``
+     - ``missing($key)``
+     - Key is not in the request
+   * - ``only()``
+     - ``only($keys)``
+     - Returns array with only the listed keys
+   * - ``except()``
+     - ``except($keys)``
+     - Returns array without the listed keys
 
 
-Content
---------
+JSON & Raw Body
+----------------
 
-Set or modify the response body.
-
-.. code-block:: php
-
-    <?php
-    // Set raw content
-    $this->response->set_content('<p>Hello</p>');
-
-    // Append to existing content
-    $this->response->append_content('<p>More content</p>');
-
-    // Get the current content
-    $body = $this->response->get_content();
-
-    // Set HTML content (also sets Content-Type: text/html)
-    $this->response->set_html_content('<h1>Welcome</h1>');
-
-    // Set JSON content (also sets Content-Type: application/json)
-    $this->response->set_json_content(['status' => 'ok']);
-
-    // Set JSON with encoding options
-    $this->response->set_json_content($data, JSON_PRETTY_PRINT);
-
-.. list-table::
-   :header-rows: 1
-   :widths: 28 50 22
-
-   * - Method
-     - Signature
-     - Description
-   * - ``set_content()``
-     - ``set_content($content)``
-     - Set the raw response body
-   * - ``get_content()``
-     - ``get_content()``
-     - Get the current response body
-   * - ``append_content()``
-     - ``append_content($content)``
-     - Append to the existing body
-   * - ``set_html_content()``
-     - ``set_html_content($content)``
-     - Set body and add ``Content-Type: text/html``
-   * - ``set_json_content()``
-     - ``set_json_content($data, $options = 0)``
-     - JSON-encode body and add ``Content-Type: application/json``
-
-
-Sending Responses
-------------------
-
-``send()`` flushes all queued headers, cookies, and the content body to the browser.
+For API endpoints that receive a JSON body, use these methods:
 
 .. code-block:: php
 
     <?php
-    $this->response
-        ->set_status_code(200)
-        ->add_header('X-App-Version', '1.0')
-        ->set_html_content('<p>Hello World</p>')
-        ->send();
+    // Decode the JSON body as an associative array
+    $data = $this->request->json();
 
-**Send only headers** (no body):
+    // As an object
+    $data = $this->request->json(FALSE);
 
-.. code-block:: php
-
-    <?php
-    $this->response
-        ->set_status_code(200)
-        ->add_header('X-Token', 'abc123')
-        ->send_headers();
-
-.. list-table::
-   :header-rows: 1
-   :widths: 28 42 30
-
-   * - Method
-     - Signature
-     - Description
-   * - ``send()``
-     - ``send()``
-     - Send headers and body
-   * - ``send_headers()``
-     - ``send_headers()``
-     - Send headers only (no body); safe to call multiple times
-
-
-Convenience Send Methods
--------------------------
-
-These methods set the appropriate status code, ``Content-Type`` header, body, and call ``send()``  
-all in a single call. Use them when you want to return a response immediately.
-
-**JSON**
-
-.. code-block:: php
-
-    <?php
-    // Send any data as JSON
-    $this->response->send_json(['user' => $user], 200);
-
-    // Send a structured success response
-    $this->response->send_json_success($user, 'User retrieved', 200);
-    // Output: {"success":true,"message":"User retrieved","data":{...}}
-
-    // Send a structured error response
-    $this->response->send_json_error('Not found', 404);
-    // Output: {"success":false,"error":"Not found"}
-
-    // With additional fields in the error payload
-    $this->response->send_json_error('Validation failed', 422, [
-        'fields' => ['email' => 'Required']
-    ]);
-
-**HTML, plain text, XML**
-
-.. code-block:: php
-
-    <?php
-    $this->response->send_html('<h1>Hello</h1>', 200);
-    $this->response->send_text('Plain text response', 200);
-    $this->response->send_xml('<root><item>1</item></root>', 200);
-
-**No content**
-
-.. code-block:: php
-
-    <?php
-    // Returns HTTP 204 with an empty body
-    $this->response->send_no_content();
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 52 18
-
-   * - Method
-     - Signature
-     - Description
-   * - ``send_json()``
-     - ``send_json($data, $status_code = 200, $options = 0)``
-     - Send a JSON response
-   * - ``send_json_success()``
-     - ``send_json_success($data = NULL, $message = 'Success', $status_code = 200)``
-     - Send a ``{"success":true,...}`` envelope
-   * - ``send_json_error()``
-     - ``send_json_error($message, $status_code = 400, $additional_data = [])``
-     - Send a ``{"success":false,...}`` envelope
-   * - ``send_html()``
-     - ``send_html($content, $status_code = 200)``
-     - Send an HTML response
-   * - ``send_text()``
-     - ``send_text($content, $status_code = 200)``
-     - Send a plain text response
-   * - ``send_xml()``
-     - ``send_xml($xml, $status_code = 200)``
-     - Send an XML response
-   * - ``send_no_content()``
-     - ``send_no_content()``
-     - Send HTTP 204 with no body
-
-
-Redirects
-----------
-
-.. code-block:: php
-
-    <?php
-    // Temporary redirect (302 by default)
-    $this->response->redirect('/dashboard');
-
-    // Permanent redirect
-    $this->response->redirect('/new-url', 301);
-
-    // Redirect back to the referring page
-    $this->response->back();
-
-    // With a fallback if no referrer is available
-    $this->response->back('/home');
-
-**Supported redirect status codes:**
-
-.. list-table::
-   :header-rows: 1
-   :widths: 15 85
-
-   * - Code
-     - Meaning
-   * - ``301``
-     - Moved Permanently — browser caches the new location
-   * - ``302``
-     - Found (temporary redirect) — default
-   * - ``303``
-     - See Other — used after POST to redirect to a GET resource
-   * - ``307``
-     - Temporary Redirect — preserves the original HTTP method
-   * - ``308``
-     - Permanent Redirect — like 301 but preserves the HTTP method
+    // Read the raw body string
+    $raw = $this->request->raw_body();
 
 .. note::
 
-   ``redirect()`` calls ``send()`` and then ``exit``.  
-   No code after a ``redirect()`` call will execute.
+   ``json()`` returns ``NULL`` if the body is not valid JSON.  
+   ``put()``, ``patch()``, and ``delete()`` also transparently decode JSON  
+   when the ``Content-Type`` is ``application/json``.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 40 35
+
+   * - Method
+     - Signature
+     - Description
+   * - ``json()``
+     - ``json($assoc = TRUE)``
+     - Decode the JSON request body
+   * - ``raw_body()``
+     - ``raw_body()``
+     - Return the raw body as a string
+
+
+File Uploads
+-------------
+
+Access uploaded files via the ``$_FILES`` superglobal through these methods:
+
+.. code-block:: php
+
+    <?php
+    // Check if a file was uploaded
+    if ($this->request->has_file('avatar'))
+    {
+        $file = $this->request->file('avatar');
+        // $file is the standard $_FILES['avatar'] array:
+        // ['name', 'type', 'tmp_name', 'error', 'size']
+
+        move_uploaded_file($file['tmp_name'], '/uploads/' . $file['name']);
+    }
+
+    // Get all uploaded files
+    $files = $this->request->files();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - Method
+     - Signature
+     - Description
+   * - ``file()``
+     - ``file($key)``
+     - Single ``$_FILES`` entry, or ``NULL``
+   * - ``files()``
+     - ``files()``
+     - Entire ``$_FILES`` array
+   * - ``has_file()``
+     - ``has_file($key)``
+     - ``TRUE`` if a file was actually uploaded (not just an empty field)
+
+
+Cookies
+--------
+
+.. code-block:: php
+
+    <?php
+    // Read a cookie
+    $token = $this->request->cookie('remember_token');
+
+    // Read with a default
+    $theme = $this->request->cookie('theme', 'light');
+
+    // Read all cookies
+    $all = $this->request->cookie();
+
+    // Set a cookie (expires in 7 days)
+    $this->request->set_cookie('remember_token', $value, 7 * 24 * 3600);
+
+    // Set with extra options
+    $this->request->set_cookie('prefs', $value, 3600, [
+        'path'     => '/',
+        'secure'   => TRUE,
+        'httponly' => TRUE,
+        'samesite' => 'Strict',
+    ]);
+
+    // Delete a cookie
+    $this->request->delete_cookie('remember_token');
 
 .. list-table::
    :header-rows: 1
@@ -308,241 +325,281 @@ Redirects
    * - Method
      - Signature
      - Description
-   * - ``redirect()``
-     - ``redirect($url, $status_code = 302)``
-     - Redirect to a URL and exit
-   * - ``back()``
-     - ``back($fallback = '/')``
-     - Redirect to the referring URL or a fallback
+   * - ``cookie()``
+     - ``cookie($index = NULL, $default = NULL)``
+     - Read a cookie value or all cookies
+   * - ``set_cookie()``
+     - ``set_cookie($name, $value, $expiration, $options)``
+     - Write a cookie with security defaults
+   * - ``delete_cookie()``
+     - ``delete_cookie($name, $options = [])``
+     - Expire a cookie immediately
 
 
-File Downloads
----------------
-
-Use ``download()`` to serve a file to the browser as an attachment.
-
-.. code-block:: php
-
-    <?php
-    // Serve a file using its original filename
-    $this->response->download('/path/to/report.pdf');
-
-    // Serve with a custom filename
-    $this->response->download('/path/to/report.pdf', 'Q3-Report.pdf');
-
-    // With additional headers
-    $this->response->download('/path/to/report.pdf', 'Q3-Report.pdf', [
-        'X-Generated-By' => 'LavaLust',
-    ]);
-
-.. note::
-
-   ``download()`` automatically detects the MIME type, sets ``Content-Disposition: attachment``,  
-   and streams the file in 8 KB chunks. If the file does not exist, a ``404`` response is sent.
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 55 20
-
-   * - Method
-     - Signature
-     - Description
-   * - ``download()``
-     - ``download($filepath, $filename = NULL, $headers = [])``
-     - Serve a file as a downloadable attachment
-
-
-Streaming
-----------
-
-``stream()`` sends headers immediately and then invokes a callback that outputs content  
-progressively — useful for large responses, server-sent events, or real-time data.
-
-.. code-block:: php
-
-    <?php
-    $this->response->stream(function() {
-        foreach ($large_dataset as $row) {
-            echo json_encode($row) . "\n";
-            flush();
-        }
-    }, [
-        'Content-Type' => 'application/x-ndjson',
-    ]);
-
-.. note::
-
-   ``stream()`` automatically adds ``Cache-Control: no-cache`` before sending headers.  
-   The callback must be callable; a ``500`` response is sent if it is not.
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 50 25
-
-   * - Method
-     - Signature
-     - Description
-   * - ``stream()``
-     - ``stream($callback, $headers = [])``
-     - Stream content via a callback after sending headers
-
-
-Cookies
+Headers
 --------
 
-Queue cookies to be sent alongside the response headers.
+.. code-block:: php
+
+    <?php
+    // Read a single header (case-insensitive)
+    $type  = $this->request->header('Content-Type');
+    $token = $this->request->header('Authorization');
+
+    // Check if a header is present
+    if ($this->request->has_header('X-Api-Key'))
+    {
+        // header exists
+    }
+
+    // Read all headers as an associative array
+    $headers = $this->request->headers();
+
+    // Retrieve a Bearer token from the Authorization header
+    $token = $this->request->bearer_token();
+    // Returns the token string, or NULL if not a Bearer token
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 40 35
+
+   * - Method
+     - Signature
+     - Description
+   * - ``header()``
+     - ``header($name)``
+     - Read a single header by name
+   * - ``headers()``
+     - ``headers()``
+     - All request headers as an array
+   * - ``has_header()``
+     - ``has_header($name)``
+     - ``TRUE`` if the header is present
+   * - ``bearer_token()``
+     - ``bearer_token()``
+     - Bearer token from ``Authorization`` header, or ``NULL``
+
+
+HTTP Method
+------------
 
 .. code-block:: php
 
     <?php
-    // Set a session cookie (expires when browser closes)
-    $this->response->set_cookie('flash', 'Login successful');
+    $method = $this->request->method();        // 'get', 'post', etc.
+    $method = $this->request->method(TRUE);    // 'GET', 'POST', etc.
 
-    // Set a persistent cookie (expires in 30 days)
-    $this->response->set_cookie('remember', $token, 30 * 24 * 3600);
+    // Check against a specific method
+    if ($this->request->is_method('POST')) { ... }
+    if ($this->request->is_method(['PUT', 'PATCH'])) { ... }
 
-    // Set with full options
-    $this->response->set_cookie(
-        'prefs',         // name
-        'dark-mode',     // value
-        3600,            // expiration in seconds
-        '/',             // path
-        '.example.com',  // domain
-        TRUE,            // secure (HTTPS only)
-        TRUE,            // httponly (no JS access)
-        'Strict'         // samesite policy
-    );
-
-    // Delete a cookie
-    $this->response->delete_cookie('remember');
+    // Convenience checkers
+    $this->request->is_get();
+    $this->request->is_post();
+    $this->request->is_put();
+    $this->request->is_patch();
+    $this->request->is_delete();
 
 .. note::
 
-   Cookies are not sent until ``send()`` or ``send_headers()`` is called.
+   If a POST request includes the ``X-HTTP-Method-Override`` header with a value of  
+   ``PUT``, ``PATCH``, or ``DELETE``, ``method()`` will return that overridden value.  
+   This is useful for HTML forms that cannot send non-POST methods natively.
 
 .. list-table::
    :header-rows: 1
-   :widths: 28 55 17
+   :widths: 25 40 35
 
    * - Method
      - Signature
      - Description
-   * - ``set_cookie()``
-     - ``set_cookie($name, $value, $expiration, $path, $domain, $secure, $httponly, $samesite)``
-     - Queue a cookie to be sent with the response
-   * - ``delete_cookie()``
-     - ``delete_cookie($name, $path = '', $domain = '')``
-     - Expire a cookie by setting its expiry in the past
+   * - ``method()``
+     - ``method($upper = FALSE)``
+     - Current HTTP method as string
+   * - ``is_method()``
+     - ``is_method($methods)``
+     - Compare against one or more methods
+   * - ``is_get()``
+     - ``is_get()``
+     - ``TRUE`` if request is GET
+   * - ``is_post()``
+     - ``is_post()``
+     - ``TRUE`` if request is POST
+   * - ``is_put()``
+     - ``is_put()``
+     - ``TRUE`` if request is PUT
+   * - ``is_patch()``
+     - ``is_patch()``
+     - ``TRUE`` if request is PATCH
+   * - ``is_delete()``
+     - ``is_delete()``
+     - ``TRUE`` if request is DELETE
 
 
-Resetting the Response
+Request Type Detection
 -----------------------
 
-Use ``clear()`` to reset the response object back to its default state —  
-useful when building responses conditionally or in tests.
-
 .. code-block:: php
 
     <?php
-    $this->response
-        ->set_status_code(500)
-        ->set_content('Error');
-
-    // Reset everything
-    $this->response->clear();
-
-    $this->response->get_status_code(); // 200
-    $this->response->get_content();     // NULL
+    $this->request->is_ajax();    // TRUE if X-Requested-With: XMLHttpRequest
+    $this->request->is_json();    // TRUE if Content-Type is application/json
+    $this->request->wants_json(); // TRUE if Accept header includes application/json
+    $this->request->is_secure();  // TRUE if request is over HTTPS
+    $this->request->is_mobile();  // TRUE if user agent matches a mobile device
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 30 50
+   :widths: 25 40 35
 
    * - Method
      - Signature
      - Description
-   * - ``clear()``
-     - ``clear()``
-     - Reset status code to 200, clear all headers, content, and cookies
+   * - ``is_ajax()``
+     - ``is_ajax()``
+     - AJAX request check via ``X-Requested-With``
+   * - ``is_json()``
+     - ``is_json()``
+     - Sending JSON (``Content-Type: application/json``)
+   * - ``wants_json()``
+     - ``wants_json()``
+     - Expects JSON response (``Accept: application/json``)
+   * - ``is_secure()``
+     - ``is_secure()``
+     - Request is over HTTPS
+   * - ``is_mobile()``
+     - ``is_mobile()``
+     - User agent matches a mobile device
 
 
-String Casting
----------------
-
-The ``Response`` object can be cast directly to a string, which returns the current content body.  
-This is useful for testing or when passing the response to a template.
-
-.. code-block:: php
-
-    <?php
-    $this->response->set_content('Hello World');
-    echo $this->response;  // Hello World
-
-    $body = (string) $this->response;  // 'Hello World'
-
-
-Common Patterns
-----------------
-
-**Controller returning a JSON API response**
+URL & URI
+----------
 
 .. code-block:: php
 
     <?php
-    public function show($id)
-    {
-        $user = $this->user_model->find($id);
+    $this->request->url();                   // https://example.com/users?page=2
+    $this->request->url(FALSE);              // https://example.com/users
+    $this->request->full_url_without_query(); // same as url(FALSE)
+    $this->request->uri();                   // /users?page=2
+    $this->request->path();                  // /users
+    $this->request->query_string();          // page=2
+    $this->request->query('page', 1);        // '2' (from query string)
+    $this->request->host();                  // example.com
+    $this->request->scheme();                // https
+    $this->request->port();                  // 443
+    $this->request->referrer();              // previous page URL or NULL
 
-        if ( ! $user)
-        {
-            $this->response->send_json_error('User not found', 404);
-        }
+.. list-table::
+   :header-rows: 1
+   :widths: 30 40 30
 
-        $this->response->send_json_success($user, 'User retrieved');
-    }
+   * - Method
+     - Signature
+     - Description
+   * - ``url()``
+     - ``url($with_query = TRUE)``
+     - Full URL of the current request
+   * - ``full_url_without_query()``
+     - ``full_url_without_query()``
+     - Full URL without the query string
+   * - ``uri()``
+     - ``uri()``
+     - Request URI (path + query string)
+   * - ``path()``
+     - ``path()``
+     - URI path without query string
+   * - ``query_string()``
+     - ``query_string()``
+     - Raw query string (no leading ``?``)
+   * - ``query()``
+     - ``query($key, $default = NULL)``
+     - Single query string parameter
+   * - ``host()``
+     - ``host()``
+     - Hostname without port
+   * - ``scheme()``
+     - ``scheme()``
+     - ``http`` or ``https``
+   * - ``port()``
+     - ``port()``
+     - Server port as integer
+   * - ``referrer()``
+     - ``referrer()``
+     - ``Referer`` header value or ``NULL``
 
-**Chaining headers, status, and content before a single send**
+
+IP Address
+-----------
 
 .. code-block:: php
 
     <?php
-    $this->response
-        ->set_status_code(201)
-        ->add_header('X-Resource-Id', $new_id)
-        ->set_json_content(['id' => $new_id, 'created' => TRUE])
-        ->send();
+    // Direct IP (default, safe)
+    $ip = $this->request->ip_address();
 
-**Redirecting after a form POST**
+    // Trust proxy headers (only on servers behind a known proxy)
+    $ip = $this->request->ip_address(TRUE);
+
+    // Validate an IP
+    $this->request->valid_ip('192.168.1.1');           // TRUE
+    $this->request->valid_ip('192.168.1.1', 'ipv4');   // TRUE
+    $this->request->valid_ip('::1', 'ipv6');           // TRUE
+    $this->request->valid_ip('not-an-ip');             // FALSE
+
+.. warning::
+
+   Only pass ``TRUE`` to ``ip_address()`` if your application is running behind  
+   a **trusted** reverse proxy. Trusting client-supplied headers without verification  
+   can allow IP spoofing.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 45 30
+
+   * - Method
+     - Signature
+     - Description
+   * - ``ip_address()``
+     - ``ip_address($trust_proxy = FALSE)``
+     - Client IP address
+   * - ``valid_ip()``
+     - ``valid_ip($ip, $which = '')``
+     - Validate an IP (``ipv4``, ``ipv6``, or any)
+
+
+Miscellaneous
+--------------
 
 .. code-block:: php
 
     <?php
-    public function store()
-    {
-        // ... save data ...
-        $this->response->redirect('/users', 303);
-    }
+    $ua   = $this->request->user_agent();  // User-Agent string or NULL
+    $srv  = $this->request->server('SERVER_NAME');  // $_SERVER value
+    $all  = $this->request->server();               // entire $_SERVER array
 
-**File download inside a controller**
+.. list-table::
+   :header-rows: 1
+   :widths: 25 45 30
 
-.. code-block:: php
-
-    <?php
-    public function export()
-    {
-        $filepath = WRITEPATH . 'exports/report.csv';
-        $this->response->download($filepath, 'monthly-report.csv');
-    }
+   * - Method
+     - Signature
+     - Description
+   * - ``user_agent()``
+     - ``user_agent()``
+     - ``HTTP_USER_AGENT`` string or ``NULL``
+   * - ``server()``
+     - ``server($index = NULL)``
+     - Single ``$_SERVER`` value or entire array
 
 
 Tips and Best Practices
 ------------------------
 
-- Prefer the ``send_json_success()`` / ``send_json_error()`` helpers for API endpoints to keep  
-  response envelopes consistent across your application.
-- Always specify a status code explicitly — relying on the ``200`` default can mask logic errors.
-- Use ``send_no_content()`` for DELETE endpoints that return no body rather than sending an empty JSON object.
-- Use ``stream()`` for large exports or logs to avoid PHP memory limits.
-- Queue cookies via ``set_cookie()`` before calling ``send()`` — cookies cannot be set after headers are sent.
-- Use ``clear()`` in unit tests to reset state between assertions on the same ``Response`` instance.
-- ``redirect()`` calls ``exit`` internally — do not place cleanup logic after it; run it before the redirect instead.
+- Use ``input()`` for general-purpose reads; use ``post()`` / ``get()`` only when the source matters.
+- Always use typed helpers (``integer()``, ``boolean()``, ``string()``) before passing values to models or queries.
+- Use ``only()`` when passing request data directly to a model to avoid mass-assignment vulnerabilities.
+- Prefer ``filled()`` over ``has()`` when an empty string should also be treated as absent.
+- Use ``bearer_token()`` for API authentication — never read the ``Authorization`` header manually.
+- Never trust ``ip_address(TRUE)`` unless you control the proxy in front of your application.
+- Use ``is_json()`` to detect API clients and ``wants_json()`` to decide the response format.
