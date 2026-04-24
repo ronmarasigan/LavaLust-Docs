@@ -60,7 +60,7 @@ The typical workflow in a controller is:
         {
             parent::__construct();
             $this->call->library('pagination');
-            $this->load->model('Product_model', 'product_model');
+            $this->call->model('Product_model', 'product_model');
         }
 
         public function index($page_num = 1)
@@ -81,7 +81,7 @@ The typical workflow in a controller is:
             $data['pagination'] = $this->pagination->paginate();
             $data['page_info']  = $meta['info'];
 
-            $this->load->view('products/index', $data);
+            $this->call->view('products/index', $data);
         }
     }
 
@@ -359,7 +359,7 @@ labels, and rendering inside a controller and view.
         {
             parent::__construct();
             $this->call->library('pagination');
-            $this->load->model('Post_model', 'post_model');
+            $this->call->model('Post_model', 'post_model');
         }
 
         public function index($page_num = 1)
@@ -387,7 +387,7 @@ labels, and rendering inside a controller and view.
             $data['page_info']  = $meta['info'];
             $data['pagination'] = $this->pagination->paginate();
 
-            $this->load->view('blog/index', $data);
+            $this->call->view('blog/index', $data);
         }
     }
 
