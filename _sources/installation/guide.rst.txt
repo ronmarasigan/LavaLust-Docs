@@ -185,7 +185,7 @@ Troubleshooting
 
    .. code-block:: bash
 
-       php lava run --port=8080
+       php lava run 8080
 
 **Composer not found**
    Ensure Composer is installed globally and ``~/.composer/vendor/bin`` (Linux/macOS)

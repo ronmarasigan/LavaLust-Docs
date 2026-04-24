@@ -176,67 +176,6 @@ your code and how to debug problems when they arise.</p>
 <section id="flow-diagram">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Flow Diagram</a><a class="headerlink" href="#flow-diagram" title="Link to this heading"></a></h2>
 <img alt="LavaLust application flow diagram — showing the path from browser request through index.php, router, cache check, security, controller, model, and view, back to the browser response." class="align-center" src="../_images/appflowchart.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="nx">│</span>                      <span class="nx">Browser</span> <span class="nx">Request</span>                        <span class="nx">│</span>
-<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
-                           <span class="nx">│</span>
-                           <span class="nx">▼</span>
-<span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="nx">│</span>                  <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>  <span class="p">(</span><span class="nx">Front</span> <span class="nx">Controller</span><span class="p">)</span>              <span class="nx">│</span>
-<span class="nx">│</span>         <span class="nx">Bootstraps</span> <span class="nx">the</span> <span class="nx">framework</span> <span class="k">and</span> <span class="nx">its</span> <span class="nx">base</span> <span class="nx">resources</span>     <span class="nx">│</span>
-<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
-                           <span class="nx">│</span>
-                           <span class="nx">▼</span>
-<span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
-<span class="nx">│</span>                         <span class="nx">Router</span>                              <span class="nx">│</span>
-<span class="nx">│</span>         <span class="nx">Examines</span> <span class="nx">the</span> <span class="nx">URI</span> <span class="k">and</span> <span class="nx">maps</span> <span class="nx">it</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">controller</span>        <span class="nx">│</span>
-<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
-                           <span class="nx">│</span>
-                <span class="nx">┌──────────┴──────────┐</span>
-                <span class="nx">│</span>                     <span class="nx">│</span>
-                <span class="nx">▼</span>                     <span class="nx">▼</span>
-<span class="nx">┌───────────────────────┐</span>   <span class="nx">┌─────────────────────────────────┐</span>
-<span class="nx">│</span>   <span class="nx">Cache</span> <span class="nb">file</span> <span class="nx">exists</span><span class="o">?</span>  <span class="nx">│</span>   <span class="nx">│</span>         <span class="nx">Security</span> <span class="nx">Layer</span>          <span class="nx">│</span>
-<span class="nx">│</span>                       <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">Filters</span> <span class="nx">request</span> <span class="nx">data</span> <span class="k">and</span>       <span class="nx">│</span>
-<span class="nx">│</span>   <span class="nx">YES</span> <span class="nx">→</span> <span class="nx">send</span> <span class="nx">to</span>       <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">validates</span> <span class="nx">input</span> <span class="nx">before</span> <span class="nx">the</span>     <span class="nx">│</span>
-<span class="nx">│</span>   <span class="nx">browser</span> <span class="nx">immediately</span> <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">controller</span> <span class="nx">is</span> <span class="nx">loaded</span>           <span class="nx">│</span>
-<span class="nx">└───────────────────────┘</span>   <span class="nx">└────────────────┬────────────────┘</span>
-                                              <span class="nx">│</span>
-                                              <span class="nx">▼</span>
-                            <span class="nx">┌─────────────────────────────────┐</span>
-                            <span class="nx">│</span>           <span class="nx">Controller</span>            <span class="nx">│</span>
-                            <span class="nx">│</span>  <span class="nx">Loads</span> <span class="nx">models</span><span class="p">,</span> <span class="nx">libraries</span><span class="p">,</span>       <span class="nx">│</span>
-                            <span class="nx">│</span>  <span class="nx">helpers</span><span class="p">,</span> <span class="k">and</span> <span class="nx">processes</span> <span class="nx">the</span>     <span class="nx">│</span>
-                            <span class="nx">│</span>  <span class="nx">request</span>                        <span class="nx">│</span>
-                            <span class="nx">└────────┬────────────┬───────────┘</span>
-                                     <span class="nx">│</span>            <span class="nx">│</span>
-                                     <span class="nx">▼</span>            <span class="nx">▼</span>
-                           <span class="nx">┌──────────────┐</span>  <span class="nx">┌──────────┐</span>
-                           <span class="nx">│</span>    <span class="nx">Model</span>     <span class="nx">│</span>  <span class="nx">│</span>  <span class="nx">Helpers</span> <span class="nx">│</span>
-                           <span class="nx">│</span>  <span class="nx">Database</span>    <span class="nx">│</span>  <span class="nx">│</span>  <span class="nx">Libraries│</span>
-                           <span class="nx">│</span>  <span class="nx">operations</span>  <span class="nx">│</span>  <span class="nx">└──────────┘</span>
-                           <span class="nx">└──────┬───────┘</span>
-                                  <span class="nx">│</span>  <span class="nx">data</span>
-                                  <span class="nx">▼</span>
-                            <span class="nx">┌───────────┐</span>
-                            <span class="nx">│</span>   <span class="nx">View</span>    <span class="nx">│</span>
-                            <span class="nx">│</span>  <span class="nx">Renders</span>  <span class="nx">│</span>
-                            <span class="nx">│</span>  <span class="nx">output</span>   <span class="nx">│</span>
-                            <span class="nx">└─────┬─────┘</span>
-                                  <span class="nx">│</span>
-                       <span class="nx">┌──────────┴──────────┐</span>
-                       <span class="nx">│</span>                     <span class="nx">│</span>
-                       <span class="nx">▼</span>                     <span class="nx">▼</span>
-              <span class="nx">┌─────────────────┐</span>   <span class="nx">┌─────────────────┐</span>
-              <span class="nx">│</span>  <span class="nx">Cache</span> <span class="nx">enabled</span><span class="o">?</span> <span class="nx">│</span>   <span class="nx">│</span> <span class="nx">Browser</span> <span class="nx">Response</span> <span class="nx">│</span>
-              <span class="nx">│</span>  <span class="nx">YES</span> <span class="nx">→</span> <span class="nx">write</span>    <span class="nx">│</span>   <span class="nx">│</span>  <span class="k">Final</span> <span class="nx">output</span>    <span class="nx">│</span>
-              <span class="nx">│</span>  <span class="nx">cache</span> <span class="nx">to</span> <span class="nx">disk</span>  <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">delivered</span>       <span class="nx">│</span>
-              <span class="nx">└─────────────────┘</span>   <span class="nx">└─────────────────┘</span>
-</pre></div>
-</div>
 </section>
 <section id="step-by-step-breakdown">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Step-by-Step Breakdown</a><a class="headerlink" href="#step-by-step-breakdown" title="Link to this heading"></a></h2>

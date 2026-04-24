@@ -159,13 +159,3 @@ Each segment maps directly to a controller, method, and parameter:
    By default, ``public/index.php`` is included in the URL.
    It can be removed entirely by adding a simple ``.htaccess`` rewrite rule —
    see the :doc:`../installation/guide` guide for the recommended configuration.
-
-
-What LavaLust Is Not
----------------------
-
-LavaLust is intentionally minimal. It is a good fit if you want a framework
-that stays out of your way, but it may not be the right tool if your project
-requires a large built-in ecosystem, an ORM, or a CLI code-generation workflow
-out of the box. The goal is to give you a solid, fast foundation and let you
-build the rest your way.
