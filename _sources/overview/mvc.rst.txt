@@ -44,7 +44,7 @@ controller can call — keeping raw queries out of the rest of the application.
         {
             return $this->db
                 ->select('id, title, slug, created_at')
-                ->from('posts')
+                ->table('posts')
                 ->where('status', 'published')
                 ->order_by('created_at', 'DESC')
                 ->limit($limit)
@@ -55,7 +55,7 @@ controller can call — keeping raw queries out of the rest of the application.
         public function find($id)
         {
             return $this->db
-                ->from('posts')
+                ->table('posts')
                 ->where('id', $id)
                 ->get()
                 ->row_array();
