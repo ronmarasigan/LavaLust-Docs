@@ -8,3 +8,4 @@ Examples
    blog_query_builder
    pagination
    auth
+   api

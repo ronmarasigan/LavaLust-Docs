@@ -1,133 +1,432 @@
 Pagination Class
 ================
 
-The **Pagination** class provides pagination logic and customizable rendering for different frontend styles (Bootstrap, Tailwind, or custom themes).  
-It generates page navigation links and calculates metadata like current page, previous/next pages, and SQL limits.
+The Pagination class generates page navigation links and calculates all the
+metadata your controller needs — current page, previous/next offsets, SQL
+limits, and the visible page window. It supports **Bootstrap**, **Tailwind
+CSS**, and fully **custom** CSS class sets out of the box, and picks up
+navigation labels automatically from your active language file.
+
+.. contents:: On this page
+   :local:
+   :depth: 1
+
+
+Loading the Library
+--------------------
+
+Load the Pagination library inside your controller's constructor or method:
+
+.. code-block:: php
+
+    <?php
+    $this->call->library('pagination');
+
+Once loaded it is available as:
+
+.. code-block:: php
+
+    <?php
+    $this->pagination
+
 
 .. note::
 
-   This library requires the `session` and `language` helpers to be available.
+   The Pagination class automatically loads the ``language`` helper and the
+   ``session`` library on construction. It reads the active language from the
+   session (``page_language``) and falls back to ``config_item('language')``.
+   Navigation labels (First, Last, Next, Previous) are resolved from the
+   active language file if translations exist.
+
+
+Basic Usage
+------------
+
+The typical workflow in a controller is:
+
+1. Count the total rows for the query.
+2. Call ``initialize()`` to get pagination metadata (including the SQL ``LIMIT`` clause).
+3. Use the returned ``limit`` value in your database query.
+4. Pass data to the view.
+5. Call ``paginate()`` in the view (or controller) to render the HTML.
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Products.php
+    class Products extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->library('pagination');
+            $this->load->model('Product_model', 'product_model');
+        }
+
+        public function index($page_num = 1)
+        {
+            $total_rows    = $this->product_model->count_all();
+            $rows_per_page = 10;
+
+            // 'products/index' is the base URL segment for page links
+            $meta = $this->pagination->initialize(
+                $total_rows,
+                $rows_per_page,
+                $page_num,
+                'products/index'
+            );
+
+            // $meta['limit'] contains the SQL LIMIT clause for this page
+            $data['products']   = $this->product_model->get_all($meta['limit']);
+            $data['pagination'] = $this->pagination->paginate();
+            $data['page_info']  = $meta['info'];
+
+            $this->load->view('products/index', $data);
+        }
+    }
+
+In the view, render the pagination control:
+
+.. code-block:: php
+
+    <?php
+    // app/views/products/index.php
+    ?>
+    <p><?= $page_info ?></p>   <!-- e.g. "Page (2 of 12)" -->
+
+    <?php foreach ($products as $product) : ?>
+        <div><?= htmlspecialchars($product['name']) ?></div>
+    <?php endforeach; ?>
+
+    <?= $pagination ?>
+
 
 Initialization
 ---------------
 
-Like most other classes in LavaLust, load the library in your controller using:
+``initialize()`` must be called before ``paginate()``. It calculates all
+page metadata and stores it internally for use when rendering links.
 
 .. code-block:: php
 
-   <?php
-   $this->call->library('pagination');
+    <?php
+    $meta = $this->pagination->initialize(
+        $total_rows,     // int    Total number of records
+        $rows_per_page,  // int    Records to show per page
+        $page_num,       // int    Current page number (1-based)
+        $url,            // string Base URL segment (e.g. 'products/index')
+        $crumbs          // int    Visible page links in the window (default: 5)
+    );
 
-Once loaded, the Pagination library will be available as:
+**Return value**
+
+``initialize()`` returns an associative array with the following keys:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 65
+
+   * - Key
+     - Type
+     - Description
+   * - ``limit``
+     - string
+     - SQL ``LIMIT`` clause ready to append to a query,
+       e.g. ``"LIMIT 20,10"`` (offset 20, take 10)
+   * - ``current``
+     - int
+     - The current page number (clamped between 1 and last page)
+   * - ``previous``
+     - int
+     - Previous page number (never less than 1)
+   * - ``next``
+     - int
+     - Next page number (never greater than last page)
+   * - ``last``
+     - int
+     - Total number of pages
+   * - ``info``
+     - string
+     - Human-readable page indicator, e.g. ``"Page (2 of 12)"``
+   * - ``pages``
+     - array
+     - The visible page numbers in the current window, e.g. ``[1,2,3,4,5]``
+   * - ``url``
+     - string
+     - The base URL passed to ``initialize()``
+
+**Example return value for page 2 of 12 with 5 crumbs:**
 
 .. code-block:: php
 
-   <?php
-   $this->pagination;
+    [
+        'limit'    => 'LIMIT 10,10',
+        'current'  => 2,
+        'previous' => 1,
+        'next'     => 3,
+        'last'     => 12,
+        'info'     => 'Page (2 of 12)',
+        'pages'    => [1, 2, 3, 4, 5],
+        'url'      => 'products/index',
+    ]
 
-Usage Example
---------------
+.. note::
 
-Here's a simple example showing how to initialize pagination and render it:
+   The ``current`` page is automatically clamped so passing ``0`` or a page
+   number beyond the last page will not cause an error — it will be snapped
+   to ``1`` or the last page respectively.
 
-.. code-block:: php
-
-   <?php
-   $total_rows = 120;
-   $rows_per_page = 10;
-   $current_page = $this->io->get('page'); // Get current page from URL or $_GET['page'] is not using segments
-   $url = 'products/page';
-
-   $meta = $this->pagination->initialize($total_rows, $rows_per_page, $current_page, $url);
-
-   // Use $meta['limit'] in your database query
-   $data['products'] = $this->product_model->get_products($meta['limit']);
-
-   // Render pagination
-   echo $this->pagination->paginate();
-
-Configuration
---------------
-
-You can customize labels, delimiters, and other settings using the ``set_options()`` method:
-
-.. code-block:: php
-
-   <?php
-   $this->pagination->set_options([
-       'first_link' => '<< First',
-       'last_link'  => 'Last >>',
-       'page_delimiter' => '?page=',
-   ]);
 
 Themes
 -------
 
-You can choose a layout theme using ``set_theme()``. Available themes are:
-
-- ``bootstrap`` (default)
-- ``tailwind``
-- ``custom``
+Three built-in themes are available. Select one before calling ``paginate()``.
 
 .. code-block:: php
 
-   <?php
-   $this->pagination->set_theme('tailwind');
-
-If using the ``custom`` theme, you can override the HTML classes:
-
-.. code-block:: php
-
-   <?php
-   $this->pagination->set_custom_classes([
-       'nav'    => 'my-nav',
-       'ul'     => 'my-list',
-       'li'     => 'my-item',
-       'a'      => 'my-link',
-       'active' => 'my-active'
-   ]);
-
-Available Methods
-------------------
+    <?php
+    $this->pagination->set_theme('bootstrap'); // default
+    $this->pagination->set_theme('tailwind');
+    $this->pagination->set_theme('custom');
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 80
 
-   * - Method
-     - Description
-   * - ``set_theme($theme)``
-     - Sets the pagination theme (``bootstrap``, ``tailwind``, or ``custom``).
-   * - ``set_custom_classes(array $classes)``
-     - Overrides default CSS classes used in the HTML output.
-   * - ``set_options(array $options)``
-     - Allows setting custom labels, delimiter, and other pagination options.
-   * - ``initialize($total_rows, $rows_per_page, $page_num, $url, $crumbs = 5)``
-     - Calculates page numbers, SQL limits, and metadata.
-   * - ``paginate()``
-     - Renders and returns the pagination HTML.
-   * - ``build_link($page, $label, $active_class = '')``
-     - Generates individual pagination link HTML. (Used internally.)
+   * - Theme
+     - CSS classes applied
+   * - ``bootstrap``
+     - Uses Bootstrap 5 classes: ``pagination``, ``page-item``, ``page-link``, ``active``
+   * - ``tailwind``
+     - Uses Tailwind CSS utility classes with responsive sizing, border, and focus ring
+   * - ``custom``
+     - No classes are set automatically — define them with ``set_custom_classes()``
 
-Returned Metadata
-------------------
+**Bootstrap output example:**
 
-The ``initialize()`` method returns an array like:
+.. code-block:: html
+
+    <nav class="d-flex justify-content-center">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="...">‹ First</a></li>
+        <li class="page-item"><a class="page-link" href="...">&lt;</a></li>
+        <li class="page-item"><a class="page-link " href="...">1</a></li>
+        <li class="page-item"><a class="page-link active" href="...">2</a></li>
+        <li class="page-item"><a class="page-link " href="...">3</a></li>
+        <li class="page-item"><a class="page-link" href="...">&gt;</a></li>
+        <li class="page-item"><a class="page-link" href="...">Last ›</a></li>
+      </ul>
+    </nav>
+
+
+Custom CSS Classes
+-------------------
+
+When using the ``custom`` theme (or to override individual classes in any
+theme), use ``set_custom_classes()``:
 
 .. code-block:: php
 
-   Array
-   (
-       [limit] => "LIMIT 0, 10"
-       [current] => 1
-       [previous] => 1
-       [next] => 2
-       [last] => 12
-       [info] => "Page (1 of 12)"
-       [pages] => [1,2,3,4,5]
-       [url] => "products/page"
-   )
+    <?php
+    $this->pagination->set_theme('custom');
+
+    $this->pagination->set_custom_classes([
+        'nav'    => 'flex justify-center my-6',
+        'ul'     => 'flex gap-1',
+        'li'     => '',
+        'a'      => 'px-4 py-2 rounded border text-sm hover:bg-gray-100',
+        'active' => 'bg-blue-600 text-white border-blue-600',
+    ]);
+
+The five customisable class keys are:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 30 55
+
+   * - Key
+     - Maps to HTML element
+     - Description
+   * - ``nav``
+     - ``<nav>``
+     - Outer wrapper element
+   * - ``ul``
+     - ``<ul>``
+     - The unordered list containing all page items
+   * - ``li``
+     - ``<li>``
+     - Each page list item
+   * - ``a``
+     - ``<a>``
+     - Each page anchor link
+   * - ``active``
+     - ``<a>`` on the current page
+     - Extra class added to the currently active page link
 
 
-``paginate()`` will use this metadata to build the pagination navigation HTML.
+Customising Labels and Delimiter
+----------------------------------
 
+Override navigation labels and the URL delimiter with ``set_options()``.
+Any property that exists on the class can be set this way.
+
+.. code-block:: php
+
+    <?php
+    $this->pagination->set_options([
+        'first_link'     => '« First',
+        'prev_link'      => '‹ Prev',
+        'next_link'      => 'Next ›',
+        'last_link'      => 'Last »',
+        'page_delimiter' => '/',     // default — produces: products/index/2
+    ]);
+
+**Default label values:**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 30 45
+
+   * - Option key
+     - Default value
+     - Description
+   * - ``first_link``
+     - ``‹ First``
+     - Label for the "go to first page" link
+   * - ``prev_link``
+     - ``<``
+     - Label for the "previous page" link
+   * - ``next_link``
+     - ``>``
+     - Label for the "next page" link
+   * - ``last_link``
+     - ``Last ›``
+     - Label for the "go to last page" link
+   * - ``page_delimiter``
+     - ``/``
+     - Character inserted between the base URL and the page number
+
+.. note::
+
+   If a translation exists for ``first_link``, ``prev_link``, ``next_link``,
+   ``last_link``, or ``page_delimiter`` in the active language file, those
+   translations are applied automatically on construction before any
+   ``set_options()`` call.
+
+
+Method Reference
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 50 15
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``initialize()``
+     - ``initialize($total_rows, $rows_per_page, $page_num, $url, $crumbs = 5)``
+     - ``array``
+   * - ``paginate()``
+     - ``paginate()``
+     - ``string``
+   * - ``set_theme()``
+     - ``set_theme($theme)``
+     - ``void``
+   * - ``set_custom_classes()``
+     - ``set_custom_classes(array $classes)``
+     - ``void``
+   * - ``set_options()``
+     - ``set_options(array $options)``
+     - ``void``
+
+
+Complete Example
+-----------------
+
+The following example puts all the pieces together — theme selection, custom
+labels, and rendering inside a controller and view.
+
+**Controller:**
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Blog.php
+    class Blog extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->library('pagination');
+            $this->load->model('Post_model', 'post_model');
+        }
+
+        public function index($page_num = 1)
+        {
+            // Configure before initialize()
+            $this->pagination->set_theme('bootstrap');
+            $this->pagination->set_options([
+                'first_link' => '&laquo;',
+                'prev_link'  => '&lsaquo;',
+                'next_link'  => '&rsaquo;',
+                'last_link'  => '&raquo;',
+            ]);
+
+            $total = $this->post_model->count_published();
+
+            $meta = $this->pagination->initialize(
+                $total,
+                10,
+                (int) $page_num,
+                'blog/index',
+                7           // show 7 page links in the window
+            );
+
+            $data['posts']      = $this->post_model->get_published($meta['limit']);
+            $data['page_info']  = $meta['info'];
+            $data['pagination'] = $this->pagination->paginate();
+
+            $this->load->view('blog/index', $data);
+        }
+    }
+
+**View:**
+
+.. code-block:: php
+
+    <?php
+    // app/views/blog/index.php
+    ?>
+    <div class="posts">
+        <?php foreach ($posts as $post) : ?>
+            <article>
+                <h2><?= htmlspecialchars($post['title']) ?></h2>
+                <p><?= htmlspecialchars($post['excerpt']) ?></p>
+            </article>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted"><?= $page_info ?></small>
+        <?= $pagination ?>
+    </div>
+
+**Route** (add to ``app/config/routes.php``):
+
+.. code-block:: php
+
+    <?php
+    $router->get('/blog/index/{page}', 'Blog@index')->where_number('page');
+    $router->get('/blog/index',        'Blog@index');
+
+
+Tips and Best Practices
+------------------------
+
+- Always call ``set_theme()`` and ``set_options()`` **before** ``initialize()`` — the theme sets class defaults which ``initialize()`` may use.
+- Store ``$meta['limit']`` and pass it directly to your model. Never construct the ``LIMIT`` clause manually — let the class calculate the correct offset.
+- Use ``$meta['info']`` (e.g. ``"Page (3 of 12)"``) to show the user where they are without extra logic in the controller.
+- Set ``$crumbs`` to an odd number (5, 7, 9) so the current page sits in the centre of the visible window naturally.
+- If you are building an API that returns JSON rather than HTML, skip ``paginate()`` and return ``$meta['current']``, ``$meta['last']``, and ``$meta['next']`` directly in your response payload.
+- For query-string pagination (``?page=2`` instead of ``/2``), set ``page_delimiter`` to ``?page=`` via ``set_options()``.

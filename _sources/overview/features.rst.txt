@@ -16,7 +16,215 @@ LavaLust comes with a variety of built-in features to make development faster an
 - **Encryption Class**
 - **RESTful API**
 - **Migration Class**
+- **Middleware Class**
 - **Pagination**
+
+Features
+========
+
+LavaLust ships with a practical set of built-in features covering the most common
+web development needs. Everything listed below is available out of the box — no
+third-party packages required.
+
+.. contents:: Categories
+   :local:
+   :depth: 1
+
+
+Architecture
+-------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Feature
+     - Description
+   * - **MVC Pattern**
+     - Organises code into Models, Views, and Controllers for a clean separation
+       of data, logic, and presentation.
+   * - **Super Lightweight**
+     - Minimal core footprint with on-demand loading — only the libraries your
+       application actually uses are loaded per request.
+   * - **Search-Engine Friendly URLs**
+     - Segment-based routing (``example.com/news/article/345``) instead of
+       query strings, producing clean and indexable URLs.
+   * - **Middleware**
+     - Attach reusable request/response logic (authentication, rate limiting,
+       logging) to individual routes or route groups.
+   * - **RESTful API Support**
+     - First-class support for ``GET``, ``POST``, ``PUT``, ``PATCH``, and
+       ``DELETE`` routes with JSON request/response helpers built in.
+
+
+Database
+---------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Feature
+     - Description
+   * - **Query Builder**
+     - Fluent, chainable interface for building SQL queries safely without
+       writing raw SQL. Supports filtering, ordering, joins, and pagination.
+   * - **Migration Class**
+     - Version-controlled schema management. Define table structures in PHP
+       and apply or roll back changes with a single command.
+
+
+HTTP & Routing
+---------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Feature
+     - Description
+   * - **Request Class**
+     - Read and validate incoming data from ``GET``, ``POST``, ``PUT``,
+       ``PATCH``, ``DELETE``, JSON bodies, headers, cookies, and file uploads.
+   * - **Response Class**
+     - Build and send HTTP responses — JSON, HTML, plain text, XML, file
+       downloads, redirects, and streaming — with full header and status
+       code control.
+   * - **File Uploading**
+     - Validate and store uploaded files with configurable type whitelists,
+       size limits, and destination paths.
+   * - **File Downloading**
+     - Serve files as browser downloads or inline with automatic MIME type
+       detection and chunked streaming.
+   * - **Page Caching**
+     - Cache rendered page output to disk and serve it directly on subsequent
+       requests, bypassing controller and database overhead.
+   * - **Pagination**
+     - Generate paginated query results and the corresponding navigation links
+       with minimal configuration.
+
+
+Forms & Validation
+-------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Feature
+     - Description
+   * - **Form Validation**
+     - Declarative validation rules (required, min length, regex, custom
+       callbacks) with automatic error message generation.
+   * - **Session Management**
+     - Secure server-side session handling with support for flash data,
+       session destruction, and configurable storage drivers.
+   * - **Encryption**
+     - Encrypt and decrypt arbitrary strings using OpenSSL. Used internally
+       for securing session data and cookies.
+
+
+Utilities
+----------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Feature
+     - Description
+   * - **Email**
+     - Send plain-text or HTML emails via PHP mail, SMTP, or Sendmail with
+       support for attachments and multiple recipients.
+   * - **Logger**
+     - Write timestamped log entries at configurable severity levels
+       (``debug``, ``info``, ``warning``, ``error``) to log files.
+   * - **Performance Class**
+     - Measure execution time and memory usage between arbitrary checkpoints
+       to identify bottlenecks during development.
+   * - **Config Class**
+     - Load, read, and override configuration values at runtime from any
+       config file without restarting the application.
+   * - **Helper Functions**
+     - A collection of standalone utility functions for common tasks — URL
+       generation, string manipulation, array handling, date formatting,
+       and more. Load only the helpers your application needs.
+
+
+Feature Summary
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 15 45
+
+   * - Feature
+     - Category
+     - Quick reference
+   * - MVC Pattern
+     - Architecture
+     - ``app/controllers/``, ``app/models/``, ``app/views/``
+   * - Lightweight Core
+     - Architecture
+     - On-demand class loading
+   * - SEO-Friendly URLs
+     - Architecture
+     - Segment-based routing in ``app/config/routes.php``
+   * - Middleware
+     - Architecture
+     - ``app/middleware/``
+   * - RESTful API
+     - Architecture
+     - ``$router->get/post/put/patch/delete()``
+   * - Query Builder
+     - Database
+     - ``$this->db->select()->from()->where()->get()``
+   * - Migrations
+     - Database
+     - ``app/migrations/`` + ``php lava migrate``
+   * - Request
+     - HTTP
+     - ``$this->request->input/post/get/json()``
+   * - Response
+     - HTTP
+     - ``$this->response->send_json/html/redirect()``
+   * - File Uploading
+     - HTTP
+     - ``$this->call->library('upload')``
+   * - File Downloading
+     - HTTP
+     - ``$this->response->download()``
+   * - Page Caching
+     - HTTP
+     - ``$this->output->cache($minutes)``
+   * - Pagination
+     - HTTP
+     - ``$this->call->library('pagination')``
+   * - Form Validation
+     - Forms
+     - ``$this->call->library('form_validation')``
+   * - Session
+     - Forms
+     - ``$this->session->set/get/flashdata()``
+   * - Encryption
+     - Forms
+     - ``$this->call->library('encryption')``
+   * - Email
+     - Utilities
+     - ``$this->call->library('email')``
+   * - Logger
+     - Utilities
+     - ``$this->call->library('logger')``
+   * - Performance
+     - Utilities
+     - ``$this->call->library('performance')``
+   * - Config
+     - Utilities
+     - ``config_item('key')`` / ``$this->config->set_item()``
+   * - Helpers
+     - Utilities
+     - ``$this->call->helper('url/string/array/...')``
+     
 - **Simple Page Caching**
 - **File Downloading Class**
 - **Search-engine Friendly URLs**

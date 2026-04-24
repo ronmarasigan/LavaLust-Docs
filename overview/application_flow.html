@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Flow Chart &mdash; LavaLust Documentation</title>
+  <title>Application Flow &mdash; LavaLust Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
@@ -60,7 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_a_glance.html">LavaLust at a Glance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="features.html">Support Features</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Application Flow Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#features">Features</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Application Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mvc.html">Model–View–Controller</a></li>
 </ul>
 </li>
@@ -130,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/api.html">API Usage Sample</a></li>
 </ul>
 </li>
 </ul>
@@ -149,7 +151,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">LavaLust Overview</a></li>
-      <li class="breadcrumb-item active">Application Flow Chart</li>
+      <li class="breadcrumb-item active">Application Flow</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -158,20 +160,183 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="application-flow-chart">
-<h1>Application Flow Chart<a class="headerlink" href="#application-flow-chart" title="Link to this heading"></a></h1>
-<p>The following graphic illustrates how data flows throughout the LavaLust system:</p>
-<img alt="Application flowchart" class="align-center" src="../_images/appflowchart.gif" />
-<p><strong>Process Overview</strong></p>
-<ol class="arabic simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">index.php</span></code> serves as the <strong>front controller</strong>, initializing the base resources needed to run LavaLust.</p></li>
-<li><p>The <strong>Router</strong> examines the HTTP request to determine what should be done with it.</p></li>
-<li><p>If a <strong>cache file exists</strong>, it is sent directly to the browser, bypassing the normal system execution.</p></li>
-<li><p><strong>Security</strong>: Before the application controller is loaded, the HTTP request and any user-submitted data are filtered for security.</p></li>
-<li><p>The <strong>Controller</strong> loads the <strong>model</strong>, core <strong>libraries</strong>, <strong>helpers</strong>, and any other resources needed to process the specific request.</p></li>
-<li><p>The finalized <strong>View</strong> is rendered and sent to the web browser to be seen.
-If caching is enabled, the view is cached first so that on subsequent requests it can be served directly.</p></li>
-</ol>
+  <section id="application-flow">
+<h1>Application Flow<a class="headerlink" href="#application-flow" title="Link to this heading"></a></h1>
+<p>Every request made to a LavaLust application follows the same path through the
+framework. Understanding this pipeline makes it easier to know where to place
+your code and how to debug problems when they arise.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#flow-diagram" id="id1">Flow Diagram</a></p></li>
+<li><p><a class="reference internal" href="#step-by-step-breakdown" id="id2">Step-by-Step Breakdown</a></p></li>
+<li><p><a class="reference internal" href="#key-takeaways" id="id3">Key Takeaways</a></p></li>
+</ul>
+</nav>
+<section id="flow-diagram">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Flow Diagram</a><a class="headerlink" href="#flow-diagram" title="Link to this heading"></a></h2>
+<img alt="LavaLust application flow diagram — showing the path from browser request through index.php, router, cache check, security, controller, model, and view, back to the browser response." class="align-center" src="../_images/appflowchart.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="nx">│</span>                      <span class="nx">Browser</span> <span class="nx">Request</span>                        <span class="nx">│</span>
+<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
+                           <span class="nx">│</span>
+                           <span class="nx">▼</span>
+<span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="nx">│</span>                  <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>  <span class="p">(</span><span class="nx">Front</span> <span class="nx">Controller</span><span class="p">)</span>              <span class="nx">│</span>
+<span class="nx">│</span>         <span class="nx">Bootstraps</span> <span class="nx">the</span> <span class="nx">framework</span> <span class="k">and</span> <span class="nx">its</span> <span class="nx">base</span> <span class="nx">resources</span>     <span class="nx">│</span>
+<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
+                           <span class="nx">│</span>
+                           <span class="nx">▼</span>
+<span class="nx">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="nx">│</span>                         <span class="nx">Router</span>                              <span class="nx">│</span>
+<span class="nx">│</span>         <span class="nx">Examines</span> <span class="nx">the</span> <span class="nx">URI</span> <span class="k">and</span> <span class="nx">maps</span> <span class="nx">it</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">controller</span>        <span class="nx">│</span>
+<span class="nx">└──────────────────────────┬──────────────────────────────────┘</span>
+                           <span class="nx">│</span>
+                <span class="nx">┌──────────┴──────────┐</span>
+                <span class="nx">│</span>                     <span class="nx">│</span>
+                <span class="nx">▼</span>                     <span class="nx">▼</span>
+<span class="nx">┌───────────────────────┐</span>   <span class="nx">┌─────────────────────────────────┐</span>
+<span class="nx">│</span>   <span class="nx">Cache</span> <span class="nb">file</span> <span class="nx">exists</span><span class="o">?</span>  <span class="nx">│</span>   <span class="nx">│</span>         <span class="nx">Security</span> <span class="nx">Layer</span>          <span class="nx">│</span>
+<span class="nx">│</span>                       <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">Filters</span> <span class="nx">request</span> <span class="nx">data</span> <span class="k">and</span>       <span class="nx">│</span>
+<span class="nx">│</span>   <span class="nx">YES</span> <span class="nx">→</span> <span class="nx">send</span> <span class="nx">to</span>       <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">validates</span> <span class="nx">input</span> <span class="nx">before</span> <span class="nx">the</span>     <span class="nx">│</span>
+<span class="nx">│</span>   <span class="nx">browser</span> <span class="nx">immediately</span> <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">controller</span> <span class="nx">is</span> <span class="nx">loaded</span>           <span class="nx">│</span>
+<span class="nx">└───────────────────────┘</span>   <span class="nx">└────────────────┬────────────────┘</span>
+                                              <span class="nx">│</span>
+                                              <span class="nx">▼</span>
+                            <span class="nx">┌─────────────────────────────────┐</span>
+                            <span class="nx">│</span>           <span class="nx">Controller</span>            <span class="nx">│</span>
+                            <span class="nx">│</span>  <span class="nx">Loads</span> <span class="nx">models</span><span class="p">,</span> <span class="nx">libraries</span><span class="p">,</span>       <span class="nx">│</span>
+                            <span class="nx">│</span>  <span class="nx">helpers</span><span class="p">,</span> <span class="k">and</span> <span class="nx">processes</span> <span class="nx">the</span>     <span class="nx">│</span>
+                            <span class="nx">│</span>  <span class="nx">request</span>                        <span class="nx">│</span>
+                            <span class="nx">└────────┬────────────┬───────────┘</span>
+                                     <span class="nx">│</span>            <span class="nx">│</span>
+                                     <span class="nx">▼</span>            <span class="nx">▼</span>
+                           <span class="nx">┌──────────────┐</span>  <span class="nx">┌──────────┐</span>
+                           <span class="nx">│</span>    <span class="nx">Model</span>     <span class="nx">│</span>  <span class="nx">│</span>  <span class="nx">Helpers</span> <span class="nx">│</span>
+                           <span class="nx">│</span>  <span class="nx">Database</span>    <span class="nx">│</span>  <span class="nx">│</span>  <span class="nx">Libraries│</span>
+                           <span class="nx">│</span>  <span class="nx">operations</span>  <span class="nx">│</span>  <span class="nx">└──────────┘</span>
+                           <span class="nx">└──────┬───────┘</span>
+                                  <span class="nx">│</span>  <span class="nx">data</span>
+                                  <span class="nx">▼</span>
+                            <span class="nx">┌───────────┐</span>
+                            <span class="nx">│</span>   <span class="nx">View</span>    <span class="nx">│</span>
+                            <span class="nx">│</span>  <span class="nx">Renders</span>  <span class="nx">│</span>
+                            <span class="nx">│</span>  <span class="nx">output</span>   <span class="nx">│</span>
+                            <span class="nx">└─────┬─────┘</span>
+                                  <span class="nx">│</span>
+                       <span class="nx">┌──────────┴──────────┐</span>
+                       <span class="nx">│</span>                     <span class="nx">│</span>
+                       <span class="nx">▼</span>                     <span class="nx">▼</span>
+              <span class="nx">┌─────────────────┐</span>   <span class="nx">┌─────────────────┐</span>
+              <span class="nx">│</span>  <span class="nx">Cache</span> <span class="nx">enabled</span><span class="o">?</span> <span class="nx">│</span>   <span class="nx">│</span> <span class="nx">Browser</span> <span class="nx">Response</span> <span class="nx">│</span>
+              <span class="nx">│</span>  <span class="nx">YES</span> <span class="nx">→</span> <span class="nx">write</span>    <span class="nx">│</span>   <span class="nx">│</span>  <span class="k">Final</span> <span class="nx">output</span>    <span class="nx">│</span>
+              <span class="nx">│</span>  <span class="nx">cache</span> <span class="nx">to</span> <span class="nx">disk</span>  <span class="nx">│</span>   <span class="nx">│</span>  <span class="nx">delivered</span>       <span class="nx">│</span>
+              <span class="nx">└─────────────────┘</span>   <span class="nx">└─────────────────┘</span>
+</pre></div>
+</div>
+</section>
+<section id="step-by-step-breakdown">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Step-by-Step Breakdown</a><a class="headerlink" href="#step-by-step-breakdown" title="Link to this heading"></a></h2>
+<p><strong>Step 1 — Front Controller (</strong> <code class="docutils literal notranslate"><span class="pre">index.php</span></code> <strong>)</strong></p>
+<p>Every request, regardless of the URL, is routed through <code class="docutils literal notranslate"><span class="pre">public/index.php</span></code>.
+This single entry point bootstraps the framework — loading configuration,
+defining constants, and initialising the core systems — before handing control
+to the router. Nothing in the application runs before this file.</p>
+<p><strong>Step 2 — Router</strong></p>
+<p>The Router inspects the incoming URI and HTTP method and matches them against
+your defined routes in <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code>. It determines which
+controller and method should handle the request. If no route matches, a
+<code class="docutils literal notranslate"><span class="pre">404</span></code> response is returned.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>LavaLust supports both automatic controller-based routing and explicit
+route definitions with closures, parameter constraints, and middleware.
+See the <a class="reference internal" href="../core_topics/routes.html"><span class="doc">Routes</span></a> documentation for the full reference.</p>
+</div>
+<p><strong>Step 3 — Cache Check</strong></p>
+<p>Before loading anything else, LavaLust checks whether a cached version of
+the requested page already exists on disk. If it does, the cached output is
+sent directly to the browser and execution stops — the controller, model, and
+view are never loaded. This makes cached pages extremely fast.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Page caching is most effective for public pages that do not change per
+user (home pages, article pages, product listings). It should not be used
+for pages that display user-specific or session-dependent content.</p>
+</div>
+<p><strong>Step 4 — Security Layer</strong></p>
+<p>If no cache file is found, the security layer runs before the controller is
+loaded. This step:</p>
+<ul class="simple">
+<li><p>Sanitises incoming <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, and cookie data</p></li>
+<li><p>Validates the CSRF token on state-changing requests (if CSRF protection is enabled)</p></li>
+<li><p>Checks URI characters against the permitted character whitelist</p></li>
+<li><p>Applies any configured XSS filtering</p></li>
+</ul>
+<p>Only after this step passes does execution continue to the controller.</p>
+<p><strong>Step 5 — Controller</strong></p>
+<p>The matched controller method is instantiated and called. The controller is
+responsible for:</p>
+<ul class="simple">
+<li><p>Reading validated request data via <code class="docutils literal notranslate"><span class="pre">$this-&gt;request</span></code></p></li>
+<li><p>Loading and calling model methods to fetch or mutate data</p></li>
+<li><p>Loading any libraries or helpers needed for the request</p></li>
+<li><p>Passing data to a view or building a direct response</p></li>
+</ul>
+<p><strong>Step 6 — Model</strong></p>
+<p>If the controller needs data, it calls the appropriate model. The model
+communicates with the database using the Query Builder and returns the result
+to the controller as an array. The controller never queries the database
+directly.</p>
+<p><strong>Step 7 — View</strong></p>
+<p>The controller passes data to a view file, which renders the final HTML (or
+other output format). The view has no knowledge of where the data came from —
+it simply receives variables and uses them for presentation.</p>
+<p><strong>Step 8 — Response and Cache Write</strong></p>
+<p>The rendered output is sent to the browser as the HTTP response. If page
+caching is enabled for this route, the output is also written to disk so that
+the next identical request can be served from the cache at Step 3, skipping
+all subsequent steps entirely.</p>
+</section>
+<section id="key-takeaways">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Key Takeaways</a><a class="headerlink" href="#key-takeaways" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Concept</p></th>
+<th class="head"><p>What it means in practice</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Single entry point</strong></p></td>
+<td><p>All requests go through <code class="docutils literal notranslate"><span class="pre">index.php</span></code> — never link directly to
+controller files</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Cache exits early</strong></p></td>
+<td><p>Cached responses bypass the controller, model, and view entirely —
+keep cache disabled on personalised or authenticated pages</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Security runs before your code</strong></p></td>
+<td><p>Input is filtered before your controller ever sees it, but you should
+still validate and sanitise data explicitly in your application logic</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Controller is the coordinator</strong></p></td>
+<td><p>It should read input, delegate to models, and pass results to views —
+not contain queries or HTML markup itself</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Views are the last step</strong></p></td>
+<td><p>By the time a view runs, all data is already prepared — views must
+not load models or make database calls</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 

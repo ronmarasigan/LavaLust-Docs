@@ -60,7 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
 </ul>
 </li>
@@ -130,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/api.html">API Usage Sample</a></li>
 </ul>
 </li>
 </ul>
@@ -160,23 +162,185 @@
              
   <section id="installation-guide">
 <h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading"></a></h1>
-<p><strong>(via downloading and extracting the zip file)</strong></p>
-<ol class="arabic simple">
-<li><p>Download the <a class="reference external" href="https://github.com/ronmarasigan/LavaLust/releases/tag/v4.2.5">latest release</a> package.</p></li>
-<li><p>Unzip the package.</p></li>
-<li><p>Upload the LavaLust folders and files to your server. Normally the
-<code class="docutils literal notranslate"><span class="pre">index.php</span></code> file will be at your public folder.</p></li>
-<li><p>Open your project in terminal and type <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span></code> and hit enter.</p></li>
-<li><p>Open your browser and type <code class="docutils literal notranslate"><span class="pre">http://localhost:3000</span></code> in the address bar.</p></li>
-</ol>
-<p><strong>(via Git)</strong></p>
-<ol class="arabic simple">
-<li><p>Install Git and Composer.</p></li>
-<li><p>Select the server folder then open a terminal. Type
-<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/ronmarasigan/LavaLust</span></code> and hit enter.</p></li>
-<li><p>Open your project in terminal and type <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span></code> and hit enter.</p></li>
-<li><p>Open your browser and type <code class="docutils literal notranslate"><span class="pre">http://localhost:3000</span></code> in the address bar.</p></li>
-</ol>
+<p>LavaLust can be installed in two ways: by downloading the release zip or by cloning
+the repository with Git. Both methods result in the same working setup.</p>
+<nav class="contents local" id="methods">
+<p class="topic-title">Methods</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#requirements" id="id1">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#method-1-download-zip" id="id2">Method 1: Download ZIP</a></p></li>
+<li><p><a class="reference internal" href="#method-2-git-clone" id="id3">Method 2: Git Clone</a></p></li>
+<li><p><a class="reference internal" href="#post-installation" id="id4">Post-Installation</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting" id="id5">Troubleshooting</a></p></li>
+</ul>
+</nav>
+<section id="requirements">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>Before installing, make sure your server meets the following requirements:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Requirement</p></th>
+<th class="head"><p>Details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>PHP</strong></p></td>
+<td><p>Version 7.4 or higher</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Web Server</strong></p></td>
+<td><p>Apache 2.4+ or Nginx 1.18+ (or the built-in PHP server for local development)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Extensions</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pdo</span></code>, <code class="docutils literal notranslate"><span class="pre">mbstring</span></code>, <code class="docutils literal notranslate"><span class="pre">json</span></code>, <code class="docutils literal notranslate"><span class="pre">openssl</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Composer</strong></p></td>
+<td><p>Required for the Git installation method</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Git</strong></p></td>
+<td><p>Required for the Git installation method only</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="method-1-download-zip">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Method 1: Download ZIP</a><a class="headerlink" href="#method-1-download-zip" title="Link to this heading"></a></h2>
+<p>This is the quickest way to get started without any extra tools.</p>
+<p><strong>Step 1 — Download the package</strong></p>
+<p>Download the <a class="reference external" href="https://github.com/ronmarasigan/LavaLust/releases/tag/v4.6.0">latest release</a>
+from GitHub and save the <code class="docutils literal notranslate"><span class="pre">.zip</span></code> file to your machine.</p>
+<p><strong>Step 2 — Extract the archive</strong></p>
+<p>Unzip the downloaded file. You should see the following top-level structure:</p>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">lavalust</span><span class="o">/</span>
+<span class="nx">├──</span> <span class="nx">app</span><span class="o">/</span>
+<span class="nx">├──</span> <span class="nx">scheme</span><span class="o">/</span>
+<span class="nx">├──</span> <span class="k">public</span><span class="o">/</span>
+<span class="nx">│</span>   <span class="nx">└──</span> <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+<span class="nx">├──</span> <span class="nx">lava</span>
+<span class="nx">└──</span> <span class="nx">composer</span><span class="o">.</span><span class="nx">json</span>
+</pre></div>
+</div>
+<p><strong>Step 3 — Upload to your server</strong></p>
+<p>Copy the extracted folder contents to your server’s web root or the desired
+project directory. The <code class="docutils literal notranslate"><span class="pre">index.php</span></code> entry point should end up inside your
+<code class="docutils literal notranslate"><span class="pre">public/</span></code> folder.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For <strong>Apache</strong>, point your virtual host <code class="docutils literal notranslate"><span class="pre">DocumentRoot</span></code> to the <code class="docutils literal notranslate"><span class="pre">public/</span></code> folder.
+For <strong>Nginx</strong>, set the <code class="docutils literal notranslate"><span class="pre">root</span></code> directive to the <code class="docutils literal notranslate"><span class="pre">public/</span></code> folder as well.</p>
+</div>
+<p><strong>Step 4 — Start the development server</strong></p>
+<p>Open a terminal in the project root and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>run
+</pre></div>
+</div>
+<p><strong>Step 5 — Open in browser</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>http://localhost:3000
+</pre></div>
+</div>
+<p>You should see the LavaLust welcome page. Installation is complete.</p>
+</section>
+<section id="method-2-git-clone">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Method 2: Git Clone</a><a class="headerlink" href="#method-2-git-clone" title="Link to this heading"></a></h2>
+<p>Use this method if you want to track updates or contribute to the project.</p>
+<p><strong>Step 1 — Install prerequisites</strong></p>
+<p>Make sure both <a class="reference external" href="https://git-scm.com">Git</a> and
+<a class="reference external" href="https://getcomposer.org">Composer</a> are installed and available in your
+terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>--version
+composer<span class="w"> </span>--version
+</pre></div>
+</div>
+<p><strong>Step 2 — Clone the repository</strong></p>
+<p>Navigate to your server or projects folder and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ronmarasigan/LavaLust
+</pre></div>
+</div>
+<p>This creates a <code class="docutils literal notranslate"><span class="pre">LavaLust/</span></code> directory with all project files inside.</p>
+<p><strong>Step 3 — Install dependencies</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>LavaLust
+composer<span class="w"> </span>install
+</pre></div>
+</div>
+<p><strong>Step 4 — Start the development server</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>run
+</pre></div>
+</div>
+<p><strong>Step 5 — Open in browser</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>http://localhost:3000
+</pre></div>
+</div>
+<p>You should see the LavaLust welcome page. Installation is complete.</p>
+</section>
+<section id="post-installation">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Post-Installation</a><a class="headerlink" href="#post-installation" title="Link to this heading"></a></h2>
+<p>Once the welcome page loads, complete the following before building your application:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 5.0%" />
+<col style="width: 35.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Task</p></th>
+<th class="head"><p>Details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>☐</p></td>
+<td><p><strong>Set the base URL</strong></p></td>
+<td><p>Open <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code> and set <code class="docutils literal notranslate"><span class="pre">$config['base_url']</span></code>
+to your domain (e.g. <code class="docutils literal notranslate"><span class="pre">https://yourdomain.com/</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>☐</p></td>
+<td><p><strong>Configure the database</strong></p></td>
+<td><p>Open <code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code> and fill in your database
+credentials (hostname, username, password, database name).</p></td>
+</tr>
+<tr class="row-even"><td><p>☐</p></td>
+<td><p><strong>Set the encryption key</strong></p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">$config['encryption_key']</span></code> in <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>
+to a strong random string. Required for sessions and CSRF protection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>☐</p></td>
+<td><p><strong>Set environment</strong></p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">$config['environment']</span></code> to <code class="docutils literal notranslate"><span class="pre">development</span></code> locally and
+<code class="docutils literal notranslate"><span class="pre">production</span></code> on live servers to control error reporting.</p></td>
+</tr>
+<tr class="row-even"><td><p>☐</p></td>
+<td><p><strong>Configure</strong> <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code></p></td>
+<td><p>If using Apache, ensure <code class="docutils literal notranslate"><span class="pre">mod_rewrite</span></code> is enabled and the
+provided <code class="docutils literal notranslate"><span class="pre">.htaccess</span></code> file is in the <code class="docutils literal notranslate"><span class="pre">public/</span></code> folder.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="troubleshooting">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<dl>
+<dt><strong>Blank page or 500 error</strong></dt><dd><p>Enable PHP error reporting temporarily by setting <code class="docutils literal notranslate"><span class="pre">$config['environment']</span></code>
+to <code class="docutils literal notranslate"><span class="pre">development</span></code> in <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>. Check your server’s PHP
+error log for details.</p>
+</dd>
+<dt><strong>404 on all routes except the homepage</strong></dt><dd><p>Apache: confirm <code class="docutils literal notranslate"><span class="pre">mod_rewrite</span></code> is enabled and <code class="docutils literal notranslate"><span class="pre">AllowOverride</span> <span class="pre">All</span></code> is
+set on the <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory in your virtual host config.
+Nginx: make sure your server block includes a <code class="docutils literal notranslate"><span class="pre">try_files</span></code> directive
+pointing to <code class="docutils literal notranslate"><span class="pre">index.php</span></code>.</p>
+</dd>
+<dt><strong>Port 3000 already in use</strong></dt><dd><p>Run the development server on a different port:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>run<span class="w"> </span>--port<span class="o">=</span><span class="m">8080</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>Composer not found</strong></dt><dd><p>Ensure Composer is installed globally and <code class="docutils literal notranslate"><span class="pre">~/.composer/vendor/bin</span></code> (Linux/macOS)
+or <code class="docutils literal notranslate"><span class="pre">%APPDATA%\Composer\vendor\bin</span></code> (Windows) is on your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+</dd>
+</dl>
+</section>
 </section>
 
 

@@ -1,19 +1,192 @@
 Installation Guide
 ==================
 
-**(via downloading and extracting the zip file)**
+LavaLust can be installed in two ways: by downloading the release zip or by cloning
+the repository with Git. Both methods result in the same working setup.
 
-#. Download the `latest release <https://github.com/ronmarasigan/LavaLust/releases/tag/v4.2.5>`_ package.
-#. Unzip the package.
-#. Upload the LavaLust folders and files to your server. Normally the
-   ``index.php`` file will be at your public folder.
-#. Open your project in terminal and type ``php lava run`` and hit enter.
-#. Open your browser and type ``http://localhost:3000`` in the address bar.
+.. contents:: Methods
+   :local:
+   :depth: 1
 
-**(via Git)**
 
-#. Install Git and Composer.
-#. Select the server folder then open a terminal. Type
-   ``git clone https://github.com/ronmarasigan/LavaLust`` and hit enter.
-#. Open your project in terminal and type ``php lava run`` and hit enter.
-#. Open your browser and type ``http://localhost:3000`` in the address bar.
+Requirements
+-------------
+
+Before installing, make sure your server meets the following requirements:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Requirement
+     - Details
+   * - **PHP**
+     - Version 7.4 or higher
+   * - **Web Server**
+     - Apache 2.4+ or Nginx 1.18+ (or the built-in PHP server for local development)
+   * - **Extensions**
+     - ``pdo``, ``mbstring``, ``json``, ``openssl``
+   * - **Composer**
+     - Required for the Git installation method
+   * - **Git**
+     - Required for the Git installation method only
+
+
+Method 1: Download ZIP
+-----------------------
+
+This is the quickest way to get started without any extra tools.
+
+**Step 1 — Download the package**
+
+Download the `latest release <https://github.com/ronmarasigan/LavaLust/releases/tag/v4.6.0>`_
+from GitHub and save the ``.zip`` file to your machine.
+
+**Step 2 — Extract the archive**
+
+Unzip the downloaded file. You should see the following top-level structure:
+
+::
+
+    lavalust/
+    ├── app/
+    ├── scheme/
+    ├── public/
+    │   └── index.php
+    ├── lava
+    └── composer.json
+
+**Step 3 — Upload to your server**
+
+Copy the extracted folder contents to your server's web root or the desired
+project directory. The ``index.php`` entry point should end up inside your
+``public/`` folder.
+
+.. tip::
+
+   For **Apache**, point your virtual host ``DocumentRoot`` to the ``public/`` folder.
+   For **Nginx**, set the ``root`` directive to the ``public/`` folder as well.
+
+**Step 4 — Start the development server**
+
+Open a terminal in the project root and run:
+
+.. code-block:: bash
+
+    php lava run
+
+**Step 5 — Open in browser**
+
+.. code-block:: text
+
+    http://localhost:3000
+
+You should see the LavaLust welcome page. Installation is complete.
+
+
+Method 2: Git Clone
+--------------------
+
+Use this method if you want to track updates or contribute to the project.
+
+**Step 1 — Install prerequisites**
+
+Make sure both `Git <https://git-scm.com>`_ and
+`Composer <https://getcomposer.org>`_ are installed and available in your
+terminal:
+
+.. code-block:: bash
+
+    git --version
+    composer --version
+
+**Step 2 — Clone the repository**
+
+Navigate to your server or projects folder and run:
+
+.. code-block:: bash
+
+    git clone https://github.com/ronmarasigan/LavaLust
+
+This creates a ``LavaLust/`` directory with all project files inside.
+
+**Step 3 — Install dependencies**
+
+.. code-block:: bash
+
+    cd LavaLust
+    composer install
+
+**Step 4 — Start the development server**
+
+.. code-block:: bash
+
+    php lava run
+
+**Step 5 — Open in browser**
+
+.. code-block:: text
+
+    http://localhost:3000
+
+You should see the LavaLust welcome page. Installation is complete.
+
+
+Post-Installation
+------------------
+
+Once the welcome page loads, complete the following before building your application:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 5 35 60
+
+   * - 
+     - Task
+     - Details
+   * - ☐
+     - **Set the base URL**
+     - Open ``app/config/config.php`` and set ``$config['base_url']``
+       to your domain (e.g. ``https://yourdomain.com/``).
+   * - ☐
+     - **Configure the database**
+     - Open ``app/config/database.php`` and fill in your database
+       credentials (hostname, username, password, database name).
+   * - ☐
+     - **Set the encryption key**
+     - Set ``$config['encryption_key']`` in ``app/config/config.php``
+       to a strong random string. Required for sessions and CSRF protection.
+   * - ☐
+     - **Set environment**
+     - Set ``$config['environment']`` to ``development`` locally and
+       ``production`` on live servers to control error reporting.
+   * - ☐
+     - **Configure** ``.htaccess``
+     - If using Apache, ensure ``mod_rewrite`` is enabled and the
+       provided ``.htaccess`` file is in the ``public/`` folder.
+
+
+Troubleshooting
+----------------
+
+**Blank page or 500 error**
+   Enable PHP error reporting temporarily by setting ``$config['environment']``
+   to ``development`` in ``app/config/config.php``. Check your server's PHP
+   error log for details.
+
+**404 on all routes except the homepage**
+   Apache: confirm ``mod_rewrite`` is enabled and ``AllowOverride All`` is
+   set on the ``public/`` directory in your virtual host config.
+   Nginx: make sure your server block includes a ``try_files`` directive
+   pointing to ``index.php``.
+
+**Port 3000 already in use**
+   Run the development server on a different port:
+
+   .. code-block:: bash
+
+       php lava run --port=8080
+
+**Composer not found**
+   Ensure Composer is installed globally and ``~/.composer/vendor/bin`` (Linux/macOS)
+   or ``%APPDATA%\Composer\vendor\bin`` (Windows) is on your ``PATH``.

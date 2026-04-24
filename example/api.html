@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Usage Sample &mdash; LavaLust Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=cc8a4273"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/lavatheme.js?v=667fea26"></script>
+      <script src="../_static/js/carbon.js?v=35530795"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="User Authentication &amp; Authorization" href="auth.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+<a href="../index.html">
+  <img src="../_static/images/logo.png" class="logo" width="240" height="67" alt="Logo">
+</a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../general/welcome.html">What is LavaLust?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/license.html">MIT License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/changelog.html">LavaLust Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/guide.html">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../core_topics/index.html">General Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/before_action.html">before_action Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core_topics/middlewares.html">Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database/database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/query_builder.html">Database Query Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/request.html">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html">Ember Template Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html#module-Ember_registrar">Ember Registrar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API Usage Sample</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Examples</a></li>
+      <li class="breadcrumb-item active">API Usage Sample</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-usage-sample">
+<h1>API Usage Sample<a class="headerlink" href="#api-usage-sample" title="Link to this heading"></a></h1>
+<p>A complete RESTful CRUD API with JWT authentication built on LavaLust.
+All endpoints return JSON. Protected endpoints require a <code class="docutils literal notranslate"><span class="pre">Bearer</span></code> token
+in the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header.</p>
+<nav class="contents local" id="sections">
+<p class="topic-title">Sections</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#project-structure" id="id1">Project Structure</a></p></li>
+<li><p><a class="reference internal" href="#setup" id="id2">Setup</a></p></li>
+<li><p><a class="reference internal" href="#authentication" id="id3">Authentication</a></p></li>
+<li><p><a class="reference internal" href="#auth-endpoints" id="id4">Auth Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#users-endpoints" id="id5">Users Endpoints  🔒</a></p></li>
+<li><p><a class="reference internal" href="#error-response-reference" id="id6">Error Response Reference</a></p></li>
+<li><p><a class="reference internal" href="#jwt-token-structure" id="id7">JWT Token Structure</a></p></li>
+<li><p><a class="reference internal" href="#security-notes" id="id8">Security Notes</a></p></li>
+</ul>
+</nav>
+<section id="project-structure">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Project Structure</a><a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="o">/</span>
+<span class="nx">├──</span> <span class="nx">config</span><span class="o">/</span>
+<span class="nx">│</span>   <span class="nx">└──</span> <span class="nx">routes</span><span class="o">.</span><span class="nx">php</span>                   <span class="nx">←</span> <span class="nx">Route</span> <span class="nx">definitions</span>
+<span class="nx">├──</span> <span class="nx">controllers</span><span class="o">/</span>
+<span class="nx">│</span>   <span class="nx">├──</span> <span class="nx">AuthController</span><span class="o">.</span><span class="nx">php</span>           <span class="nx">←</span> <span class="nx">Register</span><span class="p">,</span> <span class="nx">login</span><span class="p">,</span> <span class="nx">refresh</span><span class="p">,</span> <span class="nx">logout</span>
+<span class="nx">│</span>   <span class="nx">└──</span> <span class="nx">UsersController</span><span class="o">.</span><span class="nx">php</span>          <span class="nx">←</span> <span class="nx">CRUD</span> <span class="nx">endpoints</span>
+<span class="nx">├──</span> <span class="nx">helpers</span><span class="o">/</span>
+<span class="nx">│</span>   <span class="nx">└──</span> <span class="nx">jwt_helper</span><span class="o">.</span><span class="nx">php</span>               <span class="nx">←</span> <span class="nx">jwt_encode</span><span class="p">()</span> <span class="o">/</span> <span class="nx">jwt_decode</span><span class="p">()</span>
+<span class="nx">├──</span> <span class="nx">middleware</span><span class="o">/</span>
+<span class="nx">│</span>   <span class="nx">└──</span> <span class="nx">JwtAuthMiddleware</span><span class="o">.</span><span class="nx">php</span>        <span class="nx">←</span> <span class="nx">Bearer</span> <span class="nx">token</span> <span class="nx">verification</span>
+<span class="nx">└──</span> <span class="nx">models</span><span class="o">/</span>
+    <span class="nx">└──</span> <span class="nx">User_model</span><span class="o">.</span><span class="nx">php</span>               <span class="nx">←</span> <span class="nx">Database</span> <span class="nx">operations</span>
+<span class="nx">database</span><span class="o">/</span>
+<span class="nx">└──</span> <span class="nx">migration</span><span class="o">.</span><span class="nx">sql</span>                    <span class="nx">←</span> <span class="nx">Table</span> <span class="nx">schema</span>
+</pre></div>
+</div>
+</section>
+<section id="setup">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p><strong>1. Run the migration</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">users</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w">         </span><span class="nb">INT</span><span class="w"> </span><span class="n">UNSIGNED</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="o">`</span><span class="n">email</span><span class="o">`</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="w">   </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="o">`</span><span class="n">created_at</span><span class="o">`</span><span class="w"> </span><span class="n">DATETIME</span><span class="w">        </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="o">`</span><span class="n">updated_at</span><span class="o">`</span><span class="w"> </span><span class="n">DATETIME</span><span class="w">        </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="w">                                          </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span>
+<span class="w">    </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">uq_users_email</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">email</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>2. Add JWT config values to</strong> <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Strong random string — change before going to production</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_secret&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;your-super-secret-key-change-me&#39;</span><span class="p">;</span>
+
+<span class="c1">// Token lifetime in seconds (3600 = 1 hour)</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;jwt_ttl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>3. Load the JWT helper globally or per-controller</strong></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;helper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;jwt&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>Or load it per-controller in <code class="docutils literal notranslate"><span class="pre">__construct()</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;jwt&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="authentication">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Authentication</a><a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<p>The API uses <strong>stateless JWT authentication</strong> (HS256).
+After a successful login or registration the response includes an
+<code class="docutils literal notranslate"><span class="pre">access_token</span></code>. Send it on every protected request:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Authorization: Bearer &lt;access_token&gt;
+</pre></div>
+</div>
+<p>The middleware <code class="docutils literal notranslate"><span class="pre">JwtAuthMiddleware</span></code> verifies the token and stores the
+decoded payload in <code class="docutils literal notranslate"><span class="pre">lava_instance()-&gt;auth_user</span></code> so controllers can
+read it without parsing the token again.</p>
+</section>
+<section id="auth-endpoints">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Auth Endpoints</a><a class="headerlink" href="#auth-endpoints" title="Link to this heading"></a></h2>
+<section id="post-api-auth-register">
+<h3>POST /api/auth/register<a class="headerlink" href="#post-api-auth-register" title="Link to this heading"></a></h3>
+<p>Create a new account and receive a token immediately.</p>
+<p><strong>Request body</strong> (JSON or <code class="docutils literal notranslate"><span class="pre">application/x-www-form-urlencoded</span></code>)</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Rules</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Required. Max 100 characters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">email</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Required. Must be a valid, unique email address.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Required. Minimum 8 characters.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/auth/register<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Jane Doe&quot;,&quot;email&quot;:&quot;jane@example.com&quot;,&quot;password&quot;:&quot;secret123&quot;}&#39;</span>
+</pre></div>
+</div>
+<p><strong>201 Created</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>422 Validation error</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Validation failed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;This email address is already registered.&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="post-api-auth-login">
+<h3>POST /api/auth/login<a class="headerlink" href="#post-api-auth-login" title="Link to this heading"></a></h3>
+<p>Authenticate with email and password.</p>
+<p><strong>Request body</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Rules</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">email</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Required.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Required.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/auth/login<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;email&quot;:&quot;jane@example.com&quot;,&quot;password&quot;:&quot;secret123&quot;}&#39;</span>
+</pre></div>
+</div>
+<p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Login successful.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expires_in&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>401 Unauthorized</strong> (wrong credentials)</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invalid email or password.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="post-api-auth-refresh">
+<h3>POST /api/auth/refresh  🔒<a class="headerlink" href="#post-api-auth-refresh" title="Link to this heading"></a></h3>
+<p>Issue a new token using a still-valid token.
+Useful for extending a session before expiry.</p>
+<p><strong>Headers:</strong> <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;token&gt;</span></code></p>
+<p><strong>200 OK</strong> — returns the same shape as login with a freshly signed token.</p>
+<p><strong>401 Unauthorized</strong> — token is missing, invalid, or expired.</p>
+</section>
+<section id="post-api-auth-logout">
+<h3>POST /api/auth/logout  🔒<a class="headerlink" href="#post-api-auth-logout" title="Link to this heading"></a></h3>
+<p>Confirms logout. Because JWTs are stateless the client is responsible
+for discarding the token. The server simply acknowledges the request.</p>
+<p><strong>Headers:</strong> <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;token&gt;</span></code></p>
+<p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Logged out successfully.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="users-endpoints">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Users Endpoints  🔒</a><a class="headerlink" href="#users-endpoints" title="Link to this heading"></a></h2>
+<p>All <code class="docutils literal notranslate"><span class="pre">/api/users</span></code> endpoints require a valid <code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span></code> header.</p>
+<section id="get-api-users">
+<h3>GET /api/users<a class="headerlink" href="#get-api-users" title="Link to this heading"></a></h3>
+<p>Return a paginated list of users.</p>
+<p><strong>Query parameters</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Param</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">page</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Page number (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Items per page, maximum <code class="docutils literal notranslate"><span class="pre">100</span></code> (default: <code class="docutils literal notranslate"><span class="pre">15</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>https://yourdomain.com/api/users?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span>
+</pre></div>
+</div>
+<p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;users&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;pagination&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;per_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;current_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;last_page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="get-api-users-id">
+<h3>GET /api/users/{id}<a class="headerlink" href="#get-api-users-id" title="Link to this heading"></a></h3>
+<p>Return a single user by numeric ID.</p>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>https://yourdomain.com/api/users/1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span>
+</pre></div>
+</div>
+<p><strong>200 OK</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>404 Not Found</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User not found.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="post-api-users">
+<h3>POST /api/users<a class="headerlink" href="#post-api-users" title="Link to this heading"></a></h3>
+<p>Create a new user (admin use — same validation as registration).</p>
+<p><strong>Request body</strong></p>
+<p>Same fields as <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/auth/register</span></code>:  <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>, <code class="docutils literal notranslate"><span class="pre">password</span></code>.</p>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/users<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;John Smith&quot;,&quot;email&quot;:&quot;john@example.com&quot;,&quot;password&quot;:&quot;password123&quot;}&#39;</span>
+</pre></div>
+</div>
+<p><strong>201 Created</strong> — returns the new user object with a <code class="docutils literal notranslate"><span class="pre">Location</span></code> header pointing
+to <code class="docutils literal notranslate"><span class="pre">/api/users/{id}</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Smith&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 11:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 11:00:00&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="put-api-users-id-patch-api-users-id">
+<h3>PUT /api/users/{id}  |  PATCH /api/users/{id}<a class="headerlink" href="#put-api-users-id-patch-api-users-id" title="Link to this heading"></a></h3>
+<p>Update a user. Both <code class="docutils literal notranslate"><span class="pre">PUT</span></code> and <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> are accepted and behave
+identically — only the fields you send will be changed.</p>
+<p><strong>Request body</strong> — all fields are optional; send only those to update:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Rules</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Max 100 characters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">email</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Valid, unique email address.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Minimum 8 characters.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong> (change name only)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PATCH<span class="w"> </span>https://yourdomain.com/api/users/1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Jane Smith&quot;}&#39;</span>
+</pre></div>
+</div>
+<p><strong>200 OK</strong> — returns the full updated user object.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User updated successfully.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 10:00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15 12:30:00&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>422</strong> — if no valid fields were provided or nothing changed.</p>
+</section>
+<section id="delete-api-users-id">
+<h3>DELETE /api/users/{id}<a class="headerlink" href="#delete-api-users-id" title="Link to this heading"></a></h3>
+<p>Delete a user by ID.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A user cannot delete their own account. The middleware compares
+<code class="docutils literal notranslate"><span class="pre">auth_user['sub']</span></code> against the target <code class="docutils literal notranslate"><span class="pre">{id}</span></code> and returns <code class="docutils literal notranslate"><span class="pre">403</span></code>
+if they match.</p>
+</div>
+<p><strong>Example request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>https://yourdomain.com/api/users/2<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token&gt;&quot;</span>
+</pre></div>
+</div>
+<p><strong>204 No Content</strong> — empty body on success.</p>
+<p><strong>403 Forbidden</strong> (self-delete attempt)</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You cannot delete your own account.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-response-reference">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Error Response Reference</a><a class="headerlink" href="#error-response-reference" title="Link to this heading"></a></h2>
+<p>All error responses follow the same JSON envelope:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Human-readable message.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Validation errors additionally include an <code class="docutils literal notranslate"><span class="pre">errors</span></code> object:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Validation failed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Please provide a valid email address.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Password must be at least 8 characters.&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 85.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>When it occurs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">201</span></code></p></td>
+<td><p>Resource created successfully</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">204</span></code></p></td>
+<td><p>Resource deleted (no body)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>General bad request</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">401</span></code></p></td>
+<td><p>Missing, invalid, or expired token; wrong credentials</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">403</span></code></p></td>
+<td><p>Authenticated but not permitted (e.g. self-delete)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">404</span></code></p></td>
+<td><p>Resource does not exist</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">405</span></code></p></td>
+<td><p>HTTP method not allowed for this route</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">422</span></code></p></td>
+<td><p>Validation failed (see <code class="docutils literal notranslate"><span class="pre">errors</span></code> object)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p></td>
+<td><p>Unexpected server error</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="jwt-token-structure">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">JWT Token Structure</a><a class="headerlink" href="#jwt-token-structure" title="Link to this heading"></a></h2>
+<p>Tokens are signed with <strong>HS256</strong>. The payload contains:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Claim</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sub</span></code></p></td>
+<td><p>User ID (integer)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">email</span></code></p></td>
+<td><p>User’s email address</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">iat</span></code></p></td>
+<td><p>Issued-at timestamp (Unix)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exp</span></code></p></td>
+<td><p>Expiry timestamp (Unix) — <code class="docutils literal notranslate"><span class="pre">iat</span> <span class="pre">+</span> <span class="pre">jwt_ttl</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The decoded payload is available in any protected controller as:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$auth_user</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">auth_user</span><span class="p">;</span>
+<span class="nv">$user_id</span>   <span class="o">=</span> <span class="nv">$auth_user</span><span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">];</span>
+<span class="nv">$email</span>     <span class="o">=</span> <span class="nv">$auth_user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="security-notes">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Security Notes</a><a class="headerlink" href="#security-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Passwords are hashed with <code class="docutils literal notranslate"><span class="pre">password_hash(...,</span> <span class="pre">PASSWORD_BCRYPT)</span></code> and verified with <code class="docutils literal notranslate"><span class="pre">password_verify()</span></code>. Plain-text passwords are never stored or logged.</p></li>
+<li><p>The login endpoint returns the same vague <code class="docutils literal notranslate"><span class="pre">&quot;Invalid</span> <span class="pre">email</span> <span class="pre">or</span> <span class="pre">password.&quot;</span></code> message whether the email or the password was wrong, to prevent user enumeration.</p></li>
+<li><p>Tokens are validated using <code class="docutils literal notranslate"><span class="pre">hash_equals()</span></code> to prevent timing attacks on the HMAC signature.</p></li>
+<li><p>All responses include <code class="docutils literal notranslate"><span class="pre">X-Content-Type-Options:</span> <span class="pre">nosniff</span></code>, <code class="docutils literal notranslate"><span class="pre">X-Frame-Options:</span> <span class="pre">SAMEORIGIN</span></code>, and other security headers via <code class="docutils literal notranslate"><span class="pre">with_security_headers()</span></code>.</p></li>
+<li><p>All API responses set <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-store</span></code> via <code class="docutils literal notranslate"><span class="pre">no_cache()</span></code>.</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">jwt_secret</span></code> to a long, random string before deploying to production. Never commit it to version control — use an environment variable instead.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="auth.html" class="btn btn-neutral float-left" title="User Authentication &amp; Authorization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

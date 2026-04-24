@@ -1,24 +1,197 @@
 Model–View–Controller
 =====================
 
-LavaLust is based on the **Model–View–Controller (MVC)** development pattern.  
-MVC is a software approach that separates **application logic** from **presentation**.  
+LavaLust is built around the **Model–View–Controller (MVC)** architectural pattern.
+MVC separates an application into three distinct layers — data, logic, and
+presentation — so each part of the codebase has a single, well-defined
+responsibility.
 
-In practice, this allows your web pages to contain minimal scripting since the presentation is kept separate from the PHP logic.
+The practical benefit is that your views stay free of business logic, your
+controllers stay free of database queries, and your models stay free of
+presentation concerns. This makes the code easier to read, test, and maintain
+as a project grows.
 
-**Model**
----------
+.. contents:: Components
+   :local:
+   :depth: 1
 
-The **Model** represents your data structures.  
-Typically, your model classes contain functions that help you **retrieve, insert, and update** information in your database.
+Model
+------
 
-**View**
---------
+The **Model** is responsible for everything related to your data.
+It talks directly to the database and exposes clean methods that the
+controller can call — keeping raw queries out of the rest of the application.
 
-The **View** is the information presented to the user.  
-A view is normally a full web page, but in LavaLust it can also be a **page fragment** (like a header or footer), an **RSS feed**, or any other type of “page.”
+**Location:** ``app/models/``
 
-**Controller**
---------------
+**Typical responsibilities:**
 
-The **Controller** acts as an intermediary between the **Model**, the **View**, and other resources needed to process the HTTP request and generate a response.
+- Fetch rows from the database
+- Insert, update, and delete records
+- Encapsulate business rules that apply to the data (e.g. uniqueness checks,
+  status transitions)
+- Return plain arrays or structured data to the controller
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // app/models/Post_model.php
+    class Post_model extends Model
+    {
+        public function get_published($limit = 10)
+        {
+            return $this->db
+                ->select('id, title, slug, created_at')
+                ->from('posts')
+                ->where('status', 'published')
+                ->order_by('created_at', 'DESC')
+                ->limit($limit)
+                ->get()
+                ->result_array();
+        }
+
+        public function find($id)
+        {
+            return $this->db
+                ->from('posts')
+                ->where('id', $id)
+                ->get()
+                ->row_array();
+        }
+    }
+
+.. note::
+
+   Models are not required to use the database. A model can also wrap an
+   external API, a file on disk, or any other data source.
+
+
+View
+-----
+
+The **View** is the presentation layer — it renders what the user actually
+sees. Views should contain only the HTML (or JSON/XML) needed to display
+data; they must not contain database calls or business logic.
+
+**Location:** ``app/views/``
+
+A view in LavaLust is not limited to a full page. Common uses include:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - View type
+     - Example
+   * - Full HTML page
+     - ``views/home/index.php``
+   * - Page fragment
+     - ``views/partials/header.php``, ``views/partials/footer.php``
+   * - Email template
+     - ``views/emails/welcome.php``
+   * - RSS / XML feed
+     - ``views/feeds/rss.php``
+   * - JSON partial
+     - Rendered directly from the controller via ``$this->response->send_json()``
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // app/views/posts/index.php
+    ?>
+    <h1>Latest Posts</h1>
+
+    <?php foreach ($posts as $post) : ?>
+        <article>
+            <h2><?= htmlspecialchars($post['title']) ?></h2>
+            <time><?= $post['created_at'] ?></time>
+        </article>
+    <?php endforeach; ?>
+
+Views receive data from the controller as variables. They must never query
+the database or call models directly.
+
+
+Controller
+-----------
+
+The **Controller** is the entry point for every request. It reads the incoming
+data, calls the appropriate model methods, and passes results to a view (or
+returns a response directly). It is the glue between the model and the view.
+
+**Location:** ``app/controllers/``
+
+**Typical responsibilities:**
+
+- Receive and validate request input
+- Load and call model methods
+- Pass data to a view or build a JSON response
+- Handle redirects and error responses
+
+**Example:**
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Posts.php
+    class Posts extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->model('Post_model', 'post_model');
+        }
+
+        public function index()
+        {
+            $data['posts'] = $this->post_model->get_published(10);
+            $this->call->view('posts/index', $data);
+        }
+
+        public function show($id)
+        {
+            $post = $this->post_model->find((int) $id);
+
+            if ( ! $post)
+            {
+                $this->response->send_not_found('Post not found.');
+                return;
+            }
+
+            $this->call->view('posts/show', ['post' => $post]);
+        }
+    }
+
+.. note::
+
+   Controllers must not contain database queries. Move any data access logic
+   into a model to keep the controller focused on coordinating the request.
+
+
+Responsibilities at a Glance
+-----------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 25 30 30
+
+   * - Layer
+     - Location
+     - Owns
+     - Must NOT contain
+   * - **Model**
+     - ``app/models/``
+     - Database queries, data rules, business logic
+     - HTML output, ``$_GET``/``$_POST`` reads, view loading
+   * - **View**
+     - ``app/views/``
+     - HTML templates, presentation markup
+     - Database calls, business logic, redirects
+   * - **Controller**
+     - ``app/controllers/``
+     - Request handling, model coordination, response building
+     - Raw SQL queries, HTML markup

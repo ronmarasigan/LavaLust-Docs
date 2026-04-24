@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Application Flow Chart" href="application_flow.html" />
+    <link rel="next" title="Application Flow" href="application_flow.html" />
     <link rel="prev" title="LavaLust at a Glance" href="at_a_glance.html" /> 
 </head>
 
@@ -60,7 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="at_a_glance.html">LavaLust at a Glance</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Support Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_flow.html">Application Flow Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_flow.html">Application Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mvc.html">Model–View–Controller</a></li>
 </ul>
 </li>
@@ -130,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/api.html">API Usage Sample</a></li>
 </ul>
 </li>
 </ul>
@@ -175,12 +177,300 @@
 <li><p><strong>Encryption Class</strong></p></li>
 <li><p><strong>RESTful API</strong></p></li>
 <li><p><strong>Migration Class</strong></p></li>
+<li><p><strong>Middleware Class</strong></p></li>
 <li><p><strong>Pagination</strong></p></li>
+</ul>
+</section>
+<section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
+<p>LavaLust ships with a practical set of built-in features covering the most common
+web development needs. Everything listed below is available out of the box — no
+third-party packages required.</p>
+<nav class="contents local" id="categories">
+<p class="topic-title">Categories</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#architecture" id="id1">Architecture</a></p></li>
+<li><p><a class="reference internal" href="#database" id="id2">Database</a></p></li>
+<li><p><a class="reference internal" href="#http-routing" id="id3">HTTP &amp; Routing</a></p></li>
+<li><p><a class="reference internal" href="#forms-validation" id="id4">Forms &amp; Validation</a></p></li>
+<li><p><a class="reference internal" href="#utilities" id="id5">Utilities</a></p></li>
+<li><p><a class="reference internal" href="#feature-summary" id="id6">Feature Summary</a></p></li>
+</ul>
+</nav>
+<section id="architecture">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Architecture</a><a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>MVC Pattern</strong></p></td>
+<td><p>Organises code into Models, Views, and Controllers for a clean separation
+of data, logic, and presentation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Super Lightweight</strong></p></td>
+<td><p>Minimal core footprint with on-demand loading — only the libraries your
+application actually uses are loaded per request.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Search-Engine Friendly URLs</strong></p></td>
+<td><p>Segment-based routing (<code class="docutils literal notranslate"><span class="pre">example.com/news/article/345</span></code>) instead of
+query strings, producing clean and indexable URLs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Middleware</strong></p></td>
+<td><p>Attach reusable request/response logic (authentication, rate limiting,
+logging) to individual routes or route groups.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>RESTful API Support</strong></p></td>
+<td><p>First-class support for <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">PUT</span></code>, <code class="docutils literal notranslate"><span class="pre">PATCH</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">DELETE</span></code> routes with JSON request/response helpers built in.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="database">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Database</a><a class="headerlink" href="#database" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Query Builder</strong></p></td>
+<td><p>Fluent, chainable interface for building SQL queries safely without
+writing raw SQL. Supports filtering, ordering, joins, and pagination.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Migration Class</strong></p></td>
+<td><p>Version-controlled schema management. Define table structures in PHP
+and apply or roll back changes with a single command.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="http-routing">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">HTTP &amp; Routing</a><a class="headerlink" href="#http-routing" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Request Class</strong></p></td>
+<td><p>Read and validate incoming data from <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">PUT</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PATCH</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>, JSON bodies, headers, cookies, and file uploads.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Response Class</strong></p></td>
+<td><p>Build and send HTTP responses — JSON, HTML, plain text, XML, file
+downloads, redirects, and streaming — with full header and status
+code control.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>File Uploading</strong></p></td>
+<td><p>Validate and store uploaded files with configurable type whitelists,
+size limits, and destination paths.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>File Downloading</strong></p></td>
+<td><p>Serve files as browser downloads or inline with automatic MIME type
+detection and chunked streaming.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Page Caching</strong></p></td>
+<td><p>Cache rendered page output to disk and serve it directly on subsequent
+requests, bypassing controller and database overhead.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pagination</strong></p></td>
+<td><p>Generate paginated query results and the corresponding navigation links
+with minimal configuration.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="forms-validation">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Forms &amp; Validation</a><a class="headerlink" href="#forms-validation" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Form Validation</strong></p></td>
+<td><p>Declarative validation rules (required, min length, regex, custom
+callbacks) with automatic error message generation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Session Management</strong></p></td>
+<td><p>Secure server-side session handling with support for flash data,
+session destruction, and configurable storage drivers.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Encryption</strong></p></td>
+<td><p>Encrypt and decrypt arbitrary strings using OpenSSL. Used internally
+for securing session data and cookies.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="utilities">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Utilities</a><a class="headerlink" href="#utilities" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Email</strong></p></td>
+<td><p>Send plain-text or HTML emails via PHP mail, SMTP, or Sendmail with
+support for attachments and multiple recipients.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Logger</strong></p></td>
+<td><p>Write timestamped log entries at configurable severity levels
+(<code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code>, <code class="docutils literal notranslate"><span class="pre">warning</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>) to log files.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Performance Class</strong></p></td>
+<td><p>Measure execution time and memory usage between arbitrary checkpoints
+to identify bottlenecks during development.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Config Class</strong></p></td>
+<td><p>Load, read, and override configuration values at runtime from any
+config file without restarting the application.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Helper Functions</strong></p></td>
+<td><p>A collection of standalone utility functions for common tasks — URL
+generation, string manipulation, array handling, date formatting,
+and more. Load only the helpers your application needs.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="feature-summary">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Feature Summary</a><a class="headerlink" href="#feature-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 15.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Category</p></th>
+<th class="head"><p>Quick reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MVC Pattern</p></td>
+<td><p>Architecture</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/controllers/</span></code>, <code class="docutils literal notranslate"><span class="pre">app/models/</span></code>, <code class="docutils literal notranslate"><span class="pre">app/views/</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lightweight Core</p></td>
+<td><p>Architecture</p></td>
+<td><p>On-demand class loading</p></td>
+</tr>
+<tr class="row-even"><td><p>SEO-Friendly URLs</p></td>
+<td><p>Architecture</p></td>
+<td><p>Segment-based routing in <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Middleware</p></td>
+<td><p>Architecture</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/middleware/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>RESTful API</p></td>
+<td><p>Architecture</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$router-&gt;get/post/put/patch/delete()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Query Builder</p></td>
+<td><p>Database</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;db-&gt;select()-&gt;from()-&gt;where()-&gt;get()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Migrations</p></td>
+<td><p>Database</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">app/migrations/</span></code> + <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">migrate</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Request</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;request-&gt;input/post/get/json()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Response</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;response-&gt;send_json/html/redirect()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>File Uploading</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('upload')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>File Downloading</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;response-&gt;download()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Page Caching</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;output-&gt;cache($minutes)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Pagination</p></td>
+<td><p>HTTP</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('pagination')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Form Validation</p></td>
+<td><p>Forms</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('form_validation')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Session</p></td>
+<td><p>Forms</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;session-&gt;set/get/flashdata()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Encryption</p></td>
+<td><p>Forms</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('encryption')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Email</p></td>
+<td><p>Utilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('email')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logger</p></td>
+<td><p>Utilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('logger')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Performance</p></td>
+<td><p>Utilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library('performance')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Config</p></td>
+<td><p>Utilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config_item('key')</span></code> / <code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;set_item()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Helpers</p></td>
+<td><p>Utilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;helper('url/string/array/...')</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
 <li><p><strong>Simple Page Caching</strong></p></li>
 <li><p><strong>File Downloading Class</strong></p></li>
 <li><p><strong>Search-engine Friendly URLs</strong></p></li>
 <li><p><strong>Helper Functions</strong></p></li>
 </ul>
+</section>
 </section>
 
 
@@ -188,7 +478,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="at_a_glance.html" class="btn btn-neutral float-left" title="LavaLust at a Glance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="application_flow.html" class="btn btn-neutral float-right" title="Application Flow Chart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="application_flow.html" class="btn btn-neutral float-right" title="Application Flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

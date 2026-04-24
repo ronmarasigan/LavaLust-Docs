@@ -1,0 +1,560 @@
+API Usage Sample 
+=================
+
+A complete RESTful CRUD API with JWT authentication built on LavaLust.  
+All endpoints return JSON. Protected endpoints require a ``Bearer`` token  
+in the ``Authorization`` header.
+
+.. contents:: Sections
+   :local:
+   :depth: 1
+
+
+Project Structure
+------------------
+
+::
+
+    app/
+    ├── config/
+    │   └── routes.php                   ← Route definitions
+    ├── controllers/
+    │   ├── AuthController.php           ← Register, login, refresh, logout
+    │   └── UsersController.php          ← CRUD endpoints
+    ├── helpers/
+    │   └── jwt_helper.php               ← jwt_encode() / jwt_decode()
+    ├── middleware/
+    │   └── JwtAuthMiddleware.php        ← Bearer token verification
+    └── models/
+        └── User_model.php               ← Database operations
+    database/
+    └── migration.sql                    ← Table schema
+
+
+Setup
+------
+
+**1. Run the migration**
+
+.. code-block:: sql
+
+    CREATE TABLE IF NOT EXISTS `users` (
+        `id`         INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+        `name`       VARCHAR(100)    NOT NULL,
+        `email`      VARCHAR(150)    NOT NULL,
+        `password`   VARCHAR(255)    NOT NULL,
+        `created_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                              ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`),
+        UNIQUE KEY `uq_users_email` (`email`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**2. Add JWT config values to** ``app/config/config.php``
+
+.. code-block:: php
+
+    <?php
+    // Strong random string — change before going to production
+    $config['jwt_secret'] = 'your-super-secret-key-change-me';
+
+    // Token lifetime in seconds (3600 = 1 hour)
+    $config['jwt_ttl'] = 3600;
+
+**3. Load the JWT helper globally or per-controller**
+
+In ``app/config/autoload.php``:
+
+.. code-block:: php
+
+    <?php
+    $autoload['helper'] = ['jwt'];
+
+Or load it per-controller in ``__construct()``:
+
+.. code-block:: php
+
+    <?php
+    $this->load->helper('jwt');
+
+
+Authentication
+---------------
+
+The API uses **stateless JWT authentication** (HS256).  
+After a successful login or registration the response includes an  
+``access_token``. Send it on every protected request:
+
+.. code-block:: text
+
+    Authorization: Bearer <access_token>
+
+The middleware ``JwtAuthMiddleware`` verifies the token and stores the  
+decoded payload in ``lava_instance()->auth_user`` so controllers can  
+read it without parsing the token again.
+
+
+Auth Endpoints
+---------------
+
+POST /api/auth/register
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a new account and receive a token immediately.
+
+**Request body** (JSON or ``application/x-www-form-urlencoded``)
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 65
+
+   * - Field
+     - Type
+     - Rules
+   * - ``name``
+     - string
+     - Required. Max 100 characters.
+   * - ``email``
+     - string
+     - Required. Must be a valid, unique email address.
+   * - ``password``
+     - string
+     - Required. Minimum 8 characters.
+
+**Example request**
+
+.. code-block:: bash
+
+    curl -X POST https://yourdomain.com/api/auth/register \
+      -H "Content-Type: application/json" \
+      -d '{"name":"Jane Doe","email":"jane@example.com","password":"secret123"}'
+
+**201 Created**
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Created",
+      "data": {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2025-01-15 10:00:00",
+        "updated_at": "2025-01-15 10:00:00",
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+        "token_type": "Bearer",
+        "expires_in": 3600
+      }
+    }
+
+**422 Validation error**
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "Validation failed",
+      "errors": {
+        "email": "This email address is already registered."
+      }
+    }
+
+
+POST /api/auth/login
+~~~~~~~~~~~~~~~~~~~~~
+
+Authenticate with email and password.
+
+**Request body**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 65
+
+   * - Field
+     - Type
+     - Rules
+   * - ``email``
+     - string
+     - Required.
+   * - ``password``
+     - string
+     - Required.
+
+**Example request**
+
+.. code-block:: bash
+
+    curl -X POST https://yourdomain.com/api/auth/login \
+      -H "Content-Type: application/json" \
+      -d '{"email":"jane@example.com","password":"secret123"}'
+
+**200 OK**
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Login successful.",
+      "data": {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2025-01-15 10:00:00",
+        "updated_at": "2025-01-15 10:00:00",
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+        "token_type": "Bearer",
+        "expires_in": 3600
+      }
+    }
+
+**401 Unauthorized** (wrong credentials)
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "Invalid email or password."
+    }
+
+
+POST /api/auth/refresh  🔒
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue a new token using a still-valid token.  
+Useful for extending a session before expiry.
+
+**Headers:** ``Authorization: Bearer <token>``
+
+**200 OK** — returns the same shape as login with a freshly signed token.
+
+**401 Unauthorized** — token is missing, invalid, or expired.
+
+
+POST /api/auth/logout  🔒
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Confirms logout. Because JWTs are stateless the client is responsible  
+for discarding the token. The server simply acknowledges the request.
+
+**Headers:** ``Authorization: Bearer <token>``
+
+**200 OK**
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Logged out successfully.",
+      "data": null
+    }
+
+
+Users Endpoints  🔒
+--------------------
+
+All ``/api/users`` endpoints require a valid ``Authorization: Bearer`` header.
+
+GET /api/users
+~~~~~~~~~~~~~~~
+
+Return a paginated list of users.
+
+**Query parameters**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 65
+
+   * - Param
+     - Type
+     - Description
+   * - ``page``
+     - int
+     - Page number (default: ``1``)
+   * - ``limit``
+     - int
+     - Items per page, maximum ``100`` (default: ``15``)
+
+**Example request**
+
+.. code-block:: bash
+
+    curl https://yourdomain.com/api/users?page=1&limit=5 \
+      -H "Authorization: Bearer <token>"
+
+**200 OK**
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Success",
+      "data": {
+        "users": [
+          {
+            "id": 1,
+            "name": "Jane Doe",
+            "email": "jane@example.com",
+            "created_at": "2025-01-15 10:00:00",
+            "updated_at": "2025-01-15 10:00:00"
+          }
+        ],
+        "pagination": {
+          "total": 42,
+          "per_page": 5,
+          "current_page": 1,
+          "last_page": 9
+        }
+      }
+    }
+
+
+GET /api/users/{id}
+~~~~~~~~~~~~~~~~~~~~
+
+Return a single user by numeric ID.
+
+**Example request**
+
+.. code-block:: bash
+
+    curl https://yourdomain.com/api/users/1 \
+      -H "Authorization: Bearer <token>"
+
+**200 OK**
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Success",
+      "data": {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2025-01-15 10:00:00",
+        "updated_at": "2025-01-15 10:00:00"
+      }
+    }
+
+**404 Not Found**
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "User not found."
+    }
+
+
+POST /api/users
+~~~~~~~~~~~~~~~~
+
+Create a new user (admin use — same validation as registration).
+
+**Request body**
+
+Same fields as ``POST /api/auth/register``:  ``name``, ``email``, ``password``.
+
+**Example request**
+
+.. code-block:: bash
+
+    curl -X POST https://yourdomain.com/api/users \
+      -H "Authorization: Bearer <token>" \
+      -H "Content-Type: application/json" \
+      -d '{"name":"John Smith","email":"john@example.com","password":"password123"}'
+
+**201 Created** — returns the new user object with a ``Location`` header pointing  
+to ``/api/users/{id}``.
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "Created",
+      "data": {
+        "id": 2,
+        "name": "John Smith",
+        "email": "john@example.com",
+        "created_at": "2025-01-15 11:00:00",
+        "updated_at": "2025-01-15 11:00:00"
+      }
+    }
+
+
+PUT /api/users/{id}  |  PATCH /api/users/{id}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Update a user. Both ``PUT`` and ``PATCH`` are accepted and behave  
+identically — only the fields you send will be changed.
+
+**Request body** — all fields are optional; send only those to update:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 65
+
+   * - Field
+     - Type
+     - Rules
+   * - ``name``
+     - string
+     - Max 100 characters.
+   * - ``email``
+     - string
+     - Valid, unique email address.
+   * - ``password``
+     - string
+     - Minimum 8 characters.
+
+**Example request** (change name only)
+
+.. code-block:: bash
+
+    curl -X PATCH https://yourdomain.com/api/users/1 \
+      -H "Authorization: Bearer <token>" \
+      -H "Content-Type: application/json" \
+      -d '{"name":"Jane Smith"}'
+
+**200 OK** — returns the full updated user object.
+
+.. code-block:: json
+
+    {
+      "success": true,
+      "message": "User updated successfully.",
+      "data": {
+        "id": 1,
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "created_at": "2025-01-15 10:00:00",
+        "updated_at": "2025-01-15 12:30:00"
+      }
+    }
+
+**422** — if no valid fields were provided or nothing changed.
+
+
+DELETE /api/users/{id}
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Delete a user by ID.
+
+.. note::
+
+   A user cannot delete their own account. The middleware compares  
+   ``auth_user['sub']`` against the target ``{id}`` and returns ``403``  
+   if they match.
+
+**Example request**
+
+.. code-block:: bash
+
+    curl -X DELETE https://yourdomain.com/api/users/2 \
+      -H "Authorization: Bearer <token>"
+
+**204 No Content** — empty body on success.
+
+**403 Forbidden** (self-delete attempt)
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "You cannot delete your own account."
+    }
+
+
+Error Response Reference
+-------------------------
+
+All error responses follow the same JSON envelope:
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "Human-readable message."
+    }
+
+Validation errors additionally include an ``errors`` object:
+
+.. code-block:: json
+
+    {
+      "success": false,
+      "error": "Validation failed",
+      "errors": {
+        "email": "Please provide a valid email address.",
+        "password": "Password must be at least 8 characters."
+      }
+    }
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 85
+
+   * - Status
+     - When it occurs
+   * - ``201``
+     - Resource created successfully
+   * - ``204``
+     - Resource deleted (no body)
+   * - ``400``
+     - General bad request
+   * - ``401``
+     - Missing, invalid, or expired token; wrong credentials
+   * - ``403``
+     - Authenticated but not permitted (e.g. self-delete)
+   * - ``404``
+     - Resource does not exist
+   * - ``405``
+     - HTTP method not allowed for this route
+   * - ``422``
+     - Validation failed (see ``errors`` object)
+   * - ``500``
+     - Unexpected server error
+
+
+JWT Token Structure
+--------------------
+
+Tokens are signed with **HS256**. The payload contains:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Claim
+     - Description
+   * - ``sub``
+     - User ID (integer)
+   * - ``email``
+     - User's email address
+   * - ``iat``
+     - Issued-at timestamp (Unix)
+   * - ``exp``
+     - Expiry timestamp (Unix) — ``iat + jwt_ttl``
+
+The decoded payload is available in any protected controller as:
+
+.. code-block:: php
+
+    <?php
+    $auth_user = lava_instance()->auth_user;
+    $user_id   = $auth_user['sub'];
+    $email     = $auth_user['email'];
+
+
+Security Notes
+---------------
+
+- Passwords are hashed with ``password_hash(..., PASSWORD_BCRYPT)`` and verified with ``password_verify()``. Plain-text passwords are never stored or logged.
+- The login endpoint returns the same vague ``"Invalid email or password."`` message whether the email or the password was wrong, to prevent user enumeration.
+- Tokens are validated using ``hash_equals()`` to prevent timing attacks on the HMAC signature.
+- All responses include ``X-Content-Type-Options: nosniff``, ``X-Frame-Options: SAMEORIGIN``, and other security headers via ``with_security_headers()``.
+- All API responses set ``Cache-Control: no-store`` via ``no_cache()``.
+- Change ``jwt_secret`` to a long, random string before deploying to production. Never commit it to version control — use an environment variable instead.
