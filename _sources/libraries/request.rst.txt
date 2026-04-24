@@ -1,415 +1,548 @@
-Request Class
-=============
+Response
+=========
 
-The **Request** class handles HTTP requests, input data (GET, POST, COOKIE, SERVER), CSRF protection, and request utilities. It provides a clean interface for accessing request data and checking request properties.
+The ``Response`` class provides a fluent interface for building and sending HTTP responses.  
+It handles status codes, headers, cookies, content types, redirects, and common response formats  
+such as JSON, HTML, plain text, and XML.
 
-Loading the Request Class
+The ``Response`` instance is available inside your controllers via ``$this->response``.
+
+All setter methods return ``$this``, so calls can be chained together before a final ``send()``.
+
+
+.. contents:: Sections
+   :local:
+   :depth: 1
+
+
+Status Codes
+-------------
+
+Set or retrieve the HTTP status code for the response.
+
+.. code-block:: php
+
+    <?php
+    // Set a status code
+    $this->response->set_status_code(404);
+
+    // Get the current status code
+    $code = $this->response->get_status_code(); // 404
+
+Status codes can be chained with other methods:
+
+.. code-block:: php
+
+    <?php
+    $this->response
+        ->set_status_code(422)
+        ->set_json_content(['error' => 'Validation failed'])
+        ->send();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 40 30
+
+   * - Method
+     - Signature
+     - Description
+   * - ``set_status_code()``
+     - ``set_status_code($status_code)``
+     - Set the HTTP status code
+   * - ``get_status_code()``
+     - ``get_status_code()``
+     - Get the current HTTP status code
+
+
+Headers
+--------
+
+Add, remove, or retrieve response headers.
+
+.. code-block:: php
+
+    <?php
+    // Add a single header
+    $this->response->add_header('X-Custom-Header', 'value');
+
+    // Add multiple headers at once using an array
+    $this->response->add_header([
+        'X-Frame-Options'        => 'DENY',
+        'X-Content-Type-Options' => 'nosniff',
+        'Cache-Control'          => 'no-store',
+    ]);
+
+    // Remove a header
+    $this->response->remove_header('X-Frame-Options');
+
+    // Get all headers
+    $headers = $this->response->get_headers();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 45 27
+
+   * - Method
+     - Signature
+     - Description
+   * - ``add_header()``
+     - ``add_header($name, $value = '')``
+     - Add one header or an associative array of headers
+   * - ``remove_header()``
+     - ``remove_header($name)``
+     - Remove a header by name
+   * - ``get_headers()``
+     - ``get_headers()``
+     - Return all queued headers as an array
+
+
+Content
+--------
+
+Set or modify the response body.
+
+.. code-block:: php
+
+    <?php
+    // Set raw content
+    $this->response->set_content('<p>Hello</p>');
+
+    // Append to existing content
+    $this->response->append_content('<p>More content</p>');
+
+    // Get the current content
+    $body = $this->response->get_content();
+
+    // Set HTML content (also sets Content-Type: text/html)
+    $this->response->set_html_content('<h1>Welcome</h1>');
+
+    // Set JSON content (also sets Content-Type: application/json)
+    $this->response->set_json_content(['status' => 'ok']);
+
+    // Set JSON with encoding options
+    $this->response->set_json_content($data, JSON_PRETTY_PRINT);
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 50 22
+
+   * - Method
+     - Signature
+     - Description
+   * - ``set_content()``
+     - ``set_content($content)``
+     - Set the raw response body
+   * - ``get_content()``
+     - ``get_content()``
+     - Get the current response body
+   * - ``append_content()``
+     - ``append_content($content)``
+     - Append to the existing body
+   * - ``set_html_content()``
+     - ``set_html_content($content)``
+     - Set body and add ``Content-Type: text/html``
+   * - ``set_json_content()``
+     - ``set_json_content($data, $options = 0)``
+     - JSON-encode body and add ``Content-Type: application/json``
+
+
+Sending Responses
+------------------
+
+``send()`` flushes all queued headers, cookies, and the content body to the browser.
+
+.. code-block:: php
+
+    <?php
+    $this->response
+        ->set_status_code(200)
+        ->add_header('X-App-Version', '1.0')
+        ->set_html_content('<p>Hello World</p>')
+        ->send();
+
+**Send only headers** (no body):
+
+.. code-block:: php
+
+    <?php
+    $this->response
+        ->set_status_code(200)
+        ->add_header('X-Token', 'abc123')
+        ->send_headers();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 42 30
+
+   * - Method
+     - Signature
+     - Description
+   * - ``send()``
+     - ``send()``
+     - Send headers and body
+   * - ``send_headers()``
+     - ``send_headers()``
+     - Send headers only (no body); safe to call multiple times
+
+
+Convenience Send Methods
 -------------------------
 
-The Request class is automatically loaded by the LavaLust framework and is accessible via:
+These methods set the appropriate status code, ``Content-Type`` header, body, and call ``send()``  
+all in a single call. Use them when you want to return a response immediately.
+
+**JSON**
 
 .. code-block:: php
 
     <?php
-    $this->request;
+    // Send any data as JSON
+    $this->response->send_json(['user' => $user], 200);
 
-No manual loading is required as it's available globally.
+    // Send a structured success response
+    $this->response->send_json_success($user, 'User retrieved', 200);
+    // Output: {"success":true,"message":"User retrieved","data":{...}}
 
-CSRF Protection
----------------
+    // Send a structured error response
+    $this->response->send_json_error('Not found', 404);
+    // Output: {"success":false,"error":"Not found"}
 
-If CSRF protection is enabled in your configuration (``csrf_protection = TRUE``), the Request class will automatically validate CSRF tokens on POST requests. Invalid requests will be rejected.
+    // With additional fields in the error payload
+    $this->response->send_json_error('Validation failed', 422, [
+        'fields' => ['email' => 'Required']
+    ]);
 
-Properties
+**HTML, plain text, XML**
+
+.. code-block:: php
+
+    <?php
+    $this->response->send_html('<h1>Hello</h1>', 200);
+    $this->response->send_text('Plain text response', 200);
+    $this->response->send_xml('<root><item>1</item></root>', 200);
+
+**No content**
+
+.. code-block:: php
+
+    <?php
+    // Returns HTTP 204 with an empty body
+    $this->response->send_no_content();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 52 18
+
+   * - Method
+     - Signature
+     - Description
+   * - ``send_json()``
+     - ``send_json($data, $status_code = 200, $options = 0)``
+     - Send a JSON response
+   * - ``send_json_success()``
+     - ``send_json_success($data = NULL, $message = 'Success', $status_code = 200)``
+     - Send a ``{"success":true,...}`` envelope
+   * - ``send_json_error()``
+     - ``send_json_error($message, $status_code = 400, $additional_data = [])``
+     - Send a ``{"success":false,...}`` envelope
+   * - ``send_html()``
+     - ``send_html($content, $status_code = 200)``
+     - Send an HTML response
+   * - ``send_text()``
+     - ``send_text($content, $status_code = 200)``
+     - Send a plain text response
+   * - ``send_xml()``
+     - ``send_xml($xml, $status_code = 200)``
+     - Send an XML response
+   * - ``send_no_content()``
+     - ``send_no_content()``
+     - Send HTTP 204 with no body
+
+
+Redirects
 ----------
 
-.. list-table::
-   :header-rows: 1
-
-   * - Property
-     - Type
-     - Description
-   * - ``$_enable_csrf``
-     - boolean
-     - Determines if CSRF protection is enabled
-   * - ``$security``
-     - object
-     - Security instance for CSRF validation
-   * - ``$raw_input``
-     - array|null
-     - Raw input data for PUT, PATCH, DELETE requests
-
-Methods
--------
-
-Input Methods
-~~~~~~~~~~~~~
-
-.. list-table::
-   :header-rows: 1
-
-   * - Method
-     - Description
-   * - ``post($index = NULL)``
-     - Retrieves POST variables. Returns all POST data as array when no index is specified.
-   * - ``get($index = NULL)``
-     - Retrieves GET variables (query string parameters).
-   * - ``post_get($index = NULL)``
-     - Checks POST first, falls back to GET if not found.
-   * - ``get_post($index = NULL)``
-     - Checks GET first, falls back to POST if not found.
-   * - ``put($index = NULL)``
-     - Retrieves PUT request data from raw input (supports JSON and form data).
-   * - ``patch($index = NULL)``
-     - Retrieves PATCH request data (alias of put()).
-   * - ``delete($index = NULL)``
-     - Retrieves DELETE request data (alias of put()).
-   - ``all()``
-     - Returns all input data (GET + POST + PUT combined).
-   * - ``has($key)``
-     - Checks if input data has a specific key.
-   * - ``only($keys)``
-     - Returns only the specified input fields.
-   * - ``except($keys)``
-     - Returns all input data except the specified fields.
-
-Cookie Methods
-~~~~~~~~~~~~~~
-
-.. list-table::
-   :header-rows: 1
-
-   * - Method
-     - Description
-   * - ``cookie($index = NULL)``
-     - Retrieves cookie variables.
-   * - ``set_cookie($name, $value = '', $expiration = 0, $options = array())``
-     - Sets a cookie with security options.
-   * - ``delete_cookie($name, $options = array())``
-     - Deletes a cookie by setting its expiration to the past.
-
-Server & Header Methods
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. list-table::
-   :header-rows: 1
-
-   * - Method
-     - Description
-   * - ``server($index = NULL)``
-     - Retrieves server variables ($_SERVER).
-   * - ``header($name)``
-     - Retrieves a specific HTTP header value.
-   * - ``headers()``
-     - Returns all HTTP headers as an associative array.
-
-Request Information Methods
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. list-table::
-   :header-rows: 1
-
-   * - Method
-     - Description
-   * - ``method($upper = FALSE)``
-     - Returns the HTTP request method (GET, POST, PUT, PATCH, DELETE, etc.).
-   * - ``is_method($methods)``
-     - Checks if the request method matches the given method(s).
-   * - ``is_get()``
-     - Checks if the request method is GET.
-   * - ``is_post()``
-     - Checks if the request method is POST.
-   * - ``is_put()``
-     - Checks if the request method is PUT.
-   * - ``is_patch()``
-     - Checks if the request method is PATCH.
-   * - ``is_delete()``
-     - Checks if the request method is DELETE.
-   * - ``is_ajax()``
-     - Checks if the request is an AJAX request (via X-Requested-With header).
-   * - ``wants_json()``
-     - Checks if the client expects a JSON response (via Accept header).
-   * - ``is_secure()``
-     - Checks if the request is using HTTPS.
-   * - ``ip_address($trust_proxy = FALSE)``
-     - Gets the client's IP address. Only trusts proxy headers when explicitly enabled.
-   * - ``valid_ip($ip, $which = '')``
-     - Validates an IP address format.
-   * - ``uri()``
-     - Returns the full request URI (including query string).
-   * - ``url($with_query = TRUE)``
-     - Returns the full request URL.
-   * - ``referrer()``
-     - Returns the HTTP referrer URL if available.
-   * - ``user_agent()``
-     - Returns the user agent string of the client.
-
-Method Parameters
------------------
-
-.. list-table:: Input Method Parameters
-   :header-rows: 1
-
-   * - Method
-     - Parameter
-     - Type
-     - Default
-     - Description
-   * - post()
-     - $index
-     - string|null
-     - NULL
-     - Specific key to retrieve, or NULL for all POST data
-   * - get()
-     - $index
-     - string|null
-     - NULL
-     - Specific key to retrieve, or NULL for all GET data
-   * - put()
-     - $index
-     - string|null
-     - NULL
-     - Specific key to retrieve, or NULL for all PUT data
-   * - has()
-     - $key
-     - string
-     - —
-     - The input key to check
-   * - only()
-     - $keys
-     - array
-     - —
-     - Array of keys to retrieve
-   * - except()
-     - $keys
-     - array
-     - —
-     - Array of keys to exclude
-
-.. list-table:: Cookie Method Parameters
-   :header-rows: 1
-
-   * - Method
-     - Parameter
-     - Type
-     - Default
-     - Description
-   * - set_cookie()
-     - $name
-     - string
-     - —
-     - The cookie name
-   * - set_cookie()
-     - $value
-     - string
-     - ''
-     - The cookie value
-   * - set_cookie()
-     - $expiration
-     - int
-     - 0
-     - Cookie expiration time in seconds (0 = session cookie)
-   * - set_cookie()
-     - $options
-     - array
-     - array()
-     - Additional options (prefix, path, domain, secure, httponly, samesite)
-   * - delete_cookie()
-     - $name
-     - string
-     - —
-     - Cookie name to delete
-   * - delete_cookie()
-     - $options
-     - array
-     - array()
-     - Additional options matching set_cookie()
-
-.. list-table:: Server & Header Method Parameters
-   :header-rows: 1
-
-   * - Method
-     - Parameter
-     - Type
-     - Default
-     - Description
-   * - server()
-     - $index
-     - string|null
-     - NULL
-     - Specific server variable name
-   * - header()
-     - $name
-     - string
-     - —
-     - Header name (e.g., 'Content-Type', 'Accept')
-   * - ip_address()
-     - $trust_proxy
-     - bool
-     - FALSE
-     - Set to TRUE if behind a trusted proxy
-   * - valid_ip()
-     - $ip
-     - string
-     - —
-     - IP address to validate
-   * - valid_ip()
-     - $which
-     - string
-     - ''
-     - Protocol: 'ipv4', 'ipv6', or '' for both
-   * - url()
-     - $with_query
-     - bool
-     - TRUE
-     - Whether to include query string
-   * - method()
-     - $upper
-     - bool
-     - FALSE
-     - If TRUE, returns uppercase method name
-
-Complete Examples
------------------
-
-**Form Processing with Validation:**
-
 .. code-block:: php
 
     <?php
-    class UserController extends Controller {
-        
-        public function register() {
-            if ($this->request->is_post()) {
-                // Get validated input
-                $data = $this->request->only(['username', 'email', 'password']);
-                
-                // CSRF is automatically handled if enabled
-                
-                if (empty($data['username'])) {
-                    $errors[] = 'Username is required';
-                }
-                
-                if ( ! filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                    $errors[] = 'Invalid email address';
-                }
-                
-                if (empty($errors)) {
-                    // Save user
-                    $this->user_model->create($data);
-                    $this->response->redirect('login');
-                }
-            }
-            
-            $this->call->view('register_form');
-        }
-    }
+    // Temporary redirect (302 by default)
+    $this->response->redirect('/dashboard');
 
-**RESTful API Endpoint:**
+    // Permanent redirect
+    $this->response->redirect('/new-url', 301);
 
-.. code-block:: php
+    // Redirect back to the referring page
+    $this->response->back();
 
-    <?php
-    class ApiController extends Controller {
-        
-        public function users($id = NULL) {
-            $method = $this->request->method(TRUE);
-            
-            switch ($method) {
-                case 'GET':
-                    if ($id) {
-                        $data = $this->user_model->find($id);
-                    } else {
-                        $data = $this->user_model->all();
-                    }
-                    break;
-                    
-                case 'POST':
-                    $data = $this->request->post();
-                    $result = $this->user_model->create($data);
-                    break;
-                    
-                case 'PUT':
-                    $data = $this->request->put();
-                    $result = $this->user_model->update($id, $data);
-                    break;
-                    
-                case 'DELETE':
-                    $result = $this->user_model->delete($id);
-                    break;
-            }
-            
-            if ($this->request->wants_json()) {
-                $this->response->send_json($data);
-            }
-        }
-    }
+    // With a fallback if no referrer is available
+    $this->response->back('/home');
 
-**Request Information Example:**
+**Supported redirect status codes:**
 
-.. code-block:: php
+.. list-table::
+   :header-rows: 1
+   :widths: 15 85
 
-    <?php
-    class DebugController extends Controller {
-        
-        public function info() {
-            echo "Method: " . $this->request->method(TRUE) . "<br>";
-            echo "URI: " . $this->request->uri() . "<br>";
-            echo "URL: " . $this->request->url() . "<br>";
-            echo "IP Address: " . $this->request->ip_address() . "<br>";
-            echo "Is AJAX: " . ($this->request->is_ajax() ? 'Yes' : 'No') . "<br>";
-            echo "Is Secure: " . ($this->request->is_secure() ? 'Yes' : 'No') . "<br>";
-        }
-    }
+   * - Code
+     - Meaning
+   * - ``301``
+     - Moved Permanently — browser caches the new location
+   * - ``302``
+     - Found (temporary redirect) — default
+   * - ``303``
+     - See Other — used after POST to redirect to a GET resource
+   * - ``307``
+     - Temporary Redirect — preserves the original HTTP method
+   * - ``308``
+     - Permanent Redirect — like 301 but preserves the HTTP method
 
-Best Practices
+.. note::
+
+   ``redirect()`` calls ``send()`` and then ``exit``.  
+   No code after a ``redirect()`` call will execute.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 45 30
+
+   * - Method
+     - Signature
+     - Description
+   * - ``redirect()``
+     - ``redirect($url, $status_code = 302)``
+     - Redirect to a URL and exit
+   * - ``back()``
+     - ``back($fallback = '/')``
+     - Redirect to the referring URL or a fallback
+
+
+File Downloads
 ---------------
 
-- **Always validate and sanitize input** before using it in your application
-- **Enable CSRF protection** for all forms that modify data
-- **Use ``only()`` and ``except()``** to prevent mass assignment vulnerabilities
-- **Don't trust proxy headers** unless you control the proxy server
-- **Use secure cookie flags** (``httponly``, ``secure``, ``samesite``) for sensitive data
-- **Check request methods** to ensure proper handling (e.g., only accept POST for form submission)
-- **Use ``wants_json()``** to serve appropriate response formats
+Use ``download()`` to serve a file to the browser as an attachment.
 
-Security Considerations
+.. code-block:: php
+
+    <?php
+    // Serve a file using its original filename
+    $this->response->download('/path/to/report.pdf');
+
+    // Serve with a custom filename
+    $this->response->download('/path/to/report.pdf', 'Q3-Report.pdf');
+
+    // With additional headers
+    $this->response->download('/path/to/report.pdf', 'Q3-Report.pdf', [
+        'X-Generated-By' => 'LavaLust',
+    ]);
+
+.. note::
+
+   ``download()`` automatically detects the MIME type, sets ``Content-Disposition: attachment``,  
+   and streams the file in 8 KB chunks. If the file does not exist, a ``404`` response is sent.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 55 20
+
+   * - Method
+     - Signature
+     - Description
+   * - ``download()``
+     - ``download($filepath, $filename = NULL, $headers = [])``
+     - Serve a file as a downloadable attachment
+
+
+Streaming
+----------
+
+``stream()`` sends headers immediately and then invokes a callback that outputs content  
+progressively — useful for large responses, server-sent events, or real-time data.
+
+.. code-block:: php
+
+    <?php
+    $this->response->stream(function() {
+        foreach ($large_dataset as $row) {
+            echo json_encode($row) . "\n";
+            flush();
+        }
+    }, [
+        'Content-Type' => 'application/x-ndjson',
+    ]);
+
+.. note::
+
+   ``stream()`` automatically adds ``Cache-Control: no-cache`` before sending headers.  
+   The callback must be callable; a ``500`` response is sent if it is not.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - Method
+     - Signature
+     - Description
+   * - ``stream()``
+     - ``stream($callback, $headers = [])``
+     - Stream content via a callback after sending headers
+
+
+Cookies
+--------
+
+Queue cookies to be sent alongside the response headers.
+
+.. code-block:: php
+
+    <?php
+    // Set a session cookie (expires when browser closes)
+    $this->response->set_cookie('flash', 'Login successful');
+
+    // Set a persistent cookie (expires in 30 days)
+    $this->response->set_cookie('remember', $token, 30 * 24 * 3600);
+
+    // Set with full options
+    $this->response->set_cookie(
+        'prefs',         // name
+        'dark-mode',     // value
+        3600,            // expiration in seconds
+        '/',             // path
+        '.example.com',  // domain
+        TRUE,            // secure (HTTPS only)
+        TRUE,            // httponly (no JS access)
+        'Strict'         // samesite policy
+    );
+
+    // Delete a cookie
+    $this->response->delete_cookie('remember');
+
+.. note::
+
+   Cookies are not sent until ``send()`` or ``send_headers()`` is called.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 55 17
+
+   * - Method
+     - Signature
+     - Description
+   * - ``set_cookie()``
+     - ``set_cookie($name, $value, $expiration, $path, $domain, $secure, $httponly, $samesite)``
+     - Queue a cookie to be sent with the response
+   * - ``delete_cookie()``
+     - ``delete_cookie($name, $path = '', $domain = '')``
+     - Expire a cookie by setting its expiry in the past
+
+
+Resetting the Response
+-----------------------
+
+Use ``clear()`` to reset the response object back to its default state —  
+useful when building responses conditionally or in tests.
+
+.. code-block:: php
+
+    <?php
+    $this->response
+        ->set_status_code(500)
+        ->set_content('Error');
+
+    // Reset everything
+    $this->response->clear();
+
+    $this->response->get_status_code(); // 200
+    $this->response->get_content();     // NULL
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 30 50
+
+   * - Method
+     - Signature
+     - Description
+   * - ``clear()``
+     - ``clear()``
+     - Reset status code to 200, clear all headers, content, and cookies
+
+
+String Casting
+---------------
+
+The ``Response`` object can be cast directly to a string, which returns the current content body.  
+This is useful for testing or when passing the response to a template.
+
+.. code-block:: php
+
+    <?php
+    $this->response->set_content('Hello World');
+    echo $this->response;  // Hello World
+
+    $body = (string) $this->response;  // 'Hello World'
+
+
+Common Patterns
+----------------
+
+**Controller returning a JSON API response**
+
+.. code-block:: php
+
+    <?php
+    public function show($id)
+    {
+        $user = $this->user_model->find($id);
+
+        if ( ! $user)
+        {
+            $this->response->send_json_error('User not found', 404);
+        }
+
+        $this->response->send_json_success($user, 'User retrieved');
+    }
+
+**Chaining headers, status, and content before a single send**
+
+.. code-block:: php
+
+    <?php
+    $this->response
+        ->set_status_code(201)
+        ->add_header('X-Resource-Id', $new_id)
+        ->set_json_content(['id' => $new_id, 'created' => TRUE])
+        ->send();
+
+**Redirecting after a form POST**
+
+.. code-block:: php
+
+    <?php
+    public function store()
+    {
+        // ... save data ...
+        $this->response->redirect('/users', 303);
+    }
+
+**File download inside a controller**
+
+.. code-block:: php
+
+    <?php
+    public function export()
+    {
+        $filepath = WRITEPATH . 'exports/report.csv';
+        $this->response->download($filepath, 'monthly-report.csv');
+    }
+
+
+Tips and Best Practices
 ------------------------
 
-.. warning::
-
-    The Request class provides raw input data. You must sanitize and validate all data before using it in database queries, file operations, or output.
-
-**Built-in Security Features:**
-
-- CSRF protection when enabled in configuration
-- Cookie name validation to prevent injection
-- IP validation with proper filtering
-- Proxy header trust disabled by default
-- HTTPS detection for secure cookies
-
-Database Structure (Optional)
------------------------------
-
-No database tables are required for the Request class to function.
-
-Troubleshooting
------------------
-
-.. list-table:: Common Issues and Solutions
-   :header-rows: 1
-
-   * - Issue
-     - Possible Solution
-   * - POST data not available
-     - Ensure your form has ``method="post"`` and CSRF token is included if enabled
-   * - PUT/DELETE data not received
-     - Check that your server supports these methods and the client sends proper Content-Type
-   * - Cookie not being set
-     - Verify cookie name has no invalid characters. Check that headers haven't been sent yet
-   * - AJAX detection failing
-     - Ensure your JavaScript sets ``X-Requested-With: XMLHttpRequest`` header
-   * - Wrong IP address detected
-     - Only enable ``$trust_proxy`` if behind a trusted proxy
-   * - CSRF validation fails
-     - Make sure your forms include the CSRF token field generated by the Security class
+- Prefer the ``send_json_success()`` / ``send_json_error()`` helpers for API endpoints to keep  
+  response envelopes consistent across your application.
+- Always specify a status code explicitly — relying on the ``200`` default can mask logic errors.
+- Use ``send_no_content()`` for DELETE endpoints that return no body rather than sending an empty JSON object.
+- Use ``stream()`` for large exports or logs to avoid PHP memory limits.
+- Queue cookies via ``set_cookie()`` before calling ``send()`` — cookies cannot be set after headers are sent.
+- Use ``clear()`` in unit tests to reset state between assertions on the same ``Response`` instance.
+- ``redirect()`` calls ``exit`` internally — do not place cleanup logic after it; run it before the redirect instead.
