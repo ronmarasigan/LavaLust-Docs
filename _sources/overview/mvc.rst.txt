@@ -48,8 +48,7 @@ controller can call — keeping raw queries out of the rest of the application.
                 ->where('status', 'published')
                 ->order_by('created_at', 'DESC')
                 ->limit($limit)
-                ->get()
-                ->result_array();
+                ->get();
         }
 
         public function find($id)
@@ -57,8 +56,7 @@ controller can call — keeping raw queries out of the rest of the application.
             return $this->db
                 ->table('posts')
                 ->where('id', $id)
-                ->get()
-                ->row_array();
+                ->get();
         }
     }
 

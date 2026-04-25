@@ -4,131 +4,185 @@ Database Reference
 LavaLust includes a Database class that supports both **semi-traditional SQL usage**
 and a **Query Builder** pattern, allowing you to write safe and readable database code.
 
+.. contents:: On this page
+   :local:
+   :depth: 1
+
+
 Database Configuration
-----------------------
+-----------------------
 
-Database connection values live in:
-
-``app/config/database.php``
-
-Example configuration group:
+Database connection values live in ``app/config/database.php``.
 
 .. code-block:: php
 
    <?php
-
    $database['main'] = [
-       'driver'    => 'mysqli',
-       'hostname'  => 'localhost',
-       'port'      => '3306',
-       'username'  => 'root',
-       'password'  => '',
-       'database'  => 'my_database',
-       'charset'   => 'utf8mb4',
-       'dbprefix'  => '',
+       'driver'   => 'mysqli',
+       'hostname' => 'localhost',
+       'port'     => '3306',
+       'username' => 'root',
+       'password' => '',
+       'database' => 'my_database',
+       'charset'  => 'utf8mb4',
+       'dbprefix' => '',
    ];
 
-Configuration values
---------------------
 
-driver
-    The database driver/type (for example ``mysqli``, ``postgre``, ``odbc``).
-    Must be specified in lowercase.
+Configuration Values
+---------------------
 
-hostname
-    Hostname of the database server (commonly ``localhost``).
+.. list-table::
+   :header-rows: 1
+   :widths: 18 12 70
 
-port
-    The database port number (optional; e.g. ``3306`` for MySQL).
+   * - Key
+     - Required
+     - Description
+   * - ``driver``
+     - Yes
+     - Database driver. See `Supported Drivers`_ below. Must be lowercase.
+   * - ``hostname``
+     - Yes
+     - Hostname or IP address of the database server (e.g. ``localhost``).
+   * - ``port``
+     - No
+     - Port number. Defaults to the driver's standard port when omitted.
+   * - ``username``
+     - Yes
+     - Database user with appropriate privileges.
+   * - ``password``
+     - Yes
+     - Password for the database user. Use an empty string for no password.
+   * - ``database``
+     - Yes
+     - Name of the database to connect to.
+   * - ``charset``
+     - No
+     - Connection character set. Recommended: ``utf8mb4`` for full Unicode support.
+   * - ``dbprefix``
+     - No
+     - Optional prefix prepended to every table name by the Query Builder.
+       Useful when multiple applications share the same database.
 
-username
-    The username used to connect to the database.
 
-password
-    The password used to connect to the database.
+Supported Drivers
+------------------
 
-database
-    The name of the database to connect to.
+.. list-table::
+   :header-rows: 1
+   :widths: 18 20 18 44
 
-dbprefix
-    Optional table prefix that Query Builder will prepend to table names.
-    Useful when multiple apps share the same DB.
+   * - Driver value
+     - Database
+     - Default port
+     - Notes
+   * - ``mysqli``
+     - MySQL / MariaDB
+     - ``3306``
+     - Recommended for most applications. Requires the PHP ``mysqli`` extension.
+   * - ``postgre``
+     - PostgreSQL
+     - ``5432``
+     - Requires the PHP ``pgsql`` extension.
+   * - ``sqlsrv``
+     - Microsoft SQL Server
+     - ``1433``
+     - Requires the PHP ``sqlsrv`` extension (Microsoft SQL Server Driver for PHP).
+   * - ``sqlite``
+     - SQLite 3
+     - n/a
+     - File-based. Set ``hostname`` to the absolute path of the ``.db`` file.
+       No ``username``, ``password``, or ``port`` is needed.
 
-charset
-    Character set used by the connection (e.g. ``utf8mb4``).
 
-Connecting to your database
-----------------------------
+Connecting to Your Database
+-----------------------------
 
-There are two main ways to initialize the database class: **auto-connect** and **manual connect**.
+There are two ways to initialise the database class: **auto-connect** and
+**manual connect**.
 
-Automatically connecting
--------------------------
+**Auto-connect**
 
-To auto-load the database on every request, add ``'database'`` to the libraries array in:
-
-``app/config/autoload.php``
+To load the database on every request, add ``'database'`` to the libraries
+array in ``app/config/autoload.php``:
 
 .. code-block:: php
 
    <?php
    $autoload['libraries'] = ['database'];
 
-This will instantiate the DB class for every request.
+This connects using the default group and assigns the instance to ``$this->db``.
 
-Manually connecting
--------------------------
+**Manual connect**
 
-When only some pages need DB access, connect manually where needed:
+When only some pages need database access, connect manually inside the
+controller or method that requires it:
 
 .. code-block:: php
 
+   <?php
+   // Connect using the default group → $this->db
    $this->call->database();
 
-With no argument this connects to the default group from your config and assigns the instance to ``$this->db``.
-
-Connecting to a specific group
---------------------------------
-
-To connect to a specific group defined in your database config:
-
-.. code-block:: php
-
+   // Connect using a named group → $this->group_name
    $this->call->database('group_name');
-
-That instance will be assigned to ``$this->group_name``.
-
-Connecting to multiple databases
-----------------------------------
-
-You can open multiple database connections in the same request:
-
-.. code-block:: php
-
-   $this->call->database();               # assigned to $this->db (default)
-   $this->call->database('group_one');    # assigned to $this->group_one
-   $this->call->database('group_two');    # assigned to $this->group_two
 
 .. note::
 
-   Replace ``group_one``/``group_two`` with the actual group names defined in your config.
-   If you omit a group name the instance is assigned to ``$this->db``.
+   The property name on ``$this`` always matches the group name defined in
+   ``database.php``. The default group is always assigned to ``$this->db``.
 
-Using multiple database instances
+
+Connecting to Multiple Databases
 ----------------------------------
 
-After connecting, query each instance like so:
+You can open several connections in the same request:
 
 .. code-block:: php
 
+   <?php
+   $this->call->database();            // → $this->db        (default group)
+   $this->call->database('group_one'); // → $this->group_one
+   $this->call->database('group_two'); // → $this->group_two
+
+After connecting, query each instance independently:
+
+.. code-block:: php
+
+   <?php
    $this->db->table('users')->get_all();
    $this->group_one->table('posts')->get_all();
    $this->group_two->table('comments')->get_all();
 
-Best practices
---------------
 
-- Keep DB credentials out of version control (use environment variables if possible).  
-- Use the Query Builder for safer and readable queries.  
-- Wrap DB access inside models for a clean separation of concerns.  
-- Use multiple database connections only when necessary.
+Best Practices
+---------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Practice
+     - Details
+   * - **Keep SQL in models**
+     - Controllers should call model methods, never build queries directly.
+   * - **Use the Query Builder**
+     - Values are bound automatically as prepared statement parameters,
+       protecting against SQL injection.
+   * - **Use bound parameters for raw SQL**
+     - When raw SQL is unavoidable, always pass user input as bound parameters
+       or escape it with ``escape()``. Never interpolate ``$_GET`` / ``$_POST``
+       values directly into a SQL string.
+   * - **Store credentials securely**
+     - Load database credentials from environment variables
+       (``getenv('DB_PASS')``) and never commit them to version control.
+   * - **Use transactions**
+     - Wrap any operation that involves more than one related INSERT / UPDATE /
+       DELETE in a transaction so partial failures are automatically rolled back.
+   * - **Avoid** ``SELECT *``
+     - Always name the columns you need. This avoids accidentally exposing
+       sensitive fields (e.g. ``password``) and reduces network overhead.
+   * - **Use** ``last_query()`` **in development**
+     - Verify that the Query Builder is producing the SQL you expect.
+       Remove all ``last_query()`` calls before deploying to production.

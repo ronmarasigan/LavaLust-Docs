@@ -1,400 +1,509 @@
 Cache Class
 ===========
 
-LavaLust provides a powerful **caching system** that can significantly boost your application's performance.  
-You can cache **libraries, models, objects, arrays, or any serializable data** to avoid expensive recomputation or repeated database queries.
+The Cache class is a file-based caching system with a two-layer architecture:
+an **L1 in-memory layer** for sub-millisecond reads within a request, and a
+**disk layer** for persistence across requests.
 
-The caching system stores serialized data with metadata including creation time, expiration time, and dependencies to ensure cache integrity.
+It supports **tag-based invalidation** for grouping related entries,
+**stampede protection** via file locking, **stale-while-revalidate** fallback
+for resilience under load, and a choice of **PHP or JSON serialization**.
 
-Loading the Cache Library
--------------------------
+.. contents:: On this page
+   :local:
+   :depth: 1
 
-Before using the cache features, load it via:
 
-.. code-block:: php
+Loading
+--------
 
-    <?php
-    $this->call->library('cache');
-
-Cache Directory Configuration
-------------------------------
-
-You can specify the cache storage directory by changing the configuration in your ``app/config/config.php`` file:
+Load the library inside your controller:
 
 .. code-block:: php
 
     <?php
-    $config['cache_dir'] = 'runtime/cache/';
-    $config['cache_default_expires'] = 0; // Default expiration in minutes (0 = no expiration)
+    $this->load->library('cache');
 
-**Note:** Ensure the specified folder is **writable** by the web server. The system will attempt to create the directory if it doesn't exist.
+Once loaded it is available as ``$this->cache``.
 
-Class Methods
--------------
 
-Cache Class Methods
+Configuration
+--------------
+
+Add the following keys to ``app/config/config.php``:
+
+.. code-block:: php
+
+    <?php
+    // Absolute path to the cache directory (created automatically if missing)
+    $config['cache_dir'] = APPPATH . 'cache/';
+
+    // Default TTL in seconds. 0 = no expiry.
+    $config['cache_default_expires'] = 3600;
+
+    // Serializer: 'php' (default) or 'json'
+    // Use 'php' when caching PHP objects or arrays with integer keys.
+    // Use 'json' for human-readable cache files and interoperability.
+    $config['cache_driver'] = 'php';
+
+    // Stampede protection — max seconds to wait for a lock
+    $config['cache_lock_timeout'] = 5;
+
+    // Microseconds between lock retry attempts (100 000 = 100 ms)
+    $config['cache_lock_sleep'] = 100000;
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 15 10 55
+   :widths: 32 12 56
 
-   * - Method
-     - Parameters
-     - Return
+   * - Key
+     - Default
      - Description
-   * - ``library()``
-     - ``$library`` (string), ``$method`` (string), ``$arguments`` (array, optional), ``$expires`` (int, optional)
-     - mixed
-     - Calls a library's cached result or creates new cache. If expiration is -1, deletes the cache.
-   * - ``model()``
-     - ``$model`` (string), ``$method`` (string), ``$arguments`` (array, optional), ``$expires`` (int, optional)
-     - mixed
-     - Calls a model's cached result or creates new cache. If expiration is -1, deletes the cache.
-   * - ``get()``
-     - ``$filename`` (string, optional), ``$use_expires`` (bool, optional)
-     - mixed or FALSE
-     - Retrieves a cache file. Returns FALSE if cache doesn't exist or is expired.
-   * - ``write()``
-     - ``$contents`` (mixed, optional), ``$filename`` (string, optional), ``$expires`` (int, optional), ``$dependencies`` (array, optional)
-     - void
-     - Writes data to a cache file with optional expiration and dependencies.
-   * - ``delete()``
-     - ``$filename`` (string, optional)
-     - void
-     - Deletes a specific cache file.
-   * - ``delete_group()``
-     - ``$group`` (string)
-     - void or FALSE
-     - Deletes all cache files whose names start with the given group prefix.
-   * - ``delete_all()``
-     - ``$dirname`` (string, optional)
-     - void or FALSE
-     - Deletes all cache files or files in a specific subdirectory.
-   * - ``set_dependencies()``
-     - ``$dependencies`` (mixed)
-     - object (method chaining)
-     - Sets dependencies for the next cache write operation.
-   * - ``add_dependencies()``
-     - ``$dependencies`` (mixed)
-     - object (method chaining)
-     - Adds one or more dependencies to existing dependencies.
-   * - ``get_dependencies()``
-     - None
-     - array
-     - Returns the current dependencies array.
-   * - ``get_created()``
-     - None
-     - int or NULL
-     - Returns the cache creation timestamp.
+   * - ``cache_dir``
+     - ``app/cache/``
+     - Directory where ``.cache`` files are stored
+   * - ``cache_default_expires``
+     - ``0``
+     - Default TTL in seconds. ``0`` means no expiry.
+   * - ``cache_driver``
+     - ``php``
+     - Serializer: ``'php'`` or ``'json'``
+   * - ``cache_lock_timeout``
+     - ``5``
+     - Seconds to wait when acquiring a write lock
+   * - ``cache_lock_sleep``
+     - ``100000``
+     - Microseconds between lock retry attempts
 
-Caching a Model
------------------
 
-You can cache method results from models to improve performance. The cache key is automatically generated based on the model name, method name, and serialized arguments.
+How the Two Layers Work
+------------------------
 
-**Example:**
+Every read checks the **L1 memory layer** first:
 
-.. code-block:: php
+::
 
-    <?php
-    // Cache for 120 minutes (2 hours)
-    $this->cache->model('news_model', 'get_news', array($param1, $param2), 120);
+    read('key')
+         │
+         ▼
+    ┌────────────────┐   hit   ┌──────────────────────────┐
+    │  L1 Memory     │────────▶│  Return value immediately │
+    │  (per-request) │         │  (no disk I/O)            │
+    └───────┬────────┘         └──────────────────────────┘
+            │ miss
+            ▼
+    ┌────────────────┐   hit   ┌──────────────────────────┐
+    │  Disk (.cache) │────────▶│  Populate L1, return     │
+    │  flock(LOCK_SH)│         │  value                    │
+    └───────┬────────┘         └──────────────────────────┘
+            │ miss / expired
+            ▼
+         FALSE
 
-In the example above, the ``get_news()`` method of the ``news_model`` class will be cached for **120 minutes**.  
-The fourth parameter sets the expiration time in **minutes**.
-
-If the method is called again within the cache period, the cached result is returned instead of executing the database query again.
-
-Caching a Library
--------------------
-
-Similar to models, you can also cache library method results.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // Cached indefinitely (no expiration)
-    $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla));
-    
-    // Cached for 60 minutes
-    $this->cache->library('some_library', 'calculate_something', array($foo, $bar, $bla), 60);
-
-If the fourth parameter (expiration time) is **not specified**, it will be cached **indefinitely** (or until the default expiration if configured).  
-This behavior is the same for caching models.
-
-Caching Array or Object Data
-------------------------------
-
-You can directly store arbitrary data (arrays, objects, strings, integers, etc.) into the cache using the ``write()`` method.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $data = array(
-        'id' => 1,
-        'username' => 'acidcore',
-        'email' => 'user@example.com'
-    );
-    
-    // Storing the data in a cache with the name "user_profile"
-    $this->cache->write($data, 'user_profile');
-    
-    // Storing with expiration (30 minutes)
-    $this->cache->write($data, 'user_profile', 30);
-    
-    // Retrieving a cache by its name
-    $data = $this->cache->get('user_profile');
-    
-    if ($data !== FALSE) {
-        echo $data['username']; // Outputs: acidcore
-    }
-
-**Cache with Dependencies:**
-
-You can create cache dependencies to automatically invalidate related caches:
-
-.. code-block:: php
-
-    <?php
-    // Set dependencies before writing
-    $this->cache->set_dependencies('main_config');
-    $this->cache->write($data, 'user_profile', 60);
-    
-    // Or add multiple dependencies
-    $this->cache->add_dependencies('theme_settings');
-    $this->cache->add_dependencies('user_roles');
-    $this->cache->write($data, 'dashboard_data', 120);
-
-When a dependency cache is updated or deleted, any cache that depends on it will automatically be invalidated.
-
-Retrieving Cache with Metadata
---------------------------------
-
-You can access cache metadata after retrieving a cache entry:
-
-.. code-block:: php
-
-    <?php
-    $data = $this->cache->get('user_profile');
-    
-    if ($data !== FALSE) {
-        // Access cache metadata
-        $created = $this->cache->get_created(); // Unix timestamp when cache was created
-        $dependencies = $this->cache->get_dependencies(); // Array of dependencies
-        // Use your data...
-    }
-
-Deleting a Specific Cache Entry
----------------------------------
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $this->cache->delete('user_profile');
-
-The above code will find and delete the cache file named ``user_profile``.
-
-Deleting All Cache
---------------------
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $this->cache->delete_all();
-
-This will delete **all cache files** stored inside the cache directory.
-
-**Delete specific subdirectory:**
-
-.. code-block:: php
-
-    <?php
-    // Delete all caches in the 'temp' subdirectory
-    $this->cache->delete_all('temp');
-
-Deleting Cache by Group
--------------------------
-
-You can delete multiple cache files using a **group prefix**.
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    $this->cache->write($data, 'nav_header');
-    $this->cache->write($data, 'nav_footer');
-    $this->cache->write($data, 'nav_sidebar');
-    $this->cache->delete_group('nav_');
-
-This will delete all cache entries whose names start with ``nav_`` (e.g., ``nav_header``, ``nav_footer``, ``nav_sidebar``).
-
-Deleting Cached Model or Library
-----------------------------------
-
-To delete an existing cached model or library method, pass **-1** as the expiration time:
-
-**Example:**
-
-.. code-block:: php
-
-    <?php
-    // Delete cached version of get_news method
-    $this->cache->model('news_model', 'get_news', array($param1, $param2), -1);
-    
-    // Delete cached library method
-    $this->cache->library('some_library', 'calculate_something', array($foo, $bar), -1);
-
-This will remove the cached version of the specified method. The next call will execute the actual method and recache the result.
+Every write updates **both** layers atomically: the disk file is written with
+``flock(LOCK_EX)`` and the result is immediately stored in ``$_memory``.
 
 .. note::
 
-    Model or library cache entries will be stored **indefinitely** if you do **not** specify the expiration time or if the default expiration is set to 0. The expiration time is set as the **fourth parameter** in both ``$this->cache->model()`` and ``$this->cache->library()``.
+   The L1 memory layer is a static PHP array. It lives for the duration of the
+   current request only and is automatically cleared by ``delete_all()``.
 
-Method Parameters Reference
-----------------------------
 
-library() and model() Parameters
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$library`` / ``$model``
-     - string
-     - —
-     - The name of the library or model class to cache
-   * - ``$method``
-     - string
-     - —
-     - The method name to call and cache
-   * - ``$arguments``
-     - array
-     - array()
-     - Optional array of arguments to pass to the method
-   * - ``$expires``
-     - int
-     - NULL
-     - Expiration time in minutes. Use -1 to delete cache, NULL for indefinite
-
-write() Parameters
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$contents``
-     - mixed
-     - NULL
-     - The data to cache (array, object, string, etc.)
-   * - ``$filename``
-     - string
-     - NULL
-     - Unique cache file name
-   * - ``$expires``
-     - int
-     - NULL
-     - Expiration time in minutes (NULL uses default)
-   * - ``$dependencies``
-     - array
-     - array()
-     - Array of cache names this cache depends on
-
-How Cache Keys Are Generated
------------------------------
-
-For model and library caching, the cache filename is automatically generated using:
-
-.. code-block:: text
-
-    {model/library_name}/{sha1_hash_of_method_and_serialized_arguments}
-
-For example, calling:
-
-.. code-block:: php
-
-    <?php
-    $this->cache->model('news_model', 'get_news', array(5, 'active'), 60);
-
-Might generate a cache file like: ``news_model/5f4dcc3b5aa765d61d8327deb882cf99.cache``
-
-This ensures unique cache keys for different parameter combinations.
-
-Best Practices
-----------------
-
-- Use **clear and unique cache names** to avoid conflicts. Namespace your caches (e.g., ``user_123_profile``, ``product_listing_page2``)
-- Always **invalidate or clear related cache** after updating database records to prevent stale data
-- Use **group prefixes** to simplify cache invalidation (e.g., `user_`, `post_`, `product_`)
-- Avoid caching **sensitive or personal user data** such as passwords, credit card numbers, or personal identification information
-- Ensure the cache directory is **writable** and **secured from public access** (place it outside the web root if possible)
-- Set **appropriate expiration times** based on how frequently your data changes:
-  
-  - Static configuration: indefinite or very long (days/weeks)
-  - Frequently changing data: short (minutes/hours)
-  - User-specific data: match session duration
-
-- Use **dependencies** to create smart cache invalidation chains when multiple caches are related
-- Monitor **cache directory size** and implement regular cleanup for expired caches
-- Consider **cache granularity** - caching smaller, reusable pieces is often better than caching large, monolithic blocks
-
-Performance Considerations
-----------------------------
-
-- The caching system uses file-based storage with serialization, which is suitable for small to medium applications
-- For high-traffic applications, consider implementing a memory-based cache (e.g., Redis, Memcached) as a complement
-- Cache files are locked during read/write operations to prevent corruption in concurrent requests
-- The system automatically handles subdirectory creation for organized cache storage
-
-Troubleshooting
+Basic Operations
 -----------------
 
-Common Issues and Solutions
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
-
-   * - Issue
-     - Possible Solution
-   * - Cache not working
-     - Check if cache directory exists and is writable by the web server
-   * - Stale data being served
-     - Verify expiration times and dependency chains are correctly configured
-   * - Cache files not being deleted
-     - Check file permissions on the cache directory (needs write permission)
-   * - ``get()`` returns FALSE unexpectedly
-     - Cache may have expired, doesn't exist, or dependencies were invalidated - handle gracefully with fallback logic
-   * - Performance degradation
-     - Monitor cache directory size; consider implementing a cache cleanup routine
-
-**Example with error handling:**
+**Writing to the cache**
 
 .. code-block:: php
 
     <?php
-    $data = $this->cache->get('user_profile');
-    
-    if ($data === FALSE) {
-        // Cache miss - generate fresh data
-        $data = $this->user_model->get_profile($user_id);
-        $this->cache->write($data, 'user_profile', 30);
+    // Cache for 10 minutes
+    $this->cache->write($data, 'homepage_posts', 600);
+
+    // Cache using the default TTL from config
+    $this->cache->write($data, 'homepage_posts');
+
+    // Cache with no expiry (persists until explicitly deleted)
+    $this->cache->write($data, 'app_settings', 0);
+
+**Reading from the cache**
+
+.. code-block:: php
+
+    <?php
+    $data = $this->cache->get('homepage_posts');
+
+    if ($data === FALSE)
+    {
+        // Cache miss — regenerate
+        $data = $this->post_model->get_homepage();
+        $this->cache->write($data, 'homepage_posts', 600);
     }
-    
-    return $data;
+
+**Deleting a single entry**
+
+.. code-block:: php
+
+    <?php
+    $this->cache->delete('homepage_posts');
+
+**Deleting everything**
+
+.. code-block:: php
+
+    <?php
+    // Delete all files in the cache directory
+    $this->cache->delete_all();
+
+    // Delete all files in a subdirectory
+    $this->cache->delete_all('products');
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 50 28
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``write()``
+     - ``write($contents, $filename, $expires, $dependencies)``
+     - ``void``
+   * - ``get()``
+     - ``get($filename = NULL, $use_expires = TRUE)``
+     - ``mixed|false``
+   * - ``delete()``
+     - ``delete($filename = NULL)``
+     - ``void``
+   * - ``delete_all()``
+     - ``delete_all($dirname = '')``
+     - ``void``
+
+
+Model & Library Caching
+------------------------
+
+``model()`` and ``library()`` automatically cache the return value of any
+model or library method. The cache key is derived from the class name, method
+name, and serialised arguments — different argument combinations are stored as
+separate entries.
+
+.. code-block:: php
+
+    <?php
+    // Cache Post_model::get_all() for 5 minutes
+    $posts = $this->cache->model('post_model', 'get_all', [], 300);
+
+    // Different arguments produce separate cache entries
+    $user = $this->cache->model('user_model', 'find', [42], 600);
+
+    // Bust a cached entry by passing a negative TTL
+    $this->cache->model('post_model', 'get_all', [], -1);
+
+    // Cache a library method
+    $rates = $this->cache->library('currency', 'get_rates', ['USD'], 3600);
+
+**Stampede protection**
+
+When two requests hit a cache miss simultaneously, only one acquires a write
+lock. The second waits up to ``cache_lock_timeout`` seconds. If the lock is
+never acquired within that window, the class falls back to serving **stale
+data** rather than hammering the underlying source.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 52 26
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``model()``
+     - ``model($model, $method, $arguments = [], $expires = NULL)``
+     - ``mixed``
+   * - ``library()``
+     - ``library($library, $method, $arguments = [], $expires = NULL)``
+     - ``mixed``
+
+
+Tag-Based Invalidation
+-----------------------
+
+Tags let you group related cache entries and invalidate them all in one call
+without knowing the individual keys.
+
+**Writing with tags**
+
+.. code-block:: php
+
+    <?php
+    // Attach tags before calling write()
+    $this->cache->tags(['products', 'homepage'])->write($data, 'featured_products', 3600);
+    $this->cache->tags('products')->write($list, 'product_list', 3600);
+
+    // Tags also work with model() / library()
+    $this->cache->tags('users')->model('user_model', 'get_all', [], 600);
+
+**Invalidating tags**
+
+Incrementing a tag's version counter marks every cache entry written with that
+tag as stale. Entries are removed lazily on the next read.
+
+.. code-block:: php
+
+    <?php
+    // Invalidate everything tagged 'products'
+    $this->cache->invalidate_tags('products');
+
+    // Invalidate multiple tags at once
+    $this->cache->invalidate_tags(['products', 'homepage']);
+
+.. note::
+
+   Tag versions are stored in a single JSON file (``_tag_versions.cache``)
+   written with an atomic tmp-file-and-rename strategy. The file is separate
+   from regular ``.cache`` entries so it is never accidentally deleted by
+   ``delete_all()`` patterns that target only content files.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 45 27
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``tags()``
+     - ``tags($tags)``
+     - ``$this``
+   * - ``invalidate_tags()``
+     - ``invalidate_tags($tags)``
+     - ``void``
+
+
+Dependencies
+-------------
+
+A cache entry can declare other cache files it depends on. If a dependency
+file no longer exists or was updated **after** the dependent entry was written,
+the dependent entry is treated as a miss.
+
+.. code-block:: php
+
+    <?php
+    // Write the dependency first
+    $this->cache->write($nav_links, 'nav_links', 3600);
+
+    // Write the page that depends on it
+    $this->cache
+        ->set_dependencies(['nav_links'])
+        ->write($page_data, 'homepage', 3600);
+
+    // Chain multiple dependencies
+    $this->cache
+        ->set_dependencies('nav_links')
+        ->add_dependencies(['sidebar', 'footer'])
+        ->write($data, 'full_page', 3600);
+
+    // Read the dependencies on the last-read entry
+    $deps = $this->cache->get_dependencies();
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 45 27
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``set_dependencies()``
+     - ``set_dependencies($dependencies)``
+     - ``$this``
+   * - ``add_dependencies()``
+     - ``add_dependencies($dependencies)``
+     - ``$this``
+   * - ``get_dependencies()``
+     - ``get_dependencies()``
+     - ``array``
+
+
+Serializer / Driver
+---------------------
+
+Two serializers are available. Switch between them via ``cache_driver`` in
+``config.php``. The serializer applies globally to all read and write operations.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 12 30 58
+
+   * - Value
+     - Format
+     - When to use
+   * - ``php``
+     - PHP ``serialize()``
+     - **Default.** Supports all PHP types including objects, resources, and arrays
+       with non-string keys. Slightly faster for complex structures.
+   * - ``json``
+     - ``json_encode()``
+     - Human-readable cache files. Good for debugging or when cache data must be
+       readable by non-PHP tools. Only supports JSON-compatible types (no objects,
+       no integer-keyed arrays with mixed types).
+
+.. warning::
+
+   Changing the serializer on a live system without clearing existing cache
+   files will cause ``decode()`` failures on stale files written with the old
+   format. Run ``delete_all()`` after switching serializers.
+
+
+Metadata
+---------
+
+After a successful ``get()`` call the class stores metadata about the entry.
+Read it with ``get_created()``:
+
+.. code-block:: php
+
+    <?php
+    $data = $this->cache->get('homepage_posts');
+
+    if ($data !== FALSE)
+    {
+        $created_at = $this->cache->get_created(); // Unix timestamp
+        echo 'Cached at: ' . date('Y-m-d H:i:s', $created_at);
+    }
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``get_created()``
+     - ``get_created()``
+     - ``int|null``  Unix timestamp or ``NULL`` if no entry has been read
+
+
+Stale Data Fallback
+--------------------
+
+When ``get()`` is called with ``$use_expires = FALSE``, the expiry check is
+skipped and the stored content is returned even if the TTL has passed. The
+class uses this internally during stampede protection to serve stale content
+rather than sending all concurrent requests to the database simultaneously.
+
+.. code-block:: php
+
+    <?php
+    // Returns content even if the TTL has expired
+    $stale = $this->cache->get('homepage_posts', FALSE);
+
+This is also useful for graceful degradation when a backend service is down:
+
+.. code-block:: php
+
+    <?php
+    $data = $this->cache->get('api_response');
+
+    if ($data === FALSE)
+    {
+        try {
+            $data = $this->api->fetch();
+            $this->cache->write($data, 'api_response', 300);
+        }
+        catch (Exception $e) {
+            // Serve stale data rather than showing an error
+            $data = $this->cache->get('api_response', FALSE);
+        }
+    }
+
+
+Subdirectory Keys
+------------------
+
+Cache filenames may contain forward slashes to create a nested directory
+structure inside the cache root. This is useful for organising entries by
+model or feature area.
+
+.. code-block:: php
+
+    <?php
+    // Stored at: cache/products/42.cache
+    $this->cache->write($product, 'products/42', 600);
+    $product = $this->cache->get('products/42');
+
+    // Delete all entries in the products subdirectory
+    $this->cache->delete_all('products');
+
+``model()`` and ``library()`` use this automatically — entries are stored
+under a subdirectory named after the class (e.g. ``cache/post_model/<hash>``)
+to keep model caches isolated from each other.
+
+
+Complete Example
+-----------------
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Shop.php
+    class Shop extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->load->library('cache');
+            $this->load->model('Product_model', 'product_model');
+        }
+
+        public function index()
+        {
+            // Use model() for automatic key generation and stampede protection
+            $products = $this->cache
+                ->tags(['products', 'homepage'])
+                ->model('product_model', 'get_featured', [], 600);
+
+            $this->load->view('shop/index', ['products' => $products]);
+        }
+
+        public function update($id)
+        {
+            // ... save product ...
+
+            // Invalidate everything tagged 'products' across all cache keys
+            $this->cache->invalidate_tags('products');
+
+            // Also bust any individually-keyed entry for this product
+            $this->cache->delete('products/' . $id);
+
+            $this->response->redirect('/shop');
+        }
+
+        public function category($slug)
+        {
+            // Manual get/write with a dependency on the category index
+            $key  = 'category/' . $slug;
+            $data = $this->cache->get($key);
+
+            if ($data === FALSE)
+            {
+                $data = $this->product_model->get_by_category($slug);
+                $this->cache
+                    ->set_dependencies(['category_index'])
+                    ->write($data, $key, 1800);
+            }
+
+            $this->load->view('shop/category', ['products' => $data]);
+        }
+    }
+
+
+Tips and Best Practices
+------------------------
+
+- Use ``model()`` and ``library()`` for the cleanest caching code — they handle key generation, locking, and stale fallback automatically.
+- Always use ``tags()`` when writing entries that belong to a logical group (e.g. all product-related caches share a ``'products'`` tag). Call ``invalidate_tags()`` after any write that changes that group.
+- Use subdirectory keys (e.g. ``'products/42'``) to organise entries. You can then call ``delete_all('products')`` to flush the entire group.
+- Pass a negative ``$expires`` to ``model()`` or ``library()`` to bust a specific cached method call without affecting other entries.
+- Use ``get($key, FALSE)`` explicitly in error-handling code to serve stale data rather than showing an error page when a backend service fails.
+- Keep the ``cache_dir`` **outside** the web root so ``.cache`` files are never directly accessible from a browser.
+- Avoid the ``'json'`` driver when caching complex PHP structures (objects, mixed-type arrays). Use ``'php'`` for reliability and only switch to ``'json'`` when human-readability of cache files is a requirement.
+- Run a periodic cron job that calls ``delete_all()`` on the cache directory to prevent unbounded disk growth on sites with many unique cache keys.
