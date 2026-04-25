@@ -1,82 +1,407 @@
 Performance Class
 =================
 
-The **Performance** class in LavaLust is always active and allows you to calculate the time difference between any two marked points during the execution of your application.
+The Performance class provides timing and memory profiling tools for measuring
+execution speed and memory consumption at any point during a request.
+It is always active — the framework registers a global ``app_start`` marker
+the moment ``index.php`` is loaded, giving you a baseline for the total
+execution time of every request.
 
 .. note::
 
-   This class is initialized automatically by the system, so there is no need to load or instantiate it manually.
+   This class is initialised automatically by the framework. You do not need
+   to load or instantiate it manually. It is accessible anywhere via
+   ``$this->performance``.
 
-The performance timer starts as soon as the framework is invoked and stops when the output class sends the final view to the browser, providing an accurate measurement of the total system execution time.
+.. contents:: On this page
+   :local:
+   :depth: 1
 
-Using the Performance Class
-----------------------------
 
-You can use the **Performance** class within your controllers, views, or models. The general process is as follows:
+How It Works
+-------------
 
-1. Mark a start point.
-2. Mark an end point.
-3. Retrieve the elapsed time between those points.
+The general pattern is:
 
-**Example:**
+1. Call ``start('name')`` to record the current time under a label.
+2. Run the code you want to measure.
+3. Call ``stop('name')`` to capture the end time.
+4. Call ``elapsed_time('name')`` to retrieve the formatted duration.
 
 .. code-block:: php
 
-   $this->performance->start('reference_name');
+    <?php
+    $this->performance->start('my_block');
 
-   // Some code happens here
+    // ... code to measure ...
 
-   $this->performance->stop('reference_name');
-   echo $this->performance->elapsed_time('reference_name');
+    $this->performance->stop('my_block');
+    echo $this->performance->elapsed_time('my_block');
+    // e.g. "0.0032"
+
+The marker name is arbitrary. You can register as many markers as you need,
+and they are completely independent of each other.
+
+
+Timing
+-------
+
+**Basic timing**
+
+.. code-block:: php
+
+    <?php
+    $this->performance->start('db_query');
+
+    $results = $this->post_model->get_all();
+
+    $this->performance->stop('db_query');
+
+    // Formatted string — default 4 decimal places
+    echo $this->performance->elapsed_time('db_query');       // "0.0041"
+
+    // Custom decimal precision
+    echo $this->performance->elapsed_time('db_query', 6);    // "0.004123"
+
+    // Raw float for comparisons or calculations
+    $seconds = $this->performance->elapsed_time_float('db_query');
 
 .. note::
 
-   The marker names (e.g., ``reference_name``) are arbitrary. You can use any label you want, and you can set multiple markers.
+   If ``stop()`` has not been called when ``elapsed_time()`` is read,
+   the current time is used as the end point. This makes it safe to read
+   elapsed time mid-execution without stopping the marker.
 
-**Multiple Markers Example:**
+**Multiple simultaneous markers**
 
-.. code-block:: php
-
-   $this->performance->start('dog');
-
-   // Some code happens here
-
-   $this->performance->start('cat');
-
-   // More code happens here
-
-   $this->performance->stop('cat');
-
-   $this->performance->start('bird');
-
-   // More code happens here
-
-   $this->performance->stop('bird');
-
-   $this->performance->stop('dog');
-
-   echo $this->performance->elapsed_time('dog');
-   echo $this->performance->elapsed_time('cat');
-   echo $this->performance->elapsed_time('bird');
-
-Displaying Total Execution Time
--------------------------------
-
-If you want to display the total elapsed time from the moment LavaLust starts to when the final output is sent to the browser, place the following in one of your view templates:
+Markers are independent. You can nest, overlap, or run them in parallel:
 
 .. code-block:: php
 
-   <?php echo $this->performance->elapsed_time(); ?>
+    <?php
+    $this->performance->start('total');
 
-Displaying Memory Consumption
-------------------------------
+    $this->performance->start('fetch_users');
+    $users = $this->user_model->get_all();
+    $this->performance->stop('fetch_users');
 
-If your PHP installation is configured with ``--enable-memory-limit``, you can display the total amount of memory consumed by the system using the following code in one of your view files:
+    $this->performance->start('fetch_posts');
+    $posts = $this->post_model->get_recent();
+    $this->performance->stop('fetch_posts');
+
+    $this->performance->stop('total');
+
+    echo $this->performance->elapsed_time('fetch_users'); // "0.0021"
+    echo $this->performance->elapsed_time('fetch_posts'); // "0.0018"
+    echo $this->performance->elapsed_time('total');       // "0.0040"
+
+**Total application execution time**
+
+To display the total time from framework boot to the current point,
+call ``elapsed_time()`` with no arguments (or with ``'app_start'``).
+Place this in a view template to capture the full request lifecycle:
 
 .. code-block:: php
 
-   <?php echo $this->performance->memory_usage(); ?>
+    <?php
+    // app/views/layouts/footer.php
+    ?>
+    <small>Page rendered in <?= $this->performance->elapsed_time() ?> seconds</small>
+
+**Timing a callable with** ``measure()``
+
+``measure()`` wraps start, execution, and stop into a single call and also
+captures the memory delta:
+
+.. code-block:: php
+
+    <?php
+    $result = $this->performance->measure(function() {
+        return $this->report_model->generate_csv();
+    }, 'csv_export');
+
+    // $result['elapsed']       => "0.1240"
+    // $result['memory_delta']  => 204800  (bytes allocated during the call)
+    // $result['result']        => the return value of the callback
+
+**Inspecting and cleaning up markers**
+
+.. code-block:: php
+
+    <?php
+    // Check if a marker exists
+    if ($this->performance->has_marker('db_query'))
+    {
+        echo $this->performance->elapsed_time('db_query');
+    }
+
+    // Remove one marker
+    $this->performance->clear_marker('db_query');
+
+    // Remove all markers
+    $this->performance->clear_all_markers();
+
+    // Get all markers and their recorded times as an array
+    $all = $this->performance->get_all_markers();
+
+``get_all_markers()`` returns an array like:
+
+.. code-block:: php
+
+    [
+        'fetch_users' => [
+            'start'   => 1700000000.1234,
+            'stop'    => 1700000000.1255,
+            'elapsed' => '0.0021',
+        ],
+        'fetch_posts' => [
+            'start'   => 1700000000.1256,
+            'stop'    => 1700000000.1274,
+            'elapsed' => '0.0018',
+        ],
+    ]
+
+**Timing method reference**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 45 23
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``start()``
+     - ``start($name)``
+     - ``void``
+   * - ``stop()``
+     - ``stop($name)``
+     - ``void``
+   * - ``elapsed_time()``
+     - ``elapsed_time($name = 'app_start', $decimals = NULL)``
+     - ``string``
+   * - ``elapsed_time_float()``
+     - ``elapsed_time_float($name = 'app_start')``
+     - ``float``
+   * - ``measure()``
+     - ``measure(callable $callback, $name = 'callback')``
+     - ``array``
+   * - ``has_marker()``
+     - ``has_marker($name)``
+     - ``bool``
+   * - ``clear_marker()``
+     - ``clear_marker($name)``
+     - ``void``
+   * - ``clear_all_markers()``
+     - ``clear_all_markers()``
+     - ``void``
+   * - ``get_all_markers()``
+     - ``get_all_markers()``
+     - ``array``
+
+
+Memory
+-------
+
+**Current memory usage**
+
+``memory_usage()`` returns the memory currently allocated to the PHP process
+as a human-readable string:
+
+.. code-block:: php
+
+    <?php
+    echo $this->performance->memory_usage();        // "2.45 MB"
+    echo $this->performance->memory_usage(TRUE);    // real allocated blocks
+
+**Peak memory usage**
+
+``peak_memory_usage()`` returns the highest memory consumption recorded since
+the script started — this is more useful for profiling than the instantaneous
+value because it catches spikes that have already freed their memory:
+
+.. code-block:: php
+
+    <?php
+    echo $this->performance->peak_memory_usage();   // "4.12 MB"
 
 .. note::
 
-   This function can only be used in your view files. The reported consumption reflects the total memory used by the entire application.
+   ``peak_memory_usage()`` calls PHP's ``memory_get_peak_usage()``, which
+   requires PHP to be compiled with ``--enable-memory-limit`` (the default
+   for most PHP builds). If not available it returns ``"0 B"``.
+
+**Memory snapshots (before and after)**
+
+Take a named snapshot before an operation and read the delta afterwards:
+
+.. code-block:: php
+
+    <?php
+    $this->performance->memory_snapshot('image_resize');
+
+    // ... memory-intensive work ...
+
+    $this->performance->memory_snapshot_end('image_resize');
+
+    echo $this->performance->memory_delta('image_resize');  // "1.50 MB"
+
+**Memory method reference**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 45 23
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``memory_usage()``
+     - ``memory_usage($real_usage = FALSE)``
+     - ``string``
+   * - ``peak_memory_usage()``
+     - ``peak_memory_usage($real_usage = FALSE)``
+     - ``string``
+   * - ``memory_snapshot()``
+     - ``memory_snapshot($label)``
+     - ``void``
+   * - ``memory_snapshot_end()``
+     - ``memory_snapshot_end($label)``
+     - ``void``
+   * - ``memory_delta()``
+     - ``memory_delta($label)``
+     - ``string``
+
+
+Reporting
+----------
+
+**Setting decimal precision**
+
+The default precision for all ``elapsed_time()`` output is 4 decimal places.
+Change it globally with:
+
+.. code-block:: php
+
+    <?php
+    $this->performance->set_precision(6);  // "0.003142"
+    $this->performance->set_precision(2);  // "0.00"
+
+This affects all subsequent calls to ``elapsed_time()`` that do not pass an
+explicit ``$decimals`` argument.
+
+**Full report**
+
+``report()`` returns a complete snapshot of all timing and memory data as an
+array. Useful for logging, debugging output, or API responses in development:
+
+.. code-block:: php
+
+    <?php
+    $report = $this->performance->report();
+
+    // [
+    //   'markers' => [
+    //       'app_start'   => ['elapsed_seconds' => '0.0821', 'stopped' => false],
+    //       'fetch_users' => ['elapsed_seconds' => '0.0021', 'stopped' => true],
+    //   ],
+    //   'memory'      => '3.10 MB',
+    //   'peak_memory' => '4.20 MB',
+    //   'total_time'  => '0.0821',
+    // ]
+
+    // Log it
+    log_message('debug', json_encode($report));
+
+    // Or display in a development toolbar / view
+    if (config_item('environment') === 'development')
+    {
+        var_dump($report);
+    }
+
+**Reporting method reference**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 42 30
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``set_precision()``
+     - ``set_precision($precision)``
+     - ``void``
+   * - ``report()``
+     - ``report()``
+     - ``array``
+
+
+Complete Example
+-----------------
+
+The following example profiles a controller method that queries the database,
+processes the results, and renders a view:
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Dashboard.php
+    class Dashboard extends Controller
+    {
+        public function index()
+        {
+            // ---- database phase ----
+            $this->performance->start('db');
+            $this->performance->memory_snapshot('db');
+
+            $users    = $this->user_model->get_all();
+            $orders   = $this->order_model->get_recent(50);
+
+            $this->performance->stop('db');
+            $this->performance->memory_snapshot_end('db');
+
+            // ---- processing phase ----
+            $this->performance->start('process');
+
+            $summary = $this->_build_summary($users, $orders);
+
+            $this->performance->stop('process');
+
+            // ---- hand off to view ----
+            $data['summary']  = $summary;
+            $data['db_time']  = $this->performance->elapsed_time('db');
+            $data['db_mem']   = $this->performance->memory_delta('db');
+            $data['proc_time'] = $this->performance->elapsed_time('process');
+
+            $this->load->view('dashboard/index', $data);
+        }
+    }
+
+In the view, display the metrics in a development-only toolbar:
+
+.. code-block:: php
+
+    <?php
+    // app/views/dashboard/index.php
+    ?>
+
+    <!-- dashboard content here -->
+
+    <?php if (config_item('environment') === 'development') : ?>
+    <div class="dev-toolbar text-muted small">
+        DB: <?= $db_time ?>s (<?= $db_mem ?>) &nbsp;|&nbsp;
+        Processing: <?= $proc_time ?>s &nbsp;|&nbsp;
+        Peak memory: <?= $this->performance->peak_memory_usage() ?> &nbsp;|&nbsp;
+        Total: <?= $this->performance->elapsed_time() ?>s
+    </div>
+    <?php endif; ?>
+
+
+Tips and Best Practices
+------------------------
+
+- Use ``peak_memory_usage()`` rather than ``memory_usage()`` when profiling memory-heavy operations — it catches spikes that have already been freed by the time you read the value.
+- Wrap ``report()`` output in an ``environment === 'development'`` check so profiling data is never exposed in production.
+- Use ``measure()`` for one-off callable benchmarks — it is shorter than manually calling ``start()``, running the code, and calling ``stop()``.
+- ``elapsed_time()`` without arguments always refers to the global ``app_start`` marker set by the framework — use it in every view footer as a free request-time indicator.
+- Call ``clear_marker()`` after reading a result you no longer need to keep the ``get_all_markers()`` output clean and the memory footprint small.
+- For comparing two implementations, run each inside ``measure()`` and compare the ``elapsed`` values directly — no manual subtraction required.
+- Do not leave ``start()`` calls without matching ``stop()`` calls in production code — use ``has_marker()`` to check before reading if the stop is conditional.

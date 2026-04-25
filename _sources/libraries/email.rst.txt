@@ -1,345 +1,234 @@
-Email Class
-===========
+Config Class
+============
 
-The Email class makes sending email **simple and easy**.  
-It uses PHP's built-in ``mail()`` function under the hood.  
+The Config class provides a unified interface for storing and retrieving
+configuration values across your application. Settings can come from the
+default config file, your own custom config files, or be set dynamically
+at runtime.
 
-If you are planning to use more advanced features (SMTP, authentication, HTML templates, etc.),  
-you may integrate third-party libraries such as **PHPMailer** or **SwiftMailer** instead.
+.. contents:: On this page
+   :local:
+   :depth: 1
 
-.. note::
 
-    The Email class is designed for basic email functionality. For production applications with higher email volume or delivery requirements, consider using a dedicated email library or service.
-
-Loading the Email Library
--------------------------
-
-Before using the email features, load it via:
-
-.. code-block:: php
-
-    <?php
-    $this->call->library('email');
-
-Class Methods
+Config Files
 -------------
 
-Email Class Methods
-
-.. list-table:: 
-   :header-rows: 1
-   :widths: 25 20 10 45
-
-   * - Method
-     - Parameters
-     - Return
-     - Description
-   * - ``sender()``
-     - ``$sender_email`` (string, required), ``$sender_name`` (string, optional)
-     - object (method chaining)
-     - Sets the sender's email address and optionally the sender's name
-   * - ``reply_to()``
-     - ``$reply_email`` (string, required)
-     - object (method chaining)
-     - Sets the email address where replies should be sent
-   * - ``recipient()``
-     - ``$receiver_email`` (string or array, required)
-     - object (method chaining)
-     - Sets the recipient's email address. Can be a single email or an array of emails
-   * - ``subject()``
-     - ``$subject`` (string, required)
-     - object (method chaining)
-     - Sets the email subject line
-   * - ``email_content()``
-     - ``$content`` (string, required), ``$email_type`` (string, optional)
-     - object (method chaining)
-     - Sets the email body content. ``$email_type`` can be 'plain' or 'html'
-   * - ``attachment()``
-     - ``$path`` (string, required)
-     - object (method chaining)
-     - Attaches a file to the email from the specified path
-   * - ``send()``
-     - None
-     - bool
-     - Sends the composed email. Returns TRUE on success, FALSE on failure
-
-Method Parameters Reference
-----------------------------
-
-sender() Parameters
-
-.. list-table:: 
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$sender_email``
-     - string
-     - —
-     - Email address of the sender (required)
-   * - ``$sender_name``
-     - string
-     - NULL
-     - Display name of the sender (optional)
-
-recipient() Parameters
-
-.. list-table:: 
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$receiver_email``
-     - string or array
-     - —
-     - Email address(es) of the recipient(s). Can be a single email string or an array of email addresses
-
-email_content() Parameters
-
-.. list-table:: 
-   :header-rows: 1
-   :widths: 20 15 10 55
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``$content``
-     - string
-     - —
-     - The content/body of the email (required)
-   * - ``$email_type``
-     - string
-     - 'plain'
-     - Type of email content. Use 'plain' for plain text or 'html' for HTML content
-
-Basic Usage
-------------
-
-Here is a basic example demonstrating how you might send an email.  
-**Note:** This example assumes you are sending the email from one of your controllers.
-
-**Plain Text Email Example:**
+LavaLust's primary config file is located at ``app/config/config.php``.
+All configuration values are stored in a PHP array named ``$config``:
 
 .. code-block:: php
 
     <?php
-    $this->call->library('email');
+    // app/config/config.php
+    $config['base_url']        = 'https://yourdomain.com/';
+    $config['default_language'] = 'english';
+    $config['charset']         = 'UTF-8';
 
-    $this->email->sender('your@example.com', 'Your Name');
-    $this->email->recipient('someone@example.com');
-    $this->email->subject('Email Test');
-    $this->email->email_content('Testing the email class.');
-
-    if ($this->email->send()) {
-        echo 'Email sent successfully!';
-    } else {
-        echo 'Failed to send email.';
-    }
-
-**HTML Email Example:**
+You can add your own keys directly to this file, or create separate config
+files in the same ``app/config/`` folder to keep related settings grouped
+together. A custom config file follows the same format:
 
 .. code-block:: php
 
     <?php
-    $this->call->library('email');
-
-    $html_content = '<html>
-        <body>
-            <h1>Welcome!</h1>
-            <p>Thank you for registering with our service.</p>
-            <p><strong>Your account has been created successfully.</strong></p>
-        </body>
-    </html>';
-
-    $this->email->sender('noreply@example.com', 'My Website');
-    $this->email->recipient('user@example.com');
-    $this->email->subject('Welcome to Our Website');
-    $this->email->email_content($html_content, 'html');
-    $this->email->send();
-
-**Email with Reply-To Address:**
-
-.. code-block:: php
-
-    <?php
-    $this->call->library('email');
-
-    $this->email->sender('noreply@example.com', 'Support Team');
-    $this->email->reply_to('support@example.com'); // Replies go here
-    $this->email->recipient('customer@example.com');
-    $this->email->subject('Your Support Ticket');
-    $this->email->email_content('Your ticket has been received. We will respond within 24 hours.');
-    $this->email->send();
-
-**Sending to Multiple Recipients:**
-
-.. code-block:: php
-
-    <?php
-    $this->call->library('email');
-
-    $recipients = array(
-        'user1@example.com',
-        'user2@example.com',
-        'user3@example.com'
-    );
-
-    $this->email->sender('newsletter@example.com', 'Weekly Newsletter');
-    $this->email->recipient($recipients);
-    $this->email->subject('This Week\'s Updates');
-    $this->email->email_content('Here are the latest updates from our website...');
-    $this->email->send();
-
-**Sending Email with Attachment:**
-
-.. code-block:: php
-
-    <?php
-    $this->call->library('email');
-
-    $this->email->sender('admin@example.com', 'Admin');
-    $this->email->recipient('client@example.com');
-    $this->email->subject('Your Invoice');
-    $this->email->email_content('Please find attached your invoice for this month.');
-    $this->email->attachment('/path/to/invoice.pdf');
-    
-    if ($this->email->send()) {
-        echo 'Invoice sent successfully!';
-    } else {
-        echo 'Failed to send invoice.';
-    }
-
-**Complete Example with Error Handling:**
-
-.. code-block:: php
-
-    <?php
-    class ContactController extends Controller {
-        
-        public function send_contact_form() {
-            $this->call->library('email');
-            
-            $name = $this->request->post('name');
-            $email = $this->request->post('email');
-            $message = $this->request->post('message');
-            
-            // Prepare email
-            $this->email->sender($email, $name);
-            $this->email->reply_to($email);
-            $this->email->recipient('contact@example.com');
-            $this->email->subject('Contact Form Submission from ' . $name);
-            $this->email->email_content("Name: $name\nEmail: $email\n\nMessage:\n$message");
-            
-            // Send and handle response
-            if ($this->email->send()) {
-                $this->session->set_flashdata('success', 'Thank you for contacting us!');
-                redirect('contact/success');
-            } else {
-                $this->session->set_flashdata('error', 'Failed to send message. Please try again.');
-                redirect('contact');
-            }
-        }
-    }
-
-Method Chaining
-----------------
-
-All email preparation methods (except ``send()``) support **method chaining** for more concise code:
-
-.. code-block:: php
-
-    <?php
-    $this->call->library('email');
-    
-    $this->email->sender('noreply@example.com', 'Website')
-                ->recipient('user@example.com')
-                ->subject('Welcome!')
-                ->email_content('Thank you for joining!')
-                ->send();
+    // app/config/blog_settings.php
+    $config['site_name']    = 'My Blog';
+    $config['posts_per_page'] = 10;
+    $config['allow_comments'] = TRUE;
 
 .. note::
 
-    You must call ``$this->email->send()`` at the end to actually send the email.  
-    All other methods just prepare the email before sending.
+   Custom config files must use the same ``$config`` array name. LavaLust
+   merges files intelligently, but **index names must be unique across all
+   config files** to avoid collisions. If a collision is likely, use indexed
+   loading — see `Loading Config Files`_ below.
 
-Best Practices
-----------------
 
-- **Validate email addresses** before sending to avoid delivery failures
-- **Use descriptive subject lines** that help recipients understand the email's purpose
-- **Always include a sender email address** - many email servers reject emails without a valid sender
-- **Set a reply-to address** when the sender is a no-reply address so recipients can respond appropriately
-- **Sanitize user input** when using user-provided data in email headers to prevent header injection attacks
-- **Test emails thoroughly** before deploying to production
-- **Consider rate limiting** for contact forms to prevent spam
-- **Use HTML emails carefully** - ensure they have plain text alternatives for better compatibility
-- **Log email sending attempts** for debugging and audit purposes
+Loading Config Files
+---------------------
 
-Security Considerations
-------------------------
+**Autoloading (recommended for global settings)**
 
-.. warning::
-
-    Never directly insert user input into email headers without proper validation and sanitization. This can lead to **email header injection attacks**.
-
-**Safe way to use user input:**
+If a config file is needed throughout the application, register it in
+``app/config/autoload.php`` so it is loaded automatically on every request:
 
 .. code-block:: php
 
     <?php
-    // Validate email format
-    $user_email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    
-    if ($user_email) {
-        $this->email->recipient($user_email);
-    }
-    
-    // Sanitize subject and content
-    $subject = htmlspecialchars($_POST['subject'], ENT_QUOTES, 'UTF-8');
-    $this->email->subject($subject);
+    // app/config/autoload.php
+    $autoload['config'] = ['blog_settings', 'payment'];
 
-Troubleshooting
------------------
+**Manual loading (recommended for route-specific settings)**
 
-Common Issues and Solutions
+Load a config file inside a controller when it is only needed for specific
+requests. This avoids loading unnecessary configuration on every page.
 
-.. list-table:: 
+.. code-block:: php
+
+    <?php
+    $this->config->load('blog_settings');
+
+By default, all items from the loaded file are merged into the global config
+array. If two config files share an index name, the later-loaded file will
+overwrite the earlier one.
+
+**Indexed loading (avoids key collisions)**
+
+Pass ``TRUE`` as the second argument to store the file's items in their own
+named index instead of merging them into the global array:
+
+.. code-block:: php
+
+    <?php
+    // Items stored under $config['blog_settings'][...]
+    // instead of being merged into the root config array
+    $this->config->load('blog_settings', TRUE);
+
+.. list-table::
    :header-rows: 1
-   :widths: 30 70
+   :widths: 20 20 60
 
-   * - Issue
-     - Possible Solution
-   * - Email not sending
-     - Check that PHP's ``mail()`` function is enabled on your server. Check server error logs.
-   * - Emails going to spam
-     - Use proper email headers, avoid spam trigger words, consider using SMTP with authentication
-   * - Attachments not working
-     - Verify the file path is correct and the file is readable by the web server
-   * - HTML emails displaying as raw code
-     - Ensure you set the second parameter of ``email_content()`` to 'html'
-   * - Multiple recipients not receiving email
-     - Verify the email addresses are valid and properly formatted in the array
-   * - Headers injection warning
-     - Always validate and sanitize user input before using in email headers
+   * - Method
+     - Signature
+     - Description
+   * - ``load()``
+     - ``load($file, $use_sections = FALSE)``
+     - Load a config file. Set ``$use_sections`` to ``TRUE`` to store items
+       under a named index and prevent key collisions.
 
-Limitations
-------------
 
-- Uses PHP's built-in ``mail()`` function which may be limited by server configuration
-- Does not support SMTP authentication natively
-- No built-in queue system for handling large volumes of emails
-- No support for CC (Carbon Copy) or BCC (Blind Carbon Copy)
-- Limited attachment handling capabilities
+Fetching Config Items
+----------------------
 
-For advanced email features, consider integrating:
+Use ``get()`` to read any config value by its array key.
 
-- `PHPMailer <https://github.com/PHPMailer/PHPMailer>`_ - Full-featured email sending library with SMTP support
-- `SwiftMailer <https://swiftmailer.symfony.com/>`_ - Powerful email library with many features
-- Transactional email services (SendGrid, Mailgun, Amazon SES) for production applications
+**Basic retrieval**
+
+.. code-block:: php
+
+    <?php
+    $charset  = $this->config->get('charset');
+    $base_url = $this->config->get('base_url');
+
+Returns ``NULL`` if the key does not exist.
+
+**Retrieving from an indexed section**
+
+If the config file was loaded with ``$use_sections = TRUE``, pass the section
+name as the second argument:
+
+.. code-block:: php
+
+    <?php
+    $this->config->load('blog_settings', TRUE);
+
+    // Read a value from the 'blog_settings' section
+    $site_name = $this->config->get('site_name', 'blog_settings');
+
+    // Or retrieve the entire section as an array and access keys manually
+    $blog = $this->config->get('blog_settings');
+    $site_name = $blog['site_name'];
+
+**Using the** ``config_item()`` **helper**
+
+For convenience, LavaLust also provides a global helper function that reads
+from the root config array without needing ``$this->config``:
+
+.. code-block:: php
+
+    <?php
+    // Equivalent to $this->config->get('base_url')
+    $base_url = config_item('base_url');
+
+This is especially useful inside helpers, models, and middleware where
+``$this->config`` is not directly available.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 40 35
+
+   * - Method
+     - Signature
+     - Description
+   * - ``get()``
+     - ``get($item, $index = '')``
+     - Retrieve a config value by key, optionally from a named section
+   * - ``config_item()``
+     - ``config_item($item)``
+     - Global helper shortcut for root-level config values
+
+
+Setting Config Items at Runtime
+---------------------------------
+
+Use ``set()`` to add a new config value or override an existing one
+dynamically during the current request. Changes made this way are not written
+back to the config file on disk and only apply for the lifetime of the request.
+
+.. code-block:: php
+
+    <?php
+    // Override an existing value
+    $this->config->set('default_language', 'filipino');
+
+    // Add a new value at runtime
+    $this->config->set('maintenance_mode', TRUE);
+
+    // Read it back immediately
+    $lang = $this->config->get('default_language'); // 'filipino'
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 35 45
+
+   * - Method
+     - Signature
+     - Description
+   * - ``set()``
+     - ``set($item, $value)``
+     - Set or override a config value for the current request only
+
+
+Quick Reference
+----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Task
+     - Code
+   * - Load a config file (merged)
+     - ``$this->config->load('filename')``
+   * - Load a config file (indexed)
+     - ``$this->config->load('filename', TRUE)``
+   * - Autoload a config file
+     - Add ``'filename'`` to ``$autoload['config']`` in ``autoload.php``
+   * - Read a root-level value
+     - ``$this->config->get('key')``
+   * - Read from an indexed section
+     - ``$this->config->get('key', 'section_name')``
+   * - Read using the global helper
+     - ``config_item('key')``
+   * - Set or override a value
+     - ``$this->config->set('key', 'value')``
+
+
+Tips and Best Practices
+------------------------
+
+- Group related settings into their own config file (e.g. ``payment.php``,
+  ``social.php``) rather than adding everything to ``config.php``. This keeps
+  files short and easy to scan.
+- Use indexed loading (``TRUE`` second argument) whenever a custom config file
+  could share key names with another file or with ``config.php``.
+- Use ``config_item()`` inside helpers and models — it is shorter and works
+  everywhere ``$this->config`` does not.
+- Never store secrets (API keys, passwords) directly in config files that are
+  committed to version control. Load them from environment variables instead:
+
+  .. code-block:: php
+
+      <?php
+      $config['db_password'] = getenv('DB_PASSWORD');
