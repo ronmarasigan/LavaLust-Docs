@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Database Query Reference &mdash; LavaLust Documentation</title>
+  <title>Database &mdash; LavaLust Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
@@ -80,7 +80,7 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Database Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="database_reference.html">Database Reference</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Query Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Database</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
@@ -151,7 +151,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Database Reference</a></li>
-      <li class="breadcrumb-item active">Database Query Reference</li>
+      <li class="breadcrumb-item active">Database</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -160,222 +160,223 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="database-query-reference">
-<h1>Database Query Reference<a class="headerlink" href="#database-query-reference" title="Link to this heading"></a></h1>
-<p>LavaLust provides a powerful and lightweight <strong>Database Class</strong> that uses a <strong>fluent query builder</strong>
-backed by PDO. It supports MySQL, PostgreSQL, SQLite, and SQL Server, letting you build and execute
-queries without writing raw SQL directly.</p>
-<section id="supported-drivers">
-<h2>Supported Drivers<a class="headerlink" href="#supported-drivers" title="Link to this heading"></a></h2>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 20.0%" />
-<col style="width: 80.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Driver key</p></th>
-<th class="head"><p>Database</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mysql</span></code></p></td>
-<td><p>MySQL / MariaDB</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pgsql</span></code></p></td>
-<td><p>PostgreSQL</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sqlite</span></code></p></td>
-<td><p>SQLite (requires <code class="docutils literal notranslate"><span class="pre">path</span></code> instead of <code class="docutils literal notranslate"><span class="pre">hostname</span></code>)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sqlsrv</span></code></p></td>
-<td><p>Microsoft SQL Server</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="database-configuration">
-<h2>Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
-<p>Database settings are defined in <code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code>.</p>
+  <section id="database">
+<h1>Database<a class="headerlink" href="#database" title="Link to this heading"></a></h1>
+<p>LavaLust includes a PDO-based Database class that supports a fluent <strong>Query
+Builder</strong> pattern and direct <strong>raw SQL</strong> execution. All values passed through
+the builder are automatically bound as prepared statement parameters, protecting
+against SQL injection by default.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#configuration" id="id1">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#configuration-values" id="id2">Configuration Values</a></p></li>
+<li><p><a class="reference internal" href="#supported-drivers" id="id3">Supported Drivers</a></p></li>
+<li><p><a class="reference internal" href="#connecting" id="id4">Connecting</a></p></li>
+<li><p><a class="reference internal" href="#query-builder" id="id5">Query Builder</a></p></li>
+<li><p><a class="reference internal" href="#result-methods" id="id6">Result Methods</a></p></li>
+<li><p><a class="reference internal" href="#raw-queries" id="id7">Raw Queries</a></p></li>
+<li><p><a class="reference internal" href="#transactions" id="id8">Transactions</a></p></li>
+<li><p><a class="reference internal" href="#tips-and-best-practices" id="id9">Tips and Best Practices</a></p></li>
+</ul>
+</nav>
+<section id="configuration">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Database connection settings live in <code class="docutils literal notranslate"><span class="pre">app/config/database.php</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">main</span></code> group is used by default when no group name is specified.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;driver&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
     <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
     <span class="s1">&#39;port&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;3306&#39;</span><span class="p">,</span>
     <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
     <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;myapp&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
     <span class="s1">&#39;charset&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;utf8mb4&#39;</span><span class="p">,</span>
     <span class="s1">&#39;dbprefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="c1">// Required for SQLite only:</span>
-    <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-<span class="p">);</span>
-
-<span class="c1">// Optional second connection</span>
-<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;secondary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;driver&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;pgsql&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;db.example.com&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;port&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;5432&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;pguser&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;secret&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;analytics&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;charset&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Never commit database credentials to version control. Load them from
+environment variables instead:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$database</span><span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;driver&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASS&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;charset&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;utf8mb4&#39;</span><span class="p">,</span>
     <span class="s1">&#39;dbprefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-<span class="p">);</span>
+<span class="p">];</span>
 </pre></div>
+</div>
 </div>
 </section>
-<section id="getting-a-database-instance">
-<h2>Getting a Database Instance<a class="headerlink" href="#getting-a-database-instance" title="Link to this heading"></a></h2>
-<p>The default (<code class="docutils literal notranslate"><span class="pre">main</span></code>) connection is available as <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code> inside any controller, model,
-or library:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>To use a named connection defined in <code class="docutils literal notranslate"><span class="pre">database.php</span></code>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$db2</span> <span class="o">=</span> <span class="nx">Database</span><span class="o">::</span><span class="na">instance</span><span class="p">(</span><span class="s1">&#39;secondary&#39;</span><span class="p">);</span>
-<span class="nv">$rows</span> <span class="o">=</span> <span class="nv">$db2</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">table()</span></code> resets the internal query builder state, so always call it first when
-starting a new query.</p>
-</div>
-</section>
-<section id="query-execution">
-<h2>Query Execution<a class="headerlink" href="#query-execution" title="Link to this heading"></a></h2>
-<section id="get">
-<h3>get()<a class="headerlink" href="#get" title="Link to this heading"></a></h3>
-<p>Executes the built query and returns the <strong>first matching row</strong> as an associative array,
-or <code class="docutils literal notranslate"><span class="pre">false</span></code> if no row is found.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
-</pre></div>
-</div>
-</section>
-<section id="get-all">
-<h3>get_all()<a class="headerlink" href="#get-all" title="Link to this heading"></a></h3>
-<p>Executes the built query and returns <strong>all matching rows</strong> as an array of associative arrays.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-<span class="k">foreach</span> <span class="p">(</span><span class="nv">$users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="raw-query-args">
-<h3>raw($query, $args)<a class="headerlink" href="#raw-query-args" title="Link to this heading"></a></h3>
-<p>Executes a raw SQL statement with optional bound parameters. Returns a PDOStatement.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// SELECT</span>
-<span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE id = ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">();</span>
-
-<span class="c1">// Multiple rows</span>
-<span class="nv">$stmt</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE role = ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">]);</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchAll</span><span class="p">();</span>
-
-<span class="c1">// Non-SELECT</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;DELETE FROM sessions WHERE expires_at &lt; NOW()&quot;</span><span class="p">);</span>
-</pre></div>
-</div>
-</section>
-<section id="get-sql">
-<h3>get_sql()<a class="headerlink" href="#get-sql" title="Link to this heading"></a></h3>
-<p>Returns the last SQL string that was built or executed. Useful for debugging.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">get_sql</span><span class="p">();</span>
-<span class="c1">// SELECT * FROM users WHERE role = ?</span>
-</pre></div>
-</div>
-</section>
-<section id="row-count">
-<h3>row_count()<a class="headerlink" href="#row-count" title="Link to this heading"></a></h3>
-<p>Returns the number of rows affected or returned by the last query.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">row_count</span><span class="p">();</span> <span class="c1">// e.g. 42</span>
-</pre></div>
-</div>
+<section id="configuration-values">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Configuration Values</a><a class="headerlink" href="#configuration-values" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 30.0%" />
+<col style="width: 18.0%" />
+<col style="width: 12.0%" />
 <col style="width: 70.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Required</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get()</span></code></p></td>
-<td><p>Returns the first matching row as an array, or <code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Database driver. See <a class="reference internal" href="#supported-drivers">Supported Drivers</a> below. Must be lowercase.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_all()</span></code></p></td>
-<td><p>Returns all matching rows as an array of arrays</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hostname</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Hostname or IP of the database server. For SQLite, leave blank —
+use <code class="docutils literal notranslate"><span class="pre">path</span></code> instead.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">raw($query,</span> <span class="pre">$args)</span></code></p></td>
-<td><p>Executes raw SQL with bound parameters; returns PDOStatement</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">port</span></code></p></td>
+<td><p>No</p></td>
+<td><p>Port number. Omit to use the driver default.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_sql()</span></code></p></td>
-<td><p>Returns the last built SQL string</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">username</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Database user. Not required for SQLite.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">row_count()</span></code></p></td>
-<td><p>Returns the row count of the last executed query</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Password for the database user. Not required for SQLite.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">database</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Name of the database. Not required for SQLite.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">charset</span></code></p></td>
+<td><p>No</p></td>
+<td><p>Connection character set. Recommended: <code class="docutils literal notranslate"><span class="pre">utf8mb4</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dbprefix</span></code></p></td>
+<td><p>No</p></td>
+<td><p>Optional table name prefix prepended by the Query Builder.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">path</span></code></p></td>
+<td><p>SQLite only</p></td>
+<td><p>Absolute path to the SQLite <code class="docutils literal notranslate"><span class="pre">.db</span></code> file
+(e.g. <code class="docutils literal notranslate"><span class="pre">/var/www/app/database/app.db</span></code>).</p></td>
 </tr>
 </tbody>
 </table>
 </section>
+<section id="supported-drivers">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Supported Drivers</a><a class="headerlink" href="#supported-drivers" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16.0%" />
+<col style="width: 22.0%" />
+<col style="width: 16.0%" />
+<col style="width: 46.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver value</p></th>
+<th class="head"><p>Database</p></th>
+<th class="head"><p>Default port</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mysql</span></code></p></td>
+<td><p>MySQL / MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3306</span></code></p></td>
+<td><p>Recommended for most applications.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pgsql</span></code></p></td>
+<td><p>PostgreSQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">5432</span></code></p></td>
+<td><p>Requires the PHP <code class="docutils literal notranslate"><span class="pre">pgsql</span></code> extension. <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> automatically uses
+<code class="docutils literal notranslate"><span class="pre">RETURNING</span> <span class="pre">id</span></code> to retrieve the last inserted ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sqlsrv</span></code></p></td>
+<td><p>Microsoft SQL Server</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1433</span></code></p></td>
+<td><p>Requires the PHP <code class="docutils literal notranslate"><span class="pre">sqlsrv</span></code> extension.
+<code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> is translated to <code class="docutils literal notranslate"><span class="pre">OFFSET</span> <span class="pre">…</span> <span class="pre">FETCH</span> <span class="pre">NEXT</span> <span class="pre">…</span> <span class="pre">ROWS</span> <span class="pre">ONLY</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sqlite</span></code></p></td>
+<td><p>SQLite 3</p></td>
+<td><p>n/a</p></td>
+<td><p>File-based. No <code class="docutils literal notranslate"><span class="pre">username</span></code>, <code class="docutils literal notranslate"><span class="pre">password</span></code>, or <code class="docutils literal notranslate"><span class="pre">port</span></code> needed.
+Set <code class="docutils literal notranslate"><span class="pre">path</span></code> to the absolute path of the <code class="docutils literal notranslate"><span class="pre">.db</span></code> file.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> syntax is automatically adapted per driver so the same
+<code class="docutils literal notranslate"><span class="pre">-&gt;limit()</span></code> call produces correct SQL for MySQL, PostgreSQL, SQLite,
+and SQL Server without any extra configuration.</p>
+</div>
 </section>
+<section id="connecting">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Connecting</a><a class="headerlink" href="#connecting" title="Link to this heading"></a></h2>
+<p><strong>Auto-connect (recommended)</strong></p>
+<p>Register <code class="docutils literal notranslate"><span class="pre">'database'</span></code> in <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code> to connect on every
+request:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;libraries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;database&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>This connects to the <code class="docutils literal notranslate"><span class="pre">main</span></code> group and assigns the instance to <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code>.</p>
+<p><strong>Manual connect</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Connect to the &#39;main&#39; group → $this-&gt;db</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">database</span><span class="p">();</span>
+
+<span class="c1">// Connect to a named group → $this-&gt;analytics</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">database</span><span class="p">(</span><span class="s1">&#39;analytics&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Multiple simultaneous connections</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">database</span><span class="p">();</span>             <span class="c1">// → $this-&gt;db</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">database</span><span class="p">(</span><span class="s1">&#39;analytics&#39;</span><span class="p">);</span>  <span class="c1">// → $this-&gt;analytics</span>
+
+<span class="nv">$users</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$events</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">analytics</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The property name on <code class="docutils literal notranslate"><span class="pre">$this</span></code> always matches the group name from
+<code class="docutils literal notranslate"><span class="pre">database.php</span></code>. The default <code class="docutils literal notranslate"><span class="pre">main</span></code> group is always <code class="docutils literal notranslate"><span class="pre">$this-&gt;db</span></code>.</p>
+</div>
+</section>
+<section id="query-builder">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Query Builder</a><a class="headerlink" href="#query-builder" title="Link to this heading"></a></h2>
 <section id="selecting-data">
-<h2>Selecting Data<a class="headerlink" href="#selecting-data" title="Link to this heading"></a></h2>
-<section id="table-name">
-<h3>table($name)<a class="headerlink" href="#table-name" title="Link to this heading"></a></h3>
-<p>Sets the table for the current query and resets all builder state.</p>
+<h3>Selecting Data<a class="headerlink" href="#selecting-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</section>
-<section id="select-columns">
-<h3>select($columns)<a class="headerlink" href="#select-columns" title="Link to this heading"></a></h3>
-<p>Specifies which columns to fetch. Accepts a comma-separated string.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// SELECT * FROM users</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// SELECT specific columns</span>
 <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name, email&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+                  <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name, email&#39;</span><span class="p">)</span>
+                  <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// Aggregate functions with optional alias</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_count</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_max</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;highest&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_min</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;lowest&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_sum</span><span class="p">(</span><span class="s1">&#39;stock&#39;</span><span class="p">,</span> <span class="s1">&#39;total_stock&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_avg</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_price&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_distinct</span><span class="p">(</span><span class="s1">&#39;country&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
-<section id="aggregate-selects">
-<h3>Aggregate Selects<a class="headerlink" href="#aggregate-selects" title="Link to this heading"></a></h3>
-<p>All aggregate methods accept a column name and an optional alias.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// MAX</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_max</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;max_amount&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;max_amount&#39;</span><span class="p">];</span>
-
-<span class="c1">// MIN</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_min</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;min_amount&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-
-<span class="c1">// SUM</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_sum</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-
-<span class="c1">// COUNT</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_count</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;user_count&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-
-<span class="c1">// AVG</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_avg</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_amount&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-
-<span class="c1">// DISTINCT</span>
-<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select_distinct</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
+<p><strong>Aggregate method reference</strong></p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 35.0%" />
@@ -383,368 +384,56 @@ or <code class="docutils literal notranslate"><span class="pre">false</span></co
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>SQL equivalent</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select($columns)</span></code></p></td>
-<td><p>Comma-separated column list to fetch</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_max($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_max($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">MAX(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_min($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_min($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">MIN(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_sum($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_sum($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">SUM(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_count($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_count($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">COUNT(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_avg($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_avg($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">AVG(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_distinct($col,</span> <span class="pre">$alias)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_distinct($col,</span> <span class="pre">$alias)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">DISTINCT(col)</span> <span class="pre">AS</span> <span class="pre">alias</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </section>
-</section>
-<section id="where-conditions">
-<h2>WHERE Conditions<a class="headerlink" href="#where-conditions" title="Link to this heading"></a></h2>
-<section id="where">
-<h3>where()<a class="headerlink" href="#where" title="Link to this heading"></a></h3>
-<p>Adds an <code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">WHERE</span></code> condition. Can be chained multiple times.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Simple equality</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// With operator</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Array of conditions (all joined with AND)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Chained</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
-<section id="or-where-not-where-or-not-where">
-<h3>or_where() / not_where() / or_not_where()<a class="headerlink" href="#or-where-not-where-or-not-where" title="Link to this heading"></a></h3>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// OR WHERE</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// WHERE NOT</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;banned&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR WHERE NOT</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;inactive&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
-<section id="where-null-where-not-null">
-<h3>where_null() / where_not_null()<a class="headerlink" href="#where-null-where-not-null" title="Link to this heading"></a></h3>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// IS NULL</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_null</span><span class="p">(</span><span class="s1">&#39;deleted_at&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// IS NOT NULL</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_not_null</span><span class="p">(</span><span class="s1">&#39;email_verified_at&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 35.0%" />
-<col style="width: 65.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">WHERE</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">?</span></code> or <code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">WHERE</span> <span class="pre">col</span> <span class="pre">op</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">WHERE</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">WHERE</span> <span class="pre">NOT</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">WHERE</span> <span class="pre">NOT</span> <span class="pre">col</span> <span class="pre">=</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_null($col)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">col</span> <span class="pre">IS</span> <span class="pre">NULL</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_not_null($col)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">col</span> <span class="pre">IS</span> <span class="pre">NOT</span> <span class="pre">NULL</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="like-conditions">
-<h2>LIKE Conditions<a class="headerlink" href="#like-conditions" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// LIKE</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR LIKE</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// NOT LIKE</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%admin%&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR NOT LIKE</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_not_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;%spam%&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">LIKE</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">LIKE</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">not_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">LIKE</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">LIKE</span> <span class="pre">?</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="in-conditions">
-<h2>IN Conditions<a class="headerlink" href="#in-conditions" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// IN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// NOT IN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">not_in</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;banned&#39;</span><span class="p">,</span> <span class="s1">&#39;inactive&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR IN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_in</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;contributor&#39;</span><span class="p">,</span> <span class="s1">&#39;subscriber&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR NOT IN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_not_in</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;deleted&#39;</span><span class="p">,</span> <span class="s1">&#39;suspended&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 35.0%" />
-<col style="width: 65.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">IN</span> <span class="pre">(...)</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">IN</span> <span class="pre">(...)</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">IN</span> <span class="pre">(...)</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">IN</span> <span class="pre">(...)</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="between-conditions">
-<h2>BETWEEN Conditions<a class="headerlink" href="#between-conditions" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// BETWEEN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">between</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-12-31&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// NOT BETWEEN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">not_between</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR BETWEEN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_between</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-06-30&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// OR NOT BETWEEN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;completed&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_not_between</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 38.0%" />
-<col style="width: 62.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">between($field,</span> <span class="pre">$val1,</span> <span class="pre">$val2)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">BETWEEN</span> <span class="pre">?</span> <span class="pre">AND</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_between($field,</span> <span class="pre">$val1,</span> <span class="pre">$val2)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">AND</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">BETWEEN</span> <span class="pre">?</span> <span class="pre">AND</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_between($field,</span> <span class="pre">$val1,</span> <span class="pre">$val2)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">BETWEEN</span> <span class="pre">?</span> <span class="pre">AND</span> <span class="pre">?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_between($field,</span> <span class="pre">$val1,</span> <span class="pre">$val2)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">OR</span> <span class="pre">field</span> <span class="pre">NOT</span> <span class="pre">BETWEEN</span> <span class="pre">?</span> <span class="pre">AND</span> <span class="pre">?</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="grouped-conditions">
-<h2>Grouped Conditions<a class="headerlink" href="#grouped-conditions" title="Link to this heading"></a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">grouped()</span></code> with a closure to wrap conditions inside parentheses. This is essential
-when mixing <code class="docutils literal notranslate"><span class="pre">AND</span></code> / <code class="docutils literal notranslate"><span class="pre">OR</span></code> logic.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
-          <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;pending&#39;</span><span class="p">);</span>
-    <span class="p">})</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<p><strong>Generated SQL:</strong></p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span>
-<span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;active&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pending&#39;</span><span class="p">)</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">;</span>
-</pre></div>
-</div>
-<p><strong>Nested groups:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;electronics&#39;</span><span class="p">)</span>
-          <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;computers&#39;</span><span class="p">);</span>
-    <span class="p">})</span>
-    <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-          <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
-    <span class="p">})</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
 <section id="joins">
-<h2>Joins<a class="headerlink" href="#joins" title="Link to this heading"></a></h2>
+<h3>Joins<a class="headerlink" href="#joins" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Generic JOIN (defaults to INNER)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.user_id = users.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// INNER JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">inner_join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.user_id = users.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;orders.id, users.name, orders.amount&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// LEFT JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">left_join</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id = profiles.user_id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// RIGHT JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">right_join</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id = profiles.user_id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// FULL OUTER JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;table_a&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">full_outer_join</span><span class="p">(</span><span class="s1">&#39;table_b&#39;</span><span class="p">,</span> <span class="s1">&#39;table_a.id = table_b.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// LEFT OUTER JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">left_outer_join</span><span class="p">(</span><span class="s1">&#39;coupons&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.coupon_id = coupons.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// RIGHT OUTER JOIN</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">right_outer_join</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="s1">&#39;orders.product_id = products.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Chaining multiple joins</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">inner_join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span>    <span class="s1">&#39;orders.user_id = users.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">left_join</span><span class="p">(</span><span class="s1">&#39;coupons&#39;</span><span class="p">,</span>   <span class="s1">&#39;orders.coupon_id = coupons.id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;orders.id, users.name, coupons.code&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">inner_join</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;users.id = posts.user_id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">left_join</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="s1">&#39;comments.post_id = posts.id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">right_join</span><span class="p">(</span><span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="s1">&#39;categories.id = posts.cat_id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">full_outer_join</span><span class="p">(</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="s1">&#39;customers.id = orders.user_id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">left_outer_join</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="s1">&#39;products.id = orders.product_id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">right_outer_join</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="s1">&#39;products.id = orders.product_id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
+<p><strong>Join method reference</strong></p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 40.0%" />
-<col style="width: 60.0%" />
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>SQL join type</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">join($table,</span> <span class="pre">$cond,</span> <span class="pre">$type)</span></code></p></td>
-<td><p>Generic join; specify type as <code class="docutils literal notranslate"><span class="pre">'INNER</span> <span class="pre">'</span></code>, <code class="docutils literal notranslate"><span class="pre">'LEFT</span> <span class="pre">'</span></code>, etc.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">join($table,</span> <span class="pre">$cond)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">JOIN</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">inner_join($table,</span> <span class="pre">$cond)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code></p></td>
@@ -767,84 +456,78 @@ when mixing <code class="docutils literal notranslate"><span class="pre">AND</sp
 </tbody>
 </table>
 </section>
-<section id="ordering-grouping-limiting">
-<h2>Ordering, Grouping &amp; Limiting<a class="headerlink" href="#ordering-grouping-limiting" title="Link to this heading"></a></h2>
-<section id="order-by-column-direction">
-<h3>order_by($column, $direction)<a class="headerlink" href="#order-by-column-direction" title="Link to this heading"></a></h3>
+<section id="where-conditions">
+<h3>WHERE Conditions<a class="headerlink" href="#where-conditions" title="Link to this heading"></a></h3>
+<p><strong>Basic WHERE</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Single column</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="c1">// Equality (implicit =)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 
-<span class="c1">// Multiple columns (chain calls)</span>
+<span class="c1">// With explicit operator</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// Multiple conditions (AND by default)</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 
-<span class="c1">// Random order</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;rand()&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
-<section id="group-by-column">
-<h3>group_by($column)<a class="headerlink" href="#group-by-column" title="Link to this heading"></a></h3>
-<p>Accepts a string or an array of columns.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Single column</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;customer_id, COUNT(*) as total_orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;customer_id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="c1">// Array syntax</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">])</span>
+         <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 
-<span class="c1">// Multiple columns</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;customer_id, status, COUNT(*) as count&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">([</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="c1">// OR / NOT variants</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;moderator&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;banned&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_not_where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;suspended&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
-<section id="having-column-op-value">
-<h3>having($column, $op, $value)<a class="headerlink" href="#having-column-op-value" title="Link to this heading"></a></h3>
+<p><strong>NULL checks</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;customer_id, COUNT(*) as total_orders&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;customer_id&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">&#39;total_orders&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_null</span><span class="p">(</span><span class="s1">&#39;deleted_at&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_not_null</span><span class="p">(</span><span class="s1">&#39;email_verified_at&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
-<section id="limit-number-offset-number">
-<h3>limit($number) / offset($number)<a class="headerlink" href="#limit-number-offset-number" title="Link to this heading"></a></h3>
+<p><strong>LIKE</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Limit only</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Limit + offset</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">offset</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;%john%&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_like</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_like</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;gmail&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_not_like</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
-<section id="pagination-perpage-currentpage">
-<h3>pagination($perPage, $currentPage)<a class="headerlink" href="#pagination-perpage-currentpage" title="Link to this heading"></a></h3>
-<p>Automatically calculates <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> and <code class="docutils literal notranslate"><span class="pre">OFFSET</span></code> from a page number.</p>
+<p><strong>BETWEEN</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$page</span>  <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nv">$page</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">between</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_between</span><span class="p">(</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_between</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_not_between</span><span class="p">(</span><span class="s1">&#39;stock&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
-<section id="count">
-<h3>count()<a class="headerlink" href="#count" title="Link to this heading"></a></h3>
-<p>Returns the number of rows matching the current <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> conditions.</p>
+<p><strong>IN</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s2">&quot;Active users: </span><span class="si">$total</span><span class="s2">&quot;</span><span class="p">;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">not_in</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;banned&#39;</span><span class="p">,</span> <span class="s1">&#39;suspended&#39;</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_in</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;moderator&#39;</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_not_in</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
+<p><strong>Grouped conditions</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">grouped()</span></code> with a closure to wrap conditions in parentheses:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// WHERE status = &#39;active&#39; AND (role = &#39;admin&#39; OR role = &#39;moderator&#39;)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
+             <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
+               <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;moderator&#39;</span><span class="p">);</span>
+         <span class="p">})</span>
+         <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>WHERE method reference</strong></p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 38.0%" />
@@ -856,235 +539,204 @@ when mixing <code class="docutils literal notranslate"><span class="pre">AND</sp
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">order_by($col,</span> <span class="pre">$dir)</span></code></p></td>
-<td><p>Orders results by column. Direction: <code class="docutils literal notranslate"><span class="pre">ASC</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">DESC</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>AND WHERE</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">group_by($col)</span></code></p></td>
-<td><p>Groups results by a column or array of columns</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>OR WHERE</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">having($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>Filters grouped results using a <code class="docutils literal notranslate"><span class="pre">HAVING</span></code> clause</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>AND NOT WHERE</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit($n)</span></code></p></td>
-<td><p>Limits the number of rows returned</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>OR NOT WHERE</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">offset($n)</span></code></p></td>
-<td><p>Skips the first N rows</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_null($col)</span></code></p></td>
+<td><p>AND WHERE col IS NULL</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pagination($perPage,</span> <span class="pre">$page)</span></code></p></td>
-<td><p>Applies <code class="docutils literal notranslate"><span class="pre">LIMIT</span></code> and <code class="docutils literal notranslate"><span class="pre">OFFSET</span></code> from a page number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_not_null($col)</span></code></p></td>
+<td><p>AND WHERE col IS NOT NULL</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></td>
-<td><p>Returns the number of matching rows</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">like($col,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>AND WHERE col LIKE</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_like($col,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>AND WHERE col NOT LIKE</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_like($col,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>OR WHERE col LIKE</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_like($col,</span> <span class="pre">$val)</span></code></p></td>
+<td><p>OR WHERE col NOT LIKE</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">between($col,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
+<td><p>AND WHERE col BETWEEN</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_between($col,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
+<td><p>AND WHERE col NOT BETWEEN</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_between($col,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
+<td><p>OR WHERE col BETWEEN</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_between($col,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
+<td><p>OR WHERE col NOT BETWEEN</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">in($col,</span> <span class="pre">$arr)</span></code></p></td>
+<td><p>AND WHERE col IN (…)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_in($col,</span> <span class="pre">$arr)</span></code></p></td>
+<td><p>AND WHERE col NOT IN (…)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_in($col,</span> <span class="pre">$arr)</span></code></p></td>
+<td><p>OR WHERE col IN (…)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_in($col,</span> <span class="pre">$arr)</span></code></p></td>
+<td><p>OR WHERE col NOT IN (…)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">grouped(Closure)</span></code></p></td>
+<td><p>Wrap conditions in parentheses</p></td>
 </tr>
 </tbody>
 </table>
 </section>
+<section id="ordering-grouping-limiting">
+<h3>Ordering, Grouping &amp; Limiting<a class="headerlink" href="#ordering-grouping-limiting" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// ORDER BY</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;RAND()&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// GROUP BY — string or array</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">group_by</span><span class="p">([</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// HAVING</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;user_id, SUM(total) as total_spent&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">&#39;total_spent&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// LIMIT (driver-aware)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>  <span class="c1">// offset 20, take 10</span>
+
+<span class="c1">// OFFSET (standalone)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">offset</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+
+<span class="c1">// Pagination shortcut — page number based</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>  <span class="c1">// page 2, 10/page</span>
+
+<span class="c1">// COUNT rows matching conditions</span>
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
+</pre></div>
+</div>
 </section>
 <section id="inserting-data">
-<h2>Inserting Data<a class="headerlink" href="#inserting-data" title="Link to this heading"></a></h2>
-<section id="insert-fields">
-<h3>insert($fields)<a class="headerlink" href="#insert-fields" title="Link to this heading"></a></h3>
-<p>Inserts a single record. Returns the last inserted ID.</p>
+<h3>Inserting Data<a class="headerlink" href="#inserting-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Single row</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-    <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;name&#39;</span>       <span class="o">=&gt;</span> <span class="s1">&#39;Jane Doe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;email&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;jane@example.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">),</span>
 <span class="p">]);</span>
+<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
 
-<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
-</pre></div>
-</div>
-</section>
-<section id="last-id">
-<h3>last_id()<a class="headerlink" href="#last-id" title="Link to this heading"></a></h3>
-<p>Returns the ID generated by the last <code class="docutils literal notranslate"><span class="pre">insert()</span></code> or <code class="docutils literal notranslate"><span class="pre">exec()</span></code> call.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">]);</span>
-<span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s2">&quot;New user ID: </span><span class="si">$id</span><span class="s2">&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-</section>
-<section id="bulk-insert-records">
-<h3>bulk_insert($records)<a class="headerlink" href="#bulk-insert-records" title="Link to this heading"></a></h3>
-<p>Inserts multiple rows in a single query.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Bulk insert — multiple rows in one query</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bulk_insert</span><span class="p">([</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span>  <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Jane&#39;</span><span class="p">,</span>  <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;jane@example.com&#39;</span><span class="p">],</span>
     <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>   <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;bob@example.com&#39;</span><span class="p">],</span>
 <span class="p">]);</span>
 </pre></div>
 </div>
-</section>
 </section>
 <section id="updating-data">
-<h2>Updating Data<a class="headerlink" href="#updating-data" title="Link to this heading"></a></h2>
-<section id="update-fields">
-<h3>update($fields)<a class="headerlink" href="#update-fields" title="Link to this heading"></a></h3>
-<p>Updates records matching the current <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> condition.</p>
+<h3>Updating Data<a class="headerlink" href="#updating-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Standard update with WHERE</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">update</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Johnny&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;johnny@example.com&#39;</span><span class="p">]);</span>
-</pre></div>
-</div>
-</section>
-<section id="bulk-update-records-primarykey">
-<h3>bulk_update($records, $primaryKey)<a class="headerlink" href="#bulk-update-records-primarykey" title="Link to this heading"></a></h3>
-<p>Updates multiple rows using a <code class="docutils literal notranslate"><span class="pre">CASE</span> <span class="pre">…</span> <span class="pre">WHEN</span></code> statement. Each record must include
-the primary key value.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+         <span class="o">-&gt;</span><span class="na">update</span><span class="p">([</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Jane Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;updated_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)]);</span>
+
+<span class="c1">// Increment / decrement a numeric column</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">increment</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">decrement</span><span class="p">(</span><span class="s1">&#39;stock&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// Bulk update — different values per row, keyed by primary key</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bulk_update</span><span class="p">([</span>
     <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;active&#39;</span><span class="p">],</span>
     <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;inactive&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;active&#39;</span><span class="p">],</span>
 <span class="p">],</span> <span class="s1">&#39;id&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
-<section id="increment-column-amount-decrement-column-amount">
-<h3>increment($column, $amount) / decrement($column, $amount)<a class="headerlink" href="#increment-column-amount-decrement-column-amount" title="Link to this heading"></a></h3>
-<p>Atomically increments or decrements a numeric column.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Add 1 to views (default)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">increment</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">);</span>
-
-<span class="c1">// Add 10 to score</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">increment</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-
-<span class="c1">// Subtract 1 from stock (default)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">decrement</span><span class="p">(</span><span class="s1">&#39;stock&#39;</span><span class="p">);</span>
-
-<span class="c1">// Subtract 5 from credits</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">decrement</span><span class="p">(</span><span class="s1">&#39;credits&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 38.0%" />
-<col style="width: 62.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">insert($fields)</span></code></p></td>
-<td><p>Inserts a single row; returns last inserted ID</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">last_id()</span></code></p></td>
-<td><p>Returns the last inserted ID</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bulk_insert($records)</span></code></p></td>
-<td><p>Inserts multiple rows in one query</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">update($fields)</span></code></p></td>
-<td><p>Updates rows matching the current WHERE clause</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bulk_update($records,</span> <span class="pre">$pk)</span></code></p></td>
-<td><p>Updates multiple rows using CASE WHEN</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">increment($col,</span> <span class="pre">$amount)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">$amount</span></code> (default 1) to a column atomically</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">decrement($col,</span> <span class="pre">$amount)</span></code></p></td>
-<td><p>Subtracts <code class="docutils literal notranslate"><span class="pre">$amount</span></code> (default 1) from a column atomically</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 <section id="deleting-data">
-<h2>Deleting Data<a class="headerlink" href="#deleting-data" title="Link to this heading"></a></h2>
-<section id="delete">
-<h3>delete()<a class="headerlink" href="#delete" title="Link to this heading"></a></h3>
-<p>Deletes rows matching the current <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> condition.</p>
+<h3>Deleting Data<a class="headerlink" href="#deleting-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Delete by ID</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+<span class="c1">// Single row</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
 
-<span class="c1">// Delete by condition</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;sessions&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;expires_at&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+<span class="c1">// Multiple rows</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">in</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
 
-<span class="c1">// Delete all rows in table (use with caution)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;temp_logs&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+<span class="c1">// Check rows affected</span>
+<span class="nv">$deleted</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;sessions&#39;</span><span class="p">)</span>
+                    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;last_seen&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d&#39;</span><span class="p">,</span> <span class="nb">strtotime</span><span class="p">(</span><span class="s1">&#39;-30 days&#39;</span><span class="p">)))</span>
+                    <span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
 </section>
-<section id="transactions">
-<h2>Transactions<a class="headerlink" href="#transactions" title="Link to this heading"></a></h2>
-<p>Wrap multiple write operations in a transaction to ensure atomicity. LavaLust supports
-<strong>nested transactions</strong> via savepoints.</p>
+<section id="result-methods">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Result Methods</a><a class="headerlink" href="#result-methods" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
+<span class="c1">// All rows as associative arrays</span>
+<span class="nv">$rows</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">result_array</span><span class="p">();</span>
 
-<span class="k">try</span> <span class="p">{</span>
-    <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;John Doe&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john@example.com&#39;</span><span class="p">,</span>
-    <span class="p">]);</span>
+<span class="c1">// All rows as stdClass objects</span>
+<span class="nv">$rows</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">();</span>
 
-    <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
+<span class="c1">// All rows as numeric arrays</span>
+<span class="nv">$rows</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">result_num</span><span class="p">();</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;profiles&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-        <span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">,</span>
-        <span class="s1">&#39;bio&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello world&#39;</span><span class="p">,</span>
-    <span class="p">]);</span>
+<span class="c1">// Single row as associative array / object</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_array</span><span class="p">();</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row</span><span class="p">();</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
+<span class="c1">// Single row as numeric array</span>
+<span class="nv">$row</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_num</span><span class="p">();</span>
 
-<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">roll_back</span><span class="p">();</span>
-    <span class="c1">// Handle error...</span>
-<span class="p">}</span>
+<span class="c1">// Row by index (0-based)</span>
+<span class="nv">$second</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_array</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// First and last row</span>
+<span class="nv">$first</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">first_row</span><span class="p">();</span>
+<span class="nv">$last</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">last_row</span><span class="p">();</span>
+
+<span class="c1">// Map to a custom class</span>
+<span class="nv">$objects</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">custom_result_object</span><span class="p">(</span><span class="s1">&#39;UserEntity&#39;</span><span class="p">);</span>
+<span class="nv">$object</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">custom_row_object</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;UserEntity&#39;</span><span class="p">);</span>
+
+<span class="c1">// Single column from all rows (0-based column index)</span>
+<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_column</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="c1">// Key-value pairs — first column as key, second as value (great for dropdowns)</span>
+<span class="nv">$options</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_key_pair</span><span class="p">();</span>
+
+<span class="c1">// Group results by the first column&#39;s value</span>
+<span class="nv">$grouped</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;status, id, total&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_grouped</span><span class="p">();</span>
+
+<span class="c1">// Counts</span>
+<span class="nv">$num</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">row_count</span><span class="p">();</span>    <span class="c1">// rows affected by last exec()</span>
+<span class="nv">$num</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">num_rows</span><span class="p">();</span>     <span class="c1">// rows in last get() / get_all() result</span>
+
+<span class="c1">// Last insert ID and last SQL string</span>
+<span class="nv">$id</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
+<span class="nv">$sql</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">get_sql</span><span class="p">();</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The rollback method is <code class="docutils literal notranslate"><span class="pre">roll_back()</span></code> (with an underscore), not <code class="docutils literal notranslate"><span class="pre">rollback()</span></code>.</p>
-</div>
-<p><strong>Nested transactions (savepoints):</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>       <span class="c1">// BEGIN</span>
-
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span> <span class="o">=&gt;</span> <span class="mi">100</span><span class="p">]);</span>
-
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>       <span class="c1">// SAVEPOINT trans2</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;order_items&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span><span class="s1">&#39;order_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;product_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>            <span class="c1">// release savepoint</span>
-
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>            <span class="c1">// COMMIT</span>
-</pre></div>
-</div>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 75.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">transaction()</span></code></p></td>
-<td><p>Begins a transaction. Subsequent calls create a savepoint.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">commit()</span></code></p></td>
-<td><p>Commits the transaction, or releases the innermost savepoint.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">roll_back()</span></code></p></td>
-<td><p>Rolls back to the innermost savepoint, or rolls back the entire transaction.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="complete-method-reference">
-<h2>Complete Method Reference<a class="headerlink" href="#complete-method-reference" title="Link to this heading"></a></h2>
+<p><strong>Result method reference</strong></p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 38.0%" />
@@ -1092,250 +744,186 @@ the primary key value.</p>
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>Returns</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">table($name)</span></code></p></td>
-<td><p>Sets the target table and resets builder state</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">result_array()</span></code></p></td>
+<td><p>All rows as array of associative arrays</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select($columns)</span></code></p></td>
-<td><p>Specifies columns to fetch</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">result()</span></code></p></td>
+<td><p>All rows as array of stdClass objects</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_max($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">MAX()</span></code> aggregate</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">result_num()</span></code></p></td>
+<td><p>All rows as array of numeric arrays</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_min($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">MIN()</span></code> aggregate</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">row_array($index)</span></code></p></td>
+<td><p>Single row as associative array (optional 0-based index)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_sum($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">SUM()</span></code> aggregate</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">row($index)</span></code></p></td>
+<td><p>Single row as stdClass object (optional 0-based index)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_count($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">COUNT()</span></code> aggregate</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">row_num()</span></code></p></td>
+<td><p>Single row as numeric array</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">select_avg($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">AVG()</span></code> aggregate</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">first_row()</span></code></p></td>
+<td><p>First row as stdClass object</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">select_distinct($col,</span> <span class="pre">$alias)</span></code></p></td>
-<td><p>Adds <code class="docutils literal notranslate"><span class="pre">DISTINCT()</span></code> select</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">last_row()</span></code></p></td>
+<td><p>Last row as stdClass object</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">join($table,</span> <span class="pre">$cond,</span> <span class="pre">$type)</span></code></p></td>
-<td><p>Generic JOIN</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">custom_result_object($class)</span></code></p></td>
+<td><p>All rows mapped to instances of <code class="docutils literal notranslate"><span class="pre">$class</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">inner_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>INNER JOIN</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">custom_row_object($index,</span> <span class="pre">$class)</span></code></p></td>
+<td><p>Single row at <code class="docutils literal notranslate"><span class="pre">$index</span></code> mapped to an instance of <code class="docutils literal notranslate"><span class="pre">$class</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">left_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>LEFT JOIN</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_column($index)</span></code></p></td>
+<td><p>All values from one column (0-based column index)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">right_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>RIGHT JOIN</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_key_pair()</span></code></p></td>
+<td><p>Associative array — first column as key, second as value</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">full_outer_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>FULL OUTER JOIN</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_grouped()</span></code></p></td>
+<td><p>Results grouped by the first column’s value</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">left_outer_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>LEFT OUTER JOIN</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_rows()</span></code></p></td>
+<td><p>Row count from the last <code class="docutils literal notranslate"><span class="pre">get()</span></code> / <code class="docutils literal notranslate"><span class="pre">get_all()</span></code> call</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">right_outer_join($table,</span> <span class="pre">$cond)</span></code></p></td>
-<td><p>RIGHT OUTER JOIN</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>AND WHERE condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>OR WHERE condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>AND WHERE NOT condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_where($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>OR WHERE NOT condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">where_null($col)</span></code></p></td>
-<td><p>AND col IS NULL</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where_not_null($col)</span></code></p></td>
-<td><p>AND col IS NOT NULL</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p>AND LIKE condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p>OR LIKE condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">not_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p>AND NOT LIKE condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_like($field,</span> <span class="pre">$data)</span></code></p></td>
-<td><p>OR NOT LIKE condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p>AND IN condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">not_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p>AND NOT IN condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p>OR IN condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_in($field,</span> <span class="pre">$array)</span></code></p></td>
-<td><p>OR NOT IN condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">between($field,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
-<td><p>AND BETWEEN condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">not_between($field,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
-<td><p>AND NOT BETWEEN condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">or_between($field,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
-<td><p>OR BETWEEN condition</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">or_not_between($field,</span> <span class="pre">$v1,</span> <span class="pre">$v2)</span></code></p></td>
-<td><p>OR NOT BETWEEN condition</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">grouped(Closure</span> <span class="pre">$fn)</span></code></p></td>
-<td><p>Wraps conditions in parentheses</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">order_by($col,</span> <span class="pre">$dir)</span></code></p></td>
-<td><p>Sorts results</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">group_by($col)</span></code></p></td>
-<td><p>Groups results</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">having($col,</span> <span class="pre">$op,</span> <span class="pre">$val)</span></code></p></td>
-<td><p>Filters grouped results</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit($n)</span></code></p></td>
-<td><p>Limits rows returned</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">offset($n)</span></code></p></td>
-<td><p>Skips N rows</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pagination($perPage,</span> <span class="pre">$page)</span></code></p></td>
-<td><p>Applies LIMIT + OFFSET from page number</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></td>
-<td><p>Returns matching row count</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">insert($fields)</span></code></p></td>
-<td><p>Inserts a single row</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bulk_insert($records)</span></code></p></td>
-<td><p>Inserts multiple rows</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">row_count()</span></code></p></td>
+<td><p>Rows affected by the last <code class="docutils literal notranslate"><span class="pre">exec()</span></code> (INSERT/UPDATE/DELETE)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">last_id()</span></code></p></td>
-<td><p>Returns last inserted ID</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">update($fields)</span></code></p></td>
-<td><p>Updates matching rows</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bulk_update($records,</span> <span class="pre">$pk)</span></code></p></td>
-<td><p>Updates multiple rows</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">increment($col,</span> <span class="pre">$amount)</span></code></p></td>
-<td><p>Atomically increments a column</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">decrement($col,</span> <span class="pre">$amount)</span></code></p></td>
-<td><p>Atomically decrements a column</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delete()</span></code></p></td>
-<td><p>Deletes matching rows</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">raw($query,</span> <span class="pre">$args)</span></code></p></td>
-<td><p>Executes raw SQL</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get()</span></code></p></td>
-<td><p>Returns first matching row</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_all()</span></code></p></td>
-<td><p>Returns all matching rows</p></td>
+<td><p>Auto-increment ID of the last inserted row</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_sql()</span></code></p></td>
-<td><p>Returns last built SQL string</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">row_count()</span></code></p></td>
-<td><p>Returns row count of last query</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">transaction()</span></code></p></td>
-<td><p>Begins a transaction or savepoint</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">commit()</span></code></p></td>
-<td><p>Commits transaction or savepoint</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">roll_back()</span></code></p></td>
-<td><p>Rolls back transaction or savepoint</p></td>
+<td><p>Last SQL string sent to the database</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="best-practices">
-<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
-<p><strong>Use the query builder instead of raw queries:</strong></p>
+<section id="raw-queries">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Raw Queries</a><a class="headerlink" href="#raw-queries" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Safe — parameterized</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="c1">// Simple raw query</span>
+<span class="nv">$stmt</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM users WHERE status = &quot;active&quot;&#39;</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetchAll</span><span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">FETCH_ASSOC</span><span class="p">);</span>
 
-<span class="c1">// Unsafe — SQL injection risk</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users WHERE id = </span><span class="si">$id</span><span class="s2">&quot;</span><span class="p">);</span>
+<span class="c1">// With bound parameters (always preferred for user input)</span>
+<span class="nv">$stmt</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
+    <span class="s1">&#39;SELECT * FROM users WHERE email = ? AND status = ?&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">&#39;jane@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">]</span>
+<span class="p">);</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$stmt</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">FETCH_ASSOC</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><strong>Select only the columns you need:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Efficient</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, name, email&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Fetches unnecessary data</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always pass user input as bound parameters to <code class="docutils literal notranslate"><span class="pre">raw()</span></code>. Never
+interpolate <code class="docutils literal notranslate"><span class="pre">$_GET</span></code> or <code class="docutils literal notranslate"><span class="pre">$_POST</span></code> values directly into a SQL string.</p>
 </div>
-<p><strong>Use pagination for large datasets:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$page</span>  <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nv">$page</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
-<p><strong>Wrap related writes in transactions:</strong></p>
+</section>
+<section id="transactions">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Transactions</a><a class="headerlink" href="#transactions" title="Link to this heading"></a></h2>
+<p>Group multiple write operations into a single atomic unit. Nested
+transactions are supported via savepoints.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">transaction</span><span class="p">();</span>
-<span class="k">try</span> <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$orderData</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;order_items&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bulk_insert</span><span class="p">(</span><span class="nv">$items</span><span class="p">);</span>
+
+<span class="k">try</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$order_data</span><span class="p">);</span>
+    <span class="nv">$order_id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">last_id</span><span class="p">();</span>
+
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$items</span> <span class="k">as</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;order_items&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+            <span class="s1">&#39;order_id&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$order_id</span><span class="p">,</span>
+            <span class="s1">&#39;product_id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;qty&#39;</span>        <span class="o">=&gt;</span> <span class="nv">$item</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">],</span>
+        <span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span>
+                 <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+                 <span class="o">-&gt;</span><span class="na">decrement</span><span class="p">(</span><span class="s1">&#39;stock&#39;</span><span class="p">,</span> <span class="nv">$item</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]);</span>
+    <span class="p">}</span>
+
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
-<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span>
+<span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">roll_back</span><span class="p">();</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Order transaction failed: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Use increment/decrement instead of read-then-write:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Atomic — safe under concurrent requests</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">increment</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">);</span>
-
-<span class="c1">// Race condition risk</span>
-<span class="nv">$post</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">([</span><span class="s1">&#39;views&#39;</span> <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
-</pre></div>
-</div>
-<p><strong>Use grouped() when mixing AND / OR:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Correct — parentheses enforce intended logic</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">grouped</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$q</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$q</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">);</span>
-    <span class="p">})</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-
-<span class="c1">// Ambiguous — AND/OR precedence may not match your intent</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">or_where</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
-</pre></div>
-</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">transaction()</span></code></p></td>
+<td><p>Begin a transaction (or create a savepoint for nested calls)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">commit()</span></code></p></td>
+<td><p>Commit the transaction (or release the savepoint)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">roll_back()</span></code></p></td>
+<td><p>Roll back to the last savepoint, or fully roll back the transaction</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tips-and-best-practices">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Tips and Best Practices</a><a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Practice</p></th>
+<th class="head"><p>Details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Keep SQL in models</strong></p></td>
+<td><p>Controllers should call model methods; never build queries directly in a controller.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Prefer the Query Builder</strong></p></td>
+<td><p>Values are bound as prepared statement parameters automatically —
+no manual escaping needed.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Use bound parameters for raw SQL</strong></p></td>
+<td><p>Always pass user input as <code class="docutils literal notranslate"><span class="pre">$args</span></code> to <code class="docutils literal notranslate"><span class="pre">raw()</span></code>; never interpolate
+<code class="docutils literal notranslate"><span class="pre">$_GET</span></code> / <code class="docutils literal notranslate"><span class="pre">$_POST</span></code> values into a query string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Use transactions for multi-step writes</strong></p></td>
+<td><p>Wrap any operation involving more than one related INSERT/UPDATE/DELETE
+in <code class="docutils literal notranslate"><span class="pre">transaction()</span></code> / <code class="docutils literal notranslate"><span class="pre">commit()</span></code> / <code class="docutils literal notranslate"><span class="pre">roll_back()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Avoid</strong> <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span></code></p></td>
+<td><p>Always name the columns you need to prevent accidentally exposing
+sensitive fields and to reduce unnecessary data transfer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Use</strong> <code class="docutils literal notranslate"><span class="pre">get_key_pair()</span></code> <strong>for dropdowns</strong></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">['id'</span> <span class="pre">=&gt;</span> <span class="pre">'label']</span></code> arrays directly usable in <code class="docutils literal notranslate"><span class="pre">&lt;select&gt;</span></code> elements
+without any extra mapping in the controller.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Secure credentials</strong></p></td>
+<td><p>Load database passwords from environment variables and never commit
+them to version control.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Debug with</strong> <code class="docutils literal notranslate"><span class="pre">get_sql()</span></code></p></td>
+<td><p>Call <code class="docutils literal notranslate"><span class="pre">$this-&gt;db-&gt;get_sql()</span></code> after a query to inspect the raw SQL
+that was sent to the database. Remove all such calls before deploying.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 

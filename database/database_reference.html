@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Database Query Reference" href="query_builder.html" />
+    <link rel="next" title="Database" href="query_builder.html" />
     <link rel="prev" title="Database Reference" href="index.html" /> 
 </head>
 
@@ -80,7 +80,7 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Database Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Database Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query_builder.html">Database Query Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_builder.html">Database</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
@@ -240,6 +240,12 @@ and a <strong>Query Builder</strong> pattern, allowing you to write safe and rea
 <td><p>Optional prefix prepended to every table name by the Query Builder.
 Useful when multiple applications share the same database.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">path</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>Required for SQLite connections. Specifies the full file path to the SQLite database file
+(for example: <code class="docutils literal notranslate"><span class="pre">/var/www/database/app.db</span></code> or <code class="docutils literal notranslate"><span class="pre">C:/xampp/htdocs/app/database.db</span></code>).
+Ignored by other database drivers.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -260,7 +266,7 @@ Useful when multiple applications share the same database.</p></td>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mysqli</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mysql</span></code></p></td>
 <td><p>MySQL / MariaDB</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">3306</span></code></p></td>
 <td><p>Recommended for most applications. Requires the PHP <code class="docutils literal notranslate"><span class="pre">mysqli</span></code> extension.</p></td>
@@ -351,8 +357,8 @@ controller or method that requires it:</p>
 protecting against SQL injection.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Use bound parameters for raw SQL</strong></p></td>
-<td><p>When raw SQL is unavoidable, always pass user input as bound parameters
-or escape it with <code class="docutils literal notranslate"><span class="pre">escape()</span></code>. Never interpolate <code class="docutils literal notranslate"><span class="pre">$_GET</span></code> / <code class="docutils literal notranslate"><span class="pre">$_POST</span></code>
+<td><p>When raw SQL is unavoidable, always pass user input as bound parameters.
+Never interpolate <code class="docutils literal notranslate"><span class="pre">$_GET</span></code> / <code class="docutils literal notranslate"><span class="pre">$_POST</span></code>
 values directly into a SQL string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Store credentials securely</strong></p></td>
@@ -367,10 +373,6 @@ DELETE in a transaction so partial failures are automatically rolled back.</p></
 <td><p>Always name the columns you need. This avoids accidentally exposing
 sensitive fields (e.g. <code class="docutils literal notranslate"><span class="pre">password</span></code>) and reduces network overhead.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Use</strong> <code class="docutils literal notranslate"><span class="pre">last_query()</span></code> <strong>in development</strong></p></td>
-<td><p>Verify that the Query Builder is producing the SQL you expect.
-Remove all <code class="docutils literal notranslate"><span class="pre">last_query()</span></code> calls before deploying to production.</p></td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -381,7 +383,7 @@ Remove all <code class="docutils literal notranslate"><span class="pre">last_que
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Database Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="query_builder.html" class="btn btn-neutral float-right" title="Database Query Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="query_builder.html" class="btn btn-neutral float-right" title="Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
