@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Config Class &mdash; LavaLust Documentation</title>
+  <title>Email Class &mdash; LavaLust Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
@@ -87,7 +87,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html">API Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cache.html">Cache Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Config Class</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Config Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Email Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="encryption.html">Encryption Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upload.html">Upload Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="form_validation.html">Form Validation Class</a></li>
@@ -151,7 +151,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Libraries</a></li>
-      <li class="breadcrumb-item active">Config Class</li>
+      <li class="breadcrumb-item active">Email Class</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -160,79 +160,202 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="config-class">
-<h1>Config Class<a class="headerlink" href="#config-class" title="Link to this heading"></a></h1>
-<p>The Config class provides a unified interface for storing and retrieving
-configuration values across your application. Settings can come from the
-default config file, your own custom config files, or be set dynamically
-at runtime.</p>
+  <section id="email-class">
+<h1>Email Class<a class="headerlink" href="#email-class" title="Link to this heading"></a></h1>
+<p>The Email class composes and sends MIME emails via PHP’s built-in <code class="docutils literal notranslate"><span class="pre">mail()</span></code>
+function. It supports plain text and HTML bodies, multiple To / CC / BCC
+recipients, reply-to addresses, file attachments, priority flags, and a
+<strong>fluent chainable interface</strong> so every setter returns <code class="docutils literal notranslate"><span class="pre">$this</span></code>.</p>
 <nav class="contents local" id="on-this-page">
 <p class="topic-title">On this page</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#config-files" id="id1">Config Files</a></p></li>
-<li><p><a class="reference internal" href="#loading-config-files" id="id2">Loading Config Files</a></p></li>
-<li><p><a class="reference internal" href="#fetching-config-items" id="id3">Fetching Config Items</a></p></li>
-<li><p><a class="reference internal" href="#setting-config-items-at-runtime" id="id4">Setting Config Items at Runtime</a></p></li>
-<li><p><a class="reference internal" href="#quick-reference" id="id5">Quick Reference</a></p></li>
-<li><p><a class="reference internal" href="#tips-and-best-practices" id="id6">Tips and Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#loading" id="id1">Loading</a></p></li>
+<li><p><a class="reference internal" href="#basic-usage" id="id2">Basic Usage</a></p></li>
+<li><p><a class="reference internal" href="#sender" id="id3">Sender</a></p></li>
+<li><p><a class="reference internal" href="#recipients-to-cc-bcc" id="id4">Recipients — To, CC, BCC</a></p></li>
+<li><p><a class="reference internal" href="#reply-to" id="id5">Reply-To</a></p></li>
+<li><p><a class="reference internal" href="#subject" id="id6">Subject</a></p></li>
+<li><p><a class="reference internal" href="#email-content" id="id7">Email Content</a></p></li>
+<li><p><a class="reference internal" href="#priority" id="id8">Priority</a></p></li>
+<li><p><a class="reference internal" href="#charset" id="id9">Charset</a></p></li>
+<li><p><a class="reference internal" href="#attachments" id="id10">Attachments</a></p></li>
+<li><p><a class="reference internal" href="#charset-charset-state-reset" id="id11">Charset, Charset &amp; State Reset</a></p></li>
+<li><p><a class="reference internal" href="#accessors" id="id12">Accessors</a></p></li>
+<li><p><a class="reference internal" href="#sending" id="id13">Sending</a></p></li>
+<li><p><a class="reference internal" href="#method-reference" id="id14">Method Reference</a></p></li>
+<li><p><a class="reference internal" href="#complete-examples" id="id15">Complete Examples</a></p></li>
+<li><p><a class="reference internal" href="#tips-and-best-practices" id="id16">Tips and Best Practices</a></p></li>
 </ul>
 </nav>
-<section id="config-files">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Config Files</a><a class="headerlink" href="#config-files" title="Link to this heading"></a></h2>
-<p>LavaLust’s primary config file is located at <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>.
-All configuration values are stored in a PHP array named <code class="docutils literal notranslate"><span class="pre">$config</span></code>:</p>
+<section id="loading">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Loading</a><a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
+<p>Load the library inside your controller:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// app/config/config.php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;https://yourdomain.com/&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;default_language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;english&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;charset&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>You can add your own keys directly to this file, or create separate config
-files in the same <code class="docutils literal notranslate"><span class="pre">app/config/</span></code> folder to keep related settings grouped
-together. A custom config file follows the same format:</p>
+<p>Once loaded it is available as <code class="docutils literal notranslate"><span class="pre">$this-&gt;email</span></code>.</p>
+</section>
+<section id="basic-usage">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Basic Usage</a><a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<p>Every setter returns <code class="docutils literal notranslate"><span class="pre">$this</span></code>, so calls can be chained:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// app/config/blog_settings.php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;site_name&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;My Blog&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;posts_per_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;allow_comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome to My App&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello, thanks for signing up!&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Or called individually:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello!&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="sender">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Sender</a><a class="headerlink" href="#sender" title="Link to this heading"></a></h2>
+<p>Set the From address and an optional display name.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Address only</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">);</span>
+
+<span class="c1">// Address with display name</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My Application&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$sender_email</span></code></p></td>
+<td><p>Valid email address</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$display_name</span></code></p></td>
+<td><p>Name shown in the From field (e.g. <code class="docutils literal notranslate"><span class="pre">My</span> <span class="pre">App</span></code>)</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Exception</span></code> is thrown if the address fails validation.
+The display name is passed through <code class="docutils literal notranslate"><span class="pre">filter_header()</span></code> to strip newlines
+and high-byte characters, preventing header injection attacks.</p>
+</div>
+</section>
+<section id="recipients-to-cc-bcc">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Recipients — To, CC, BCC</a><a class="headerlink" href="#recipients-to-cc-bcc" title="Link to this heading"></a></h2>
+<p><strong>To</strong></p>
+<p>Add one or more primary recipients. Calling <code class="docutils literal notranslate"><span class="pre">recipient()</span></code> multiple times
+builds a list — duplicates are silently ignored.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;alice@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;bob@example.com&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>CC (Carbon Copy)</strong></p>
+<p>Recipients in the CC list receive the email and can see each other’s addresses.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;manager@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;team@example.com&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>BCC (Blind Carbon Copy)</strong></p>
+<p>Recipients in the BCC list receive the email but are hidden from all other recipients.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">&#39;audit@example.com&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Custom config files must use the same <code class="docutils literal notranslate"><span class="pre">$config</span></code> array name. LavaLust
-merges files intelligently, but <strong>index names must be unique across all
-config files</strong> to avoid collisions. If a collision is likely, use indexed
-loading — see <a class="reference internal" href="#loading-config-files">Loading Config Files</a> below.</p>
+<p><code class="docutils literal notranslate"><span class="pre">send()</span></code> throws an <code class="docutils literal notranslate"><span class="pre">Exception</span></code> if no To recipients have been added.</p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Duplicates</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">recipient($email)</span></code></p></td>
+<td><p>Add a To recipient</p></td>
+<td><p>Silently ignored</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cc($email)</span></code></p></td>
+<td><p>Add a CC recipient</p></td>
+<td><p>Silently ignored</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bcc($email)</span></code></p></td>
+<td><p>Add a BCC recipient</p></td>
+<td><p>Silently ignored</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reply-to">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Reply-To</a><a class="headerlink" href="#reply-to" title="Link to this heading"></a></h2>
+<p>Direct replies to a different address than the sender:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">&#39;support@example.com&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">reply_to()</span></code> is not called, replies go to the sender address automatically.</p>
+</section>
+<section id="subject">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Subject</a><a class="headerlink" href="#subject" title="Link to this heading"></a></h2>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your order has shipped&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Exception</span></code> is thrown if the subject is empty. The value is passed
+through <code class="docutils literal notranslate"><span class="pre">filter_header()</span></code> to strip newlines and prevent header injection.</p>
 </div>
 </section>
-<section id="loading-config-files">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Loading Config Files</a><a class="headerlink" href="#loading-config-files" title="Link to this heading"></a></h2>
-<p><strong>Autoloading (recommended for global settings)</strong></p>
-<p>If a config file is needed throughout the application, register it in
-<code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code> so it is loaded automatically on every request:</p>
+<section id="email-content">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Email Content</a><a class="headerlink" href="#email-content" title="Link to this heading"></a></h2>
+<p>Set the body and its type. The default type is <code class="docutils literal notranslate"><span class="pre">'plain'</span></code>.</p>
+<p><strong>Plain text</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// app/config/autoload.php</span>
-<span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="s1">&#39;payment&#39;</span><span class="p">];</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello, your account is ready.&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><strong>Manual loading (recommended for route-specific settings)</strong></p>
-<p>Load a config file inside a controller when it is only needed for specific
-requests. This avoids loading unnecessary configuration on every page.</p>
+<p><strong>HTML</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;</span>
+<span class="s1">    &lt;h1&gt;Welcome!&lt;/h1&gt;</span>
+<span class="s1">    &lt;p&gt;Your account has been created.&lt;/p&gt;</span>
+<span class="s1">    &lt;p&gt;&lt;a href=&quot;https://example.com/login&quot;&gt;Log in here&lt;/a&gt;&lt;/p&gt;</span>
+<span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>By default, all items from the loaded file are merged into the global config
-array. If two config files share an index name, the later-loaded file will
-overwrite the earlier one.</p>
-<p><strong>Indexed loading (avoids key collisions)</strong></p>
-<p>Pass <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> as the second argument to store the file’s items in their own
-named index instead of merging them into the global array:</p>
+<p><strong>HTML shortcut</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">html()</span></code> is a convenience alias for <code class="docutils literal notranslate"><span class="pre">email_content($content,</span> <span class="pre">'html')</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Items stored under $config[&#39;blog_settings&#39;][...]</span>
-<span class="c1">// instead of being merged into the root config array</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Welcome!&lt;/h1&gt;&lt;p&gt;Thanks for joining.&lt;/p&gt;&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -242,168 +365,426 @@ named index instead of merging them into the global array:</p>
 <col style="width: 60.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Signature</p></th>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">load()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">load($file,</span> <span class="pre">$use_sections</span> <span class="pre">=</span> <span class="pre">FALSE)</span></code></p></td>
-<td><p>Load a config file. Set <code class="docutils literal notranslate"><span class="pre">$use_sections</span></code> to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to store items
-under a named index and prevent key collisions.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$content</span></code></p></td>
+<td><p>—</p></td>
+<td><p>The body of the email. Lines are automatically wrapped at 70 characters
+using MIME-compliant <code class="docutils literal notranslate"><span class="pre">\r\n</span></code> line endings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'plain'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'plain'</span></code> → <code class="docutils literal notranslate"><span class="pre">text/plain</span></code>; <code class="docutils literal notranslate"><span class="pre">'html'</span></code> → <code class="docutils literal notranslate"><span class="pre">text/html</span></code></p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The charset for HTML emails defaults to <code class="docutils literal notranslate"><span class="pre">config_item('charset')</span></code>.
+Override it per-message with <code class="docutils literal notranslate"><span class="pre">charset()</span></code>.</p>
+</div>
 </section>
-<section id="fetching-config-items">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Fetching Config Items</a><a class="headerlink" href="#fetching-config-items" title="Link to this heading"></a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">get()</span></code> to read any config value by its array key.</p>
-<p><strong>Basic retrieval</strong></p>
+<section id="priority">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Priority</a><a class="headerlink" href="#priority" title="Link to this heading"></a></h2>
+<p>Set the email priority flag. This controls the <code class="docutils literal notranslate"><span class="pre">X-Priority</span></code>,
+<code class="docutils literal notranslate"><span class="pre">X-MS-Priority</span></code>, and <code class="docutils literal notranslate"><span class="pre">Importance</span></code> headers.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$charset</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;charset&#39;</span><span class="p">);</span>
-<span class="nv">$base_url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the key does not exist.</p>
-<p><strong>Retrieving from an indexed section</strong></p>
-<p>If the config file was loaded with <code class="docutils literal notranslate"><span class="pre">$use_sections</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>, pass the section
-name as the second argument:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
-
-<span class="c1">// Read a value from the &#39;blog_settings&#39; section</span>
-<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;site_name&#39;</span><span class="p">,</span> <span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
-
-<span class="c1">// Or retrieve the entire section as an array and access keys manually</span>
-<span class="nv">$blog</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
-<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$blog</span><span class="p">[</span><span class="s1">&#39;site_name&#39;</span><span class="p">];</span>
-</pre></div>
-</div>
-<p><strong>Using the</strong> <code class="docutils literal notranslate"><span class="pre">config_item()</span></code> <strong>helper</strong></p>
-<p>For convenience, LavaLust also provides a global helper function that reads
-from the root config array without needing <code class="docutils literal notranslate"><span class="pre">$this-&gt;config</span></code>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Equivalent to $this-&gt;config-&gt;get(&#39;base_url&#39;)</span>
-<span class="nv">$base_url</span> <span class="o">=</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This is especially useful inside helpers, models, and middleware where
-<code class="docutils literal notranslate"><span class="pre">$this-&gt;config</span></code> is not directly available.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 25.0%" />
-<col style="width: 40.0%" />
-<col style="width: 35.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Signature</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">get($item,</span> <span class="pre">$index</span> <span class="pre">=</span> <span class="pre">'')</span></code></p></td>
-<td><p>Retrieve a config value by key, optionally from a named section</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config_item()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">config_item($item)</span></code></p></td>
-<td><p>Global helper shortcut for root-level config values</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="setting-config-items-at-runtime">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Setting Config Items at Runtime</a><a class="headerlink" href="#setting-config-items-at-runtime" title="Link to this heading"></a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">set()</span></code> to add a new config value or override an existing one
-dynamically during the current request. Changes made this way are not written
-back to the config file on disk and only apply for the lifetime of the request.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Override an existing value</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;default_language&#39;</span><span class="p">,</span> <span class="s1">&#39;filipino&#39;</span><span class="p">);</span>
-
-<span class="c1">// Add a new value at runtime</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;maintenance_mode&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
-
-<span class="c1">// Read it back immediately</span>
-<span class="nv">$lang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;default_language&#39;</span><span class="p">);</span> <span class="c1">// &#39;filipino&#39;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="c1">// High</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>  <span class="c1">// Normal (default)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>  <span class="c1">// Low</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
 <colgroup>
+<col style="width: 15.0%" />
 <col style="width: 20.0%" />
-<col style="width: 35.0%" />
-<col style="width: 45.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Signature</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">set($item,</span> <span class="pre">$value)</span></code></p></td>
-<td><p>Set or override a config value for the current request only</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="quick-reference">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Quick Reference</a><a class="headerlink" href="#quick-reference" title="Link to this heading"></a></h2>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 35.0%" />
 <col style="width: 65.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Task</p></th>
-<th class="head"><p>Code</p></th>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Label</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Load a config file (merged)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;load('filename')</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>High</p></td>
+<td><p>Most email clients show a red exclamation mark</p></td>
 </tr>
-<tr class="row-odd"><td><p>Load a config file (indexed)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;load('filename',</span> <span class="pre">TRUE)</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>High</p></td>
+<td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Autoload a config file</p></td>
-<td><p>Add <code class="docutils literal notranslate"><span class="pre">'filename'</span></code> to <code class="docutils literal notranslate"><span class="pre">$autoload['config']</span></code> in <code class="docutils literal notranslate"><span class="pre">autoload.php</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+<td><p>Normal</p></td>
+<td><p>Default — no special indicator shown</p></td>
 </tr>
-<tr class="row-odd"><td><p>Read a root-level value</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;get('key')</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
+<td><p>Low</p></td>
+<td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p>Read from an indexed section</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;get('key',</span> <span class="pre">'section_name')</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>Read using the global helper</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">config_item('key')</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>Set or override a value</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">$this-&gt;config-&gt;set('key',</span> <span class="pre">'value')</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p></td>
+<td><p>Low</p></td>
+<td><p>Most email clients show a blue down-arrow</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="tips-and-best-practices">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Tips and Best Practices</a><a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
-<ul>
-<li><p>Group related settings into their own config file (e.g. <code class="docutils literal notranslate"><span class="pre">payment.php</span></code>,
-<code class="docutils literal notranslate"><span class="pre">social.php</span></code>) rather than adding everything to <code class="docutils literal notranslate"><span class="pre">config.php</span></code>. This keeps
-files short and easy to scan.</p></li>
-<li><p>Use indexed loading (<code class="docutils literal notranslate"><span class="pre">TRUE</span></code> second argument) whenever a custom config file
-could share key names with another file or with <code class="docutils literal notranslate"><span class="pre">config.php</span></code>.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">config_item()</span></code> inside helpers and models — it is shorter and works
-everywhere <code class="docutils literal notranslate"><span class="pre">$this-&gt;config</span></code> does not.</p></li>
-<li><p>Never store secrets (API keys, passwords) directly in config files that are
-committed to version control. Load them from environment variables instead:</p>
+<section id="charset">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Charset</a><a class="headerlink" href="#charset" title="Link to this heading"></a></h2>
+<p>Override the character set used for HTML emails on a per-message basis:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;db_password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASSWORD&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">charset</span><span class="p">(</span><span class="s1">&#39;iso-8859-1&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</li>
+<p>If not called, the charset defaults to <code class="docutils literal notranslate"><span class="pre">config_item('charset')</span></code> (typically <code class="docutils literal notranslate"><span class="pre">utf-8</span></code>).</p>
+</section>
+<section id="attachments">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Attachments</a><a class="headerlink" href="#attachments" title="Link to this heading"></a></h2>
+<p>Attach one or more files by providing their absolute server path.
+Duplicates are silently ignored.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Single attachment</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoice.pdf&#39;</span><span class="p">);</span>
+
+<span class="c1">// Multiple attachments (chained)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoice.pdf&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/receipt.pdf&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Attachments are base64-encoded and sent as <code class="docutils literal notranslate"><span class="pre">multipart/related</span></code> MIME parts.
+The MIME type and filename are detected automatically.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Exception</span></code> is thrown if the path is empty or the file does not exist
+on disk. This is a change from the original behaviour where missing files
+were silently skipped — explicit errors prevent silent data loss.</p>
+</div>
+</section>
+<section id="charset-charset-state-reset">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Charset, Charset &amp; State Reset</a><a class="headerlink" href="#charset-charset-state-reset" title="Link to this heading"></a></h2>
+<p><strong>Reset for re-use</strong></p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">reset()</span></code> to clear all state and reuse the same instance for a new
+email without reloading the library:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Send first email</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;alice@example.com&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Hello Alice&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hi Alice!&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+
+<span class="c1">// Reset and send a second email</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reset</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;bob@example.com&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Hello Bob&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hi Bob!&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="accessors">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Accessors</a><a class="headerlink" href="#accessors" title="Link to this heading"></a></h2>
+<p>These read-only methods are useful for logging, testing, or conditional logic:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_sender</span><span class="p">();</span>       <span class="c1">// &#39;no-reply@example.com&#39;</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_recipients</span><span class="p">());</span> <span class="c1">// [&#39;alice@example.com&#39;, ...]</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_cc</span><span class="p">());</span>         <span class="c1">// [&#39;manager@example.com&#39;]</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_bcc</span><span class="p">());</span>        <span class="c1">// [&#39;audit@example.com&#39;]</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_subject</span><span class="p">();</span>        <span class="c1">// &#39;Your order has shipped&#39;</span>
+<span class="nb">var_dump</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">is_html</span><span class="p">());</span>       <span class="c1">// bool(true)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Returns</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_sender()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Current sender address</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_recipients()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+<td><p>All To recipient addresses</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_cc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+<td><p>All CC recipient addresses</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_bcc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+<td><p>All BCC recipient addresses</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_subject()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>Current subject line</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_html()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TRUE</span></code> when the body type is HTML</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sending">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Sending</a><a class="headerlink" href="#sending" title="Link to this heading"></a></h2>
+<p>Call <code class="docutils literal notranslate"><span class="pre">send()</span></code> after all required fields have been set.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$sent</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$sent</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Mail accepted by the MTA</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;mail() returned false&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">send()</span></code> <strong>throws an Exception</strong> (not just returns false) when:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sender()</span></code> has not been called</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recipient()</span></code> has not been called</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subject()</span></code> has not been called</p></li>
+</ul>
+<p>This makes missing-field errors loud and easy to catch during development.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">try</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Email error: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="c1">// handle gracefully</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="method-reference">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Method Reference</a><a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 45.0%" />
+<col style="width: 27.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Signature</p></th>
+<th class="head"><p>Returns</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sender()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sender($email,</span> <span class="pre">$display_name</span> <span class="pre">=</span> <span class="pre">'')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">recipient()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">recipient($email)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cc($email)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bcc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bcc($email)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reply_to()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reply_to($email)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">subject()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">subject($subject)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">email_content()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">email_content($content,</span> <span class="pre">$type</span> <span class="pre">=</span> <span class="pre">'plain')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">html()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">html($html)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">priority()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">priority($level</span> <span class="pre">=</span> <span class="pre">3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">charset()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">charset($charset)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">attachment()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">attachment($filepath)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">send()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reset()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reset()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$this</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_sender()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_sender()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_recipients()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_recipients()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_cc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_cc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_bcc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_bcc()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">get_subject()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">get_subject()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_html()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">is_html()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_email()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">valid_email($email)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code> or throws <code class="docutils literal notranslate"><span class="pre">Exception</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filter_header()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">filter_header($string)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="complete-examples">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Complete Examples</a><a class="headerlink" href="#complete-examples" title="Link to this heading"></a></h2>
+<p><strong>Plain text password reset</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">&#39;support@example.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Password Reset Request&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span>
+        <span class="s2">&quot;Hello </span><span class="si">{</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span>
+        <span class="o">.</span> <span class="s2">&quot;Click the link below to reset your password:</span><span class="se">\r\n</span><span class="s2">&quot;</span>
+        <span class="o">.</span> <span class="s2">&quot;https://example.com/reset/</span><span class="si">{</span><span class="nv">$token</span><span class="si">}</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span>
+        <span class="o">.</span> <span class="s2">&quot;If you did not request this, please ignore this email.&quot;</span>
+    <span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>HTML invoice email with attachment and high priority</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="k">try</span>
+<span class="p">{</span>
+    <span class="nv">$sent</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;billing@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Billing Team&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+        <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;accounts@example.com&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Invoice #&#39;</span> <span class="o">.</span> <span class="nv">$invoice_id</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s2">&quot;</span>
+<span class="s2">            &lt;h2&gt;Invoice #</span><span class="si">{</span><span class="nv">$invoice_id</span><span class="si">}</span><span class="s2">&lt;/h2&gt;</span>
+<span class="s2">            &lt;p&gt;Dear </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&lt;/p&gt;</span>
+<span class="s2">            &lt;p&gt;Please find your invoice attached.&lt;/p&gt;</span>
+<span class="s2">            &lt;p&gt;Thank you for your business.&lt;/p&gt;</span>
+<span class="s2">        &quot;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoices/invoice_&#39;</span> <span class="o">.</span> <span class="nv">$invoice_id</span> <span class="o">.</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$sent</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s2">&quot;Invoice #</span><span class="si">{</span><span class="nv">$invoice_id</span><span class="si">}</span><span class="s2"> email failed for </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Email exception: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Looped newsletter with reset between sends</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="nv">$subscribers</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">subscriber_model</span><span class="o">-&gt;</span><span class="na">get_active</span><span class="p">();</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$subscribers</span> <span class="k">as</span> <span class="nv">$subscriber</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+        <span class="o">-&gt;</span><span class="na">reset</span><span class="p">()</span>
+        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;newsletter@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Monthly Update&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$subscriber</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;April 2026 Newsletter&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;April Update&lt;/h1&gt;&lt;p&gt;Here is what is new this month...&lt;/p&gt;&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Sending with CC, BCC, and low priority</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;hr@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;HR Team&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;employee@example.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;manager@example.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">&#39;hr-archive@example.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your Annual Review&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Please find your annual review notes below...&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/reviews/review_2026.pdf&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="tips-and-best-practices">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Tips and Best Practices</a><a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Always wrap <code class="docutils literal notranslate"><span class="pre">send()</span></code> in a <code class="docutils literal notranslate"><span class="pre">try/catch</span></code> block — it now throws <code class="docutils literal notranslate"><span class="pre">Exception</span></code>
+for missing required fields, and <code class="docutils literal notranslate"><span class="pre">mail()</span></code> can return <code class="docutils literal notranslate"><span class="pre">false</span></code> on
+misconfigured servers even when no exception is thrown.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">reset()</span></code> when sending emails in a loop rather than reloading the library
+— it is faster and keeps the same instance.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">bcc()</span></code> when sending the same email to many recipients so addresses
+are not exposed to each other.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">reply_to()</span></code> whenever the sender is a no-reply address — this gives
+recipients a real mailbox to reply to.</p></li>
+<li><p>Always pass <strong>absolute paths</strong> to <code class="docutils literal notranslate"><span class="pre">attachment()</span></code> — relative paths may
+resolve incorrectly depending on the server’s working directory.</p></li>
+<li><p>For high-volume or transactional email (order confirmations, password resets),
+consider routing through an SMTP relay or a third-party service (SendGrid,
+Mailgun, SES). PHP’s <code class="docutils literal notranslate"><span class="pre">mail()</span></code> does not support SMTP authentication,
+queuing, or delivery tracking.</p></li>
+<li><p>Test emails in development using tools like <a class="reference external" href="https://mailpit.axllent.org">Mailpit</a>
+or <a class="reference external" href="https://mailtrap.io">Mailtrap</a> to catch formatting issues before
+sending to real addresses.</p></li>
 </ul>
 </section>
 </section>

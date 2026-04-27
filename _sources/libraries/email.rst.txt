@@ -1,234 +1,600 @@
-Config Class
-============
+Email Class
+===========
 
-The Config class provides a unified interface for storing and retrieving
-configuration values across your application. Settings can come from the
-default config file, your own custom config files, or be set dynamically
-at runtime.
+The Email class composes and sends MIME emails via PHP's built-in ``mail()``
+function. It supports plain text and HTML bodies, multiple To / CC / BCC
+recipients, reply-to addresses, file attachments, priority flags, and a
+**fluent chainable interface** so every setter returns ``$this``.
 
 .. contents:: On this page
    :local:
    :depth: 1
 
 
-Config Files
--------------
+Loading
+--------
 
-LavaLust's primary config file is located at ``app/config/config.php``.
-All configuration values are stored in a PHP array named ``$config``:
-
-.. code-block:: php
-
-    <?php
-    // app/config/config.php
-    $config['base_url']        = 'https://yourdomain.com/';
-    $config['default_language'] = 'english';
-    $config['charset']         = 'UTF-8';
-
-You can add your own keys directly to this file, or create separate config
-files in the same ``app/config/`` folder to keep related settings grouped
-together. A custom config file follows the same format:
+Load the library inside your controller:
 
 .. code-block:: php
 
     <?php
-    // app/config/blog_settings.php
-    $config['site_name']    = 'My Blog';
-    $config['posts_per_page'] = 10;
-    $config['allow_comments'] = TRUE;
+    $this->load->library('email');
+
+Once loaded it is available as ``$this->email``.
+
+
+Basic Usage
+------------
+
+Every setter returns ``$this``, so calls can be chained:
+
+.. code-block:: php
+
+    <?php
+    $this->email
+        ->sender('no-reply@example.com', 'My App')
+        ->recipient('user@example.com')
+        ->subject('Welcome to My App')
+        ->email_content('Hello, thanks for signing up!')
+        ->send();
+
+Or called individually:
+
+.. code-block:: php
+
+    <?php
+    $this->email->sender('no-reply@example.com', 'My App');
+    $this->email->recipient('user@example.com');
+    $this->email->subject('Welcome');
+    $this->email->email_content('Hello!');
+    $this->email->send();
+
+
+Sender
+-------
+
+Set the From address and an optional display name.
+
+.. code-block:: php
+
+    <?php
+    // Address only
+    $this->email->sender('no-reply@example.com');
+
+    // Address with display name
+    $this->email->sender('no-reply@example.com', 'My Application');
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - Parameter
+     - Description
+     - Required
+   * - ``$sender_email``
+     - Valid email address
+     - Yes
+   * - ``$display_name``
+     - Name shown in the From field (e.g. ``My App``)
+     - No
 
 .. note::
 
-   Custom config files must use the same ``$config`` array name. LavaLust
-   merges files intelligently, but **index names must be unique across all
-   config files** to avoid collisions. If a collision is likely, use indexed
-   loading — see `Loading Config Files`_ below.
+   An ``Exception`` is thrown if the address fails validation.
+   The display name is passed through ``filter_header()`` to strip newlines
+   and high-byte characters, preventing header injection attacks.
 
 
-Loading Config Files
----------------------
+Recipients — To, CC, BCC
+--------------------------
 
-**Autoloading (recommended for global settings)**
+**To**
 
-If a config file is needed throughout the application, register it in
-``app/config/autoload.php`` so it is loaded automatically on every request:
-
-.. code-block:: php
-
-    <?php
-    // app/config/autoload.php
-    $autoload['config'] = ['blog_settings', 'payment'];
-
-**Manual loading (recommended for route-specific settings)**
-
-Load a config file inside a controller when it is only needed for specific
-requests. This avoids loading unnecessary configuration on every page.
+Add one or more primary recipients. Calling ``recipient()`` multiple times
+builds a list — duplicates are silently ignored.
 
 .. code-block:: php
 
     <?php
-    $this->config->load('blog_settings');
+    $this->email->recipient('alice@example.com');
+    $this->email->recipient('bob@example.com');
 
-By default, all items from the loaded file are merged into the global config
-array. If two config files share an index name, the later-loaded file will
-overwrite the earlier one.
+**CC (Carbon Copy)**
 
-**Indexed loading (avoids key collisions)**
-
-Pass ``TRUE`` as the second argument to store the file's items in their own
-named index instead of merging them into the global array:
+Recipients in the CC list receive the email and can see each other's addresses.
 
 .. code-block:: php
 
     <?php
-    // Items stored under $config['blog_settings'][...]
-    // instead of being merged into the root config array
-    $this->config->load('blog_settings', TRUE);
+    $this->email->cc('manager@example.com');
+    $this->email->cc('team@example.com');
+
+**BCC (Blind Carbon Copy)**
+
+Recipients in the BCC list receive the email but are hidden from all other recipients.
+
+.. code-block:: php
+
+    <?php
+    $this->email->bcc('audit@example.com');
+
+.. note::
+
+   ``send()`` throws an ``Exception`` if no To recipients have been added.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - Method
+     - Description
+     - Duplicates
+   * - ``recipient($email)``
+     - Add a To recipient
+     - Silently ignored
+   * - ``cc($email)``
+     - Add a CC recipient
+     - Silently ignored
+   * - ``bcc($email)``
+     - Add a BCC recipient
+     - Silently ignored
+
+
+Reply-To
+---------
+
+Direct replies to a different address than the sender:
+
+.. code-block:: php
+
+    <?php
+    $this->email->reply_to('support@example.com');
+
+If ``reply_to()`` is not called, replies go to the sender address automatically.
+
+
+Subject
+--------
+
+.. code-block:: php
+
+    <?php
+    $this->email->subject('Your order has shipped');
+
+.. note::
+
+   An ``Exception`` is thrown if the subject is empty. The value is passed
+   through ``filter_header()`` to strip newlines and prevent header injection.
+
+
+Email Content
+--------------
+
+Set the body and its type. The default type is ``'plain'``.
+
+**Plain text**
+
+.. code-block:: php
+
+    <?php
+    $this->email->email_content('Hello, your account is ready.');
+
+**HTML**
+
+.. code-block:: php
+
+    <?php
+    $this->email->email_content('
+        <h1>Welcome!</h1>
+        <p>Your account has been created.</p>
+        <p><a href="https://example.com/login">Log in here</a></p>
+    ', 'html');
+
+**HTML shortcut**
+
+``html()`` is a convenience alias for ``email_content($content, 'html')``:
+
+.. code-block:: php
+
+    <?php
+    $this->email->html('<h1>Welcome!</h1><p>Thanks for joining.</p>');
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 60
 
-   * - Method
-     - Signature
+   * - Parameter
+     - Default
      - Description
-   * - ``load()``
-     - ``load($file, $use_sections = FALSE)``
-     - Load a config file. Set ``$use_sections`` to ``TRUE`` to store items
-       under a named index and prevent key collisions.
+   * - ``$content``
+     - —
+     - The body of the email. Lines are automatically wrapped at 70 characters
+       using MIME-compliant ``\r\n`` line endings.
+   * - ``$type``
+     - ``'plain'``
+     - ``'plain'`` → ``text/plain``; ``'html'`` → ``text/html``
+
+.. note::
+
+   The charset for HTML emails defaults to ``config_item('charset')``.
+   Override it per-message with ``charset()``.
 
 
-Fetching Config Items
-----------------------
+Priority
+---------
 
-Use ``get()`` to read any config value by its array key.
-
-**Basic retrieval**
-
-.. code-block:: php
-
-    <?php
-    $charset  = $this->config->get('charset');
-    $base_url = $this->config->get('base_url');
-
-Returns ``NULL`` if the key does not exist.
-
-**Retrieving from an indexed section**
-
-If the config file was loaded with ``$use_sections = TRUE``, pass the section
-name as the second argument:
+Set the email priority flag. This controls the ``X-Priority``,
+``X-MS-Priority``, and ``Importance`` headers.
 
 .. code-block:: php
 
     <?php
-    $this->config->load('blog_settings', TRUE);
-
-    // Read a value from the 'blog_settings' section
-    $site_name = $this->config->get('site_name', 'blog_settings');
-
-    // Or retrieve the entire section as an array and access keys manually
-    $blog = $this->config->get('blog_settings');
-    $site_name = $blog['site_name'];
-
-**Using the** ``config_item()`` **helper**
-
-For convenience, LavaLust also provides a global helper function that reads
-from the root config array without needing ``$this->config``:
-
-.. code-block:: php
-
-    <?php
-    // Equivalent to $this->config->get('base_url')
-    $base_url = config_item('base_url');
-
-This is especially useful inside helpers, models, and middleware where
-``$this->config`` is not directly available.
+    $this->email->priority(1);  // High
+    $this->email->priority(3);  // Normal (default)
+    $this->email->priority(5);  // Low
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 40 35
+   :widths: 15 20 65
 
-   * - Method
-     - Signature
-     - Description
-   * - ``get()``
-     - ``get($item, $index = '')``
-     - Retrieve a config value by key, optionally from a named section
-   * - ``config_item()``
-     - ``config_item($item)``
-     - Global helper shortcut for root-level config values
+   * - Value
+     - Label
+     - Notes
+   * - ``1``
+     - High
+     - Most email clients show a red exclamation mark
+   * - ``2``
+     - High
+     - —
+   * - ``3``
+     - Normal
+     - Default — no special indicator shown
+   * - ``4``
+     - Low
+     - —
+   * - ``5``
+     - Low
+     - Most email clients show a blue down-arrow
 
 
-Setting Config Items at Runtime
----------------------------------
+Charset
+--------
 
-Use ``set()`` to add a new config value or override an existing one
-dynamically during the current request. Changes made this way are not written
-back to the config file on disk and only apply for the lifetime of the request.
+Override the character set used for HTML emails on a per-message basis:
 
 .. code-block:: php
 
     <?php
-    // Override an existing value
-    $this->config->set('default_language', 'filipino');
+    $this->email->charset('iso-8859-1');
 
-    // Add a new value at runtime
-    $this->config->set('maintenance_mode', TRUE);
+If not called, the charset defaults to ``config_item('charset')`` (typically ``utf-8``).
 
-    // Read it back immediately
-    $lang = $this->config->get('default_language'); // 'filipino'
+
+Attachments
+------------
+
+Attach one or more files by providing their absolute server path.
+Duplicates are silently ignored.
+
+.. code-block:: php
+
+    <?php
+    // Single attachment
+    $this->email->attachment(APPPATH . 'uploads/invoice.pdf');
+
+    // Multiple attachments (chained)
+    $this->email
+        ->attachment(APPPATH . 'uploads/invoice.pdf')
+        ->attachment(APPPATH . 'uploads/receipt.pdf');
+
+Attachments are base64-encoded and sent as ``multipart/related`` MIME parts.
+The MIME type and filename are detected automatically.
+
+.. note::
+
+   An ``Exception`` is thrown if the path is empty or the file does not exist
+   on disk. This is a change from the original behaviour where missing files
+   were silently skipped — explicit errors prevent silent data loss.
+
+
+Charset, Charset & State Reset
+--------------------------------
+
+**Reset for re-use**
+
+Call ``reset()`` to clear all state and reuse the same instance for a new
+email without reloading the library:
+
+.. code-block:: php
+
+    <?php
+    // Send first email
+    $this->email->sender('no-reply@example.com')
+                ->recipient('alice@example.com')
+                ->subject('Hello Alice')
+                ->email_content('Hi Alice!')
+                ->send();
+
+    // Reset and send a second email
+    $this->email->reset()
+                ->sender('no-reply@example.com')
+                ->recipient('bob@example.com')
+                ->subject('Hello Bob')
+                ->email_content('Hi Bob!')
+                ->send();
+
+
+Accessors
+----------
+
+These read-only methods are useful for logging, testing, or conditional logic:
+
+.. code-block:: php
+
+    <?php
+    echo $this->email->get_sender();       // 'no-reply@example.com'
+    print_r($this->email->get_recipients()); // ['alice@example.com', ...]
+    print_r($this->email->get_cc());         // ['manager@example.com']
+    print_r($this->email->get_bcc());        // ['audit@example.com']
+    echo $this->email->get_subject();        // 'Your order has shipped'
+    var_dump($this->email->is_html());       // bool(true)
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 35 45
+   :widths: 30 35 35
+
+   * - Method
+     - Returns
+     - Description
+   * - ``get_sender()``
+     - ``string``
+     - Current sender address
+   * - ``get_recipients()``
+     - ``array``
+     - All To recipient addresses
+   * - ``get_cc()``
+     - ``array``
+     - All CC recipient addresses
+   * - ``get_bcc()``
+     - ``array``
+     - All BCC recipient addresses
+   * - ``get_subject()``
+     - ``string``
+     - Current subject line
+   * - ``is_html()``
+     - ``bool``
+     - ``TRUE`` when the body type is HTML
+
+
+Sending
+--------
+
+Call ``send()`` after all required fields have been set.
+
+.. code-block:: php
+
+    <?php
+    $sent = $this->email->send();
+
+    if ($sent)
+    {
+        // Mail accepted by the MTA
+    }
+    else
+    {
+        log_message('error', 'mail() returned false');
+    }
+
+``send()`` **throws an Exception** (not just returns false) when:
+
+- ``sender()`` has not been called
+- ``recipient()`` has not been called
+- ``subject()`` has not been called
+
+This makes missing-field errors loud and easy to catch during development.
+
+.. code-block:: php
+
+    <?php
+    try
+    {
+        $this->email->send();
+    }
+    catch (Exception $e)
+    {
+        log_message('error', 'Email error: ' . $e->getMessage());
+        // handle gracefully
+    }
+
+
+Method Reference
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 45 27
 
    * - Method
      - Signature
-     - Description
-   * - ``set()``
-     - ``set($item, $value)``
-     - Set or override a config value for the current request only
+     - Returns
+   * - ``sender()``
+     - ``sender($email, $display_name = '')``
+     - ``$this``
+   * - ``recipient()``
+     - ``recipient($email)``
+     - ``$this``
+   * - ``cc()``
+     - ``cc($email)``
+     - ``$this``
+   * - ``bcc()``
+     - ``bcc($email)``
+     - ``$this``
+   * - ``reply_to()``
+     - ``reply_to($email)``
+     - ``$this``
+   * - ``subject()``
+     - ``subject($subject)``
+     - ``$this``
+   * - ``email_content()``
+     - ``email_content($content, $type = 'plain')``
+     - ``$this``
+   * - ``html()``
+     - ``html($html)``
+     - ``$this``
+   * - ``priority()``
+     - ``priority($level = 3)``
+     - ``$this``
+   * - ``charset()``
+     - ``charset($charset)``
+     - ``$this``
+   * - ``attachment()``
+     - ``attachment($filepath)``
+     - ``$this``
+   * - ``send()``
+     - ``send()``
+     - ``bool``
+   * - ``reset()``
+     - ``reset()``
+     - ``$this``
+   * - ``get_sender()``
+     - ``get_sender()``
+     - ``string``
+   * - ``get_recipients()``
+     - ``get_recipients()``
+     - ``array``
+   * - ``get_cc()``
+     - ``get_cc()``
+     - ``array``
+   * - ``get_bcc()``
+     - ``get_bcc()``
+     - ``array``
+   * - ``get_subject()``
+     - ``get_subject()``
+     - ``string``
+   * - ``is_html()``
+     - ``is_html()``
+     - ``bool``
+   * - ``valid_email()``
+     - ``valid_email($email)``
+     - ``bool`` or throws ``Exception``
+   * - ``filter_header()``
+     - ``filter_header($string)``
+     - ``string``
 
 
-Quick Reference
-----------------
+Complete Examples
+------------------
 
-.. list-table::
-   :header-rows: 1
-   :widths: 35 65
+**Plain text password reset**
 
-   * - Task
-     - Code
-   * - Load a config file (merged)
-     - ``$this->config->load('filename')``
-   * - Load a config file (indexed)
-     - ``$this->config->load('filename', TRUE)``
-   * - Autoload a config file
-     - Add ``'filename'`` to ``$autoload['config']`` in ``autoload.php``
-   * - Read a root-level value
-     - ``$this->config->get('key')``
-   * - Read from an indexed section
-     - ``$this->config->get('key', 'section_name')``
-   * - Read using the global helper
-     - ``config_item('key')``
-   * - Set or override a value
-     - ``$this->config->set('key', 'value')``
+.. code-block:: php
+
+    <?php
+    $this->load->library('email');
+
+    $this->email
+        ->sender('no-reply@example.com', 'My App')
+        ->recipient($user['email'])
+        ->reply_to('support@example.com')
+        ->subject('Password Reset Request')
+        ->email_content(
+            "Hello {$user['name']},\r\n\r\n"
+            . "Click the link below to reset your password:\r\n"
+            . "https://example.com/reset/{$token}\r\n\r\n"
+            . "If you did not request this, please ignore this email."
+        )
+        ->send();
+
+**HTML invoice email with attachment and high priority**
+
+.. code-block:: php
+
+    <?php
+    $this->load->library('email');
+
+    try
+    {
+        $sent = $this->email
+            ->sender('billing@example.com', 'Billing Team')
+            ->recipient($customer['email'])
+            ->cc('accounts@example.com')
+            ->subject('Invoice #' . $invoice_id)
+            ->priority(1)
+            ->html("
+                <h2>Invoice #{$invoice_id}</h2>
+                <p>Dear {$customer['name']},</p>
+                <p>Please find your invoice attached.</p>
+                <p>Thank you for your business.</p>
+            ")
+            ->attachment(APPPATH . 'uploads/invoices/invoice_' . $invoice_id . '.pdf')
+            ->send();
+
+        if ( ! $sent)
+        {
+            log_message('error', "Invoice #{$invoice_id} email failed for {$customer['email']}");
+        }
+    }
+    catch (Exception $e)
+    {
+        log_message('error', 'Email exception: ' . $e->getMessage());
+    }
+
+**Looped newsletter with reset between sends**
+
+.. code-block:: php
+
+    <?php
+    $this->load->library('email');
+
+    $subscribers = $this->subscriber_model->get_active();
+
+    foreach ($subscribers as $subscriber)
+    {
+        $this->email
+            ->reset()
+            ->sender('newsletter@example.com', 'Monthly Update')
+            ->recipient($subscriber['email'])
+            ->subject('April 2026 Newsletter')
+            ->html('<h1>April Update</h1><p>Here is what is new this month...</p>')
+            ->send();
+    }
+
+**Sending with CC, BCC, and low priority**
+
+.. code-block:: php
+
+    <?php
+    $this->email
+        ->sender('hr@example.com', 'HR Team')
+        ->recipient('employee@example.com')
+        ->cc('manager@example.com')
+        ->bcc('hr-archive@example.com')
+        ->subject('Your Annual Review')
+        ->priority(5)
+        ->email_content('Please find your annual review notes below...')
+        ->attachment(APPPATH . 'uploads/reviews/review_2026.pdf')
+        ->send();
 
 
 Tips and Best Practices
 ------------------------
 
-- Group related settings into their own config file (e.g. ``payment.php``,
-  ``social.php``) rather than adding everything to ``config.php``. This keeps
-  files short and easy to scan.
-- Use indexed loading (``TRUE`` second argument) whenever a custom config file
-  could share key names with another file or with ``config.php``.
-- Use ``config_item()`` inside helpers and models — it is shorter and works
-  everywhere ``$this->config`` does not.
-- Never store secrets (API keys, passwords) directly in config files that are
-  committed to version control. Load them from environment variables instead:
-
-  .. code-block:: php
-
-      <?php
-      $config['db_password'] = getenv('DB_PASSWORD');
+- Always wrap ``send()`` in a ``try/catch`` block — it now throws ``Exception``
+  for missing required fields, and ``mail()`` can return ``false`` on
+  misconfigured servers even when no exception is thrown.
+- Use ``reset()`` when sending emails in a loop rather than reloading the library
+  — it is faster and keeps the same instance.
+- Use ``bcc()`` when sending the same email to many recipients so addresses
+  are not exposed to each other.
+- Use ``reply_to()`` whenever the sender is a no-reply address — this gives
+  recipients a real mailbox to reply to.
+- Always pass **absolute paths** to ``attachment()`` — relative paths may
+  resolve incorrectly depending on the server's working directory.
+- For high-volume or transactional email (order confirmations, password resets),
+  consider routing through an SMTP relay or a third-party service (SendGrid,
+  Mailgun, SES). PHP's ``mail()`` does not support SMTP authentication,
+  queuing, or delivery tracking.
+- Test emails in development using tools like `Mailpit <https://mailpit.axllent.org>`_
+  or `Mailtrap <https://mailtrap.io>`_ to catch formatting issues before
+  sending to real addresses.
