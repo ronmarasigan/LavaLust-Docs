@@ -24,13 +24,7 @@ Project Structure
     │   └── UsersController.php           ← CRUD endpoints
     └── models/
         └── User_model.php                ← Database operations
-    database/
-    └── migration.sql                     ← Table schemas
-    
-    system/
-    └── libraries/
-        └── Api.php                       ← API library (included with LavaLust)
-
+        
 
 Setup
 ------
