@@ -1,4 +1,4 @@
-API Usage Sample 
+API Usage Sample
 =================
 
 A complete RESTful CRUD API with JWT authentication built on LavaLust.  
@@ -17,24 +17,27 @@ Project Structure
 
     app/
     ├── config/
-    │   └── routes.php                   ← Route definitions
+    │   ├── api.php                       ← API configuration (JWT, CORS, rate limits)
+    │   └── routes.php                    ← Route definitions
     ├── controllers/
-    │   ├── AuthController.php           ← Register, login, refresh, logout
-    │   └── UsersController.php          ← CRUD endpoints
-    ├── helpers/
-    │   └── jwt_helper.php               ← jwt_encode() / jwt_decode()
-    ├── middleware/
-    │   └── JwtAuthMiddleware.php        ← Bearer token verification
+    │   ├── AuthController.php            ← Register, login, refresh, logout
+    │   └── UsersController.php           ← CRUD endpoints
     └── models/
-        └── User_model.php               ← Database operations
+        └── User_model.php                ← Database operations
     database/
-    └── migration.sql                    ← Table schema
+    └── migration.sql                     ← Table schemas
+    
+    system/
+    └── libraries/
+        └── Api.php                       ← API library (included with LavaLust)
 
 
 Setup
 ------
 
-**1. Run the migration**
+**1. Run the migrations**
+
+Users table:
 
 .. code-block:: sql
 
@@ -43,6 +46,7 @@ Setup
         `name`       VARCHAR(100)    NOT NULL,
         `email`      VARCHAR(150)    NOT NULL,
         `password`   VARCHAR(255)    NOT NULL,
+        `role`       VARCHAR(50)     NOT NULL DEFAULT 'user',
         `created_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `updated_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP
                                               ON UPDATE CURRENT_TIMESTAMP,
@@ -50,422 +54,675 @@ Setup
         UNIQUE KEY `uq_users_email` (`email`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-**2. Add JWT config values to** ``app/config/config.php``
+Refresh tokens table (for token rotation):
+
+.. code-block:: sql
+
+    CREATE TABLE IF NOT EXISTS `refresh_tokens` (
+        `id`         INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+        `user_id`    INT UNSIGNED    NOT NULL,
+        `token`      VARCHAR(255)    NOT NULL,
+        `jti`        VARCHAR(64)     NOT NULL,
+        `expires_at` DATETIME        NOT NULL,
+        `created_at` DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`),
+        KEY `idx_user_id` (`user_id`),
+        KEY `idx_token` (`token`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**2. Create** ``app/config/api.php``
 
 .. code-block:: php
 
     <?php
-    // Strong random string — change before going to production
-    $config['jwt_secret'] = 'your-super-secret-key-change-me';
+    /**
+     * API Configuration
+     */
 
-    // Token lifetime in seconds (3600 = 1 hour)
-    $config['jwt_ttl'] = 3600;
+    // Enable/disable the API library
+    $config['api_enabled'] = true;
 
-**3. Load the JWT helper globally or per-controller**
+    // JWT Secret (strong random string — at least 32 characters)
+    $config['jwt_secret'] = 'your-super-secret-key-change-me-minimum-32-chars';
 
-In ``app/config/autoload.php``:
+    // Refresh Token Key (separate from JWT secret)
+    $config['refresh_token_key'] = 'your-refresh-token-key-minimum-32-chars';
+
+    // Token lifetimes (seconds)
+    $config['payload_token_expiration'] = 900;   // 15 minutes
+    $config['refresh_token_expiration'] = 604800; // 7 days
+
+    // Refresh token table name
+    $config['refresh_token_table'] = 'refresh_tokens';
+
+    // JWT claims
+    $config['jwt_issuer'] = 'your-api-domain.com';
+    $config['jwt_audience'] = 'your-api-audience';
+
+    // CORS settings
+    // Use '*' for any origin, or an array of allowed origins
+    $config['allow_origin'] = '*';
+    // $config['allow_origin'] = ['https://yourdomain.com', 'https://app.yourdomain.com'];
+
+    // Rate limiting
+    $config['rate_limit_enabled'] = true;
+    $config['rate_limit_requests'] = 100;   // max requests per window
+    $config['rate_limit_seconds'] = 60;     // time window in seconds
+
+**3. Load the Api library**
+
+In your controllers:
 
 .. code-block:: php
 
     <?php
-    $autoload['helper'] = ['jwt'];
+    // In any controller method:
+    $this->call->library('api');
+    $this->api->method();
 
-Or load it per-controller in ``__construct()``:
+Or auto-load it globally in ``app/config/autoload.php``:
 
 .. code-block:: php
 
     <?php
-    $this->load->helper('jwt');
+    $autoload['libraries'] = array('api');
+
+Then use it directly:
+
+.. code-block:: php
+
+    <?php
+    $this->api->require_jwt();
+    $body = $this->api->body();
 
 
 Authentication
 ---------------
 
-The API uses **stateless JWT authentication** (HS256).  
-After a successful login or registration the response includes an  
-``access_token``. Send it on every protected request:
+The API uses **stateless JWT authentication** (HS256) with **refresh token rotation**.  
+After a successful login or registration, the response includes an ``access_token``  
+and a ``refresh_token``.
+
+- **Access token**: Short-lived (default 15 minutes). Send on every protected request.
+- **Refresh token**: Long-lived (default 7 days). Used to obtain new access tokens.
+
+**Request with access token:**
 
 .. code-block:: text
 
     Authorization: Bearer <access_token>
 
-The middleware ``JwtAuthMiddleware`` verifies the token and stores the  
-decoded payload in ``lava_instance()->auth_user`` so controllers can  
-read it without parsing the token again.
+**Refresh token usage:**
+
+Send a request to ``POST /api/auth/refresh`` with the refresh token in the request body.
+
+The API library automatically handles CORS, rate limiting, input sanitization, and token validation.
 
 
-Auth Endpoints
----------------
+Complete Controller Examples
+----------------------------
 
-POST /api/auth/register
-~~~~~~~~~~~~~~~~~~~~~~~~
+AuthController.php (Full Authentication)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Create a new account and receive a token immediately.
+.. code-block:: php
 
-**Request body** (JSON or ``application/x-www-form-urlencoded``)
+    <?php
+    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 65
+    class AuthController extends Controller {
+        
+        public function __construct() {
+            parent::__construct();
+            $this->call->library('api');
+            $this->call->model('user_model');
+        }
+        
+        // POST /api/auth/register
+        public function register() {
+            // Only POST allowed
+            $this->api->require_method('POST');
+            
+            // Apply rate limiting (prevent abuse)
+            $this->api->rate_limit();
+            
+            // Get request body
+            $data = $this->api->body();
+            
+            // Validate input
+            $errors = [];
+            
+            if (empty($data['name']) || strlen($data['name']) > 100) {
+                $errors['name'] = 'Name is required and must be less than 100 characters.';
+            }
+            
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email address is required.';
+            }
+            
+            if (empty($data['password']) || strlen($data['password']) < 8) {
+                $errors['password'] = 'Password must be at least 8 characters.';
+            }
+            
+            // Check if email exists
+            if ($this->user_model->get_user_by_email($data['email'])) {
+                $errors['email'] = 'This email address is already registered.';
+            }
+            
+            if (!empty($errors)) {
+                $this->api->respond([
+                    'error' => 'Validation failed',
+                    'status' => 422,
+                    'errors' => $errors
+                ], 422);
+            }
+            
+            // Create user
+            $hashed_password = password_hash($data['password'], PASSWORD_BCRYPT);
+            $user_id = $this->user_model->create_user([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $hashed_password,
+                'role' => 'user'
+            ]);
+            
+            // Get created user
+            $user = $this->user_model->get_user($user_id);
+            
+            // Issue tokens
+            $tokens = $this->api->issue_tokens([
+                'id' => $user['id'],
+                'role' => $user['role'],
+                'scopes' => ['read', 'write']
+            ]);
+            
+            $this->api->respond([
+                'message' => 'Registration successful',
+                'tokens' => $tokens
+            ], 201);
+        }
+        
+        // POST /api/auth/login
+        public function login() {
+            $this->api->require_method('POST');
+            $this->api->rate_limit();
+            
+            $data = $this->api->body();
+            
+            // Validate input
+            if (empty($data['email']) || empty($data['password'])) {
+                $this->api->respond_error('Email and password are required.', 400);
+            }
+            
+            // Find user
+            $user = $this->user_model->get_user_by_email($data['email']);
+            
+            if (!$user || !password_verify($data['password'], $user['password'])) {
+                $this->api->respond_error('Invalid email or password.', 401);
+            }
+            
+            // Issue tokens
+            $tokens = $this->api->issue_tokens([
+                'id' => $user['id'],
+                'role' => $user['role'],
+                'scopes' => ['read', 'write']
+            ]);
+            
+            $this->api->respond([
+                'message' => 'Login successful',
+                'tokens' => $tokens
+            ]);
+        }
+        
+        // POST /api/auth/refresh
+        public function refresh() {
+            $this->api->require_method('POST');
+            $this->api->rate_limit();
+            
+            $data = $this->api->body();
+            
+            if (empty($data['refresh_token'])) {
+                $this->api->respond_error('Refresh token is required.', 400);
+            }
+            
+            // This will auto-respond with new tokens or error
+            $this->api->refresh_access_token($data['refresh_token']);
+        }
+        
+        // POST /api/auth/logout
+        public function logout() {
+            $this->api->require_method('POST');
+            
+            // Require valid access token
+            $payload = $this->api->require_jwt();
+            
+            $data = $this->api->body();
+            
+            // Revoke refresh token if provided
+            if (!empty($data['refresh_token'])) {
+                $this->api->revoke_refresh_token($data['refresh_token']);
+            } else {
+                // Revoke all refresh tokens for this user
+                $this->api->cleanup_expired_refresh_tokens($payload['sub']);
+                $this->db->raw(
+                    "DELETE FROM refresh_tokens WHERE user_id = ?",
+                    [$payload['sub']]
+                );
+            }
+            
+            $this->api->respond(['message' => 'Logged out successfully']);
+        }
+    }
 
-   * - Field
-     - Type
-     - Rules
-   * - ``name``
-     - string
-     - Required. Max 100 characters.
-   * - ``email``
-     - string
-     - Required. Must be a valid, unique email address.
-   * - ``password``
-     - string
-     - Required. Minimum 8 characters.
 
-**Example request**
+UsersController.php (Full CRUD)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+    class UsersController extends Controller {
+        
+        public function __construct() {
+            parent::__construct();
+            $this->call->library('api');
+            $this->call->model('user_model');
+        }
+        
+        // GET /api/users
+        public function index() {
+            // Require authentication
+            $payload = $this->api->require_jwt();
+            
+            // Only GET allowed
+            $this->api->require_method('GET');
+            
+            // Apply rate limiting (per user)
+            $this->api->rate_limit($payload['sub']);
+            
+            // Get query parameters with defaults
+            $params = $this->api->get_query_params();
+            $page = isset($params['page']) ? (int)$params['page'] : 1;
+            $limit = isset($params['limit']) ? min((int)$params['limit'], 100) : 15;
+            $offset = ($page - 1) * $limit;
+            
+            // Get users with pagination
+            $users = $this->user_model->get_users($limit, $offset);
+            $total = $this->user_model->count_users();
+            
+            $this->api->respond([
+                'users' => array_map(function($user) {
+                    unset($user['password']); // Remove sensitive data
+                    return $user;
+                }, $users),
+                'pagination' => [
+                    'total' => $total,
+                    'per_page' => $limit,
+                    'current_page' => $page,
+                    'last_page' => ceil($total / $limit)
+                ]
+            ]);
+        }
+        
+        // GET /api/users/{id}
+        public function show($id) {
+            $payload = $this->api->require_jwt();
+            $this->api->require_method('GET');
+            $this->api->rate_limit($payload['sub']);
+            
+            $user = $this->user_model->get_user($id);
+            
+            if (!$user) {
+                $this->api->respond_error('User not found.', 404);
+            }
+            
+            unset($user['password']); // Remove sensitive data
+            
+            $this->api->respond($user);
+        }
+        
+        // POST /api/users
+        public function create() {
+            $payload = $this->api->require_jwt();
+            $this->api->require_method('POST');
+            $this->api->rate_limit($payload['sub']);
+            
+            // Check if user has admin role
+            if (($payload['role'] ?? 'user') !== 'admin') {
+                $this->api->respond_error('Forbidden: Admin access required.', 403);
+            }
+            
+            $data = $this->api->body();
+            
+            // Validate input
+            $errors = [];
+            
+            if (empty($data['name']) || strlen($data['name']) > 100) {
+                $errors['name'] = 'Name is required and must be less than 100 characters.';
+            }
+            
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email address is required.';
+            }
+            
+            if (empty($data['password']) || strlen($data['password']) < 8) {
+                $errors['password'] = 'Password must be at least 8 characters.';
+            }
+            
+            // Check email uniqueness
+            if ($this->user_model->get_user_by_email($data['email'])) {
+                $errors['email'] = 'Email already exists.';
+            }
+            
+            if (!empty($errors)) {
+                $this->api->respond([
+                    'error' => 'Validation failed',
+                    'status' => 422,
+                    'errors' => $errors
+                ], 422);
+            }
+            
+            // Create user
+            $hashed_password = password_hash($data['password'], PASSWORD_BCRYPT);
+            $user_id = $this->user_model->create_user([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $hashed_password,
+                'role' => $data['role'] ?? 'user'
+            ]);
+            
+            $user = $this->user_model->get_user($user_id);
+            unset($user['password']);
+            
+            $this->api->respond($user, 201);
+        }
+        
+        // PUT/PATCH /api/users/{id}
+        public function update($id) {
+            $payload = $this->api->require_jwt();
+            $this->api->require_method('PUT', 'PATCH');
+            $this->api->rate_limit($payload['sub']);
+            
+            // Check if user exists
+            $user = $this->user_model->get_user($id);
+            if (!$user) {
+                $this->api->respond_error('User not found.', 404);
+            }
+            
+            // Check permissions (admin or self)
+            $is_admin = ($payload['role'] ?? 'user') === 'admin';
+            $is_self = ($payload['sub'] ?? 0) == $id;
+            
+            if (!$is_admin && !$is_self) {
+                $this->api->respond_error('Forbidden: You can only update your own account.', 403);
+            }
+            
+            $data = $this->api->body();
+            $update_data = [];
+            $errors = [];
+            
+            // Validate and prepare update fields
+            if (isset($data['name'])) {
+                if (strlen($data['name']) > 100) {
+                    $errors['name'] = 'Name must be less than 100 characters.';
+                } else {
+                    $update_data['name'] = $data['name'];
+                }
+            }
+            
+            if (isset($data['email'])) {
+                if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                    $errors['email'] = 'Valid email address is required.';
+                } elseif ($this->user_model->get_user_by_email($data['email']) && $data['email'] !== $user['email']) {
+                    $errors['email'] = 'Email already exists.';
+                } else {
+                    $update_data['email'] = $data['email'];
+                }
+            }
+            
+            if (isset($data['password'])) {
+                if (strlen($data['password']) < 8) {
+                    $errors['password'] = 'Password must be at least 8 characters.';
+                } else {
+                    $update_data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+                }
+            }
+            
+            // Only admin can change role
+            if (isset($data['role']) && $is_admin) {
+                $update_data['role'] = $data['role'];
+            } elseif (isset($data['role']) && !$is_admin) {
+                $errors['role'] = 'Only administrators can change user roles.';
+            }
+            
+            if (!empty($errors)) {
+                $this->api->respond([
+                    'error' => 'Validation failed',
+                    'status' => 422,
+                    'errors' => $errors
+                ], 422);
+            }
+            
+            if (empty($update_data)) {
+                $this->api->respond_error('No valid fields to update.', 422);
+            }
+            
+            // Update user
+            $this->user_model->update_user($id, $update_data);
+            
+            // Get updated user
+            $updated_user = $this->user_model->get_user($id);
+            unset($updated_user['password']);
+            
+            $this->api->respond($updated_user);
+        }
+        
+        // DELETE /api/users/{id}
+        public function delete($id) {
+            $payload = $this->api->require_jwt();
+            $this->api->require_method('DELETE');
+            $this->api->rate_limit($payload['sub']);
+            
+            // Prevent self-deletion
+            if (($payload['sub'] ?? 0) == $id) {
+                $this->api->respond_error('You cannot delete your own account.', 403);
+            }
+            
+            // Check if user exists
+            $user = $this->user_model->get_user($id);
+            if (!$user) {
+                $this->api->respond_error('User not found.', 404);
+            }
+            
+            // Check admin permission
+            if (($payload['role'] ?? 'user') !== 'admin') {
+                $this->api->respond_error('Forbidden: Admin access required.', 403);
+            }
+            
+            // Delete user and their refresh tokens
+            $this->db->raw("DELETE FROM refresh_tokens WHERE user_id = ?", [$id]);
+            $this->user_model->delete_user($id);
+            
+            // 204 No Content - no response body
+            http_response_code(204);
+            exit;
+        }
+    }
+
+
+User_model.php
+~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+    class User_model extends Model {
+        
+        public function get_user($id) {
+            $stmt = $this->db->raw(
+                "SELECT id, name, email, role, created_at, updated_at FROM users WHERE id = ? LIMIT 1",
+                [$id]
+            );
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        
+        public function get_user_by_email($email) {
+            $stmt = $this->db->raw(
+                "SELECT * FROM users WHERE email = ? LIMIT 1",
+                [$email]
+            );
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        
+        public function get_users($limit, $offset) {
+            $stmt = $this->db->raw(
+                "SELECT id, name, email, role, created_at, updated_at FROM users LIMIT ? OFFSET ?",
+                [$limit, $offset]
+            );
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        public function count_users() {
+            $stmt = $this->db->raw("SELECT COUNT(*) as total FROM users");
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$result['total'];
+        }
+        
+        public function create_user($data) {
+            $this->db->raw(
+                "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+                [$data['name'], $data['email'], $data['password'], $data['role']]
+            );
+            return $this->db->lastInsertId();
+        }
+        
+        public function update_user($id, $data) {
+            $fields = [];
+            $values = [];
+            
+            foreach ($data as $key => $value) {
+                $fields[] = "$key = ?";
+                $values[] = $value;
+            }
+            
+            $values[] = $id;
+            $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";
+            
+            return $this->db->raw($sql, $values);
+        }
+        
+        public function delete_user($id) {
+            return $this->db->raw("DELETE FROM users WHERE id = ?", [$id]);
+        }
+    }
+
+
+Routes (app/config/routes.php)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    // Auth routes
+    $route['api/auth/register'] = 'AuthController/register';
+    $route['api/auth/login']    = 'AuthController/login';
+    $route['api/auth/refresh']  = 'AuthController/refresh';
+    $route['api/auth/logout']   = 'AuthController/logout';
+    
+    // Users CRUD routes
+    $route['api/users']         = 'UsersController/index';
+    $route['api/users/create']  = 'UsersController/create';
+    $route['api/users/(:num)']  = 'UsersController/show/$1';
+    $route['api/users/(:num)/update'] = 'UsersController/update/$1';
+    $route['api/users/(:num)/delete'] = 'UsersController/delete/$1';
+    
+    // RESTful style (alternative)
+    $route['api/users']['GET']  = 'UsersController/index';
+    $route['api/users']['POST'] = 'UsersController/create';
+    $route['api/users/(:num)']['GET']    = 'UsersController/show/$1';
+    $route['api/users/(:num)']['PUT']    = 'UsersController/update/$1';
+    $route['api/users/(:num)']['PATCH']  = 'UsersController/update/$1';
+    $route['api/users/(:num)']['DELETE'] = 'UsersController/delete/$1';
+
+
+Testing the API with cURL
+--------------------------
+
+**Register a user:**
 
 .. code-block:: bash
 
     curl -X POST https://yourdomain.com/api/auth/register \
       -H "Content-Type: application/json" \
-      -d '{"name":"Jane Doe","email":"jane@example.com","password":"secret123"}'
+      -d '{"name":"John Doe","email":"john@example.com","password":"secret123"}'
 
-**201 Created**
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Created",
-      "data": {
-        "id": 1,
-        "name": "Jane Doe",
-        "email": "jane@example.com",
-        "created_at": "2025-01-15 10:00:00",
-        "updated_at": "2025-01-15 10:00:00",
-        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-        "token_type": "Bearer",
-        "expires_in": 3600
-      }
-    }
-
-**422 Validation error**
-
-.. code-block:: json
-
-    {
-      "success": false,
-      "error": "Validation failed",
-      "errors": {
-        "email": "This email address is already registered."
-      }
-    }
-
-
-POST /api/auth/login
-~~~~~~~~~~~~~~~~~~~~~
-
-Authenticate with email and password.
-
-**Request body**
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 65
-
-   * - Field
-     - Type
-     - Rules
-   * - ``email``
-     - string
-     - Required.
-   * - ``password``
-     - string
-     - Required.
-
-**Example request**
+**Login:**
 
 .. code-block:: bash
 
     curl -X POST https://yourdomain.com/api/auth/login \
       -H "Content-Type: application/json" \
-      -d '{"email":"jane@example.com","password":"secret123"}'
+      -d '{"email":"john@example.com","password":"secret123"}'
 
-**200 OK**
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Login successful.",
-      "data": {
-        "id": 1,
-        "name": "Jane Doe",
-        "email": "jane@example.com",
-        "created_at": "2025-01-15 10:00:00",
-        "updated_at": "2025-01-15 10:00:00",
-        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-        "token_type": "Bearer",
-        "expires_in": 3600
-      }
-    }
-
-**401 Unauthorized** (wrong credentials)
-
-.. code-block:: json
-
-    {
-      "success": false,
-      "error": "Invalid email or password."
-    }
-
-
-POST /api/auth/refresh  🔒
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Issue a new token using a still-valid token.  
-Useful for extending a session before expiry.
-
-**Headers:** ``Authorization: Bearer <token>``
-
-**200 OK** — returns the same shape as login with a freshly signed token.
-
-**401 Unauthorized** — token is missing, invalid, or expired.
-
-
-POST /api/auth/logout  🔒
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Confirms logout. Because JWTs are stateless the client is responsible  
-for discarding the token. The server simply acknowledges the request.
-
-**Headers:** ``Authorization: Bearer <token>``
-
-**200 OK**
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Logged out successfully.",
-      "data": null
-    }
-
-
-Users Endpoints  🔒
---------------------
-
-All ``/api/users`` endpoints require a valid ``Authorization: Bearer`` header.
-
-GET /api/users
-~~~~~~~~~~~~~~~
-
-Return a paginated list of users.
-
-**Query parameters**
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 65
-
-   * - Param
-     - Type
-     - Description
-   * - ``page``
-     - int
-     - Page number (default: ``1``)
-   * - ``limit``
-     - int
-     - Items per page, maximum ``100`` (default: ``15``)
-
-**Example request**
+**Get users (protected):**
 
 .. code-block:: bash
 
-    curl https://yourdomain.com/api/users?page=1&limit=5 \
-      -H "Authorization: Bearer <token>"
+    curl https://yourdomain.com/api/users?page=1&limit=10 \
+      -H "Authorization: Bearer <access_token>"
 
-**200 OK**
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Success",
-      "data": {
-        "users": [
-          {
-            "id": 1,
-            "name": "Jane Doe",
-            "email": "jane@example.com",
-            "created_at": "2025-01-15 10:00:00",
-            "updated_at": "2025-01-15 10:00:00"
-          }
-        ],
-        "pagination": {
-          "total": 42,
-          "per_page": 5,
-          "current_page": 1,
-          "last_page": 9
-        }
-      }
-    }
-
-
-GET /api/users/{id}
-~~~~~~~~~~~~~~~~~~~~
-
-Return a single user by numeric ID.
-
-**Example request**
+**Get single user:**
 
 .. code-block:: bash
 
     curl https://yourdomain.com/api/users/1 \
-      -H "Authorization: Bearer <token>"
+      -H "Authorization: Bearer <access_token>"
 
-**200 OK**
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Success",
-      "data": {
-        "id": 1,
-        "name": "Jane Doe",
-        "email": "jane@example.com",
-        "created_at": "2025-01-15 10:00:00",
-        "updated_at": "2025-01-15 10:00:00"
-      }
-    }
-
-**404 Not Found**
-
-.. code-block:: json
-
-    {
-      "success": false,
-      "error": "User not found."
-    }
-
-
-POST /api/users
-~~~~~~~~~~~~~~~~
-
-Create a new user (admin use — same validation as registration).
-
-**Request body**
-
-Same fields as ``POST /api/auth/register``:  ``name``, ``email``, ``password``.
-
-**Example request**
+**Create user (admin only):**
 
 .. code-block:: bash
 
-    curl -X POST https://yourdomain.com/api/users \
-      -H "Authorization: Bearer <token>" \
+    curl -X POST https://yourdomain.com/api/users/create \
+      -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
-      -d '{"name":"John Smith","email":"john@example.com","password":"password123"}'
+      -d '{"name":"Jane Smith","email":"jane@example.com","password":"password123","role":"user"}'
 
-**201 Created** — returns the new user object with a ``Location`` header pointing  
-to ``/api/users/{id}``.
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "Created",
-      "data": {
-        "id": 2,
-        "name": "John Smith",
-        "email": "john@example.com",
-        "created_at": "2025-01-15 11:00:00",
-        "updated_at": "2025-01-15 11:00:00"
-      }
-    }
-
-
-PUT /api/users/{id}  |  PATCH /api/users/{id}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Update a user. Both ``PUT`` and ``PATCH`` are accepted and behave  
-identically — only the fields you send will be changed.
-
-**Request body** — all fields are optional; send only those to update:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 15 65
-
-   * - Field
-     - Type
-     - Rules
-   * - ``name``
-     - string
-     - Max 100 characters.
-   * - ``email``
-     - string
-     - Valid, unique email address.
-   * - ``password``
-     - string
-     - Minimum 8 characters.
-
-**Example request** (change name only)
+**Update user:**
 
 .. code-block:: bash
 
-    curl -X PATCH https://yourdomain.com/api/users/1 \
-      -H "Authorization: Bearer <token>" \
+    curl -X PUT https://yourdomain.com/api/users/1/update \
+      -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
-      -d '{"name":"Jane Smith"}'
+      -d '{"name":"John Updated"}'
 
-**200 OK** — returns the full updated user object.
-
-.. code-block:: json
-
-    {
-      "success": true,
-      "message": "User updated successfully.",
-      "data": {
-        "id": 1,
-        "name": "Jane Smith",
-        "email": "jane@example.com",
-        "created_at": "2025-01-15 10:00:00",
-        "updated_at": "2025-01-15 12:30:00"
-      }
-    }
-
-**422** — if no valid fields were provided or nothing changed.
-
-
-DELETE /api/users/{id}
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Delete a user by ID.
-
-.. note::
-
-   A user cannot delete their own account. The middleware compares  
-   ``auth_user['sub']`` against the target ``{id}`` and returns ``403``  
-   if they match.
-
-**Example request**
+**Delete user (admin only):**
 
 .. code-block:: bash
 
-    curl -X DELETE https://yourdomain.com/api/users/2 \
-      -H "Authorization: Bearer <token>"
+    curl -X DELETE https://yourdomain.com/api/users/2/delete \
+      -H "Authorization: Bearer <access_token>"
 
-**204 No Content** — empty body on success.
+**Refresh token:**
 
-**403 Forbidden** (self-delete attempt)
+.. code-block:: bash
 
-.. code-block:: json
+    curl -X POST https://yourdomain.com/api/auth/refresh \
+      -H "Content-Type: application/json" \
+      -d '{"refresh_token":"<refresh_token>"}'
 
-    {
-      "success": false,
-      "error": "You cannot delete your own account."
-    }
+**Logout:**
+
+.. code-block:: bash
+
+    curl -X POST https://yourdomain.com/api/auth/logout \
+      -H "Authorization: Bearer <access_token>" \
+      -H "Content-Type: application/json" \
+      -d '{"refresh_token":"<refresh_token>"}'
 
 
 Error Response Reference
@@ -476,8 +733,8 @@ All error responses follow the same JSON envelope:
 .. code-block:: json
 
     {
-      "success": false,
-      "error": "Human-readable message."
+      "error": "Human-readable message.",
+      "status": 400
     }
 
 Validation errors additionally include an ``errors`` object:
@@ -485,8 +742,8 @@ Validation errors additionally include an ``errors`` object:
 .. code-block:: json
 
     {
-      "success": false,
       "error": "Validation failed",
+      "status": 422,
       "errors": {
         "email": "Please provide a valid email address.",
         "password": "Password must be at least 8 characters."
@@ -499,6 +756,8 @@ Validation errors additionally include an ``errors`` object:
 
    * - Status
      - When it occurs
+   * - ``200``
+     - Request successful
    * - ``201``
      - Resource created successfully
    * - ``204``
@@ -508,13 +767,15 @@ Validation errors additionally include an ``errors`` object:
    * - ``401``
      - Missing, invalid, or expired token; wrong credentials
    * - ``403``
-     - Authenticated but not permitted (e.g. self-delete)
+     - Authenticated but not permitted (e.g. self-delete, invalid refresh token)
    * - ``404``
      - Resource does not exist
    * - ``405``
      - HTTP method not allowed for this route
    * - ``422``
      - Validation failed (see ``errors`` object)
+   * - ``429``
+     - Rate limit exceeded
    * - ``500``
      - Unexpected server error
 
@@ -522,7 +783,7 @@ Validation errors additionally include an ``errors`` object:
 JWT Token Structure
 --------------------
 
-Tokens are signed with **HS256**. The payload contains:
+Tokens are signed with **HS256** and include the following standard claims:
 
 .. list-table::
    :header-rows: 1
@@ -532,29 +793,63 @@ Tokens are signed with **HS256**. The payload contains:
      - Description
    * - ``sub``
      - User ID (integer)
-   * - ``email``
-     - User's email address
    * - ``iat``
      - Issued-at timestamp (Unix)
    * - ``exp``
-     - Expiry timestamp (Unix) — ``iat + jwt_ttl``
+     - Expiry timestamp (Unix)
+   * - ``iss``
+     - Issuer (from config)
+   * - ``aud``
+     - Audience (from config)
+   * - ``jti``
+     - JWT ID (unique identifier)
 
-The decoded payload is available in any protected controller as:
+**Access token** additional claims:
 
-.. code-block:: php
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
 
-    <?php
-    $auth_user = lava_instance()->auth_user;
-    $user_id   = $auth_user['sub'];
-    $email     = $auth_user['email'];
+   * - Claim
+     - Description
+   * - ``role``
+     - User role (e.g., ``user``, ``admin``)
+   * - ``scopes``
+     - Array of permission scopes (e.g., ``['read', 'write']``)
+
+**Refresh token** additional claims:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Claim
+     - Description
+   * - ``type``
+     - Always ``refresh``
+   * - ``jti``
+     - Used for token revocation tracking
 
 
 Security Notes
 ---------------
 
-- Passwords are hashed with ``password_hash(..., PASSWORD_BCRYPT)`` and verified with ``password_verify()``. Plain-text passwords are never stored or logged.
-- The login endpoint returns the same vague ``"Invalid email or password."`` message whether the email or the password was wrong, to prevent user enumeration.
-- Tokens are validated using ``hash_equals()`` to prevent timing attacks on the HMAC signature.
-- All responses include ``X-Content-Type-Options: nosniff``, ``X-Frame-Options: SAMEORIGIN``, and other security headers via ``with_security_headers()``.
-- All API responses set ``Cache-Control: no-store`` via ``no_cache()``.
-- Change ``jwt_secret`` to a long, random string before deploying to production. Never commit it to version control — use an environment variable instead.
+- **Passwords**: Hashed with ``password_hash()`` using BCRYPT. Never stored or logged in plain text.
+- **Token Storage**: Refresh tokens are hashed before storage using a separate key, preventing token theft from database breaches.
+- **Token Rotation**: Each refresh operation issues a new refresh token and revokes the old one.
+- **Timing Attacks**: Signature validation uses ``hash_equals()`` for constant-time comparison.
+- **User Enumeration**: Login returns the same vague message for invalid email or password.
+- **Input Sanitization**: All inputs are automatically trimmed and HTML-escaped via the ``body()`` and ``get_query_params()`` methods.
+- **CORS**: Configurable allowed origins with automatic handling of preflight (OPTIONS) requests.
+- **Rate Limiting**: Enabled by default with configurable limits per IP address.
+- **Environment**: Change ``jwt_secret`` and ``refresh_token_key`` to long, random strings (minimum 32 characters each). Never commit them to version control — use environment variables instead.
+
+**Generating secure keys:**
+
+.. code-block:: bash
+
+    # Linux / macOS
+    openssl rand -base64 32
+    
+    # Or using PHP
+    php -r "echo bin2hex(random_bytes(32)) . PHP_EOL;"
