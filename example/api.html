@@ -306,11 +306,11 @@ in the <code class="docutils literal notranslate"><span class="pre">Authorizatio
 
 <span class="c1">// Users CRUD routes</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/api/users&#39;</span><span class="p">,</span>                <span class="s1">&#39;UsersController::index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::show/$1&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/api/users/{num}&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::show&#39;</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/users&#39;</span><span class="p">,</span>               <span class="s1">&#39;UsersController::create&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::update/$1&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>       <span class="s1">&#39;UsersController::update/$1&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>      <span class="s1">&#39;UsersController::delete/$1&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/api/users/{num}&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;/api/users/{num}&#39;</span><span class="p">,</span>       <span class="s1">&#39;UsersController::update&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/api/users/{num}&#39;</span><span class="p">,</span>      <span class="s1">&#39;UsersController::delete&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>

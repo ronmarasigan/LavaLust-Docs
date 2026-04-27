@@ -160,11 +160,11 @@ LavaLust 4.x uses a router syntax similar to:
     
     // Users CRUD routes
     $router->get('/api/users',                'UsersController::index');
-    $router->get('/api/users/(:num)',         'UsersController::show/$1');
+    $router->get('/api/users/{num}',         'UsersController::show');
     $router->post('/api/users',               'UsersController::create');
-    $router->put('/api/users/(:num)',         'UsersController::update/$1');
-    $router->patch('/api/users/(:num)',       'UsersController::update/$1');
-    $router->delete('/api/users/(:num)',      'UsersController::delete/$1');
+    $router->put('/api/users/{num}',         'UsersController::update');
+    $router->patch('/api/users/{num}',       'UsersController::update');
+    $router->delete('/api/users/{num}',      'UsersController::delete');
 
 
 Authentication
