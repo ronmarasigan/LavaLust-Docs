@@ -169,12 +169,14 @@ in the <code class="docutils literal notranslate"><span class="pre">Authorizatio
 <ul class="simple">
 <li><p><a class="reference internal" href="#project-structure" id="id1">Project Structure</a></p></li>
 <li><p><a class="reference internal" href="#setup" id="id2">Setup</a></p></li>
-<li><p><a class="reference internal" href="#authentication" id="id3">Authentication</a></p></li>
-<li><p><a class="reference internal" href="#complete-controller-examples" id="id4">Complete Controller Examples</a></p></li>
-<li><p><a class="reference internal" href="#testing-the-api-with-curl" id="id5">Testing the API with cURL</a></p></li>
-<li><p><a class="reference internal" href="#error-response-reference" id="id6">Error Response Reference</a></p></li>
-<li><p><a class="reference internal" href="#jwt-token-structure" id="id7">JWT Token Structure</a></p></li>
-<li><p><a class="reference internal" href="#security-notes" id="id8">Security Notes</a></p></li>
+<li><p><a class="reference internal" href="#routes-app-config-routes-php" id="id3">Routes (app/config/routes.php)</a></p></li>
+<li><p><a class="reference internal" href="#authentication" id="id4">Authentication</a></p></li>
+<li><p><a class="reference internal" href="#complete-controller-examples" id="id5">Complete Controller Examples</a></p></li>
+<li><p><a class="reference internal" href="#testing-the-api-with-curl" id="id6">Testing the API with cURL</a></p></li>
+<li><p><a class="reference internal" href="#rate-limiting" id="id7">Rate Limiting</a></p></li>
+<li><p><a class="reference internal" href="#error-response-reference" id="id8">Error Response Reference</a></p></li>
+<li><p><a class="reference internal" href="#jwt-token-structure" id="id9">JWT Token Structure</a></p></li>
+<li><p><a class="reference internal" href="#security-notes" id="id10">Security Notes</a></p></li>
 </ul>
 </nav>
 <section id="project-structure">
@@ -286,8 +288,34 @@ in the <code class="docutils literal notranslate"><span class="pre">Authorizatio
 </pre></div>
 </div>
 </section>
+<section id="routes-app-config-routes-php">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Routes (app/config/routes.php)</a><a class="headerlink" href="#routes-app-config-routes-php" title="Link to this heading"></a></h2>
+<p>LavaLust 4.x uses a router syntax similar to:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;Welcome::index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/submit&#39;</span><span class="p">,</span> <span class="s1">&#39;Form::submit&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Complete API routes:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Auth routes</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/auth/register&#39;</span><span class="p">,</span> <span class="s1">&#39;AuthController::register&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/auth/login&#39;</span><span class="p">,</span>    <span class="s1">&#39;AuthController::login&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/auth/refresh&#39;</span><span class="p">,</span>  <span class="s1">&#39;AuthController::refresh&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/auth/logout&#39;</span><span class="p">,</span>   <span class="s1">&#39;AuthController::logout&#39;</span><span class="p">);</span>
+
+<span class="c1">// Users CRUD routes</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/api/users&#39;</span><span class="p">,</span>                <span class="s1">&#39;UsersController::index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::show/$1&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/api/users&#39;</span><span class="p">,</span>               <span class="s1">&#39;UsersController::create&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>         <span class="s1">&#39;UsersController::update/$1&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>       <span class="s1">&#39;UsersController::update/$1&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/api/users/(:num)&#39;</span><span class="p">,</span>      <span class="s1">&#39;UsersController::delete/$1&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
 <section id="authentication">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Authentication</a><a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Authentication</a><a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
 <p>The API uses <strong>stateless JWT authentication</strong> (HS256) with <strong>refresh token rotation</strong>.
 After a successful login or registration, the response includes an <code class="docutils literal notranslate"><span class="pre">access_token</span></code>
 and a <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>.</p>
@@ -304,7 +332,7 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 <p>The API library automatically handles CORS, rate limiting, input sanitization, and token validation.</p>
 </section>
 <section id="complete-controller-examples">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Complete Controller Examples</a><a class="headerlink" href="#complete-controller-examples" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Complete Controller Examples</a><a class="headerlink" href="#complete-controller-examples" title="Link to this heading"></a></h2>
 <section id="authcontroller-php-full-authentication">
 <h3>AuthController.php (Full Authentication)<a class="headerlink" href="#authcontroller-php-full-authentication" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
@@ -580,7 +608,13 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
     <span class="c1">// PUT/PATCH /api/users/{id}</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
         <span class="nv">$payload</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_jwt</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">require_method</span><span class="p">(</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;PATCH&#39;</span><span class="p">);</span>
+
+        <span class="c1">// Allow both PUT and PATCH</span>
+        <span class="nv">$method</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$method</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;PATCH&#39;</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">respond_error</span><span class="p">(</span><span class="s1">&#39;Method Not Allowed&#39;</span><span class="p">,</span> <span class="mi">405</span><span class="p">);</span>
+        <span class="p">}</span>
+
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">rate_limit</span><span class="p">(</span><span class="nv">$payload</span><span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">]);</span>
 
         <span class="c1">// Check if user exists</span>
@@ -758,35 +792,9 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 </pre></div>
 </div>
 </section>
-<section id="routes-app-config-routes-php">
-<h3>Routes (app/config/routes.php)<a class="headerlink" href="#routes-app-config-routes-php" title="Link to this heading"></a></h3>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Auth routes</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/auth/register&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AuthController/register&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/auth/login&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;AuthController/login&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/auth/refresh&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;AuthController/refresh&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/auth/logout&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">&#39;AuthController/logout&#39;</span><span class="p">;</span>
-
-<span class="c1">// Users CRUD routes</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="s1">&#39;UsersController/index&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/create&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;UsersController/create&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;UsersController/show/$1&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)/update&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;UsersController/update/$1&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)/delete&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;UsersController/delete/$1&#39;</span><span class="p">;</span>
-
-<span class="c1">// RESTful style (alternative)</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users&#39;</span><span class="p">][</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;UsersController/index&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users&#39;</span><span class="p">][</span><span class="s1">&#39;POST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;UsersController/create&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)&#39;</span><span class="p">][</span><span class="s1">&#39;GET&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;UsersController/show/$1&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)&#39;</span><span class="p">][</span><span class="s1">&#39;PUT&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;UsersController/update/$1&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)&#39;</span><span class="p">][</span><span class="s1">&#39;PATCH&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;UsersController/update/$1&#39;</span><span class="p">;</span>
-<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;api/users/(:num)&#39;</span><span class="p">][</span><span class="s1">&#39;DELETE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;UsersController/delete/$1&#39;</span><span class="p">;</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="testing-the-api-with-curl">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Testing the API with cURL</a><a class="headerlink" href="#testing-the-api-with-curl" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Testing the API with cURL</a><a class="headerlink" href="#testing-the-api-with-curl" title="Link to this heading"></a></h2>
 <p><strong>Register a user:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/auth/register<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -800,31 +808,31 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 </pre></div>
 </div>
 <p><strong>Get users (protected):</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>https://yourdomain.com/api/users?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>https://yourdomain.com/api/users?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;access_token&gt;&quot;</span>
 </pre></div>
 </div>
 <p><strong>Get single user:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>https://yourdomain.com/api/users/1<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>https://yourdomain.com/api/users/1<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;access_token&gt;&quot;</span>
 </pre></div>
 </div>
 <p><strong>Create user (admin only):</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/users/create<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://yourdomain.com/api/users<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;access_token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Jane Smith&quot;,&quot;email&quot;:&quot;jane@example.com&quot;,&quot;password&quot;:&quot;password123&quot;,&quot;role&quot;:&quot;user&quot;}&#39;</span>
 </pre></div>
 </div>
 <p><strong>Update user:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>https://yourdomain.com/api/users/1/update<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>https://yourdomain.com/api/users/1<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;access_token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;John Updated&quot;}&#39;</span>
 </pre></div>
 </div>
 <p><strong>Delete user (admin only):</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>https://yourdomain.com/api/users/2/delete<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>https://yourdomain.com/api/users/2<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;access_token&gt;&quot;</span>
 </pre></div>
 </div>
@@ -842,8 +850,49 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 </pre></div>
 </div>
 </section>
+<section id="rate-limiting">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Rate Limiting</a><a class="headerlink" href="#rate-limiting" title="Link to this heading"></a></h2>
+<p>All API endpoints are rate-limited by default. Limits are applied per IP address.</p>
+<p><strong>Rate limit headers</strong> are included in every response:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X-RateLimit-Limit</span></code></p></td>
+<td><p>Maximum requests allowed in the current window</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X-RateLimit-Remaining</span></code></p></td>
+<td><p>Remaining requests in the current window</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X-RateLimit-Reset</span></code></p></td>
+<td><p>Unix timestamp when the rate limit resets</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Retry-After</span></code></p></td>
+<td><p>Seconds to wait before retrying (only on 429 responses)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>429 Too Many Requests</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Too many requests. Please try again later.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;remaining&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;reset_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T10:15:00+00:00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;retry_after&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="error-response-reference">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Error Response Reference</a><a class="headerlink" href="#error-response-reference" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Error Response Reference</a><a class="headerlink" href="#error-response-reference" title="Link to this heading"></a></h2>
 <p>All error responses follow the same JSON envelope:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Human-readable message.&quot;</span><span class="p">,</span>
@@ -910,7 +959,7 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 </table>
 </section>
 <section id="jwt-token-structure">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">JWT Token Structure</a><a class="headerlink" href="#jwt-token-structure" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">JWT Token Structure</a><a class="headerlink" href="#jwt-token-structure" title="Link to this heading"></a></h2>
 <p>Tokens are signed with <strong>HS256</strong> and include the following standard claims:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -985,7 +1034,7 @@ and a <code class="docutils literal notranslate"><span class="pre">refresh_token
 </table>
 </section>
 <section id="security-notes">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Security Notes</a><a class="headerlink" href="#security-notes" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Security Notes</a><a class="headerlink" href="#security-notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Passwords</strong>: Hashed with <code class="docutils literal notranslate"><span class="pre">password_hash()</span></code> using BCRYPT. Never stored or logged in plain text.</p></li>
 <li><p><strong>Token Storage</strong>: Refresh tokens are hashed before storage using a separate key, preventing token theft from database breaches.</p></li>

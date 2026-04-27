@@ -136,6 +136,37 @@ Then use it directly:
     $body = $this->api->body();
 
 
+Routes (app/config/routes.php)
+-------------------------------
+
+LavaLust 4.x uses a router syntax similar to:
+
+.. code-block:: php
+
+    <?php
+    $router->get('/', 'Welcome::index');
+    $router->post('/submit', 'Form::submit');
+
+**Complete API routes:**
+
+.. code-block:: php
+
+    <?php
+    // Auth routes
+    $router->post('/api/auth/register', 'AuthController::register');
+    $router->post('/api/auth/login',    'AuthController::login');
+    $router->post('/api/auth/refresh',  'AuthController::refresh');
+    $router->post('/api/auth/logout',   'AuthController::logout');
+    
+    // Users CRUD routes
+    $router->get('/api/users',                'UsersController::index');
+    $router->get('/api/users/(:num)',         'UsersController::show/$1');
+    $router->post('/api/users',               'UsersController::create');
+    $router->put('/api/users/(:num)',         'UsersController::update/$1');
+    $router->patch('/api/users/(:num)',       'UsersController::update/$1');
+    $router->delete('/api/users/(:num)',      'UsersController::delete/$1');
+
+
 Authentication
 ---------------
 
@@ -442,7 +473,13 @@ UsersController.php (Full CRUD)
         // PUT/PATCH /api/users/{id}
         public function update($id) {
             $payload = $this->api->require_jwt();
-            $this->api->require_method('PUT', 'PATCH');
+            
+            // Allow both PUT and PATCH
+            $method = $_SERVER['REQUEST_METHOD'];
+            if (!in_array($method, ['PUT', 'PATCH'])) {
+                $this->api->respond_error('Method Not Allowed', 405);
+            }
+            
             $this->api->rate_limit($payload['sub']);
             
             // Check if user exists
@@ -621,34 +658,6 @@ User_model.php
     }
 
 
-Routes (app/config/routes.php)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: php
-
-    <?php
-    // Auth routes
-    $route['api/auth/register'] = 'AuthController/register';
-    $route['api/auth/login']    = 'AuthController/login';
-    $route['api/auth/refresh']  = 'AuthController/refresh';
-    $route['api/auth/logout']   = 'AuthController/logout';
-    
-    // Users CRUD routes
-    $route['api/users']         = 'UsersController/index';
-    $route['api/users/create']  = 'UsersController/create';
-    $route['api/users/(:num)']  = 'UsersController/show/$1';
-    $route['api/users/(:num)/update'] = 'UsersController/update/$1';
-    $route['api/users/(:num)/delete'] = 'UsersController/delete/$1';
-    
-    // RESTful style (alternative)
-    $route['api/users']['GET']  = 'UsersController/index';
-    $route['api/users']['POST'] = 'UsersController/create';
-    $route['api/users/(:num)']['GET']    = 'UsersController/show/$1';
-    $route['api/users/(:num)']['PUT']    = 'UsersController/update/$1';
-    $route['api/users/(:num)']['PATCH']  = 'UsersController/update/$1';
-    $route['api/users/(:num)']['DELETE'] = 'UsersController/delete/$1';
-
-
 Testing the API with cURL
 --------------------------
 
@@ -672,21 +681,21 @@ Testing the API with cURL
 
 .. code-block:: bash
 
-    curl https://yourdomain.com/api/users?page=1&limit=10 \
+    curl -X GET https://yourdomain.com/api/users?page=1&limit=10 \
       -H "Authorization: Bearer <access_token>"
 
 **Get single user:**
 
 .. code-block:: bash
 
-    curl https://yourdomain.com/api/users/1 \
+    curl -X GET https://yourdomain.com/api/users/1 \
       -H "Authorization: Bearer <access_token>"
 
 **Create user (admin only):**
 
 .. code-block:: bash
 
-    curl -X POST https://yourdomain.com/api/users/create \
+    curl -X POST https://yourdomain.com/api/users \
       -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
       -d '{"name":"Jane Smith","email":"jane@example.com","password":"password123","role":"user"}'
@@ -695,7 +704,7 @@ Testing the API with cURL
 
 .. code-block:: bash
 
-    curl -X PUT https://yourdomain.com/api/users/1/update \
+    curl -X PUT https://yourdomain.com/api/users/1 \
       -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
       -d '{"name":"John Updated"}'
@@ -704,7 +713,7 @@ Testing the API with cURL
 
 .. code-block:: bash
 
-    curl -X DELETE https://yourdomain.com/api/users/2/delete \
+    curl -X DELETE https://yourdomain.com/api/users/2 \
       -H "Authorization: Bearer <access_token>"
 
 **Refresh token:**
@@ -723,6 +732,42 @@ Testing the API with cURL
       -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
       -d '{"refresh_token":"<refresh_token>"}'
+
+
+Rate Limiting
+--------------
+
+All API endpoints are rate-limited by default. Limits are applied per IP address.
+
+**Rate limit headers** are included in every response:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Header
+     - Description
+   * - ``X-RateLimit-Limit``
+     - Maximum requests allowed in the current window
+   * - ``X-RateLimit-Remaining``
+     - Remaining requests in the current window
+   * - ``X-RateLimit-Reset``
+     - Unix timestamp when the rate limit resets
+   * - ``Retry-After``
+     - Seconds to wait before retrying (only on 429 responses)
+
+**429 Too Many Requests**
+
+.. code-block:: json
+
+    {
+      "error": "Too many requests. Please try again later.",
+      "limit": 100,
+      "used": 100,
+      "remaining": 0,
+      "reset_at": "2025-01-15T10:15:00+00:00",
+      "retry_after": 45
+    }
 
 
 Error Response Reference
