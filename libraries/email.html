@@ -191,7 +191,7 @@ recipients, reply-to addresses, file attachments, priority flags, and a
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Loading</a><a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
 <p>Load the library inside your controller:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Once loaded it is available as <code class="docutils literal notranslate"><span class="pre">$this-&gt;email</span></code>.</p>
@@ -683,7 +683,7 @@ email without reloading the library:</p>
 <h2><a class="toc-backref" href="#id15" role="doc-backlink">Complete Examples</a><a class="headerlink" href="#complete-examples" title="Link to this heading"></a></h2>
 <p><strong>Plain text password reset</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
     <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
@@ -701,7 +701,7 @@ email without reloading the library:</p>
 </div>
 <p><strong>HTML invoice email with attachment and high priority</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 
 <span class="k">try</span>
 <span class="p">{</span>
@@ -733,7 +733,7 @@ email without reloading the library:</p>
 </div>
 <p><strong>Looped newsletter with reset between sends</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
 
 <span class="nv">$subscribers</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">subscriber_model</span><span class="o">-&gt;</span><span class="na">get_active</span><span class="p">();</span>
 

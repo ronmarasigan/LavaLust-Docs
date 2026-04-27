@@ -19,7 +19,7 @@ Load the library inside your controller:
 .. code-block:: php
 
     <?php
-    $this->load->library('email');
+    $this->call->library('email');
 
 Once loaded it is available as ``$this->email``.
 
@@ -491,7 +491,7 @@ Complete Examples
 .. code-block:: php
 
     <?php
-    $this->load->library('email');
+    $this->call->library('email');
 
     $this->email
         ->sender('no-reply@example.com', 'My App')
@@ -511,7 +511,7 @@ Complete Examples
 .. code-block:: php
 
     <?php
-    $this->load->library('email');
+    $this->call->library('email');
 
     try
     {
@@ -545,7 +545,7 @@ Complete Examples
 .. code-block:: php
 
     <?php
-    $this->load->library('email');
+    $this->call->library('email');
 
     $subscribers = $this->subscriber_model->get_active();
 
