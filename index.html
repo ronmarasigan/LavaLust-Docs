@@ -1,9 +1,12 @@
+<?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LavaLust Framework | Lightweight PHP MVC</title>
+    <title>Welcome to LavaLust</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&family=Unbounded:wght@400;500&display=swap" rel="stylesheet">
@@ -434,7 +437,6 @@
             line-height: 1.8;
             color: #a1a1aa;
             overflow-x: auto;
-            white-space: pre-wrap;
         }
 
         .code-body .kw { color: #f97316; }
@@ -570,7 +572,7 @@
 
 <!-- HERO -->
 <div class="hero wrap">
-    <div class="badge">v4.x — Now Available</div>
+    <div class="badge">v<?php echo config_item('VERSION') ?? '4.x'; ?> — Now Available</div>
     <h1>
         <span class="word-lava">Lava</span><span class="word-lust">Lust</span><br>Framework
     </h1>
@@ -672,9 +674,9 @@
                         <span class="code-filename">app/config/routes.php</span>
                     </div>
                     <div class="code-body">
-<span class="var">$router</span>-&gt;<span class="fn">get</span>(<span class="str">'/'</span>, <span class="str">'Welcome::index'</span>);<br>
-<span class="var">$router</span>-&gt;<span class="fn">get</span>(<span class="str">'/users'</span>, <span class="str">'Users::index'</span>);<br>
-<span class="var">$router</span>-&gt;<span class="fn">post</span>(<span class="str">'/users/store'</span>, <span class="str">'Users::store'</span>);
+<span class="var">$router</span>-><span class="fn">get</span>(<span class="str">'/'</span>, <span class="str">'Welcome::index'</span>);<br>
+<span class="var">$router</span>-><span class="fn">get</span>(<span class="str">'/users'</span>, <span class="str">'Users::index'</span>);<br>
+<span class="var">$router</span>-><span class="fn">post</span>(<span class="str">'/users/store'</span>, <span class="str">'Users::store'</span>);
                     </div>
                 </div>
 
@@ -688,9 +690,9 @@
                     <div class="code-body">
 <span class="kw">class</span> <span class="cl">Welcome</span> <span class="kw">extends</span> <span class="cl">Controller</span> {<br>
 &nbsp;&nbsp;<span class="kw">public function</span> <span class="fn">index</span>() {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-&gt;<span class="fn">call</span>-&gt;<span class="fn">model</span>(<span class="str">'UserModel'</span>);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span>[<span class="str">'users'</span>] = <span class="var">$this</span>-&gt;<span class="cl">UserModel</span>-&gt;<span class="fn">all</span>();<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-&gt;<span class="fn">call</span>-&gt;<span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="var">$data</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-><span class="fn">call</span>-><span class="fn">model</span>(<span class="str">'UserModel'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span>[<span class="str">'users'</span>] = <span class="var">$this</span>-><span class="cl">UserModel</span>-><span class="fn">all</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-><span class="fn">call</span>-><span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="var">$data</span>);<br>
 &nbsp;&nbsp;}<br>
 }
                     </div>
