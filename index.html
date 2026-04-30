@@ -1,12 +1,9 @@
-<?php
-defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to LavaLust</title>
+    <title>LavaLust Framework | Lightweight PHP MVC</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&family=Unbounded:wght@400;500&display=swap" rel="stylesheet">
@@ -437,6 +434,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             line-height: 1.8;
             color: #a1a1aa;
             overflow-x: auto;
+            white-space: pre-wrap;
         }
 
         .code-body .kw { color: #f97316; }
@@ -572,7 +570,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 <!-- HERO -->
 <div class="hero wrap">
-    <div class="badge">v<?php echo config_item('VERSION') ?? '4.x'; ?> — Now Available</div>
+    <div class="badge">v4.x — Now Available</div>
     <h1>
         <span class="word-lava">Lava</span><span class="word-lust">Lust</span><br>Framework
     </h1>
@@ -674,9 +672,9 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                         <span class="code-filename">app/config/routes.php</span>
                     </div>
                     <div class="code-body">
-<span class="var">$router</span>-><span class="fn">get</span>(<span class="str">'/'</span>, <span class="str">'Welcome::index'</span>);<br>
-<span class="var">$router</span>-><span class="fn">get</span>(<span class="str">'/users'</span>, <span class="str">'Users::index'</span>);<br>
-<span class="var">$router</span>-><span class="fn">post</span>(<span class="str">'/users/store'</span>, <span class="str">'Users::store'</span>);
+<span class="var">$router</span>-&gt;<span class="fn">get</span>(<span class="str">'/'</span>, <span class="str">'Welcome::index'</span>);<br>
+<span class="var">$router</span>-&gt;<span class="fn">get</span>(<span class="str">'/users'</span>, <span class="str">'Users::index'</span>);<br>
+<span class="var">$router</span>-&gt;<span class="fn">post</span>(<span class="str">'/users/store'</span>, <span class="str">'Users::store'</span>);
                     </div>
                 </div>
 
@@ -690,9 +688,9 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                     <div class="code-body">
 <span class="kw">class</span> <span class="cl">Welcome</span> <span class="kw">extends</span> <span class="cl">Controller</span> {<br>
 &nbsp;&nbsp;<span class="kw">public function</span> <span class="fn">index</span>() {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-><span class="fn">call</span>-><span class="fn">model</span>(<span class="str">'UserModel'</span>);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span>[<span class="str">'users'</span>] = <span class="var">$this</span>-><span class="cl">UserModel</span>-><span class="fn">all</span>();<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-><span class="fn">call</span>-><span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="var">$data</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-&gt;<span class="fn">call</span>-&gt;<span class="fn">model</span>(<span class="str">'UserModel'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span>[<span class="str">'users'</span>] = <span class="var">$this</span>-&gt;<span class="cl">UserModel</span>-&gt;<span class="fn">all</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$this</span>-&gt;<span class="fn">call</span>-&gt;<span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="var">$data</span>);<br>
 &nbsp;&nbsp;}<br>
 }
                     </div>
@@ -712,29 +710,21 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <p class="section-desc">A predictable directory layout so every file has a logical home from day one.</p>
 
         <div class="structure-grid">
-            <?php
-            $dirs = [
-                ['app/config',      '⚙'],
-                ['app/controllers', '🎮'],
-                ['app/helpers',     '🔧'],
-                ['app/libraries',   '📚'],
-                ['app/language',    '🌐'],
-                ['app/middlewares', '🛡️'],
-                ['app/migrations',  '🔄'],
-                ['app/models',      '🗄'],
-                ['app/modules',     '📦'],
-                ['app/views',       '🖼'],
-                ['public/',         '🌍'],
-                ['runtime/',        '⚡'],
-                ['console/',        '💻'],
-                ['scheme/',         '📐'],
-            ];
-            foreach ($dirs as [$name, $icon]): ?>
-            <div class="dir-item">
-                <span class="dir-icon"><?php echo $icon; ?></span>
-                <?php echo $name; ?>
-            </div>
-            <?php endforeach; ?>
+            <!-- Static directory items - pure HTML replacement for PHP loop -->
+            <div class="dir-item"><span class="dir-icon">⚙</span> app/config</div>
+            <div class="dir-item"><span class="dir-icon">🎮</span> app/controllers</div>
+            <div class="dir-item"><span class="dir-icon">🔧</span> app/helpers</div>
+            <div class="dir-item"><span class="dir-icon">📚</span> app/libraries</div>
+            <div class="dir-item"><span class="dir-icon">🌐</span> app/language</div>
+            <div class="dir-item"><span class="dir-icon">🛡️</span> app/middlewares</div>
+            <div class="dir-item"><span class="dir-icon">🔄</span> app/migrations</div>
+            <div class="dir-item"><span class="dir-icon">🗄</span> app/models</div>
+            <div class="dir-item"><span class="dir-icon">📦</span> app/modules</div>
+            <div class="dir-item"><span class="dir-icon">🖼</span> app/views</div>
+            <div class="dir-item"><span class="dir-icon">🌍</span> public/</div>
+            <div class="dir-item"><span class="dir-icon">⚡</span> runtime/</div>
+            <div class="dir-item"><span class="dir-icon">💻</span> console/</div>
+            <div class="dir-item"><span class="dir-icon">📐</span> scheme/</div>
         </div>
     </div>
 </section>
