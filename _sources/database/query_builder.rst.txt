@@ -1,5 +1,5 @@
-Database
-=========
+SQL Query Builder
+=================
 
 LavaLust includes a PDO-based Database class that supports a fluent **Query
 Builder** pattern and direct **raw SQL** execution. All values passed through
