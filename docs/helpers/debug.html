@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security Helper &mdash; LavaLust Documentation</title>
+  <title>Debug Helpers &mdash; LavaLust Documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
       <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="String Helper" href="string.html" />
-    <link rel="prev" title="Language Helper" href="language.html" /> 
+    <link rel="next" title="CLI Tool" href="../cli/index.html" />
+    <link rel="prev" title="URL &amp; Asset Helper" href="url.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -111,10 +111,10 @@
 <li class="toctree-l2"><a class="reference internal" href="download.html">Download Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file.html">File Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language Helper</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="string.html">String Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="url.html">URL &amp; Asset Helper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">Debug Helpers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Debug Helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
@@ -152,7 +152,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Helpers</a></li>
-      <li class="breadcrumb-item active">Security Helper</li>
+      <li class="breadcrumb-item active">Debug Helpers</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -161,14 +161,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="security-helper">
-<h1>Security Helper<a class="headerlink" href="#security-helper" title="Link to this heading"></a></h1>
-<p>The <strong>Security Helper</strong> provides utility functions to sanitize user input, filenames, and handle CSRF tokens in LavaLust applications.
-These helpers improve security by filtering input, preventing malicious filenames, and protecting forms against CSRF attacks.</p>
+  <section id="debug-helpers">
+<h1>Debug Helpers<a class="headerlink" href="#debug-helpers" title="Link to this heading"></a></h1>
+<p>The <strong>Debug Helpers</strong> provide a set of powerful functions to inspect variables, arrays, objects, and JSON data with a beautiful UI in LavaLust. These tools are invaluable for development and debugging purposes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These helper functions rely on PHP’s built-in filtering and LavaLust’s internal <code class="docutils literal notranslate"><span class="pre">Security</span></code> class.
-Always ensure user input is properly validated and sanitized when using these helpers.</p>
+<p>These helpers are globally available and do not require any additional loading.
+They automatically format output with syntax highlighting, collapsible structures, and execution context information.</p>
 </div>
 <section id="function-summary">
 <h2>Function Summary<a class="headerlink" href="#function-summary" title="Link to this heading"></a></h2>
@@ -183,14 +182,17 @@ Always ensure user input is properly validated and sanitized when using these he
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filter_io()</span></code></p></td>
-<td><p>Sanitizes and filters a variable according to its type.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dd()</span></code></p></td>
+<td><p>Dumps one or more variables and stops execution (Dump and Die).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sanitize_filename()</span></code></p></td>
-<td><p>Sanitizes filenames to prevent unsafe characters.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dump()</span></code></p></td>
+<td><p>Dumps one or more variables without stopping execution.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">csrf_field()</span></code></p></td>
-<td><p>Outputs a hidden input field containing the CSRF token for forms.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ddt()</span></code></p></td>
+<td><p>Displays an array or object as an HTML table with support for both flat and matrix data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ddj()</span></code></p></td>
+<td><p>Pretty-prints JSON data or automatically decodes and formats JSON strings.</p></td>
 </tr>
 </tbody>
 </table>
@@ -198,77 +200,133 @@ Always ensure user input is properly validated and sanitized when using these he
 <section id="available-functions">
 <h2>Available Functions<a class="headerlink" href="#available-functions" title="Link to this heading"></a></h2>
 <dl class="php function">
-<dt class="sig sig-object php" id="filter_io">
-<span class="sig-name descname"><span class="pre">filter_io</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$type</span></em>, <em class="sig-param"><span class="pre">$var</span></em><span class="sig-paren">)</span><a class="headerlink" href="#filter_io" title="Link to this definition"></a></dt>
-<dd><p>Filters a variable based on the specified type.</p>
+<dt class="sig sig-object php" id="dd">
+<span class="sig-name descname"><span class="pre">dd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...$vars</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dd" title="Link to this definition"></a></dt>
+<dd><p>Dumps one or more variables with a beautiful UI and stops subsequent script execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>$type</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The type of filter to apply (<code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>).</p></li>
-<li><p><strong>$var</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – The variable to filter.</p></li>
+<li><p><strong>$vars</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – One or more variables to dump (variable arguments).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>mixed — The filtered value.</p>
+<dd class="field-even"><p>void — Terminates script execution after output.</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$email</span> <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
-<span class="nv">$id</span>    <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;123abc&#39;</span><span class="p">);</span> <span class="c1">// returns 123</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Ronald&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">];</span>
+<span class="nx">dd</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="php function">
-<dt class="sig sig-object php" id="sanitize_filename">
-<span class="sig-name descname"><span class="pre">sanitize_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sanitize_filename" title="Link to this definition"></a></dt>
-<dd><p>Sanitizes a filename to remove unsafe or special characters.</p>
+<dt class="sig sig-object php" id="dump">
+<span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...$vars</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dump" title="Link to this definition"></a></dt>
+<dd><p>Dumps one or more variables without stopping script execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>$filename</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – The filename to sanitize.</p></li>
+<li><p><strong>$vars</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – One or more variables to dump (variable arguments).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>string — A sanitized version of the filename safe for storage or upload.</p>
+<dd class="field-even"><p>void</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$safe_name</span> <span class="o">=</span> <span class="nx">sanitize_filename</span><span class="p">(</span><span class="s1">&#39;my file&lt;&gt;.txt&#39;</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$safe_name</span><span class="p">;</span> <span class="c1">// Output: my_file.txt</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span> <span class="o">=&gt;</span> <span class="mi">123</span><span class="p">];</span>
+<span class="nx">dump</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+<span class="k">echo</span> <span class="s2">&quot;Script continues...&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="php function">
-<dt class="sig sig-object php" id="csrf_field">
-<span class="sig-name descname"><span class="pre">csrf_field</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#csrf_field" title="Link to this definition"></a></dt>
-<dd><p>Outputs a hidden input field containing the CSRF token to protect HTML forms against CSRF attacks.</p>
+<dt class="sig sig-object php" id="ddt">
+<span class="sig-name descname"><span class="pre">ddt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$data</span></em>, <em class="sig-param"><span class="pre">$label</span> <span class="pre">=</span> <span class="pre">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddt" title="Link to this definition"></a></dt>
+<dd><p>Displays an array or object as an HTML table. Automatically detects whether the data is a flat key-value pair or a matrix (array of rows).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>void — Directly echoes the HTML input field.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$data</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">array|object</span></code></span>) – The data to display as a table.</p></li>
+<li><p><strong>$label</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Optional label to display in the table header.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>void</p>
 </dd>
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; action=&quot;/submit&quot;&gt;&#39;</span><span class="p">;</span>
-<span class="nx">csrf_field</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;&#39;</span><span class="p">;</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">;</span>
+<span class="c1">// Display database results as a table</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">);</span>
+<span class="nx">ddt</span><span class="p">(</span><span class="nv">$users</span><span class="p">,</span> <span class="s1">&#39;Users List&#39;</span><span class="p">);</span>
+
+<span class="c1">// Display a single record</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Ronald&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ronald@example.com&#39;</span><span class="p">];</span>
+<span class="nx">ddt</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="s1">&#39;User Details&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="php function">
+<dt class="sig sig-object php" id="ddj">
+<span class="sig-name descname"><span class="pre">ddj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">$data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddj" title="Link to this definition"></a></dt>
+<dd><p>Pretty-prints JSON data. If a JSON string is provided, it will be automatically decoded and re-encoded with proper formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>$data</strong> (<span><code class="xref php php-obj docutils literal notranslate"><span class="pre">mixed</span></code></span>) – A JSON string or any PHP value that can be encoded to JSON.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Display decoded API response</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="s1">&#39;{&quot;status&quot;:&quot;success&quot;,&quot;data&quot;:{&quot;id&quot;:1,&quot;name&quot;:&quot;LavaLust&quot;}}&#39;</span><span class="p">;</span>
+<span class="nx">ddj</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>
+
+<span class="c1">// Display PHP array as formatted JSON</span>
+<span class="nv">$config</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;debug&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span> <span class="s1">&#39;timezone&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;UTC&#39;</span><span class="p">];</span>
+<span class="nx">ddj</span><span class="p">(</span><span class="nv">$config</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
 
 </section>
+<section id="output-features">
+<h2>Output Features<a class="headerlink" href="#output-features" title="Link to this heading"></a></h2>
+<p>All debug functions provide a consistent, visually appealing output with the following features:</p>
+<ul class="simple">
+<li><p><strong>Syntax Highlighting</strong>: Different colors for different data types (strings, numbers, booleans, null, etc.)</p></li>
+<li><p><strong>Context Information</strong>: Shows the file name and line number where the dump was called</p></li>
+<li><p><strong>Collapsible Structures</strong>: Arrays and objects can be collapsed/expanded for easier navigation</p></li>
+<li><p><strong>Type Annotations</strong>: Clearly indicates the data type of each value</p></li>
+<li><p><strong>Length Indicators</strong>: Shows string lengths and array/object counts</p></li>
+<li><p><strong>Visibility Markers</strong>: For object properties, shows public, protected, or private visibility</p></li>
+<li><p><strong>Responsive Design</strong>: Works well on different screen sizes with scrollable containers</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For best visual results, ensure your development environment has access to modern browsers that support the built-in CSS styling.
+The output is intentionally formatted for readability during development and should not be used in production environments.</p>
+</div>
+</section>
 <section id="additional-notes">
 <h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">filter_io()</span></code> uses PHP’s <code class="docutils literal notranslate"><span class="pre">filter_var()</span></code> for sanitization.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sanitize_filename()</span></code> leverages LavaLust’s internal security class to ensure safe filenames.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">csrf_field()</span></code> automatically generates a token and echoes a hidden input field; include it in every POST form for CSRF protection.</p></li>
-<li><p>Use these helpers consistently to enhance application security and prevent common attacks.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dd()</span></code> function terminates script execution immediately after displaying output, making it useful for early debugging and code inspection.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dump()</span></code> function allows you to continue script execution, useful for logging multiple points in your code.</p></li>
+<li><p>Nested arrays and objects are automatically formatted with indentation and collapsible sections for better readability.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ddt()</span></code> function intelligently detects whether you’re displaying a single record or multiple records and formats accordingly.</p></li>
+<li><p>Maximum recursion depth is limited to 6 levels to prevent performance issues with deeply nested structures.</p></li>
+<li><p>All output is HTML-escaped to prevent XSS vulnerabilities when dumping user-supplied data.</p></li>
 </ul>
 </section>
 </section>
@@ -277,8 +335,8 @@ Always ensure user input is properly validated and sanitized when using these he
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="language.html" class="btn btn-neutral float-left" title="Language Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="string.html" class="btn btn-neutral float-right" title="String Helper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="url.html" class="btn btn-neutral float-left" title="URL &amp; Asset Helper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../cli/index.html" class="btn btn-neutral float-right" title="CLI Tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

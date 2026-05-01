@@ -14,3 +14,4 @@ This section explains the LavaLust helper functions.
    security
    string
    url
+   debug

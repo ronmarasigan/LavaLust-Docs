@@ -1,0 +1,134 @@
+Debug Helpers
+==============
+
+The **Debug Helpers** provide a set of powerful functions to inspect variables, arrays, objects, and JSON data with a beautiful UI in LavaLust. These tools are invaluable for development and debugging purposes.
+
+.. note::
+
+   These helpers are globally available and do not require any additional loading.  
+   They automatically format output with syntax highlighting, collapsible structures, and execution context information.
+
+Function Summary
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Function
+     - Description
+   * - ``dd()``
+     - Dumps one or more variables and stops execution (Dump and Die).
+   * - ``dump()``
+     - Dumps one or more variables without stopping execution.
+   * - ``ddt()``
+     - Displays an array or object as an HTML table with support for both flat and matrix data.
+   * - ``ddj()``
+     - Pretty-prints JSON data or automatically decodes and formats JSON strings.
+
+Available Functions
+-------------------
+
+.. php:function:: dd(...$vars)
+
+    Dumps one or more variables with a beautiful UI and stops subsequent script execution.
+
+    :param mixed $vars: One or more variables to dump (variable arguments).
+    :returns: void — Terminates script execution after output.
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $user = ['name' => 'Ronald', 'role' => 'admin'];
+        dd($user, $_SERVER['REQUEST_METHOD']);
+
+
+.. php:function:: dump(...$vars)
+
+    Dumps one or more variables without stopping script execution.
+
+    :param mixed $vars: One or more variables to dump (variable arguments).
+    :returns: void
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        $data = ['foo' => 'bar', 'baz' => 123];
+        dump($data);
+        echo "Script continues...";
+
+
+.. php:function:: ddt($data, $label = '')
+
+    Displays an array or object as an HTML table. Automatically detects whether the data is a flat key-value pair or a matrix (array of rows).
+
+    :param array|object $data: The data to display as a table.
+    :param string $label: Optional label to display in the table header.
+    :returns: void
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Display database results as a table
+        $users = $db->get('users');
+        ddt($users, 'Users List');
+
+        // Display a single record
+        $user = ['id' => 1, 'name' => 'Ronald', 'email' => 'ronald@example.com'];
+        ddt($user, 'User Details');
+
+
+.. php:function:: ddj($data)
+
+    Pretty-prints JSON data. If a JSON string is provided, it will be automatically decoded and re-encoded with proper formatting.
+
+    :param mixed $data: A JSON string or any PHP value that can be encoded to JSON.
+    :returns: void
+
+    **Example:**
+
+    .. code-block:: php
+
+        <?php
+        // Display decoded API response
+        $response = '{"status":"success","data":{"id":1,"name":"LavaLust"}}';
+        ddj($response);
+
+        // Display PHP array as formatted JSON
+        $config = ['debug' => true, 'timezone' => 'UTC'];
+        ddj($config);
+
+
+Output Features
+-----------------
+
+All debug functions provide a consistent, visually appealing output with the following features:
+
+- **Syntax Highlighting**: Different colors for different data types (strings, numbers, booleans, null, etc.)
+- **Context Information**: Shows the file name and line number where the dump was called
+- **Collapsible Structures**: Arrays and objects can be collapsed/expanded for easier navigation
+- **Type Annotations**: Clearly indicates the data type of each value
+- **Length Indicators**: Shows string lengths and array/object counts
+- **Visibility Markers**: For object properties, shows public, protected, or private visibility
+- **Responsive Design**: Works well on different screen sizes with scrollable containers
+
+.. note::
+
+   For best visual results, ensure your development environment has access to modern browsers that support the built-in CSS styling.  
+   The output is intentionally formatted for readability during development and should not be used in production environments.
+
+Additional Notes
+---------------------
+
+- The ``dd()`` function terminates script execution immediately after displaying output, making it useful for early debugging and code inspection.
+- The ``dump()`` function allows you to continue script execution, useful for logging multiple points in your code.
+- Nested arrays and objects are automatically formatted with indentation and collapsible sections for better readability.
+- The ``ddt()`` function intelligently detects whether you're displaying a single record or multiple records and formats accordingly.
+- Maximum recursion depth is limited to 6 levels to prevent performance issues with deeply nested structures.
+- All output is HTML-escaped to prevent XSS vulnerabilities when dumping user-supplied data.

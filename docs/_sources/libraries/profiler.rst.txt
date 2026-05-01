@@ -1,0 +1,387 @@
+Profiler Class
+==============
+
+The Profiler class renders a fixed, collapsible debug toolbar at the bottom
+of every page during development. It displays execution benchmarks, memory
+usage, database queries, request data, session state, HTTP headers, and
+application configuration — all without touching your view files.
+
+Loading
+--------
+
+Load the library inside your controller or base controller constructor:
+
+.. code-block:: php
+
+    <?php
+    $this->load->library('profiler');
+
+Once loaded, the profiler registers a PHP shutdown function automatically.
+The toolbar is injected into the page **at the end of every request** — you
+do not need to call anything in your views.
+
+.. warning::
+
+   Only enable the Profiler in **development** environments. It exposes
+   database queries, session data, config values, and POST/GET payloads.
+   Never load it on a production server.
+
+   .. code-block:: php
+
+       <?php
+       if (config_item('environment') === 'development')
+       {
+           $this->load->library('profiler');
+       }
+
+
+Toolbar Overview
+-----------------
+
+The toolbar sits fixed at the bottom of the browser window and shows a
+summary bar at all times. Clicking the bar toggles the full panel open
+or closed.
+
+**Summary bar chips**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Chip
+     - Contents
+   * - ``MEM``
+     - Current PHP memory usage (e.g. ``2.40 MB``)
+   * - ``⏱ 0.0821s``
+     - Total page execution time
+   * - ``4 queries``
+     - Number of database queries executed
+   * - ``GET`` / ``POST``
+     - HTTP request method
+
+**Panel tabs**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Tab
+     - Contents
+   * - **Benchmarks**
+     - LavaLust execution time, custom timers, and total page time.
+       Rows exceeding 0.5 s are highlighted in red.
+   * - **Memory**
+     - Current memory usage, peak memory usage, and the PHP memory limit.
+   * - **Queries**
+     - All database queries with bound values interpolated for readability.
+       Queries exceeding 100 ms are highlighted in red.
+   * - **POST**
+     - All ``$_POST`` key-value pairs for the current request.
+   * - **GET**
+     - All ``$_GET`` key-value pairs for the current request.
+   * - **URI**
+     - Full ``REQUEST_URI`` of the current request.
+   * - **Session**
+     - All ``$_SESSION`` key-value pairs (only shown when a session is active).
+   * - **Headers**
+     - All incoming HTTP request headers.
+   * - **Config**
+     - All key-value pairs from the LavaLust config class.
+   * - **PHP Info**
+     - PHP version, OS, SAPI, max execution time, upload limits, and loaded
+       extensions. **Disabled by default** — enable via ``set_sections()``.
+
+
+Enabling and Disabling Sections
+---------------------------------
+
+Use ``set_sections()`` to show or hide individual tabs. Pass an associative
+array of section names mapped to ``TRUE`` or ``FALSE``:
+
+.. code-block:: php
+
+    <?php
+    $this->load->library('profiler');
+
+    // Disable sections you do not need
+    $this->profiler->set_sections([
+        'config'   => FALSE,
+        'session'  => FALSE,
+        'php_info' => FALSE,
+    ]);
+
+    // Enable the PHP Info tab (disabled by default)
+    $this->profiler->set_sections([
+        'php_info' => TRUE,
+    ]);
+
+**All available section keys and their defaults:**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 15 60
+
+   * - Section key
+     - Default
+     - Description
+   * - ``benchmarks``
+     - ``TRUE``
+     - Execution timers and total page time
+   * - ``memory``
+     - ``TRUE``
+     - PHP memory usage and peak
+   * - ``queries``
+     - ``TRUE``
+     - Database queries executed this request
+   * - ``post_data``
+     - ``TRUE``
+     - ``$_POST`` key-value pairs
+   * - ``get_data``
+     - ``TRUE``
+     - ``$_GET`` key-value pairs
+   * - ``uri_string``
+     - ``TRUE``
+     - Full request URI
+   * - ``session``
+     - ``TRUE``
+     - ``$_SESSION`` data (when a session is active)
+   * - ``headers``
+     - ``TRUE``
+     - Incoming HTTP request headers
+   * - ``config``
+     - ``TRUE``
+     - LavaLust application config values
+   * - ``php_info``
+     - ``FALSE``
+     - PHP version, extensions, and ini settings
+
+.. note::
+
+   Unknown section keys are silently ignored — only keys listed in the
+   table above are recognised.
+
+
+Custom Benchmark Timers
+------------------------
+
+You can add your own named timers to the Benchmarks tab using
+``mark_start()`` and ``mark_end()``:
+
+.. code-block:: php
+
+    <?php
+    $this->profiler->mark_start('render_template');
+
+    // ... some code to measure ...
+
+    $this->profiler->mark_end('render_template');
+
+The elapsed time appears in the Benchmarks panel alongside the built-in
+LavaLust and total-page timers.
+
+**Multiple timers**
+
+.. code-block:: php
+
+    <?php
+    $this->profiler->mark_start('db_fetch');
+    $users = $this->user_model->get_all();
+    $this->profiler->mark_end('db_fetch');
+
+    $this->profiler->mark_start('build_csv');
+    $csv = $this->csv_service->from_array($users);
+    $this->profiler->mark_end('build_csv');
+
+.. note::
+
+   If ``mark_end()`` is never called for a timer (e.g. an early ``return``
+   in your code), the Benchmarks panel shows ``(running)`` for that entry
+   rather than a time value.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 40 30
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``mark_start()``
+     - ``mark_start($name)``
+     - ``void``
+   * - ``mark_end()``
+     - ``mark_end($name)``
+     - ``void``
+
+
+Manually Rendering the Toolbar
+--------------------------------
+
+The profiler renders itself automatically via a PHP shutdown function, so
+you normally do not need to call ``display()`` at all. If you need to force
+output at a specific point (for example, before a ``die()`` call or in a
+custom error page), call it explicitly:
+
+.. code-block:: php
+
+    <?php
+    $this->profiler->display();
+
+``display()`` is idempotent — calling it more than once outputs the toolbar
+only on the first call. The shutdown function will not output it a second
+time.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - Method
+     - Signature
+     - Description
+   * - ``display()``
+     - ``display()``
+     - Render and echo the toolbar immediately
+   * - ``set_sections()``
+     - ``set_sections(array $sections)``
+     - Show or hide individual tabs
+
+
+Queries Tab
+------------
+
+The Queries tab shows every database query executed during the request.
+Bound parameter values are interpolated inline for readability so you can
+see the actual data being queried — not just placeholder ``?`` markers.
+
+Rows exceeding **100 ms** are highlighted in red to make slow queries
+immediately visible.
+
+.. note::
+
+   Query logging requires the LavaLust ``Database`` class to expose a
+   ``get_query_log()`` method that returns an array of entries in the form::
+
+       [
+           'query'    => 'SELECT * FROM users WHERE id = ?',
+           'bindings' => [42],
+           'time'     => 0.00123,
+       ]
+
+   If the database is not loaded or does not implement ``get_query_log()``,
+   the tab shows *"No queries executed — or DB not loaded."*
+
+
+Slow Threshold Reference
+-------------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 25 45
+
+   * - Panel
+     - Threshold
+     - Visual indicator
+   * - Benchmarks
+     - > 0.5 s
+     - Row background turns red with a left red border
+   * - Queries
+     - > 0.1 s (100 ms)
+     - Row background turns red with a left red border
+
+
+Method Reference
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 42 30
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``set_sections()``
+     - ``set_sections(array $sections)``
+     - ``void``
+   * - ``mark_start()``
+     - ``mark_start($name)``
+     - ``void``
+   * - ``mark_end()``
+     - ``mark_end($name)``
+     - ``void``
+   * - ``display()``
+     - ``display()``
+     - ``void``
+
+
+Complete Example
+-----------------
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Dashboard.php
+    class Dashboard extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->load->model('Report_model', 'report_model');
+
+            if (config_item('environment') === 'development')
+            {
+                $this->load->library('profiler');
+
+                $this->profiler->set_sections([
+                    'php_info' => TRUE,
+                    'config'   => FALSE,
+                ]);
+            }
+        }
+
+        public function index()
+        {
+            // Time the data-fetch phase
+            $this->profiler->mark_start('fetch_reports');
+            $reports = $this->report_model->get_latest(50);
+            $this->profiler->mark_end('fetch_reports');
+
+            // Time the processing phase
+            $this->profiler->mark_start('process_reports');
+            $summary = $this->_build_summary($reports);
+            $this->profiler->mark_end('process_reports');
+
+            $data['summary'] = $summary;
+            $this->load->view('dashboard/index', $data);
+
+            // Toolbar renders automatically at shutdown —
+            // no need to call display() here
+        }
+    }
+
+The Benchmarks tab will show four rows for the above request:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 50 50
+
+   * - Label
+     - Time
+   * - LavaLust Execution
+     - 0.0041s
+   * - fetch_reports
+     - 0.0218s
+   * - process_reports
+     - 0.0093s
+   * - Total Page Time
+     - 0.0482s
+
+
+Tips and Best Practices
+------------------------
+
+- Load the Profiler inside an ``environment === 'development'`` guard so it can never accidentally run in production.
+- Use ``mark_start()`` / ``mark_end()`` around any code path you suspect is slow — database calls, file reads, external API requests, or view rendering.
+- Use the Queries tab to catch N+1 problems: if the query count grows with the number of items on a page, you likely need eager loading or a JOIN.
+- Disable sections you are not actively investigating (``set_sections(['config' => FALSE, 'headers' => FALSE])``) to keep the toolbar focused and fast to scan.
+- The PHP Info tab is disabled by default because it exposes loaded extension names and ini settings. Only enable it when you specifically need to verify the server environment.
+- If ``mark_end()`` is never reached for a timer, the entry shows ``(running)`` as a reminder that the measurement is incomplete.
+- The toolbar CSS is injected only once per page (tracked with a static variable) so loading the library multiple times does not duplicate the styles.
