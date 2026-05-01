@@ -187,7 +187,7 @@ application configuration — all without touching your view files.</p>
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Loading</a><a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
 <p>Load the library inside your controller or base controller constructor:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Once loaded, the profiler registers a PHP shutdown function automatically.
@@ -201,7 +201,7 @@ Never load it on a production server.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;development&#39;</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -291,7 +291,7 @@ extensions. <strong>Disabled by default</strong> — enable via <code class="doc
 <p>Use <code class="docutils literal notranslate"><span class="pre">set_sections()</span></code> to show or hide individual tabs. Pass an associative
 array of section names mapped to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> or <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
 
 <span class="c1">// Disable sections you do not need</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">profiler</span><span class="o">-&gt;</span><span class="na">set_sections</span><span class="p">([</span>
@@ -551,11 +551,11 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;Report_model&#39;</span><span class="p">,</span> <span class="s1">&#39;report_model&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;Report_model&#39;</span><span class="p">,</span> <span class="s1">&#39;report_model&#39;</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;development&#39;</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
 
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">profiler</span><span class="o">-&gt;</span><span class="na">set_sections</span><span class="p">([</span>
                 <span class="s1">&#39;php_info&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span>
@@ -577,7 +577,7 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">profiler</span><span class="o">-&gt;</span><span class="na">mark_end</span><span class="p">(</span><span class="s1">&#39;process_reports&#39;</span><span class="p">);</span>
 
         <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;summary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$summary</span><span class="p">;</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;dashboard/index&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;dashboard/index&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
 
         <span class="c1">// Toolbar renders automatically at shutdown —</span>
         <span class="c1">// no need to call display() here</span>

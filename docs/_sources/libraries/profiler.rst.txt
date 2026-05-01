@@ -18,7 +18,7 @@ Load the library inside your controller or base controller constructor:
 .. code-block:: php
 
     <?php
-    $this->load->library('profiler');
+    $this->call->library('profiler');
 
 Once loaded, the profiler registers a PHP shutdown function automatically.
 The toolbar is injected into the page **at the end of every request** — you
@@ -35,7 +35,7 @@ do not need to call anything in your views.
        <?php
        if (config_item('environment') === 'development')
        {
-           $this->load->library('profiler');
+           $this->call->library('profiler');
        }
 
 
@@ -105,7 +105,7 @@ array of section names mapped to ``TRUE`` or ``FALSE``:
 .. code-block:: php
 
     <?php
-    $this->load->library('profiler');
+    $this->call->library('profiler');
 
     // Disable sections you do not need
     $this->profiler->set_sections([
@@ -328,11 +328,11 @@ Complete Example
         public function __construct()
         {
             parent::__construct();
-            $this->load->model('Report_model', 'report_model');
+            $this->call->model('Report_model', 'report_model');
 
             if (config_item('environment') === 'development')
             {
-                $this->load->library('profiler');
+                $this->call->library('profiler');
 
                 $this->profiler->set_sections([
                     'php_info' => TRUE,
@@ -354,7 +354,7 @@ Complete Example
             $this->profiler->mark_end('process_reports');
 
             $data['summary'] = $summary;
-            $this->load->view('dashboard/index', $data);
+            $this->call->view('dashboard/index', $data);
 
             // Toolbar renders automatically at shutdown —
             // no need to call display() here
