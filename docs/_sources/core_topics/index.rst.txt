@@ -11,6 +11,7 @@ General Topics
    helpers
    libraries
    autoload
+   kernel
    routine
    before_action
    middlewares

@@ -66,8 +66,6 @@ The following core kernel classes can be extended via the ``app/kernel/`` folder
 Creating Custom Kernel Classes
 -------------------------------
 
-.. php:class:: app/kernel/ClassName
-
    To create a custom kernel class, follow these steps:
 
    **Step 1: Create the class file**
