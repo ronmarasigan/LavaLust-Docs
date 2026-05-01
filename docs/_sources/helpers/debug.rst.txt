@@ -1,5 +1,5 @@
-Debug Helpers
-==============
+Debug Helper
+============
 
 The **Debug Helpers** provide a set of powerful functions to inspect variables, arrays, objects, and JSON data with a beautiful UI in LavaLust. These tools are invaluable for development and debugging purposes.
 
