@@ -164,8 +164,27 @@
 of every page during development. It displays execution benchmarks, memory
 usage, database queries, request data, session state, HTTP headers, and
 application configuration — all without touching your view files.</p>
+<img alt="LavaLust Profiler toolbar showing benchmark, memory, and query tabs" class="align-center" src="_static/images/profiler.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#loading" id="id1">Loading</a></p></li>
+<li><p><a class="reference internal" href="#toolbar-overview" id="id2">Toolbar Overview</a></p></li>
+<li><p><a class="reference internal" href="#enabling-and-disabling-sections" id="id3">Enabling and Disabling Sections</a></p></li>
+<li><p><a class="reference internal" href="#custom-benchmark-timers" id="id4">Custom Benchmark Timers</a></p></li>
+<li><p><a class="reference internal" href="#manually-rendering-the-toolbar" id="id5">Manually Rendering the Toolbar</a></p></li>
+<li><p><a class="reference internal" href="#queries-tab" id="id6">Queries Tab</a></p></li>
+<li><p><a class="reference internal" href="#slow-threshold-reference" id="id7">Slow Threshold Reference</a></p></li>
+<li><p><a class="reference internal" href="#method-reference" id="id8">Method Reference</a></p></li>
+<li><p><a class="reference internal" href="#complete-example" id="id9">Complete Example</a></p></li>
+<li><p><a class="reference internal" href="#tips-and-best-practices" id="id10">Tips and Best Practices</a></p></li>
+</ul>
+</nav>
 <section id="loading">
-<h2>Loading<a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Loading</a><a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
 <p>Load the library inside your controller or base controller constructor:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;profiler&#39;</span><span class="p">);</span>
@@ -189,7 +208,7 @@ Never load it on a production server.</p>
 </div>
 </section>
 <section id="toolbar-overview">
-<h2>Toolbar Overview<a class="headerlink" href="#toolbar-overview" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Toolbar Overview</a><a class="headerlink" href="#toolbar-overview" title="Link to this heading"></a></h2>
 <p>The toolbar sits fixed at the bottom of the browser window and shows a
 summary bar at all times. Clicking the bar toggles the full panel open
 or closed.</p>
@@ -268,7 +287,7 @@ extensions. <strong>Disabled by default</strong> — enable via <code class="doc
 </table>
 </section>
 <section id="enabling-and-disabling-sections">
-<h2>Enabling and Disabling Sections<a class="headerlink" href="#enabling-and-disabling-sections" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Enabling and Disabling Sections</a><a class="headerlink" href="#enabling-and-disabling-sections" title="Link to this heading"></a></h2>
 <p>Use <code class="docutils literal notranslate"><span class="pre">set_sections()</span></code> to show or hide individual tabs. Pass an associative
 array of section names mapped to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> or <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
@@ -350,7 +369,7 @@ table above are recognised.</p>
 </div>
 </section>
 <section id="custom-benchmark-timers">
-<h2>Custom Benchmark Timers<a class="headerlink" href="#custom-benchmark-timers" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Custom Benchmark Timers</a><a class="headerlink" href="#custom-benchmark-timers" title="Link to this heading"></a></h2>
 <p>You can add your own named timers to the Benchmarks tab using
 <code class="docutils literal notranslate"><span class="pre">mark_start()</span></code> and <code class="docutils literal notranslate"><span class="pre">mark_end()</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
@@ -405,7 +424,7 @@ rather than a time value.</p>
 </table>
 </section>
 <section id="manually-rendering-the-toolbar">
-<h2>Manually Rendering the Toolbar<a class="headerlink" href="#manually-rendering-the-toolbar" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Manually Rendering the Toolbar</a><a class="headerlink" href="#manually-rendering-the-toolbar" title="Link to this heading"></a></h2>
 <p>The profiler renders itself automatically via a PHP shutdown function, so
 you normally do not need to call <code class="docutils literal notranslate"><span class="pre">display()</span></code> at all. If you need to force
 output at a specific point (for example, before a <code class="docutils literal notranslate"><span class="pre">die()</span></code> call or in a
@@ -442,7 +461,7 @@ time.</p>
 </table>
 </section>
 <section id="queries-tab">
-<h2>Queries Tab<a class="headerlink" href="#queries-tab" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Queries Tab</a><a class="headerlink" href="#queries-tab" title="Link to this heading"></a></h2>
 <p>The Queries tab shows every database query executed during the request.
 Bound parameter values are interpolated inline for readability so you can
 see the actual data being queried — not just placeholder <code class="docutils literal notranslate"><span class="pre">?</span></code> markers.</p>
@@ -464,7 +483,7 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
 </div>
 </section>
 <section id="slow-threshold-reference">
-<h2>Slow Threshold Reference<a class="headerlink" href="#slow-threshold-reference" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Slow Threshold Reference</a><a class="headerlink" href="#slow-threshold-reference" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30.0%" />
@@ -490,7 +509,7 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
 </table>
 </section>
 <section id="method-reference">
-<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Method Reference</a><a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 28.0%" />
@@ -524,7 +543,7 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
 </table>
 </section>
 <section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Complete Example</a><a class="headerlink" href="#complete-example" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/controllers/Dashboard.php</span>
 <span class="k">class</span> <span class="nc">Dashboard</span> <span class="k">extends</span> <span class="nx">Controller</span>
@@ -594,7 +613,7 @@ the tab shows <em>“No queries executed — or DB not loaded.”</em></p>
 </table>
 </section>
 <section id="tips-and-best-practices">
-<h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Tips and Best Practices</a><a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Load the Profiler inside an <code class="docutils literal notranslate"><span class="pre">environment</span> <span class="pre">===</span> <span class="pre">'development'</span></code> guard so it can never accidentally run in production.</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">mark_start()</span></code> / <code class="docutils literal notranslate"><span class="pre">mark_end()</span></code> around any code path you suspect is slow — database calls, file reads, external API requests, or view rendering.</p></li>
