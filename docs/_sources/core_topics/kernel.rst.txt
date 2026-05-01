@@ -1,0 +1,467 @@
+Creating Kernel Classes
+========================
+
+The **Kernel Classes** system in LavaLust allows you to extend core framework functionality by creating custom classes in the ``app/kernel/`` folder. This pattern provides a clean way to override or extend native framework components without modifying the core files.
+
+.. note::
+
+   Kernel classes are loaded automatically by the framework. Place your custom classes in the ``app/kernel/`` directory using the same naming convention as the core classes you wish to extend.
+
+How It Works
+-------------
+
+For any core kernel class you want to customize:
+
+1. Create a new class in the ``app/kernel/`` folder with the same name as the core class
+2. Extend the corresponding core class from ``LavaLust/System/``
+3. Add your custom methods or override existing ones
+4. The framework will automatically use your class instead of the original
+
+.. warning::
+
+   Always extend the core class rather than replacing it entirely. This ensures framework updates don't break your custom functionality.
+
+Extendable Kernel Classes
+---------------------------
+
+The following core kernel classes can be extended via the ``app/kernel/`` folder:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Class Name
+     - Description
+   * - Config
+     - Configuration management and loading
+   * - Controller
+     - Base controller class for handling HTTP requests
+   * - Errors
+     - Error handling and exception management
+   * - Invoker
+     - Method invocation and routing execution
+   * - IO
+     - Input/Output operations and cookie handling
+   * - Lang
+     - Language loading and internationalization
+   * - Logger
+     - Logging system for debugging and monitoring
+   * - Middleware
+     - Request filtering and interception
+   * - Model
+     - Base model class for database interactions
+   * - Performance
+     - Performance monitoring and benchmarking
+   * - Registry
+     - Application registry and service container
+   * - Request
+     - HTTP request handling and data sanitization
+   * - Response
+     - HTTP response generation and output handling
+   * - Router
+     - URL routing and request mapping
+   * - Security
+     - Security utilities (XSS filtering, CSRF protection)
+
+Creating Custom Kernel Classes
+-------------------------------
+
+.. php:class:: app/kernel/ClassName
+
+   To create a custom kernel class, follow these steps:
+
+   **Step 1: Create the class file**
+
+   Create a PHP file in the ``app/kernel/`` folder matching the core class name:
+
+   .. code-block:: php
+
+        <?php
+        defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+        
+        class MY_Controller extends Controller
+        {
+            public function __construct()
+            {
+                parent::__construct();
+                // Your custom initialization code
+            }
+            
+            // Add your custom methods here
+        }
+
+   **Step 2: Define the class naming convention**
+
+   - For **Controller**: Use ``MY_Controller`` (prefix configurable in config.php)
+   - For **Model**: Use ``MY_Model``
+   - For other classes: Use the same pattern (e.g., ``MY_Router``, ``MY_Security``)
+
+   **Step 3: Implement custom functionality**
+
+   .. code-block:: php
+
+        <?php
+        // app/kernel/MY_Controller.php
+        class MY_Controller extends Controller
+        {
+            protected $current_user;
+            
+            public function __construct()
+            {
+                parent::__construct();
+                $this->loadUser();
+            }
+            
+            private function loadUser()
+            {
+                if ($this->io->cookie('user_id')) {
+                    // Using LavaLust Query Builder
+                    $this->current_user = $this->db
+                        ->table('users')
+                        ->where('id', $this->io->cookie('user_id'))
+                        ->row();
+                }
+            }
+            
+            protected function isLoggedIn()
+            {
+                return !is_null($this->current_user);
+            }
+            
+            protected function view($view, $data = [])
+            {
+                // Auto-inject user data to all views
+                $data['current_user'] = $this->current_user;
+                return parent::view($view, $data);
+            }
+        }
+
+Configuration
+--------------
+
+Set your kernel class prefix in ``app/config/config.php``:
+
+.. code-block:: php
+
+    <?php
+    // The prefix for custom kernel classes
+    $config['subclass_prefix'] = 'MY_';
+
+By default, LavaLust uses ``MY_`` as the prefix. You can change this to any value you prefer.
+
+Practical Examples
+-------------------
+
+**Custom Router Example**
+
+Create a router that supports module-based routing:
+
+.. code-block:: php
+
+    <?php
+    // app/kernel/MY_Router.php
+    class MY_Router extends Router
+    {
+        private $module = '';
+        
+        public function set_routing()
+        {
+            // Add module support
+            $segments = $this->fetch_uri_segments();
+            
+            if (!empty($segments) && is_dir(APPPATH . 'modules/' . ucfirst($segments[0]))) {
+                $this->module = array_shift($segments);
+                $this->uri->reload_segments($segments);
+            }
+            
+            parent::set_routing();
+        }
+        
+        public function get_module()
+        {
+            return $this->module;
+        }
+    }
+
+**Custom Security Example**
+
+Extend the Security kernel class to add additional validation:
+
+.. code-block:: php
+
+    <?php
+    // app/kernel/MY_Security.php
+    class MY_Security extends Security
+    {
+        private $blocked_ips = [];
+        
+        public function __construct()
+        {
+            parent::__construct();
+            $this->loadBlockedIPs();
+        }
+        
+        private function loadBlockedIPs()
+        {
+            // Load from database or config
+            $this->blocked_ips = ['192.168.1.100', '10.0.0.5'];
+        }
+        
+        public function csrf_verify()
+        {
+            // Check if IP is blocked
+            $client_ip = $_SERVER['REMOTE_ADDR'];
+            if (in_array($client_ip, $this->blocked_ips)) {
+                show_error('Access denied from your IP address', 403);
+            }
+            
+            parent::csrf_verify();
+        }
+    }
+
+**Custom Model Example with Query Builder**
+
+Create a base kernel model with common CRUD operations using Query Builder:
+
+.. code-block:: php
+
+    <?php
+    // app/kernel/MY_Model.php
+    class MY_Model extends Model
+    {
+        protected $table = '';
+        protected $primary_key = 'id';
+        
+        public function __construct()
+        {
+            parent::__construct();
+            if (empty($this->table)) {
+                $this->table = strtolower(get_class($this)) . 's';
+            }
+        }
+        
+        /**
+         * Get all records or a single record by ID
+         *
+         * @param int|null $id
+         * @return mixed
+         */
+        public function get($id = null)
+        {
+            $query = $this->db->table($this->table);
+            
+            if ($id) {
+                return $query->where($this->primary_key, $id)->get()->row();
+            }
+            
+            return $query->result();
+        }
+        
+        /**
+         * Get records with where conditions
+         *
+         * @param array $conditions
+         * @return mixed
+         */
+        public function get_where($conditions = [])
+        {
+            $query = $this->db->table($this->table);
+            
+            foreach ($conditions as $field => $value) {
+                $query->where($field, $value);
+            }
+            
+            return $query->result();
+        }
+        
+        /**
+         * Insert a new record
+         *
+         * @param array $data
+         * @return int|false
+         */
+        public function insert($data)
+        {
+            return $this->db->table($this->table)->insert($data);
+        }
+        
+        /**
+         * Update a record
+         *
+         * @param int $id
+         * @param array $data
+         * @return bool
+         */
+        public function update($id, $data)
+        {
+            return $this->db
+                ->table($this->table)
+                ->where($this->primary_key, $id)
+                ->update($data);
+        }
+        
+        /**
+         * Update records with where conditions
+         *
+         * @param array $conditions
+         * @param array $data
+         * @return bool
+         */
+        public function update_where($conditions, $data)
+        {
+            $query = $this->db->table($this->table);
+            
+            foreach ($conditions as $field => $value) {
+                $query->where($field, $value);
+            }
+            
+            return $query->update($data);
+        }
+        
+        /**
+         * Delete a record by ID
+         *
+         * @param int $id
+         * @return bool
+         */
+        public function delete($id)
+        {
+            return $this->db
+                ->table($this->table)
+                ->where($this->primary_key, $id)
+                ->delete();
+        }
+        
+        /**
+         * Delete records with where conditions
+         *
+         * @param array $conditions
+         * @return bool
+         */
+        public function delete_where($conditions)
+        {
+            $query = $this->db->table($this->table);
+            
+            foreach ($conditions as $field => $value) {
+                $query->where($field, $value);
+            }
+            
+            return $query->delete();
+        }
+        
+        /**
+         * Count all records
+         *
+         * @return int
+         */
+        public function count_all()
+        {
+            return $this->db->table($this->table)->row_count();
+        }
+        
+        /**
+         * Count records with where conditions
+         *
+         * @param array $conditions
+         * @return int
+         */
+        public function count_where($conditions = [])
+        {
+            $query = $this->db->table($this->table);
+            
+            foreach ($conditions as $field => $value) {
+                $query->where($field, $value);
+            }
+            
+            return $query->row_count();
+        }
+    }
+
+**Using the Custom Kernel Model**
+
+Now create your application models that extend your custom kernel model:
+
+.. code-block:: php
+
+    <?php
+    // app/models/User_model.php
+    class User_model extends MY_Model
+    {
+        protected $table = 'users';
+        protected $primary_key = 'user_id';
+        
+        public function get_active_users()
+        {
+            return $this->db
+                ->table($this->table)
+                ->where('status', 'active')
+                ->order_by('created_at', 'DESC')
+                ->result();
+        }
+        
+        public function get_user_by_email($email)
+        {
+            return $this->db
+                ->table($this->table)
+                ->where('email', $email)
+                ->row();
+        }
+    }
+
+Best Practices
+---------------
+
+.. tip::
+
+   1. **Always call parent methods** when overriding to maintain core functionality
+   2. **Use meaningful prefixes** to avoid naming conflicts
+   3. **Document your custom methods** with PHPDoc comments
+   4. **Keep extensions focused** - extend only what you need
+   5. **Test thoroughly** after implementing kernel class extensions
+   6. **Consider performance impact** of overridden methods
+   7. **Use dependency injection** when possible for better testability
+   8. **Leverage LavaLust's Query Builder** for all database operations in custom models
+
+Common Gotchas
+---------------
+
+.. warning::
+
+   - Don't modify core framework files directly; always use the app/kernel folder
+   - Remember that kernel classes are loaded only once per request
+   - Private methods in core classes cannot be overridden (use protected instead)
+   - Some core classes may have final methods that cannot be extended
+   - Always check the core class constructor parameters when overriding
+   - The app/kernel folder may not exist by default - create it if needed
+
+Directory Structure
+--------------------
+
+Your application structure should look like this:
+
+.. code-block:: text
+
+    app/
+    ├── config/
+    │   └── config.php
+    ├── controllers/
+    ├── kernel/           <-- Custom kernel classes go here
+    │   ├── MY_Controller.php
+    │   ├── MY_Model.php
+    │   ├── MY_Router.php
+    │   └── MY_Security.php
+    ├── models/
+    │   └── User_model.php
+    └── views/
+
+Additional Notes
+-----------------
+
+- The **app/kernel/** folder is where all custom kernel class extensions should be placed
+- Kernel classes are autoloaded using the framework's class loader
+- You can extend multiple kernel classes simultaneously
+- The subclass prefix can be changed in the main configuration file
+- For controllers and models, you can create your own base kernel classes that other controllers and models extend from
+- Consider creating a project-specific base controller that all your controllers extend from
+- LavaLust's Query Builder provides a fluent interface for database operations - use it in your custom kernel models for consistency
+- The kernel extension system allows you to customize almost every aspect of the framework's behavior

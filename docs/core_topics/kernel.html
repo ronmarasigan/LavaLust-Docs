@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating Kernel Classes &mdash; LavaLust Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=71af5d5d"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/lavatheme.js?v=667fea26"></script>
+      <script src="../_static/js/carbon.js?v=35530795"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+<a href="../../index.html">
+  <img src="../_static/images/logo.png" class="logo" width="240" height="67" alt="Logo">
+</a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../general/welcome.html">What is LavaLust?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/license.html">MIT License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/changelog.html">LavaLust Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/guide.html">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">General Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html">Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database/database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/query_builder.html">SQL Query Builder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/request.html">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/profiler.html">Profiler Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html">Ember Template Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html#module-Ember_registrar">Ember Registrar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/debug.html">Debug Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/api.html">API Usage Sample</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Creating Kernel Classes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-kernel-classes">
+<h1>Creating Kernel Classes<a class="headerlink" href="#creating-kernel-classes" title="Link to this heading"></a></h1>
+<p>The <strong>Kernel Classes</strong> system in LavaLust allows you to extend core framework functionality by creating custom classes in the <code class="docutils literal notranslate"><span class="pre">app/kernel/</span></code> folder. This pattern provides a clean way to override or extend native framework components without modifying the core files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kernel classes are loaded automatically by the framework. Place your custom classes in the <code class="docutils literal notranslate"><span class="pre">app/kernel/</span></code> directory using the same naming convention as the core classes you wish to extend.</p>
+</div>
+<section id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
+<p>For any core kernel class you want to customize:</p>
+<ol class="arabic simple">
+<li><p>Create a new class in the <code class="docutils literal notranslate"><span class="pre">app/kernel/</span></code> folder with the same name as the core class</p></li>
+<li><p>Extend the corresponding core class from <code class="docutils literal notranslate"><span class="pre">LavaLust/System/</span></code></p></li>
+<li><p>Add your custom methods or override existing ones</p></li>
+<li><p>The framework will automatically use your class instead of the original</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always extend the core class rather than replacing it entirely. This ensures framework updates don’t break your custom functionality.</p>
+</div>
+</section>
+<section id="extendable-kernel-classes">
+<h2>Extendable Kernel Classes<a class="headerlink" href="#extendable-kernel-classes" title="Link to this heading"></a></h2>
+<p>The following core kernel classes can be extended via the <code class="docutils literal notranslate"><span class="pre">app/kernel/</span></code> folder:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Config</p></td>
+<td><p>Configuration management and loading</p></td>
+</tr>
+<tr class="row-odd"><td><p>Controller</p></td>
+<td><p>Base controller class for handling HTTP requests</p></td>
+</tr>
+<tr class="row-even"><td><p>Errors</p></td>
+<td><p>Error handling and exception management</p></td>
+</tr>
+<tr class="row-odd"><td><p>Invoker</p></td>
+<td><p>Method invocation and routing execution</p></td>
+</tr>
+<tr class="row-even"><td><p>IO</p></td>
+<td><p>Input/Output operations and cookie handling</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lang</p></td>
+<td><p>Language loading and internationalization</p></td>
+</tr>
+<tr class="row-even"><td><p>Logger</p></td>
+<td><p>Logging system for debugging and monitoring</p></td>
+</tr>
+<tr class="row-odd"><td><p>Middleware</p></td>
+<td><p>Request filtering and interception</p></td>
+</tr>
+<tr class="row-even"><td><p>Model</p></td>
+<td><p>Base model class for database interactions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Performance</p></td>
+<td><p>Performance monitoring and benchmarking</p></td>
+</tr>
+<tr class="row-even"><td><p>Registry</p></td>
+<td><p>Application registry and service container</p></td>
+</tr>
+<tr class="row-odd"><td><p>Request</p></td>
+<td><p>HTTP request handling and data sanitization</p></td>
+</tr>
+<tr class="row-even"><td><p>Response</p></td>
+<td><p>HTTP response generation and output handling</p></td>
+</tr>
+<tr class="row-odd"><td><p>Router</p></td>
+<td><p>URL routing and request mapping</p></td>
+</tr>
+<tr class="row-even"><td><p>Security</p></td>
+<td><p>Security utilities (XSS filtering, CSRF protection)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="creating-custom-kernel-classes">
+<h2>Creating Custom Kernel Classes<a class="headerlink" href="#creating-custom-kernel-classes" title="Link to this heading"></a></h2>
+<dl class="php class">
+<dt class="sig sig-object php">
+<span class="sig-name descname"><span class="pre">app/kernel/ClassName</span></span></dt>
+<dd><p>To create a custom kernel class, follow these steps:</p>
+<p><strong>Step 1: Create the class file</strong></p>
+<p>Create a PHP file in the <code class="docutils literal notranslate"><span class="pre">app/kernel/</span></code> folder matching the core class name:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+
+<span class="k">class</span> <span class="nc">MY_Controller</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="c1">// Your custom initialization code</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Add your custom methods here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Step 2: Define the class naming convention</strong></p>
+<ul class="simple">
+<li><p>For <strong>Controller</strong>: Use <code class="docutils literal notranslate"><span class="pre">MY_Controller</span></code> (prefix configurable in config.php)</p></li>
+<li><p>For <strong>Model</strong>: Use <code class="docutils literal notranslate"><span class="pre">MY_Model</span></code></p></li>
+<li><p>For other classes: Use the same pattern (e.g., <code class="docutils literal notranslate"><span class="pre">MY_Router</span></code>, <code class="docutils literal notranslate"><span class="pre">MY_Security</span></code>)</p></li>
+</ul>
+<p><strong>Step 3: Implement custom functionality</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/kernel/MY_Controller.php</span>
+<span class="k">class</span> <span class="nc">MY_Controller</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$current_user</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loadUser</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">function</span> <span class="nf">loadUser</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Using LavaLust Query Builder</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current_user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
+                <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+                <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">))</span>
+                <span class="o">-&gt;</span><span class="na">row</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">isLoggedIn</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="nb">is_null</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current_user</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">view</span><span class="p">(</span><span class="nv">$view</span><span class="p">,</span> <span class="nv">$data</span> <span class="o">=</span> <span class="p">[])</span>
+    <span class="p">{</span>
+        <span class="c1">// Auto-inject user data to all views</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;current_user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current_user</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">view</span><span class="p">(</span><span class="nv">$view</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Set your kernel class prefix in <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// The prefix for custom kernel classes</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;subclass_prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;MY_&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>By default, LavaLust uses <code class="docutils literal notranslate"><span class="pre">MY_</span></code> as the prefix. You can change this to any value you prefer.</p>
+</section>
+<section id="practical-examples">
+<h2>Practical Examples<a class="headerlink" href="#practical-examples" title="Link to this heading"></a></h2>
+<p><strong>Custom Router Example</strong></p>
+<p>Create a router that supports module-based routing:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/kernel/MY_Router.php</span>
+<span class="k">class</span> <span class="nc">MY_Router</span> <span class="k">extends</span> <span class="nx">Router</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$module</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">set_routing</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Add module support</span>
+        <span class="nv">$segments</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fetch_uri_segments</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$segments</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">is_dir</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;modules/&#39;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$segments</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">module</span> <span class="o">=</span> <span class="nb">array_shift</span><span class="p">(</span><span class="nv">$segments</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="o">-&gt;</span><span class="na">reload_segments</span><span class="p">(</span><span class="nv">$segments</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">parent</span><span class="o">::</span><span class="na">set_routing</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_module</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">module</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Custom Security Example</strong></p>
+<p>Extend the Security kernel class to add additional validation:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/kernel/MY_Security.php</span>
+<span class="k">class</span> <span class="nc">MY_Security</span> <span class="k">extends</span> <span class="nx">Security</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$blocked_ips</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">loadBlockedIPs</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">function</span> <span class="nf">loadBlockedIPs</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Load from database or config</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">blocked_ips</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;192.168.1.100&#39;</span><span class="p">,</span> <span class="s1">&#39;10.0.0.5&#39;</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">csrf_verify</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Check if IP is blocked</span>
+        <span class="nv">$client_ip</span> <span class="o">=</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$client_ip</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">blocked_ips</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;Access denied from your IP address&#39;</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">parent</span><span class="o">::</span><span class="na">csrf_verify</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Custom Model Example with Query Builder</strong></p>
+<p>Create a base kernel model with common CRUD operations using Query Builder:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/kernel/MY_Model.php</span>
+<span class="k">class</span> <span class="nc">MY_Model</span> <span class="k">extends</span> <span class="nx">Model</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span> <span class="o">=</span> <span class="nb">strtolower</span><span class="p">(</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$this</span><span class="p">))</span> <span class="o">.</span> <span class="s1">&#39;s&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Get all records or a single record by ID</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int|null $id</span>
+<span class="sd">     * @return mixed</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get</span><span class="p">(</span><span class="nv">$id</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">primary_key</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">row</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Get records with where conditions</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $conditions</span>
+<span class="sd">     * @return mixed</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_where</span><span class="p">(</span><span class="nv">$conditions</span> <span class="o">=</span> <span class="p">[])</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$conditions</span> <span class="k">as</span> <span class="nv">$field</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Insert a new record</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $data</span>
+<span class="sd">     * @return int|false</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Update a record</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int $id</span>
+<span class="sd">     * @param array $data</span>
+<span class="sd">     * @return bool</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">primary_key</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Update records with where conditions</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $conditions</span>
+<span class="sd">     * @param array $data</span>
+<span class="sd">     * @return bool</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">update_where</span><span class="p">(</span><span class="nv">$conditions</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$conditions</span> <span class="k">as</span> <span class="nv">$field</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Delete a record by ID</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int $id</span>
+<span class="sd">     * @return bool</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">primary_key</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Delete records with where conditions</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $conditions</span>
+<span class="sd">     * @return bool</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">delete_where</span><span class="p">(</span><span class="nv">$conditions</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$conditions</span> <span class="k">as</span> <span class="nv">$field</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Count all records</span>
+<span class="sd">     *</span>
+<span class="sd">     * @return int</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">count_all</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_count</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Count records with where conditions</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param array $conditions</span>
+<span class="sd">     * @return int</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">count_where</span><span class="p">(</span><span class="nv">$conditions</span> <span class="o">=</span> <span class="p">[])</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">);</span>
+
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$conditions</span> <span class="k">as</span> <span class="nv">$field</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">row_count</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Using the Custom Kernel Model</strong></p>
+<p>Now create your application models that extend your custom kernel model:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/models/User_model.php</span>
+<span class="k">class</span> <span class="nc">User_model</span> <span class="k">extends</span> <span class="nx">MY_Model</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;user_id&#39;</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_active_users</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">result</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_user_by_email</span><span class="p">(</span><span class="nv">$email</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="nv">$email</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">row</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ol class="arabic simple">
+<li><p><strong>Always call parent methods</strong> when overriding to maintain core functionality</p></li>
+<li><p><strong>Use meaningful prefixes</strong> to avoid naming conflicts</p></li>
+<li><p><strong>Document your custom methods</strong> with PHPDoc comments</p></li>
+<li><p><strong>Keep extensions focused</strong> - extend only what you need</p></li>
+<li><p><strong>Test thoroughly</strong> after implementing kernel class extensions</p></li>
+<li><p><strong>Consider performance impact</strong> of overridden methods</p></li>
+<li><p><strong>Use dependency injection</strong> when possible for better testability</p></li>
+<li><p><strong>Leverage LavaLust’s Query Builder</strong> for all database operations in custom models</p></li>
+</ol>
+</div>
+</section>
+<section id="common-gotchas">
+<h2>Common Gotchas<a class="headerlink" href="#common-gotchas" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>Don’t modify core framework files directly; always use the app/kernel folder</p></li>
+<li><p>Remember that kernel classes are loaded only once per request</p></li>
+<li><p>Private methods in core classes cannot be overridden (use protected instead)</p></li>
+<li><p>Some core classes may have final methods that cannot be extended</p></li>
+<li><p>Always check the core class constructor parameters when overriding</p></li>
+<li><p>The app/kernel folder may not exist by default - create it if needed</p></li>
+</ul>
+</div>
+</section>
+<section id="directory-structure">
+<h2>Directory Structure<a class="headerlink" href="#directory-structure" title="Link to this heading"></a></h2>
+<p>Your application structure should look like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/
+├── config/
+│   └── config.php
+├── controllers/
+├── kernel/           &lt;-- Custom kernel classes go here
+│   ├── MY_Controller.php
+│   ├── MY_Model.php
+│   ├── MY_Router.php
+│   └── MY_Security.php
+├── models/
+│   └── User_model.php
+└── views/
+</pre></div>
+</div>
+</section>
+<section id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The <strong>app/kernel/</strong> folder is where all custom kernel class extensions should be placed</p></li>
+<li><p>Kernel classes are autoloaded using the framework’s class loader</p></li>
+<li><p>You can extend multiple kernel classes simultaneously</p></li>
+<li><p>The subclass prefix can be changed in the main configuration file</p></li>
+<li><p>For controllers and models, you can create your own base kernel classes that other controllers and models extend from</p></li>
+<li><p>Consider creating a project-specific base controller that all your controllers extend from</p></li>
+<li><p>LavaLust’s Query Builder provides a fluent interface for database operations - use it in your custom kernel models for consistency</p></li>
+<li><p>The kernel extension system allows you to customize almost every aspect of the framework’s behavior</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>
