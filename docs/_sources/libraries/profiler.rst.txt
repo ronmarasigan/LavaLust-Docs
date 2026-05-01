@@ -6,16 +6,9 @@ of every page during development. It displays execution benchmarks, memory
 usage, database queries, request data, session state, HTTP headers, and
 application configuration — all without touching your view files.
 
-.. image:: /_static/images/profiler.png
-   :alt: LavaLust Profiler toolbar showing benchmark, memory, and query tabs
-   :align: center
-
-|
-
 .. contents:: On this page
    :local:
    :depth: 1
-
 
 Loading
 --------

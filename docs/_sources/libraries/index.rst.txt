@@ -23,4 +23,6 @@ Here are the built-in LavaLust libraries.
    session
    session_security
    performance
+   profiler
    ember
+  
