@@ -1,7 +1,7 @@
 Blog CRUD using ORM
 ============================
 
-This guide demonstrates a basic **Blog CRUD** implementation using LavaLust's **Model-View-Controller** pattern.
+This guide demonstrates a basic **Blog CRUD** implementation using LavaLust's **Model-View-Controller** pattern with the updated ORM features.
 
 Folder structure
 -----------------
@@ -21,7 +21,7 @@ Folder structure
             ├── create.php
             ├── edit.php
             └── show.php
-      
+
 Table Structure
 ----------------
 
@@ -68,6 +68,13 @@ Model
     {
         protected $table = 'blog';
         protected $primary_key = 'id';
+        protected $fillable = ['title', 'content', 'author'];
+        protected $guarded = ['id'];
+        protected $timestamps = true;
+        protected $created_at_column = 'created_at';
+        protected $updated_at_column = 'updated_at';
+        protected $has_soft_delete = false;
+        protected $soft_delete_column = 'deleted_at';
 
         public function get_all_posts()
         {
@@ -94,7 +101,6 @@ Model
             return $this->delete($id);
         }
     }
-    
 
 Controller
 ----------------
@@ -128,8 +134,7 @@ Controller
                 $this->BlogModel->create_post([
                     'title'      => filter_io('string', $this->io->post('title')),
                     'content'    => filter_io('string', $this->io->post('content')),
-                    'author'     => 'Admin',
-                    'created_at' => date('Y-m-d H:i:s')
+                    'author'     => 'Admin'
                 ]);
                 redirect('blog');
             } else {
@@ -142,8 +147,7 @@ Controller
             if ($_POST) {
                 $this->BlogModel->update_post($id, [
                     'title'      => filter_io('string', $this->io->post('title')),
-                    'content'    => filter_io('string', $this->io->post('content')),
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'content'    => filter_io('string', $this->io->post('content'))
                 ]);
                 redirect('blog');
             } else {
@@ -158,7 +162,6 @@ Controller
             redirect('blog');
         }
     }
-    
 
 Views
 ----------
@@ -167,23 +170,21 @@ Views
 
 .. code-block:: php
 
-    <?php foreach(html_escape($posts) as $post): ?>
-        <h2><?= $post->title ?></h2>
-        <p><?= str_limitwords($post->content, 20) ?></p>
-        <a href="<?= site_url('blog/view/' . $post->id) ?>">Read More</a>
-        <a href="<?= site_url('blog/edit/' . $post->id) ?>">Edit</a>
-        <a href="<?= site_url('blog/delete/' . $post->id) ?>">Delete</a>
+    <?php foreach($posts as $post): ?>
+        <h2><?= html_escape($post['title']) ?></h2>
+        <p><?= str_limitwords($post['content'], 20) ?></p>
+        <a href="<?= site_url('blog/view/' . $post['id']) ?>">Read More</a>
+        <a href="<?= site_url('blog/edit/' . $post['id']) ?>">Edit</a>
+        <a href="<?= site_url('blog/delete/' . $post['id']) ?>">Delete</a>
     <?php endforeach; ?>
-
 
 **View Single Post**
 
 .. code-block:: php
 
-    <h1><?= html_escape($post->title) ?></h1>
-    <p><?= html_escape($post->content) ?></p>
-    <p>Author: <?= html_escape($post->author) ?></p>
-
+    <h1><?= html_escape($post['title']) ?></h1>
+    <p><?= html_escape($post['content']) ?></p>
+    <p>Author: <?= html_escape($post['author']) ?></p>
 
 **Create/Edit Form**
 
@@ -191,19 +192,22 @@ Views
 
     <form method="post" action="//put your route here">
         <label>Title</label>
-        <input type="text" name="title" value="<?= $post->title ?? '' ?>" />
+        <input type="text" name="title" value="<?= $post['title'] ?? '' ?>" />
         <label>Content</label>
-        <textarea name="content"><?= $post->content ?? '' ?></textarea>
+        <textarea name="content"><?= $post['content'] ?? '' ?></textarea>
         <button type="submit">Save</button>
     </form>
-
 
 Notes
 -----
 
-- Always sanitize input using `filter_io()` or LavaLust's security helpers.
-- Always sanitize output using `html_escape()`.
-- The **Model** handles database interaction.
-- The **Controller** handles request logic.
-- The **View** displays data to the user.
-- Use **method chaining** with the Model for advanced queries if needed.
+- Always sanitize input using ``filter_io()`` or LavaLust's security helpers
+- Always sanitize output using ``html_escape()``
+- The **Model** now returns arrays, not objects
+- Use ``$fillable`` to whitelist mass assignable attributes
+- Use ``$guarded`` to blacklist attributes from mass assignment
+- Set ``$timestamps = true`` to automatically manage ``created_at`` and ``updated_at``
+- Enable soft delete by setting ``$has_soft_delete = true`` and adding a ``deleted_at`` column
+- The **Model** handles database interaction
+- The **Controller** handles request logic
+- The **View** displays data to the user
