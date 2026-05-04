@@ -13,7 +13,7 @@ How It Works
 For any core kernel class you want to customize:
 
 1. Create a new class in the ``app/kernel/`` folder with the same name as the core class
-2. Extend the corresponding core class from ``LavaLust/System/``
+2. Extend the corresponding core class from ``LavaLust/scheme/``
 3. Add your custom methods or override existing ones
 4. The framework will automatically use your class instead of the original
 
