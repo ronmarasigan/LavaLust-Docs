@@ -1,0 +1,394 @@
+Proxies (Static Facades)
+=========================
+
+LavaLust provides a set of **Proxy** classes in the
+``LavaLust\Kernel\Proxies`` namespace that let you call any library method
+as a static call from anywhere in your application — controllers, models,
+helpers, or middleware — without needing ``$this->`` or a direct instance
+reference.
+
+Under the hood each proxy resolves the real library instance from
+``lava_instance()`` on every call, so the underlying object is always the
+same singleton the framework manages.
+
+.. contents:: On this page
+   :local:
+   :depth: 1
+
+
+How It Works
+-------------
+
+Every proxy extends the abstract ``Proxy`` base class, which defines two
+hooks:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Method
+     - Purpose
+   * - ``get_library()``
+     - Returns the library name passed to ``$this->call->library()``
+       to ensure the library is loaded before resolving. Return ``null``
+       to skip loading (used by ``Loader``).
+   * - ``get_property()``
+     - Returns the property name on ``lava_instance()`` that holds the
+       resolved instance (e.g. ``'db'``, ``'session'``).
+
+``__callStatic()`` intercepts every static method call, resolves the
+instance, and delegates the call transparently. A ``BadMethodCallException``
+is thrown if the method does not exist, and a ``RuntimeException`` is thrown
+if the property cannot be resolved.
+
+
+Importing
+----------
+
+Import the namespace at the top of any file where you want to use proxies:
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\DB;
+    use LavaLust\Kernel\Proxies\Session;
+    use LavaLust\Kernel\Proxies\Cache;
+    // ... etc.
+
+Or import all at once:
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\{
+        DB, Session, Cache, Email, Encryption,
+        Validation, Migration, Pagination,
+        Profiler, Upload, Ember, Api, Loader
+    };
+
+
+Available Proxies
+------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 20 18 40
+
+   * - Proxy class
+     - Library loaded
+     - Instance property
+     - Equivalent to
+   * - ``DB``
+     - ``database``
+     - ``$this->db``
+     - ``$this->db->...``
+   * - ``Session``
+     - ``session``
+     - ``$this->session``
+     - ``$this->session->...``
+   * - ``Cache``
+     - ``cache``
+     - ``$this->cache``
+     - ``$this->cache->...``
+   * - ``Email``
+     - ``email``
+     - ``$this->email``
+     - ``$this->email->...``
+   * - ``Encryption``
+     - ``encryption``
+     - ``$this->encryption``
+     - ``$this->encryption->...``
+   * - ``Validation``
+     - ``form_validation``
+     - ``$this->form_validation``
+     - ``$this->form_validation->...``
+   * - ``Migration``
+     - ``migration``
+     - ``$this->migration``
+     - ``$this->migration->...``
+   * - ``Pagination``
+     - ``pagination``
+     - ``$this->pagination``
+     - ``$this->pagination->...``
+   * - ``Profiler``
+     - ``profiler``
+     - ``$this->profiler``
+     - ``$this->profiler->...``
+   * - ``Upload``
+     - ``upload``
+     - ``$this->upload``
+     - ``$this->upload->...``
+   * - ``Api``
+     - ``api``
+     - ``$this->api``
+     - ``$this->api->...``
+   * - ``Ember``
+     - ``ember``
+     - ``$this->ember``
+     - ``$this->ember->...``
+   * - ``Loader``
+     - *(none)*
+     - ``$this->call``
+     - ``$this->call->...``
+
+
+Usage Examples
+---------------
+
+**DB**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\DB;
+
+    // Equivalent to $this->db->table('users')->where('status', 'active')->get_all()
+    $users = DB::table('users')
+               ->where('status', 'active')
+               ->get_all();
+
+    $user = DB::table('users')->where('id', 42)->row_array();
+
+    DB::table('users')->insert([
+        'name'  => 'Jane',
+        'email' => 'jane@example.com',
+    ]);
+
+**Session**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Session;
+
+    Session::set_userdata('user_id', 42);
+    $id = Session::userdata('user_id');
+    Session::unset_userdata('user_id');
+
+**Cache**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Cache;
+
+    $posts = Cache::remember('latest_posts', 600, function() {
+        return DB::table('posts')->order_by('created_at', 'DESC')->limit(10)->get_all();
+    });
+
+    Cache::delete('latest_posts');
+
+**Email**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Email;
+
+    Email::sender('no-reply@example.com', 'My App')
+         ->recipient('user@example.com')
+         ->subject('Welcome!')
+         ->html('<h1>Welcome!</h1>')
+         ->send();
+
+**Encryption**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Encryption;
+
+    $token   = Encryption::encrypt($plain_text);
+    $decoded = Encryption::decrypt($token);
+
+**Validation**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Validation;
+
+    Validation::set_rules('email', 'Email', 'required|valid_email');
+    Validation::set_rules('password', 'Password', 'required|min_length[8]');
+
+    if ( ! Validation::run())
+    {
+        $errors = Validation::error_array();
+    }
+
+**Pagination**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Pagination;
+
+    $meta = Pagination::initialize($total, 15, $page, 'users/index');
+    $html = Pagination::paginate();
+
+**Upload**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Upload;
+
+    Upload::initialize(['upload_path' => APPPATH . 'uploads/', 'allowed_types' => 'jpg|png|pdf']);
+
+    if ( ! Upload::do_upload('file'))
+    {
+        $error = Upload::display_errors();
+    }
+
+**Profiler**
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Profiler;
+
+    Profiler::set_sections(['php_info' => TRUE, 'config' => FALSE]);
+    Profiler::mark_start('render');
+    // ... work ...
+    Profiler::mark_end('render');
+
+**Loader**
+
+The ``Loader`` proxy is special — it does not load a library. It resolves
+the ``$this->call`` instance (the LavaLust loader) so you can call loader
+methods statically from anywhere:
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Loader;
+
+    Loader::library('pdf');
+    Loader::model('Invoice_model', 'invoice_model');
+    Loader::helper('string');
+    Loader::view('invoices/show', $data);
+
+
+Proxies vs Instance Methods
+-----------------------------
+
+Both approaches call the exact same underlying object — the proxy is purely
+syntactic sugar, identical in behaviour to the ``$this->`` style. There is
+no performance difference and no "wrong" choice.
+(``DB::``, ``Cache::``, ``Email::`` etc.) exactly.
+
+Use whichever style is most natural for your team or most consistent with
+the rest of your codebase. If you prefer the static syntax everywhere,
+use it everywhere — that is a completely valid approach.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 50 50
+
+   * - Instance style (inside a controller)
+     - Proxy style
+   * - ``$this->db->table('users')->get_all()``
+     - ``DB::table('users')->get_all()``
+   * - ``$this->session->userdata('id')``
+     - ``Session::userdata('id')``
+   * - ``$this->cache->remember('k', 60, fn() => ...)``
+     - ``Cache::remember('k', 60, fn() => ...)``
+   * - ``$this->email->sender(...)->send()``
+     - ``Email::sender(...)->send()``
+   * - ``$this->call->library('pdf')``
+     - ``Loader::library('pdf')``
+
+.. note::
+
+   Proxies work everywhere — controllers, models, helpers, and middleware.
+   This is the same pattern Laravel uses with its Facades (``DB::``,
+   ``Cache::``, ``Email::`` etc.) and it is perfectly valid to use them as
+   your primary style throughout the entire application if you prefer the
+   static call syntax. The instance style (``$this->db``) is simply an
+   alternative, not the preferred one.
+
+
+Error Handling
+---------------
+
+Two exceptions can be thrown by the proxy system:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Exception
+     - When it is thrown
+   * - ``RuntimeException``
+     - The property returned by ``get_property()`` is ``null`` on
+       ``lava_instance()`` — usually because the library failed to load
+       or was never registered.
+   * - ``BadMethodCallException``
+     - The method name passed to ``__callStatic()`` does not exist on the
+       resolved instance.
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\DB;
+
+    try
+    {
+        $users = DB::table('users')->get_all();
+    }
+    catch (\RuntimeException $e)
+    {
+        // Database could not be resolved
+        log_message('error', $e->getMessage());
+    }
+    catch (\BadMethodCallException $e)
+    {
+        // Method does not exist on the DB instance
+        log_message('error', $e->getMessage());
+    }
+
+
+Creating a Custom Proxy
+------------------------
+
+To proxy your own library, extend ``Proxy`` and implement the two required
+methods:
+
+.. code-block:: php
+
+    <?php
+    namespace LavaLust\Kernel\Proxies;
+
+    class Pdf extends Proxy
+    {
+        protected static function get_library()
+        {
+            return 'pdf'; // loaded via $this->call->library('pdf')
+        }
+
+        protected static function get_property()
+        {
+            return 'pdf'; // resolved from lava_instance()->pdf
+        }
+    }
+
+Then use it anywhere after importing:
+
+.. code-block:: php
+
+    <?php
+    use LavaLust\Kernel\Proxies\Pdf;
+
+    $html = '<h1>Invoice</h1>';
+    Pdf::load_html($html);
+    Pdf::render();
+
+
+Tips and Best Practices
+------------------------
+
+- Use proxies freely in **controllers, models, helpers, and middleware** — they work identically in every context and are a fully supported coding style, not a workaround.
+- The proxy style is especially convenient in **helpers and models** where ``$this`` does not carry library references, but it is equally valid in controllers.
+- Always ``use`` the proxy class at the top of the file rather than writing the full ``\LavaLust\kernel\Proxies\DB::`` namespace inline — the short alias is much easier to read.
+- Wrap proxy calls in ``try/catch`` when the library might not be loaded (e.g. conditionally loaded libraries) to catch ``RuntimeException`` gracefully.
+- Be consistent within a project — mixing ``DB::`` in some files and ``$this->db`` in others adds mental overhead. Pick one style and stick to it across the codebase.

@@ -1,48 +1,91 @@
 CLI Tool
 ========
 
-LavaLust includes a built-in **command-line interface (CLI)** tool called ``lava`` for
-scaffolding application files and running the development server. It eliminates the need
-to manually create boilerplate files.
+LavaLust includes a built-in **command-line interface (CLI)** tool called ``lava``
+for scaffolding application files, managing cache, inspecting routes, and running
+the development server. It eliminates the need to manually create boilerplate files.
 
 The ``lava`` script lives in your project root and is executed via PHP from your terminal.
 
-.. code-block:: text
+.. code-block:: bash
 
-   php lava <command> [argument]
+   php lava <command> [argument] [--flag=value]
 
 .. note::
 
-   The ``lava`` script is **CLI-only**. Accessing it through a web browser will be blocked
+   The ``lava`` script is **CLI-only**. Accessing it through a web browser is blocked
    automatically.
+
 
 Available Commands
 -------------------
 
+Commands are grouped by function.
+
+**Server**
+
 .. list-table::
    :header-rows: 1
-   :widths: 28 72
+   :widths: 32 68
 
    * - Command
      - Description
    * - ``run [port]``
-     - Starts the PHP built-in development server (default port: 3000)
+     - Start the PHP built-in development server (default port: ``3000``)
+
+**Cache**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 68
+
+   * - Command
+     - Description
+   * - ``cache:clear``
+     - Delete all files in ``runtime/cache/``
+
+**Makers**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 68
+
+   * - Command
+     - Description
    * - ``make:controller <name>``
-     - Generates a controller class in ``app/controllers/``
+     - Generates a controller class in ``app/Controllers/``
    * - ``make:model <name>``
-     - Generates a model class in ``app/models/``
+     - Generates a model class in ``app/Models/``
+   * - ``make:middleware <name>``
+     - Generates a middleware class in ``app/middlewares/``
    * - ``make:helper <name>``
      - Generates a helper file in ``app/helpers/``
    * - ``make:library <name>``
-     - Generates a library class in ``app/libraries/``
+     - Generates a library class in ``app/Libraries/``
    * - ``make:view <name>``
      - Generates a view file in ``app/views/``
    * - ``make:language <name>``
      - Generates a language file in ``app/language/``
    * - ``make:config <name>``
      - Generates a config file in ``app/config/``
-   * - ``make:middleware <name>``
-     - Generates a middleware class in ``app/middlewares/``
+   * - ``make:command <name>``
+     - Generates a custom CLI command class in ``app/commands/``
+
+**Utilities**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 68
+
+   * - Command
+     - Description
+   * - ``route:list``
+     - Display all registered routes parsed from ``app/config/routes.php``
+   * - ``key:generate``
+     - Generate a new 64-character ``APP_KEY`` and write it to ``.env``
+   * - ``env:check``
+     - Display a summary of the current ``.env`` configuration
+
 
 Development Server
 -------------------
@@ -51,16 +94,17 @@ Development Server
 ~~~~~~~~~~~~~~~
 
 Starts the PHP built-in development server pointing to the ``public/`` directory.
-The default port is ``3000`` if none is specified.
 
 .. code-block:: bash
 
-   # Start on default port 3000
+   # Start on the default port 3000
    php lava run
 
-   # Start on a custom port
+   # Start on a custom port (positional)
    php lava run 8080
-   php lava run 4545
+
+   # Start on a custom port (flag)
+   php lava run --port=8080
 
 **Output:**
 
@@ -72,27 +116,53 @@ The default port is ``3000`` if none is specified.
 
 .. note::
 
-   The server requires a ``public/`` directory in your project root. An error is shown
-   if it cannot be found.
+   The server requires a ``public/`` directory in the project root.
+   An error is shown if it cannot be found.
+
+
+Cache Management
+-----------------
+
+``cache:clear``
+~~~~~~~~~~~~~~~~
+
+Deletes all files and empty subdirectories inside ``runtime/cache/``.
+
+.. code-block:: bash
+
+   php lava cache:clear
+
+**Output:**
+
+.. code-block:: text
+
+   Cache cleared! 14 file(s) removed from runtime/cache.
+
+.. note::
+
+   The cache directory is ``runtime/cache/`` relative to the project root
+   (not ``app/cache/``). An error is shown if the directory does not exist.
+
 
 Generating Files
 -----------------
 
 All ``make:*`` commands accept a name argument. Forward slashes (``/``) create
-subdirectories inside the target folder. Generated files include boilerplate code
-and will not overwrite existing files.
+subdirectories inside the target folder. Generated files include boilerplate
+code and will **never overwrite** an existing file.
+
 
 make:controller
 ~~~~~~~~~~~~~~~~
 
-Creates a controller class extending ``Controller`` in ``app/controllers/``.
+Creates a controller class extending ``BaseController`` in ``app/Controllers/``.
 
 .. code-block:: bash
 
    php lava make:controller Dashboard
    php lava make:controller Admin/UserController
 
-**Generated file** (``app/controllers/Dashboard.php``):
+**Generated file** (``app/Controllers/Dashboard.php``):
 
 .. code-block:: php
 
@@ -104,7 +174,7 @@ Creates a controller class extending ``Controller`` in ``app/controllers/``.
     *
     * Automatically generated via CLI.
     */
-   class Dashboard extends Controller {
+   class Dashboard extends BaseController {
 
        public function __construct()
        {
@@ -112,10 +182,11 @@ Creates a controller class extending ``Controller`` in ``app/controllers/``.
        }
    }
 
+
 make:model
 ~~~~~~~~~~~
 
-Creates a model class extending ``Model`` in ``app/models/``. Includes default
+Creates a model class extending ``Model`` in ``app/Models/``. Includes default
 ``$table``, ``$primary_key``, ``$fillable``, and ``$guarded`` properties.
 
 .. code-block:: bash
@@ -123,7 +194,7 @@ Creates a model class extending ``Model`` in ``app/models/``. Includes default
    php lava make:model UserModel
    php lava make:model Blog/PostModel
 
-**Generated file** (``app/models/UserModel.php``):
+**Generated file** (``app/Models/UserModel.php``):
 
 .. code-block:: php
 
@@ -147,6 +218,52 @@ Creates a model class extending ``Model`` in ``app/models/``. Includes default
            parent::__construct();
        }
    }
+
+
+make:middleware
+~~~~~~~~~~~~~~~~
+
+Creates a middleware class in ``app/middlewares/``. The class name is automatically
+suffixed with ``Middleware``.
+
+.. code-block:: bash
+
+   php lava make:middleware Auth
+   php lava make:middleware Admin/Role
+
+**Generated file** (``app/middlewares/AuthMiddleware.php``):
+
+.. code-block:: php
+
+   <?php
+   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+   /**
+    * Middleware: AuthMiddleware
+    *
+    * Automatically generated via CLI.
+    */
+   class AuthMiddleware
+   {
+       /**
+        * Handle the incoming request
+        *
+        * @param Closure $next
+        * @return mixed
+        */
+       public function handle(Closure $next)
+       {
+           // TODO: Add your middleware logic here
+
+           return $next();
+       }
+   }
+
+.. note::
+
+   After generating a middleware, register it in ``app/config/middleware.php``
+   before attaching it to routes.
+
 
 make:helper
 ~~~~~~~~~~~~
@@ -176,17 +293,18 @@ The filename is suffixed with ``_helper.php`` automatically.
        // Your helper logic here
    }
 
+
 make:library
 ~~~~~~~~~~~~~
 
-Creates a standalone library class in ``app/libraries/``.
+Creates a standalone library class in ``app/Libraries/``.
 
 .. code-block:: bash
 
    php lava make:library PDF
    php lava make:library Payment/Stripe
 
-**Generated file** (``app/libraries/PDF.php``):
+**Generated file** (``app/Libraries/PDF.php``):
 
 .. code-block:: php
 
@@ -205,6 +323,7 @@ Creates a standalone library class in ``app/libraries/``.
            // Library initialized
        }
    }
+
 
 make:view
 ~~~~~~~~~~
@@ -232,10 +351,11 @@ Creates an HTML view file in ``app/views/``.
    </body>
    </html>
 
+
 make:language
 ~~~~~~~~~~~~~~
 
-Creates a language file in ``app/language/``. Useful for multi-language support.
+Creates a language file in ``app/language/``.
 
 .. code-block:: bash
 
@@ -253,6 +373,7 @@ Creates a language file in ``app/language/``. Useful for multi-language support.
         */
        'welcome' => 'Hello {username} {type}',
    );
+
 
 make:config
 ~~~~~~~~~~~~
@@ -279,51 +400,183 @@ Creates a blank configuration file in ``app/config/``.
 
    // Add your configuration here
 
-make:middleware
-~~~~~~~~~~~~~~~~
 
-Creates a middleware class in ``app/middlewares/``. The class name is automatically
-suffixed with ``Middleware``.
+make:command
+~~~~~~~~~~~~~
+
+Creates a custom CLI command class in ``app/commands/``. After generating,
+register the command in the ``lava`` script using ``register_command()``.
 
 .. code-block:: bash
 
-   php lava make:middleware Auth
-   php lava make:middleware Admin/Role
+   php lava make:command SendEmails
+   php lava make:command PruneUsers
 
-**Generated file** (``app/middlewares/AuthMiddleware.php``):
+**Generated file** (``app/commands/SendEmails.php``):
 
 .. code-block:: php
 
    <?php
    defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-   use Closure;
-
    /**
-    * Middleware: AuthMiddleware
+    * Command: SendEmails
+    *
+    * Register this in your lava CLI file with:
+    *   register_command('send:emails', [new SendEmails, 'handle'], 'Description here', []);
     *
     * Automatically generated via CLI.
     */
-   class AuthMiddleware
+   class SendEmails
    {
-       /**
-        * Handle the incoming request
-        *
-        * @param Closure $next
-        * @return mixed
-        */
-       public function handle(Closure $next)
+       public function handle($input = null, array $flags = [])
        {
-           // TODO: Add your middleware logic here (authentication, authorization, etc.)
-
-           return $next();
+           // TODO: Add your command logic here
+           echo "Running SendEmails..." . PHP_EOL;
        }
    }
 
+**Registering the command in** ``lava``:
+
+.. code-block:: php
+
+   <?php
+   require APP_DIR . 'commands/SendEmails.php';
+
+   register_command(
+       'send:emails',
+       [new SendEmails, 'handle'],
+       'Send queued emails to subscribers',
+       ['[--dry-run]' => 'Preview without sending']
+   );
+
+Once registered, run it from the terminal:
+
+.. code-block:: bash
+
+   php lava send:emails
+   php lava send:emails --dry-run
+
+
+Utility Commands
+-----------------
+
+``route:list``
+~~~~~~~~~~~~~~~
+
+Parses ``app/config/routes.php`` and prints a table of all registered routes.
+
+.. code-block:: bash
+
+   php lava route:list
+
+**Output:**
+
+.. code-block:: text
+
+   Registered Routes
+   ────────────────────────────────────────────────────────────────────────
+   Method   URI                            Handler
+   ────────────────────────────────────────────────────────────────────────
+     GET    /                              HomeController@index
+     GET    /users                         UsersController@index
+     POST   /users                         UsersController@store
+     GET    /users/{id}                    UsersController@show
+     PUT    /users/{id}                    UsersController@update
+     DELETE /users/{id}                    UsersController@destroy
+   ────────────────────────────────────────────────────────────────────────
+   Total: 6 route(s) found.
+
 .. note::
 
-   After generating a middleware, register it in ``app/config/middleware.php``
-   before attaching it to routes.
+   ``route:list`` uses regex pattern matching against your ``routes.php`` file.
+   Routes defined inside closures, or routes that use complex dynamic registration,
+   may not be detected. Only routes following the standard
+   ``$router->method('/path', 'Controller::method')`` pattern are shown.
+
+
+``key:generate``
+~~~~~~~~~~~~~~~~~
+
+Generates a cryptographically secure 64-character hex key and writes it to your
+``.env`` file as ``APP_KEY``. If ``APP_KEY`` already exists in ``.env`` it is
+replaced; otherwise the key is appended.
+
+.. code-block:: bash
+
+   php lava key:generate
+
+**Output (when** ``.env`` **exists):**
+
+.. code-block:: text
+
+   Generated key: 3f8a2c1d...e9b47f06
+   APP_KEY updated in .env
+
+**Output (when no** ``.env`` **file is found):**
+
+.. code-block:: text
+
+   Generated key: 3f8a2c1d...e9b47f06
+   Note: No .env file found. Copy the key above and set APP_KEY manually.
+
+.. note::
+
+   Run ``key:generate`` once during initial project setup, or whenever you need
+   to rotate the application key. Never share or commit your ``APP_KEY`` to version
+   control — it is used to secure sessions and encrypted values.
+
+
+``env:check``
+~~~~~~~~~~~~~~
+
+Reads your ``.env`` file and prints a sanitised summary. Sensitive values
+(anything not in the safe whitelist) are masked with asterisks.
+
+.. code-block:: bash
+
+   php lava env:check
+
+**Output:**
+
+.. code-block:: text
+
+   Environment Summary
+   ──────────────────────────────────────────────────
+     APP_NAME               My Application
+     APP_ENV                development
+     APP_DEBUG              true
+     APP_URL                http://localhost
+     DB_CONNECTION          mysql
+     DB_HOST                127.0.0.1
+     DB_PORT                3306
+     DB_DATABASE            my_database
+     DB_USERNAME            ********
+     DB_PASSWORD            ********
+     CACHE_DRIVER           file
+     SESSION_DRIVER         file
+   ──────────────────────────────────────────────────
+   PHP 8.2.0 · Linux
+
+**Whitelisted keys** (shown as plain text):
+
+.. list-table::
+   :header-rows: 0
+   :widths: 50 50
+
+   * - ``APP_NAME``
+     - ``APP_ENV``
+   * - ``APP_DEBUG``
+     - ``APP_URL``
+   * - ``DB_CONNECTION``
+     - ``DB_HOST``
+   * - ``DB_PORT``
+     - ``DB_DATABASE``
+   * - ``CACHE_DRIVER``
+     - ``SESSION_DRIVER``
+
+All other keys are masked. Comments (lines beginning with ``#``) are skipped.
+
 
 Subdirectory Support
 ---------------------
@@ -333,37 +586,80 @@ The CLI creates any missing intermediate directories automatically.
 
 .. list-table::
    :header-rows: 1
-   :widths: 45 55
+   :widths: 48 52
 
    * - Command
-     - Generated Path
+     - Generated path
    * - ``php lava make:controller Admin/UserController``
-     - ``app/controllers/Admin/UserController.php``
+     - ``app/Controllers/Admin/UserController.php``
    * - ``php lava make:model Blog/PostModel``
-     - ``app/models/Blog/PostModel.php``
+     - ``app/Models/Blog/PostModel.php``
    * - ``php lava make:view user/profile``
      - ``app/views/user/profile.php``
    * - ``php lava make:middleware Admin/Role``
      - ``app/middlewares/Admin/RoleMiddleware.php``
    * - ``php lava make:library Payment/Stripe``
-     - ``app/libraries/Payment/Stripe.php``
+     - ``app/Libraries/Payment/Stripe.php``
+   * - ``php lava make:command Queue/ProcessJobs``
+     - ``app/commands/Queue/ProcessJobs.php``
+
 
 File Overwrite Protection
 --------------------------
 
-If a file already exists at the target path, the CLI will **not overwrite it**.
+If a file already exists at the target path the CLI will **not overwrite it**.
 An error message is shown instead:
 
 .. code-block:: text
 
    Controller "Dashboard" already exists.
 
-To regenerate a file, delete the existing one manually first.
+Delete the existing file manually before regenerating it.
+
+
+Registering Custom Commands
+-----------------------------
+
+The ``lava`` script uses a ``register_command()`` function that makes every
+command discoverable by the help system and the command dispatcher. You can
+register your own commands directly in the ``lava`` file or in a separate
+commands bootstrap file that you ``require`` from it.
+
+.. code-block:: php
+
+   <?php
+   register_command(
+       'send:emails',               // Command name (used in terminal)
+       'handle_send_emails',        // Handler: function name or callable
+       'Send queued emails',        // Description shown in help output
+       [                            // Named arguments shown in help
+           '[--dry-run]' => 'Preview without actually sending',
+           '[--limit=n]' => 'Maximum number of emails to send',
+       ]
+   );
+
+   function handle_send_emails($input = null, array $flags = [])
+   {
+       $dry_run = isset($flags['dry-run']);
+       $limit   = $flags['limit'] ?? 50;
+
+       echo "Sending up to {$limit} email(s)" . ($dry_run ? ' [dry run]' : '') . PHP_EOL;
+       // ... email logic ...
+   }
+
+Run the command:
+
+.. code-block:: bash
+
+   php lava send:emails
+   php lava send:emails --dry-run
+   php lava send:emails --limit=100
+
 
 Getting Help
 -------------
 
-Running ``php lava`` with no arguments prints the full command reference:
+Running ``php lava`` with no arguments prints the full grouped command reference:
 
 .. code-block:: bash
 
@@ -376,47 +672,53 @@ Running ``php lava`` with no arguments prints the full command reference:
    LavaLust CLI Code Generator
    Usage: php lava <command> [options]
 
-   Available Commands:
+   Server:
+     run                    → Start PHP built-in development server
+       [port]                  Port number (default: 3000)
+       [--port=<n>]            Port number via flag (e.g. --port=8080)
 
-     run [port]          → Start PHP built-in development server (default: 3000)
-       Example: php lava run
-       Example: php lava run 4545
-       Example: php lava run 8080
+   Cache:
+     cache:clear            → Clear all files in runtime/cache
 
-     make:controller     → Creates a controller
-       Example: php lava make:controller Dashboard
+   Makers:
+     make:controller        → Creates a controller
+     make:model             → Creates a model
+     make:middleware        → Creates a middleware
+     make:helper            → Creates a helper
+     make:library           → Creates a library
+     make:view              → Creates a view file
+     make:language          → Creates a language file
+     make:config            → Creates a config file
+     make:command           → Creates a custom CLI command
 
-     make:model          → Creates a model
-       Example: php lava make:model Blog/PostModel
+   Utilities:
+     route:list             → Display all registered routes
+     key:generate           → Generate a new application key
+     env:check              → Display current environment configuration summary
 
-     make:helper         → Creates a helper
-       Example: php lava make:helper text
+   Examples:
+     php lava run
+     php lava run 8080
+     php lava run --port=8080
+     php lava make:controller Dashboard
+     php lava make:model User
+     php lava cache:clear
+     php lava route:list
+     php lava env:check
+     php lava key:generate
 
-     make:library        → Creates a library
-       Example: php lava make:library PDF
-
-     make:view           → Creates a view file
-       Example: php lava make:view homepage
-
-     make:language       → Creates a language file
-       Example: php lava make:language tag-PH
-
-     make:config         → Creates a config file
-       Example: php lava make:config auth
-
-     make:middleware     → Creates a middleware
-       Example: php lava make:middleware Auth
-       Example: php lava make:middleware Admin/Role
 
 Tips and Best Practices
 ------------------------
 
-- Run ``php lava run`` during development instead of configuring a full web server.
-- Use subdirectory syntax (e.g. ``Admin/UserController``) from the start to keep large
-  applications organized.
-- After generating a model, set ``$table``, ``$fillable``, and ``$guarded`` before using it.
-- After generating middleware, always register it in ``app/config/middleware.php`` before
-  attaching it to routes.
-- Generated files are a starting point — add your own logic after scaffolding.
-- Use ``make:config`` for any feature-specific settings instead of adding everything to
-  the main ``config.php``.
+- Run ``php lava run`` during local development instead of configuring a full web server.
+- Use the ``--port`` flag (``php lava run --port=8080``) when port 3000 is already in use.
+- Use subdirectory syntax (e.g. ``Admin/UserController``) from the start to keep larger applications organised.
+- After generating a model, fill in ``$table``, ``$fillable``, and ``$guarded`` before using it with the Query Builder.
+- After generating a middleware, register it in ``app/config/middleware.php`` before attaching it to routes.
+- Run ``php lava key:generate`` once during initial project setup and whenever you rotate the application key.
+- Use ``php lava env:check`` to quickly verify your environment settings on a new server without opening the ``.env`` file directly.
+- Use ``php lava route:list`` to audit all registered routes before deploying — it is a quick way to spot misconfigured or forgotten routes.
+- Generated files are a starting point — always add your own logic after scaffolding.
+- Use ``make:config`` for feature-specific settings rather than adding everything to the main ``config.php``.
+- Use ``make:command`` to encapsulate recurring maintenance tasks (sending emails, pruning old records, syncing data) as named CLI commands instead of writing one-off scripts.
