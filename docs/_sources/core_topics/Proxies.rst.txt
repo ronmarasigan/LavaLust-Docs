@@ -130,8 +130,43 @@ Available Proxies
      - *(none)*
      - ``$this->call``
      - ``$this->call->...``
-
-
+   * - ``Config``
+     - *(none)*
+     - ``$this->config``
+     - ``$this->config->...``
+   * - ``Errors``
+     - *(none)*
+     - ``$this->errors``
+     - ``$this->errors->...``     
+   * - ``Io``
+     - *(none)*
+     - ``$this->io``
+     - ``$this->io->...``
+   * - ``lang``
+     - *(none)*
+     - ``$this->lang``
+     - ``$this->lang->...``
+   * - ``Logger``
+     - *(none)*
+     - ``$this->logger``
+     - ``$this->logger->...``
+   * - ``Performance``
+     - *(none)*
+     - ``$this->performance``
+     - ``$this->performance->...``
+   * - ``Request``
+     - *(none)*
+     - ``$this->request``
+     - ``$this->request->...``
+   * - ``Response``
+     - *(none)*
+     - ``$this->response``
+     - ``$this->response->...``
+   * - ``Security``
+     - *(none)*
+     - ``$this->security``
+     - ``$this->security->...``
+ 
 Usage Examples
 ---------------
 
