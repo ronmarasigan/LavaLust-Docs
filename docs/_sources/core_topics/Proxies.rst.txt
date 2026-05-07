@@ -18,7 +18,7 @@ same singleton the framework manages.
 
 How It Works
 -------------
-
+If you want to use Proxies, in app/config/config.php update ``$config['proxy_enabled']`` to ``true``.
 Every proxy extends the abstract ``Proxy`` base class, which defines two
 hooks:
 
