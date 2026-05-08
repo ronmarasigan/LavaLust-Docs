@@ -1,576 +1,619 @@
 Ember Template Engine
 ======================
 
-Overview
---------
+**Ember** is LavaLust's built-in template engine. It compiles lightweight
+template syntax into cached PHP files, giving you clean, readable templates
+without sacrificing PHP's full power. Compiled files are reused on subsequent
+requests so there is no repeated parsing overhead.
 
-The **Ember** class is a lightweight templating engine for the LavaLust PHP Framework.  
-It allows developers to use a simplified syntax for templates, supporting **sections**, **includes**, **template inheritance**, **custom filters**, and **functions**.
+Ember is inspired by Blade and Twig syntax but is purpose-built for LavaLust
+and has no external dependencies.
 
-Ember combines simplicity and flexibility, compiling templates into PHP for fast execution.
+.. contents:: On this page
+   :local:
+   :depth: 1
 
-Features
----------
 
-* Template inheritance using ``@extends`` and ``@yield``
-* Section management using ``@section`` and ``@endsection``
-* Template inclusion via ``@include``
-* Custom filters and functions
-* Escaped and raw output syntax
-* Auto-escaping support for XSS prevention
-* Built-in control structures: ``@if``, ``@foreach``, ``@while``, etc.
+Setup
+------
 
-Class Summary
--------------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - **Property / Method**
-     - **Description**
-   * - ``templates_path``
-     - Directory path to template files.
-   * - ``cache_path``
-     - Directory path to compiled (cached) templates.
-   * - ``globals``
-     - Global variables accessible in all templates.
-   * - ``functions``
-     - Custom functions callable within templates.
-   * - ``filters``
-     - Registered filters for variable transformation.
-   * - ``auto_escape``
-     - Boolean that controls whether HTML escaping is automatically applied.
-
-
-Configuration Example (``app/config/ember.php``)
--------------------------------------------------
-
-.. code-block:: php
-
-   $config['ember_helper_enabled'] = TRUE;
-   $config['cache_path'] = ROOT_DIR . 'runtime/cache/';
-   $config['templates_path'] = APP_DIR . 'views/';
-   $config['auto_escape']    = TRUE;
-
-Public Methods
---------------
-
-escape()
----------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->escape($value);
-
-**Description:**
-Escapes a value using ``htmlspecialchars()`` if ``auto_escape`` is enabled.
-
-**Example:**
-
-.. code-block:: php
-
-   echo $this->ember->escape('<b>Hello</b>');
-   // Output: &lt;b&gt;Hello&lt;/b&gt;
-
-add_global()
--------------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->add_global($name, $value);
-
-**Description:**
-Registers a global variable available to all templates.
-
-**Example:**
-
-.. code-block:: php
-
-   $this->ember->add_global('appName', 'MyLavaApp');
-
-**Usage in Template:**
-
-.. code-block:: twig
-
-   <p>Welcome to {{ appName }}</p>
-
-add_function()
----------------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->add_function($name, $callable);
-
-**Description:**
-Registers a callable function accessible from within templates.
-
-**Example:**
-
-.. code-block:: php
-
-   $this->ember->add_function('site_url', fn($path = '') => site_url($path));
-
-**Usage in Template:**
-
-.. code-block:: twig
-
-   <a href="{{ site_url('dashboard') }}">Dashboard</a>
-
-add_filter()
--------------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->add_filter($name, $callable);
-
-**Description:**
-Registers a custom filter for transforming variable output.
-
-**Example:**
-
-.. code-block:: php
-
-   $this->ember->add_filter('upper', fn($v) => strtoupper($v));
-   $this->ember->add_filter('lower', fn($v) => strtolower($v));
-
-**Usage in Template:**
-
-.. code-block:: twig
-
-   <p>{{ username|upper }}</p>
-
-apply_filter()
---------------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->apply_filter($name, $value);
-
-**Description:**
-Applies a registered filter to a given value.
-
-**Example:**
-
-.. code-block:: php
-
-   echo $this->ember->apply_filter('upper', 'ronald');
-   // Output: RONALD
-
-render()
----------
-
-**Syntax:**
-
-.. code-block:: php
-
-   $this->ember->render($template, $context = []);
-
-**Description:**
-Renders a template with the provided context data.
-
-**Parameters:**
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 60
-
-   * - **Name**
-     - **Type**
-     - **Description**
-   * - ``$template``
-     - string
-     - Template file name (without extension)
-   * - ``$context``
-     - array
-     - Variables passed to the template
-
-**Example:**
-
-.. code-block:: php
-
-   echo $this->ember->render('pages.profile', ['name' => 'Ron']);
-
-**Template (``views/pages/profile.ember.php``):**
-
-.. code-block:: twig
-
-   <h1>Hello, {{ name|upper }}</h1>
-
-**Output:**
-
-.. code-block::
-
-   Hello, RON
-
-Template Directives
--------------------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 25 50
-
-   * - **Directive**
-     - **Purpose**
-     - **Example**
-   * - ``@extends('layout')``
-     - Extends a base layout template
-     - ``@extends('layouts.main')``
-   * - ``@section('name')`` / ``@endsection``
-     - Defines a content section
-     - ``@section('title') Home @endsection``
-   * - ``@yield('name')``
-     - Displays section content
-     - ``@yield('content')``
-   * - ``@include('file')``
-     - Includes another template
-     - ``@include('partials.header')``
-   * - ``@if / @elseif / @else / @endif``
-     - Conditional logic
-     - ``@if($user) Welcome @endif``
-   * - ``@foreach / @endforeach``
-     - Loop structure
-     - ``@foreach($users as $user) {{ user.name }} @endforeach``
-   * - ``@php / @endphp``
-     - Raw PHP code
-     - ``@php echo date('Y'); @endphp``
-   * - ``{{ var }}``
-     - Escaped variable output
-     - ``{{ username }}``
-   * - ``{!! var !!}``
-     - Raw (unescaped) output
-     - ``{!! html_content !!}``
-   * - ``{{ var|filter }}``
-     - Applies a registered filter
-     - ``{{ name|upper }}``
-
-Example Template Structure
---------------------------
-
-**File:** ``views/layouts/main.ember.php``
-
-.. code-block:: twig
-
-   <html>
-   <head>
-       <title>@yield('title')</title>
-   </head>
-   <body>
-       @include('partials.header')
-       <main>
-           @yield('content')
-       </main>
-   </body>
-   </html>
-
-**File:** ``views/partials/header.ember.php``
-
-.. code-block:: twig
-
-   <header><h1>My Application</h1></header>
-
-**File:** ``views/pages/home.ember.php``
-
-.. code-block:: twig
-
-   @extends('layouts.main')
-
-   @section('title')
-       Welcome Page
-   @endsection
-
-   @section('content')
-       <h1>Hello, {{ name|upper }}</h1>
-   @endsection
-
-Output:
-
-.. code-block::
-
-   Hello, RON
-
-Ember Registrar
-===============
-
-.. module:: Ember_registrar
-.. class:: Ember_registrar
-
-The :class:`Ember_registrar` class provides a collection of **default filters, globals, and functions** that extend the Ember template engine in the LavaLust Framework.
-
-It acts as a registration hub where you can define custom filters, functions, and global variables that become available to all templates rendered through the Ember engine.
-
-This class is automatically called inside the :class:`Ember` class upon initialization.
-
--------------------------------------------------------------------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Name
-     - Description
-   * - app_name
-     - Application name from config (default: "LavaLust App")
-   * - base_url
-     - Base URL of the application
-   * - site_url
-     - Site URL with index.php (if applicable)
-   * - csp_nonce
-     - Content Security Policy nonce for inline scripts/styles
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - upper
-     - Converts string to uppercase
-   * - lower
-     - Converts string to lowercase
-   * - title
-     - Converts string to Title Case
-   * - capitalize
-     - Capitalizes first letter
-   * - trim
-     - Removes whitespace from both ends
-   * - reverse
-     - Reverses string or array
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - escape / e
-     - Escapes output (recommended for safety)
-   * - raw
-     - Outputs raw HTML (dangerous, use carefully)
-   * - nl2br
-     - Converts newlines to <br>
-   * - striptags
-     - Removes HTML tags
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - length
-     - Counts items in array or characters in string
-   * - default(value)
-     - Returns default if value is empty
-   * - join(separator)
-     - Joins array into string
-   * - slice(start, length)
-     - Extracts part of array or string
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - number_format(decimals)
-     - Formats number with decimals
-   * - abs
-     - Absolute value
-   * - round(precision)
-     - Rounds number
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - date(format)
-     - Formats date/time value
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - json(pretty)
-     - Converts value to JSON string
-   * - replace(search, replace)
-     - Replaces text inside string
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Filter
-     - Description
-   * - money(symbol)
-     - Formats number as currency (default ₱)
-   * - slug
-     - Converts string to URL-friendly slug
-   * - pluralize(word)
-     - Adds "s" if count is not 1
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - url(path)
-     - Returns a clean relative URL (prepends "/")
-   * - asset(path)
-     - Returns URL from ``public/`` directory
-   * - site_url(path)
-     - Returns routed URL
-   * - base_url(path)
-     - Returns base URL + path
-   * - active(route)
-     - Returns "active" if route matches current URL
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - config(key)
-     - Returns config value
-   * - session(key)
-     - Returns session value; returns all if key is null
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - upper(str)
-     - Converts string to uppercase
-   * - repeat(str, n)
-     - Repeats string n times
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - now()
-     - Returns current datetime (Y-m-d H:i:s)
-   * - date(format, timestamp)
-     - Formats timestamp
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - include(template, vars)
-     - Renders another template with variables
-   * - dump(value, die=false)
-     - Prints formatted debug output; optionally stops execution
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - csrf_field()
-     - Outputs hidden CSRF input field
-   * - old(key, default)
-     - Returns previously submitted form value
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - nonce()
-     - Returns CSP nonce for inline scripts/styles
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Function Name
-     - Description
-   * - asset_version(path)
-     - Returns asset URL with cache-busting version (?v=timestamp)
-
-Example:
-
-.. code-block:: html+jinja
-
-    <img src="{{ asset('images/logo.png') }}" alt="Logo">
-    <form method="post">
-        {{ csrf_field() }}
-    </form>
-    <p>{{ now() }}</p>
-
--------------------------------------------------------------------
-
-Extending the Registrar
------------------------
-
-You can extend :class:`Ember_registrar` to register additional filters, functions, or globals:
+**1. Enable Ember in** ``app/config/ember.php``
 
 .. code-block:: php
 
     <?php
-    class EmberConfigs extends Ember_registrar {
+    $config['ember_helper_enabled'] = TRUE;
+    $config['templates_path']       = APPPATH . 'views/';
+    $config['cache_path']           = APPPATH . '../runtime/cache/ember/';
+    $config['auto_escape']          = TRUE;
+    $config['enable_php_blocks']    = FALSE;  // TRUE to allow @php ... @endphp
+    $config['escape_context']       = 'html'; // 'html', 'attr', 'js', or 'url'
 
-        public function register($engine)
-        {
-            // Add a new global
-            $engine->add_global('myName', 'Ron');
+**2. Load the library in your controller**
 
-            // Add a new filter
-            $engine->add_filter('greet', fn($name) => 'Hello, ' . ucfirst($name) . '!');
+.. code-block:: php
 
-            // Add a new function
-            $engine->add_function('sum', fn($a, $b) => $a + $b);
-        }
-    }
+    <?php
+    $this->load->library('ember');
 
-Example in template:
+Once loaded it is available as ``$this->ember``.
 
-.. code-block:: html+jinja
+**Supported template file extensions**
 
-    <p>{{ myName | greet }}</p>
-    <p>2 + 3 = {{ sum(2, 3) }}</p>
+Ember resolves templates by trying the following extensions in order:
 
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Extension
+     - Example
+   * - *(no extension)*
+     - ``views/home``
+   * - ``.ember.php``
+     - ``views/home.ember.php``
+   * - ``.php``
+     - ``views/home.php``
+   * - ``.html``
+     - ``views/home.html``
+   * - ``.tpl``
+     - ``views/home.tpl``
+
+
+Rendering Templates
+--------------------
+
+Use ``render()`` to compile and execute a template, passing variables as an
+associative array. The method returns the rendered HTML as a string.
+
+.. code-block:: php
+
+    <?php
+    // Render and output immediately
+    echo $this->ember->render('home', [
+        'title' => 'Welcome',
+        'user'  => $user,
+    ]);
+
+    // Or pass it to a LavaLust view
+    $data['content'] = $this->ember->render('partials/hero', ['title' => 'Hello']);
+    $this->load->view('layout', $data);
+
+Template files live under the configured ``templates_path``
+(default: ``app/views/``).
+
+.. code-block:: bash
+
+    app/views/home.ember.php
+    app/views/partials/hero.ember.php
+    app/views/layouts/main.ember.php
+
+
+Output — Echoing Variables
+---------------------------
+
+**Escaped output** (auto-escapes HTML entities — use this by default)
+
+.. code-block:: html
+
+    <h1>{{ title }}</h1>
+    <p>Hello, {{ user.name }}</p>
+
+**Raw / unescaped output** (use only for trusted HTML)
+
+.. code-block:: html
+
+    {!! html_content !!}
+
+**Applying the** ``raw`` **filter inline**
+
+.. code-block:: html
+
+    {{ body|raw }}
+
+.. warning::
+
+   Always use ``{{ }}`` for user-supplied data. Only use ``{!! !!}`` or
+   the ``raw`` filter for HTML you have generated or sanitised yourself.
+
+
+Filters
+--------
+
+Filters transform a variable's value before it is output. Chain multiple
+filters with ``|``.
+
+**Built-in filters**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 35 45
+
+   * - Filter
+     - Syntax
+     - Description
+   * - ``upper``
+     - ``{{ name|upper }}``
+     - Convert to uppercase
+   * - ``lower``
+     - ``{{ name|lower }}``
+     - Convert to lowercase
+   * - ``raw``
+     - ``{{ html|raw }}``
+     - Output without escaping
+   * - ``escape`` / ``e``
+     - ``{{ value|escape }}``
+     - Explicitly escape the value
+   * - ``nl2br``
+     - ``{{ bio|nl2br }}``
+     - Convert newlines to ``<br>`` tags
+   * - ``striptags``
+     - ``{{ input|striptags }}``
+     - Strip HTML tags
+   * - ``trim``
+     - ``{{ value|trim }}``
+     - Strip leading and trailing whitespace
+
+**Chaining filters**
+
+.. code-block:: html
+
+    {{ comment|striptags|trim|upper }}
+
+**Custom filters**
+
+Register your own filter with ``add_filter()`` and use it in templates:
+
+.. code-block:: php
+
+    <?php
+    // In your controller or bootstrap
+    $this->ember->add_filter('currency', function($value, $symbol = '$') {
+        return $symbol . number_format((float) $value, 2);
+    });
+
+.. code-block:: html
+
+    <!-- Template -->
+    {{ price|currency }}
+    {{ price|currency('€') }}
+
+
+Functions
+----------
+
+Call registered functions directly inside ``{{ }}``:
+
+.. code-block:: php
+
+    <?php
+    $this->ember->add_function('asset', function($path) {
+        return base_url('assets/' . $path);
+    });
+
+    $this->ember->add_function('route', function($name) {
+        return site_url($name);
+    });
+
+.. code-block:: html
+
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <a href="{{ route('users/index') }}">Users</a>
+
+
+Global Variables
+-----------------
+
+Global variables are available in every template without being passed
+explicitly to ``render()``:
+
+.. code-block:: php
+
+    <?php
+    $this->ember->add_global('app_name', config_item('app_name'));
+    $this->ember->add_global('current_user', $this->session->userdata('user'));
+
+.. code-block:: html
+
+    <title>{{ app_name }}</title>
+    <p>Logged in as: {{ current_user.name }}</p>
+
+
+Control Structures
+-------------------
+
+**if / elseif / else / endif**
+
+.. code-block:: text
+
+    @if(user.role == 'admin')
+        <a href="/admin">Admin Panel</a>
+    @elseif(user.role == 'moderator')
+        <a href="/moderate">Moderate</a>
+    @else
+        <a href="/profile">My Profile</a>
+    @endif
+
+**foreach / endforeach**
+
+.. code-block:: text
+
+    <ul>
+    @foreach(posts as post)
+        <li>{{ post.title }}</li>
+    @endforeach
+    </ul>
+
+**for / endfor**
+
+.. code-block:: text
+
+    @for($i = 1; $i <= 5; $i++)
+        <span>{{ i }}</span>
+    @endfor
+
+**while / endwhile**
+
+.. code-block:: text
+
+    @while(!queue.isEmpty())
+        <p>{{ queue.next() }}</p>
+    @endwhile
+
+
+Template Inheritance
+---------------------
+
+Ember supports a full **extends / section / yield** layout system so you
+can define a base layout once and override named sections per page.
+
+**Base layout** (``layouts/main.ember.php``)
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>@yield('title') — My App</title>
+        @yield('head')
+    </head>
+    <body>
+        <nav><!-- navigation --></nav>
+
+        <main>
+            @yield('content')
+        </main>
+
+        <footer><!-- footer --></footer>
+        @yield('scripts')
+    </body>
+    </html>
+
+**Child template** (``pages/dashboard.ember.php``)
+
+.. code-block:: html
+
+    @extends('layouts/main')
+
+    @section('title')
+    Dashboard
+    @endsection
+
+    @section('head')
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @endsection
+
+    @section('content')
+    <h1>Welcome, {{ user.name }}</h1>
+    <p>Here is your dashboard.</p>
+    @endsection
+
+    @section('scripts')
+    <script src="{{ asset('js/dashboard.js') }}"></script>
+    @endsection
+
+**Rendering the child template**
+
+.. code-block:: php
+
+    <?php
+    echo $this->ember->render('pages/dashboard', [
+        'user' => $user,
+    ]);
 
 .. note::
 
-    Default filters and functions are automatically registered.  
-    Custom registrars can override or extend existing definitions.  
-    Place extended registrar under ``app/libraries/EmberConfigs.php`` and load via:
+   ``@extends()`` must reference the layout relative to ``templates_path``.
+   The layout file is rendered automatically — you do not call ``render()``
+   on it directly.
 
-  .. code-block:: php
 
-      $this->call->library('EmberConfigs');
-      $this->EmberConfigs->register($this->ember);
+Including Partials
+-------------------
 
-Summary
--------
+Use ``@include()`` to embed another template inside the current one.
+All variables from the current context are available in the included partial.
 
-Templates are automatically cached to the configured ``cache_path``.
-Filters and functions must be registered **before rendering**.
-Use ``{!! !!}`` only for **trusted HTML output**.
-Auto-escaping is controlled globally via the ``auto_escape`` configuration option.
+.. code-block:: html
+
+    @include('partials/navbar')
+    @include('partials/alert')
+
+Partial file (``partials/navbar.ember.php``):
+
+.. code-block:: html
+
+    <nav>
+        <a href="/">Home</a>
+        @if(current_user)
+            <a href="/logout">Logout</a>
+        @else
+            <a href="/login">Login</a>
+        @endif
+    </nav>
+
+
+Auto-Escaping and Escape Contexts
+-----------------------------------
+
+When ``auto_escape = TRUE`` (the default), all ``{{ }}`` output is escaped
+according to the configured ``escape_context``. You can also escape explicitly
+per expression by passing a context to the ``escape()`` method or using the
+context-specific filter.
+
+**Available escape contexts**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 40 45
+
+   * - Context
+     - Config value
+     - Description
+   * - ``html``
+     - ``'escape_context' => 'html'``
+     - ``htmlspecialchars()`` with ``ENT_QUOTES`` — safe for HTML content
+   * - ``attr``
+     - ``'escape_context' => 'attr'``
+     - ``htmlspecialchars()`` with ``ENT_QUOTES | ENT_HTML5`` — safe for HTML attributes
+   * - ``js``
+     - ``'escape_context' => 'js'``
+     - ``json_encode()`` with hex escapes — safe for JavaScript strings
+   * - ``url``
+     - ``'escape_context' => 'url'``
+     - ``rawurlencode()`` — safe for URL parameters
+
+**Escaping in PHP code**
+
+.. code-block:: php
+
+    <?php
+    // Default context (from config)
+    echo $this->ember->escape($user_input);
+
+    // Explicit context
+    echo $this->ember->escape($user_input, 'attr');
+    echo $this->ember->escape($user_input, 'js');
+    echo $this->ember->escape($user_input, 'url');
+
+
+PHP Blocks
+-----------
+
+Raw PHP blocks inside templates are **disabled by default** for security.
+Enable them in config only when absolutely necessary:
+
+.. code-block:: php
+
+    <?php
+    $config['enable_php_blocks'] = TRUE;
+
+When enabled:
+
+.. code-block:: html
+
+    @php
+    $total = array_sum(array_column($items, 'price'));
+    @endphp
+
+    <p>Total: {{ total }}</p>
+
+When disabled, ``@php ... @endphp`` blocks are replaced with an HTML
+comment and their content is never executed.
+
+.. warning::
+
+   Enabling PHP blocks in templates that accept user-supplied input is a
+   significant security risk. Only enable this option in trusted,
+   developer-controlled template files.
+
+
+Template Caching
+-----------------
+
+Ember compiles each template to a PHP file in the configured ``cache_path``
+the first time it is requested. On subsequent requests the compiled file is
+served directly — no re-parsing — unless the source template is modified,
+in which case the cache is automatically invalidated and recompiled.
+
+**Clearing the cache manually**
+
+.. code-block:: php
+
+    <?php
+    $this->ember->clear_cache();
+
+This deletes all ``*.php`` files from the cache directory. The next request
+will recompile every template from source.
+
+.. tip::
+
+   Add ``$this->ember->clear_cache()`` to your deployment script so stale
+   compiled templates are never served after a template update.
+
+
+Security
+---------
+
+Ember includes several security measures:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Protection
+     - Details
+   * - **Auto-escaping**
+     - All ``{{ }}`` output is HTML-escaped by default. Disable only with ``{!! !!}`` or ``raw`` filter for intentional raw HTML.
+   * - **Path traversal prevention**
+     - ``resolve_template_path()`` strips ``..``, ``./``, and ``\`` from template names and verifies the resolved path is inside ``templates_path`` using ``realpath()``.
+   * - **PHP blocks disabled**
+     - ``@php ... @endphp`` blocks are stripped and replaced with a comment unless explicitly enabled in config.
+   * - **Sandboxed rendering**
+     - Templates execute inside a closure with only extracted context variables, registered functions, and ``$this->escape()`` available.
+   * - **Cache file permissions**
+     - Compiled cache files are written with ``0644`` permissions.
+
+
+Method Reference
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 45 25
+
+   * - Method
+     - Signature
+     - Returns
+   * - ``render()``
+     - ``render($template, $context = [])``
+     - ``string``
+   * - ``compile()``
+     - ``compile($template)``
+     - ``string`` (path to compiled file)
+   * - ``compile_string()``
+     - ``compile_string($source, $tpl_path = '')``
+     - ``string`` (compiled PHP source)
+   * - ``resolve_template_path()``
+     - ``resolve_template_path($template)``
+     - ``string`` (absolute file path)
+   * - ``escape()``
+     - ``escape($value, $context = null)``
+     - ``string``
+   * - ``add_global()``
+     - ``add_global($name, $value)``
+     - ``void``
+   * - ``add_function()``
+     - ``add_function($name, callable $fn)``
+     - ``void``
+   * - ``add_filter()``
+     - ``add_filter($name, callable $fn)``
+     - ``void``
+   * - ``apply_filter()``
+     - ``apply_filter($name, $value, ...$args)``
+     - ``mixed``
+   * - ``clear_cache()``
+     - ``clear_cache()``
+     - ``void``
+
+
+Complete Example
+-----------------
+
+**Controller**
+
+.. code-block:: php
+
+    <?php
+    // app/controllers/Blog.php
+    class Blog extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->load->library('ember');
+            $this->load->model('Post_model', 'post_model');
+
+            // Global available in all templates
+            $this->ember->add_global('site_name', 'My Blog');
+
+            // Custom filter
+            $this->ember->add_filter('excerpt', function($text, $length = 100) {
+                return strlen($text) > $length
+                    ? substr($text, 0, $length) . '...'
+                    : $text;
+            });
+
+            // Custom function
+            $this->ember->add_function('asset', fn($p) => base_url('assets/' . $p));
+        }
+
+        public function index()
+        {
+            $posts = $this->post_model->get_published(10);
+
+            echo $this->ember->render('blog/index', [
+                'posts'   => $posts,
+                'page'    => 'Blog',
+            ]);
+        }
+    }
+
+**Layout** (``app/views/layouts/main.ember.php``)
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>@yield('title') — {{ site_name }}</title>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    </head>
+    <body>
+        @include('partials/nav')
+        <main class="container">
+            @yield('content')
+        </main>
+    </body>
+    </html>
+
+**Page template** (``app/views/blog/index.ember.php``)
+
+.. code-block:: html
+
+    @extends('layouts/main')
+
+    @section('title')
+    Blog
+    @endsection
+
+    @section('content')
+    <h1>Latest Posts</h1>
+
+    @foreach(posts as post)
+    <article>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.body|excerpt(150) }}</p>
+        <a href="/blog/{{ post.slug }}">Read more →</a>
+    </article>
+    @endforeach
+
+    @if(count(posts) === 0)
+    <p>No posts yet.</p>
+    @endif
+    @endsection
+
+
+Tips and Best Practices
+------------------------
+
+- Always use ``{{ }}`` for user input — never ``{!! !!}`` unless you have sanitised the value yourself.
+- Set ``auto_escape = TRUE`` in config (it is the default) and only reach for ``|raw`` when you deliberately want unescaped HTML.
+- Use ``@extends`` and ``@yield`` to define a single layout file instead of repeating the ``<html>`` shell in every view.
+- Use ``@include`` for repeated UI fragments (navigation, alerts, footers) rather than copy-pasting markup across templates.
+- Register shared data (logged-in user, site name, CSRF token) as globals in a base controller constructor so it is available in every template.
+- Clear the cache as part of your deployment pipeline — ``$this->ember->clear_cache()`` — to ensure stale compiled files are never served after a template update.
+- Keep ``enable_php_blocks = FALSE`` in production. If you need PHP logic in a template, move it to the controller or a custom function registered with ``add_function()``.
+- Use the ``excerpt``, ``striptags``, and ``trim`` filters to sanitise and shorten text output rather than doing it in the controller.
