@@ -1,8 +1,9 @@
 Form Validation Class
 =====================
 
-The **Form Validation** class allows you to validate form input data easily and cleanly.  
-It handles checking for required fields, verifying data type, length, and uniqueness, as well as sanitizing and preparing data for database insertion.
+The **Form Validation** class allows you to validate form input data easily and cleanly.
+It handles checking for required fields, verifying data type, length, and uniqueness,
+as well as sanitizing and preparing data for database insertion.
 
 Overview
 ---------
@@ -45,10 +46,10 @@ Create ``myform.php`` in your ``app/views/`` directory:
       <input type="text" name="username" size="50" />
 
       <h5>Password</h5>
-      <input type="text" name="password" size="50" />
+      <input type="password" name="password" size="50" />
 
       <h5>Password Confirm</h5>
-      <input type="text" name="passconf" size="50" />
+      <input type="password" name="passconf" size="50" />
 
       <h5>Email Address</h5>
       <input type="text" name="email" size="50" />
@@ -89,12 +90,11 @@ Create ``Form.php`` in ``app/controllers/``:
       {
          $this->call->library('form_validation');
 
-         // Modern validation (recommended)
          if ($this->form_validation->validate([
-            'username|Username' => 'required|min_length[5]|max_length[20]',
-            'password|Password' => 'required|min_length[8]',
-            'passconf|Confirm Password' => 'required|matches[password]',
-            'email|Email Address' => 'required|valid_email'
+            'username|Username'          => 'required|min_length[5]|max_length[20]',
+            'password|Password'          => 'required|min_length[8]',
+            'passconf|Confirm Password'  => 'required|matches[password]',
+            'email|Email Address'        => 'required|valid_email'
          ]))
          {
             $this->call->view('formsuccess');
@@ -115,57 +115,203 @@ Visit your form in the browser:
 
    example.com/index.php/form/
 
-If you submit without filling fields, validation will fail and errors will be displayed.
+Submit the form without filling in any fields. Validation will fail and error messages
+will be displayed above the form. The ``validate()`` method returns **TRUE** only when
+all validation rules pass.
 
-The ``validate()`` method returns **TRUE** only if all validation rules pass.
 
-Setting Validation Rules (Modern)
----------------------------------
+Validation Approaches
+----------------------
 
-Rules are defined using a **pipe-separated string**:
+LavaLust supports three ways to run validation. The **``validate()`` method** is
+recommended for most use cases. The **``rules()`` method** is useful for setting rules
+before running validation manually. The **fluent/legacy style** is still fully supported
+for backward compatibility.
+
+
+Using ``validate()`` — Recommended
+------------------------------------
+
+The ``validate()`` method accepts a rules array and an optional custom errors array.
+It resets previous errors automatically and returns ``TRUE`` if all rules pass.
+
+**Basic example:**
 
 .. code-block:: php
 
-   $this->form_validation->validate([
+   if ($this->form_validation->validate([
       'username|Username' => 'required|min_length[5]|max_length[20]',
-      'password|Password' => 'required|min_length[8]',
-      'passconf|Confirm Password' => 'required|matches[password]',
-      'email|Email Address' => 'required|valid_email'
-   ]);
-
-- Use ``|`` to separate rules
-- Use ``[value]`` to pass parameters
-- Use ``field|Label`` to customize field names in error messages
-
-Setting Custom Error Messages
------------------------------
-
-.. code-block:: php
-
-   $this->form_validation->validate([
-      'username|Username' => 'required|min_length[5]'
-   ], [
-      'username' => [
-         'required' => 'Username is required!',
-         'min_length' => 'Username must be at least 5 characters'
-      ]
-   ]);
-
-Using submitted()
-------------------
-
-You can check if the form is submitted:
-
-.. code-block:: php
-
-   if ($this->form_validation->submitted()) {
-      // form was submitted
+      'email|Email Address' => 'required|valid_email',
+   ])) {
+      // Validation passed — process the data
+   } else {
+      // Validation failed — redisplay the form
    }
 
-Legacy / Fluent Style (Optional)
---------------------------------
+**Full registration form example:**
 
-The old chaining method is still supported:
+.. code-block:: php
+
+   $this->form_validation->validate([
+      'username|Username'         => 'required|alpha_numeric_dash|min_length[5]|max_length[30]',
+      'full_name|Full Name'       => 'required|valid_name|max_length[100]',
+      'email|Email Address'       => 'required|valid_email',
+      'password|Password'         => 'required|min_length[8]|max_length[64]',
+      'passconf|Confirm Password' => 'required|matches[password]',
+      'age|Age'                   => 'required|numeric|greater_than[17]|less_than_equal_to[120]',
+      'website|Website'           => 'pattern[url]',
+      'role|Role'                 => 'required|in_list[admin,editor,viewer]',
+   ]);
+
+**Using the ``field|Label`` syntax:**
+
+Use ``field_name|Label`` as the array key to show a friendly label in error messages
+instead of the raw field name.
+
+.. code-block:: php
+
+   $this->form_validation->validate([
+      'dob|Date of Birth' => 'required|pattern[date_ymd]',
+      'phone|Phone Number' => 'required|pattern[tel]',
+   ]);
+
+   // Error example: "Date of Birth" does not match the required format.
+
+**With custom error messages:**
+
+Pass a second array to override specific default messages per field and per rule.
+
+.. code-block:: php
+
+   $this->form_validation->validate([
+      'username|Username' => 'required|min_length[5]|max_length[20]|alpha_numeric_dash',
+      'email|Email Address' => 'required|valid_email',
+      'password|Password' => 'required|min_length[8]',
+   ], [
+      'username' => [
+         'required'          => 'Please choose a username.',
+         'min_length'        => 'Your username must be at least 5 characters long.',
+         'max_length'        => 'Your username must not exceed 20 characters.',
+         'alpha_numeric_dash' => 'Your username may only contain letters, numbers, and dashes.',
+      ],
+      'email' => [
+         'required'    => 'An email address is required to create your account.',
+         'valid_email' => 'Please enter a valid email address (e.g. user@example.com).',
+      ],
+      'password' => [
+         'required'   => 'A password is required.',
+         'min_length' => 'Your password must be at least 8 characters long.',
+      ],
+   ]);
+
+**Product/inventory form example:**
+
+.. code-block:: php
+
+   $this->form_validation->validate([
+      'product_name|Product Name' => 'required|alpha_numeric_space|max_length[150]',
+      'sku|SKU'                   => 'required|alpha_numeric_dash|exact_length[10]',
+      'price|Price'               => 'required|numeric|greater_than[0]',
+      'stock|Stock'               => 'required|numeric|greater_than_equal_to[0]',
+      'category|Category'         => 'required|in_list[electronics,clothing,food,tools]',
+   ], [
+      'sku' => [
+         'exact_length' => 'SKU must be exactly 10 characters.',
+      ],
+      'price' => [
+         'greater_than' => 'Price must be greater than 0.',
+      ],
+   ]);
+
+
+Using ``rules()`` — Manual Validation
+----------------------------------------
+
+The ``rules()`` method sets validation rules for the currently selected field
+without running the validation immediately. Combine it with ``name()`` and ``run()``
+for full control over when validation executes.
+
+**Basic example:**
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('username|Username')->rules('required|min_length[5]|max_length[20]')
+      ->name('email|Email Address')->rules('required|valid_email');
+
+   if ($this->form_validation->run()) {
+      $this->call->view('formsuccess');
+   } else {
+      $this->call->view('myform');
+   }
+
+**With custom error messages:**
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('username|Username')
+         ->rules('required|min_length[5]', [
+            'required'   => 'Please enter your username.',
+            'min_length' => 'Username must be at least 5 characters.',
+         ])
+      ->name('email|Email Address')
+         ->rules('required|valid_email', [
+            'valid_email' => 'Please enter a valid email address.',
+         ]);
+
+   if ($this->form_validation->run()) {
+      $this->call->view('formsuccess');
+   } else {
+      $this->call->view('myform');
+   }
+
+**Conditional rule application example:**
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('email|Email Address')
+         ->rules('required|valid_email');
+
+   // Only validate password confirmation if a new password is provided
+   if (!empty($_POST['password'])) {
+      $this->form_validation
+         ->name('password|Password')
+            ->rules('required|min_length[8]')
+         ->name('passconf|Confirm Password')
+            ->rules('required|matches[password]');
+   }
+
+   if ($this->form_validation->run()) {
+      // Process update
+   }
+
+**Multi-step form example (step 2 only):**
+
+.. code-block:: php
+
+   $step = $_POST['step'] ?? 1;
+
+   if ((int) $step === 2) {
+      $this->form_validation
+         ->name('card_number|Card Number')->rules('required|exact_length[16]|numeric')
+         ->name('cvv|CVV')->rules('required|exact_length[3]|numeric')
+         ->name('expiry|Expiry Date')->rules('required|pattern[date_ymd]');
+   }
+
+   if ($this->form_validation->run()) {
+      // Proceed to step 3
+   }
+
+
+Legacy / Fluent Style
+-----------------------
+
+The original method-chaining style is still fully supported. Call ``name()`` to
+select a field, then chain validation methods directly onto it.
+
+**Basic example:**
 
 .. code-block:: php
 
@@ -181,103 +327,367 @@ The old chaining method is still supported:
          ->required()
          ->matches('password')
       ->name('email')
+         ->required()
          ->valid_email();
 
-   if ($this->form_validation->run() == FALSE) {
-      $this->call->view('myform');
-   } else {
+   if ($this->form_validation->run()) {
       $this->call->view('formsuccess');
+   } else {
+      $this->call->view('myform');
    }
 
-Notes
-------
+**With custom error messages:**
 
-- ``validate()`` is the **recommended approach**
-- It automatically resets previous errors
-- Cleaner and easier to scale
-- ``run()`` is mainly used for fluent style
+Each fluent method accepts an optional ``$custom_error`` string as its last argument.
 
-The ``name()`` method selects the input field to validate.  
-Chained methods like ``required()``, ``min_length()``, ``matches()`` apply validation rules to it.
+.. code-block:: php
+
+   $this->form_validation
+      ->name('username|Username')
+         ->required('Please enter your username.')
+         ->min_length(5, 'Username must be at least 5 characters long.')
+         ->max_length(20, 'Username must not exceed 20 characters.')
+         ->alpha_numeric_dash('Username may only contain letters, numbers, and dashes.')
+      ->name('email|Email Address')
+         ->required('An email address is required.')
+         ->valid_email('Please enter a valid email address.')
+      ->name('password|Password')
+         ->required('A password is required.')
+         ->min_length(8, 'Password must be at least 8 characters long.')
+      ->name('passconf|Confirm Password')
+         ->required('Please confirm your password.')
+         ->matches('password', 'Passwords do not match.');
+
+   if ($this->form_validation->run()) {
+      $this->call->view('formsuccess');
+   } else {
+      $this->call->view('myform');
+   }
+
+**Numeric and range validation example:**
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('age|Age')
+         ->required()
+         ->numeric()
+         ->greater_than(17, 'You must be at least 18 years old.')
+         ->less_than_equal_to(120, 'Please enter a valid age.')
+      ->name('score|Score')
+         ->required()
+         ->numeric()
+         ->greater_than_equal_to(0, 'Score cannot be negative.')
+         ->less_than_equal_to(100, 'Score cannot exceed 100.');
+
+   if ($this->form_validation->run()) {
+      // Process data
+   }
+
+**Pattern and uniqueness example:**
+
+.. code-block:: php
+
+   $this->form_validation
+      ->name('username|Username')
+         ->required()
+         ->min_length(5)
+         ->is_unique('users', 'username', $_POST['username'] ?? '', 'That username is already taken.')
+      ->name('website|Website')
+         ->pattern('url', 'Please enter a valid URL.')
+      ->name('birthdate|Date of Birth')
+         ->required()
+         ->pattern('date_ymd', 'Please use the format YYYY-MM-DD.')
+      ->name('phone|Phone Number')
+         ->pattern('tel', 'Please enter a valid phone number.');
+
+   if ($this->form_validation->run()) {
+      // Process data
+   }
+
+
+Using ``submitted()``
+----------------------
+
+Check whether the form was actually submitted before running validation:
+
+.. code-block:: php
+
+   public function index()
+   {
+      $this->call->library('form_validation');
+
+      if ($this->form_validation->submitted()) {
+
+         if ($this->form_validation->validate([
+            'username|Username' => 'required|min_length[5]',
+            'email|Email Address' => 'required|valid_email',
+         ])) {
+            $this->call->view('formsuccess');
+         } else {
+            $this->call->view('myform');
+         }
+
+      } else {
+         // Form has not been submitted yet — just display it
+         $this->call->view('myform');
+      }
+   }
+
+
+Displaying Errors
+------------------
+
+Call ``errors()`` in your view to output all validation error messages as a
+newline-separated string. It returns an empty string when there are no errors.
+
+.. code-block:: php
+
+   <?php echo $this->form_validation->errors(); ?>
+
+For styled output, wrap it in a container:
+
+.. code-block:: php
+
+   <?php $errors = $this->form_validation->errors(); ?>
+   <?php if ($errors): ?>
+      <div class="alert alert-danger">
+         <?php echo $errors; ?>
+      </div>
+   <?php endif; ?>
+
+To retrieve errors as a raw array (e.g. for JSON responses or custom rendering):
+
+.. code-block:: php
+
+   $errors = $this->form_validation->get_errors();
+
+   if (!empty($errors)) {
+      echo json_encode(['success' => false, 'errors' => $errors]);
+      exit;
+   }
+
 
 Available Methods
 ------------------
 
 .. list-table::
-   :widths: 30 70
+   :widths: 35 65
    :header-rows: 1
    :class: longtable
 
    * - **Method**
      - **Description**
    * - ``name($field)``
-     - Selects the input field by its name attribute to apply rules on.
+     - Selects the input field by its ``name`` attribute. Supports ``field|Label``
+       syntax to set a friendly label used in error messages.
    * - ``pattern($name, $custom_error)``
-     - Validates using a built-in pattern. Possible values: ``url, alpha, words, alphanum, int, float, tel, file, folder, date_dmy, date_ymd, email``.
+     - Validates against a built-in named pattern. Available patterns:
+       ``url``, ``alpha``, ``words``, ``alphanum``, ``int``, ``float``,
+       ``tel``, ``text``, ``file``, ``folder``, ``address``,
+       ``date_dmy``, ``date_ymd``, ``email``.
    * - ``custom_pattern($regex, $custom_error)``
-     - Validates against a custom regex pattern.
+     - Validates against a custom regular expression pattern.
    * - ``required($custom_error)``
-     - Ensures the field is not empty.
+     - Ensures the field is not empty or null.
    * - ``matches($field, $custom_error)``
-     - Ensures the value matches another field's value.
+     - Ensures the value matches the value of another field.
    * - ``differs($field, $custom_error)``
-     - Ensures the value differs from another field's value.
+     - Ensures the value is different from another field's value.
    * - ``is_unique($table, $field, $str, $custom_error)``
-     - Checks if the value does **not** exist in a database table column.
+     - Checks that the value does **not** already exist in the specified
+       database table column.
    * - ``exact_length($length, $custom_error)``
-     - Ensures the string length is exactly this number.
+     - Ensures the string is exactly ``$length`` characters long.
    * - ``min_length($length, $custom_error)``
-     - Ensures the string length is at least this number.
+     - Ensures the string is at least ``$length`` characters long.
    * - ``max_length($length, $custom_error)``
-     - Ensures the string length does not exceed this number.
+     - Ensures the string does not exceed ``$length`` characters.
    * - ``valid_email($custom_error)``
-     - Ensures the value is a valid email format.
+     - Ensures the value is a properly formatted email address.
    * - ``alpha($custom_error)``
-     - Allows only alphabetic characters.
+     - Allows only alphabetic characters (no spaces or numbers).
    * - ``alpha_space($custom_error)``
-     - Allows alphabetic characters and spaces.
+     - Allows alphabetic characters and spaces only.
    * - ``alpha_numeric($custom_error)``
-     - Allows only alphanumeric characters.
+     - Allows letters and numbers only (no spaces or special characters).
    * - ``alpha_numeric_space($custom_error)``
-     - Allows alphanumeric characters and spaces.
+     - Allows letters, numbers, and spaces only.
    * - ``alpha_numeric_dash($custom_error)``
-     - Allows alphanumeric characters and dashes.
+     - Allows letters, numbers, underscores, and dashes only.
    * - ``numeric($custom_error)``
-     - Allows only numeric values.
+     - Ensures the value is a valid numeric value (integer or decimal).
    * - ``greater_than($value, $custom_error)``
-     - Ensures the value is greater than the given number.
+     - Ensures the numeric value is strictly greater than ``$value``.
    * - ``greater_than_equal_to($value, $custom_error)``
-     - Ensures the value is greater than or equal to the given number.
+     - Ensures the numeric value is greater than or equal to ``$value``.
    * - ``less_than($value, $custom_error)``
-     - Ensures the value is less than the given number.
+     - Ensures the numeric value is strictly less than ``$value``.
    * - ``less_than_equal_to($value, $custom_error)``
-     - Ensures the value is less than or equal to the given number.
-   * - ``in_list($array, $custom_error)``
-     - Ensures the value exists within the given array list.
-   * - ``run()``
-     - Runs the validation. Returns **TRUE** if no errors found.
-   * - ``errors()``
-     - Returns a string of all validation errors. Empty string if none.
-   * - ``submitted()``
-     - Checks if the form was submitted. Returns **TRUE** if submitted, **FALSE** otherwise.
-   * - ``reset()``
-     - Resets all validation errors and previous input values.
-   * - ``validate($rules, $custom_errors)``
-     - Validates using an array of rules. Returns **TRUE** if all pass, **FALSE** if any fail.
+     - Ensures the numeric value is less than or equal to ``$value``.
+   * - ``in_list($list, $custom_error)``
+     - Ensures the value is one of the comma-separated values in ``$list``.
+   * - ``valid_name($custom_error)``
+     - Ensures the value is a valid person name (Unicode letters and spaces only).
    * - ``rules($rules, $custom_errors)``
-     - Sets validation rules using an array. Does not run validation.
+     - Applies a pipe-separated rules string to the currently selected field.
+       Does not run validation immediately.
+   * - ``run()``
+     - Runs the validation and returns **TRUE** if there are no errors.
+   * - ``validate($fields, $custom_errors)``
+     - Validates an array of field-rule pairs. Automatically resets previous
+       errors. Returns **TRUE** if all rules pass.
+   * - ``submitted()``
+     - Returns **TRUE** if the form was submitted (i.e. ``$_POST`` is not empty).
+   * - ``errors()``
+     - Returns all validation error messages as a single HTML-escaped string,
+       separated by ``<br>`` tags. Returns an empty string if there are no errors.
+   * - ``get_errors()``
+     - Returns a raw array of all current validation error messages.
 
 .. note::
 
-   Each validation method supports an optional ``$custom_error`` parameter to override the default error message.
+   Every validation method accepts an optional ``$custom_error`` string as its
+   final argument to override the default error message for that specific rule.
 
-Error Display
---------------
+.. note::
 
-To show validation errors in your form, include this line in your view:
+   The ``validate()`` method resets all previous errors at the start of each call,
+   making it safe to call multiple times within the same request without accumulating
+   stale errors. When using the fluent style with ``run()``, errors accumulate across
+   all chained calls until ``run()`` is invoked.
 
-.. code-block:: php
 
-   <?php echo $this->form_validation->errors(); ?>
+Rule Reference
+---------------
 
-It will return a string of all validation errors. If there are none, it returns an empty string.
+The table below summarises every built-in rule available for use in ``validate()``
+and ``rules()`` rule strings.
+
+.. list-table::
+   :widths: 30 30 40
+   :header-rows: 1
+
+   * - **Rule**
+     - **Example**
+     - **Description**
+   * - ``required``
+     - ``required``
+     - Field must not be empty.
+   * - ``valid_email``
+     - ``valid_email``
+     - Must be a valid email address.
+   * - ``valid_name``
+     - ``valid_name``
+     - Must be a valid person name (letters and spaces).
+   * - ``matches``
+     - ``matches[password]``
+     - Must match the value of the given field.
+   * - ``differs``
+     - ``differs[old_password]``
+     - Must differ from the value of the given field.
+   * - ``is_unique``
+     - *(fluent only)*
+     - Value must not exist in the given database column.
+   * - ``min_length``
+     - ``min_length[8]``
+     - Minimum string length.
+   * - ``max_length``
+     - ``max_length[255]``
+     - Maximum string length.
+   * - ``exact_length``
+     - ``exact_length[10]``
+     - String must be exactly this many characters.
+   * - ``alpha``
+     - ``alpha``
+     - Letters only.
+   * - ``alpha_space``
+     - ``alpha_space``
+     - Letters and spaces only.
+   * - ``alpha_numeric``
+     - ``alpha_numeric``
+     - Letters and numbers only.
+   * - ``alpha_numeric_space``
+     - ``alpha_numeric_space``
+     - Letters, numbers, and spaces only.
+   * - ``alpha_numeric_dash``
+     - ``alpha_numeric_dash``
+     - Letters, numbers, underscores, and dashes only.
+   * - ``numeric``
+     - ``numeric``
+     - Must be a numeric value.
+   * - ``greater_than``
+     - ``greater_than[0]``
+     - Must be greater than the given number.
+   * - ``greater_than_equal_to``
+     - ``greater_than_equal_to[18]``
+     - Must be greater than or equal to the given number.
+   * - ``less_than``
+     - ``less_than[100]``
+     - Must be less than the given number.
+   * - ``less_than_equal_to``
+     - ``less_than_equal_to[999]``
+     - Must be less than or equal to the given number.
+   * - ``in_list``
+     - ``in_list[yes,no]``
+     - Must be one of the comma-separated values.
+   * - ``pattern``
+     - ``pattern[url]``
+     - Must match a built-in named pattern.
+
+
+Default Error Messages
+-----------------------
+
+The following messages are used when no custom error is provided. The ``%s``
+placeholder is replaced with the field label; ``%d`` is replaced with the
+numeric parameter where applicable.
+
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - **Rule**
+     - **Default Message**
+   * - ``required``
+     - ``"%s" is required.``
+   * - ``matches``
+     - ``"%s" does not match the confirmation field.``
+   * - ``differs``
+     - ``"%s" must be different from the other field.``
+   * - ``is_unique``
+     - ``"%s" already exists. Please enter a unique value.``
+   * - ``exact_length``
+     - ``"%s" must be exactly %d character(s) long.``
+   * - ``min_length``
+     - ``"%s" must be at least %d character(s) long.``
+   * - ``max_length``
+     - ``"%s" must not exceed %d character(s).``
+   * - ``valid_email``
+     - ``"%s" must be a valid email address.``
+   * - ``alpha``
+     - ``"%s" must contain letters only.``
+   * - ``alpha_numeric``
+     - ``"%s" must contain letters and numbers only.``
+   * - ``alpha_numeric_space``
+     - ``"%s" must contain letters, numbers, and spaces only.``
+   * - ``alpha_space``
+     - ``"%s" must contain letters and spaces only.``
+   * - ``alpha_numeric_dash``
+     - ``"%s" must contain letters, numbers, and dashes only.``
+   * - ``numeric``
+     - ``"%s" must be a numeric value.``
+   * - ``greater_than``
+     - ``"%s" must be greater than %s.``
+   * - ``less_than``
+     - ``"%s" must be less than %s.``
+   * - ``greater_than_equal_to``
+     - ``"%s" must be greater than or equal to %s.``
+   * - ``less_than_equal_to``
+     - ``"%s" must be less than or equal to %s.``
+   * - ``in_list``
+     - ``"%s" is not a valid option.``
+   * - ``pattern`` / ``custom_pattern``
+     - ``"%s" does not match the required format.``
+   * - ``valid_name``
+     - ``"%s" is not a valid name.``

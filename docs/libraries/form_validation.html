@@ -171,7 +171,8 @@
   <section id="form-validation-class">
 <h1>Form Validation Class<a class="headerlink" href="#form-validation-class" title="Link to this heading"></a></h1>
 <p>The <strong>Form Validation</strong> class allows you to validate form input data easily and cleanly.
-It handles checking for required fields, verifying data type, length, and uniqueness, as well as sanitizing and preparing data for database insertion.</p>
+It handles checking for required fields, verifying data type, length, and uniqueness,
+as well as sanitizing and preparing data for database insertion.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>Typical form validation process:</p>
@@ -208,10 +209,10 @@ It handles checking for required fields, verifying data type, length, and unique
 <span class="x">   &lt;input type=&quot;text&quot; name=&quot;username&quot; size=&quot;50&quot; /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Password&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;text&quot; name=&quot;password&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type=&quot;password&quot; name=&quot;password&quot; size=&quot;50&quot; /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Password Confirm&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;text&quot; name=&quot;passconf&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type=&quot;password&quot; name=&quot;passconf&quot; size=&quot;50&quot; /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Email Address&lt;/h5&gt;</span>
 <span class="x">   &lt;input type=&quot;text&quot; name=&quot;email&quot; size=&quot;50&quot; /&gt;</span>
@@ -248,12 +249,11 @@ It handles checking for required fields, verifying data type, length, and unique
    <span class="p">{</span>
       <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
 
-      <span class="c1">// Modern validation (recommended)</span>
       <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">validate</span><span class="p">([</span>
-         <span class="s1">&#39;username|Username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[5]|max_length[20]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;password|Password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[8]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;passconf|Confirm Password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;required|matches[password]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;email|Email Address&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;required|valid_email&#39;</span>
+         <span class="s1">&#39;username|Username&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[5]|max_length[20]&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;password|Password&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[8]&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;passconf|Confirm Password&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;required|matches[password]&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;email|Email Address&#39;</span>        <span class="o">=&gt;</span> <span class="s1">&#39;required|valid_email&#39;</span>
       <span class="p">]))</span>
       <span class="p">{</span>
          <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;formsuccess&#39;</span><span class="p">);</span>
@@ -273,51 +273,174 @@ It handles checking for required fields, verifying data type, length, and unique
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>example.com/index.php/form/
 </pre></div>
 </div>
-<p>If you submit without filling fields, validation will fail and errors will be displayed.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">validate()</span></code> method returns <strong>TRUE</strong> only if all validation rules pass.</p>
+<p>Submit the form without filling in any fields. Validation will fail and error messages
+will be displayed above the form. The <code class="docutils literal notranslate"><span class="pre">validate()</span></code> method returns <strong>TRUE</strong> only when
+all validation rules pass.</p>
 </section>
-<section id="setting-validation-rules-modern">
-<h2>Setting Validation Rules (Modern)<a class="headerlink" href="#setting-validation-rules-modern" title="Link to this heading"></a></h2>
-<p>Rules are defined using a <strong>pipe-separated string</strong>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
+<section id="validation-approaches">
+<h2>Validation Approaches<a class="headerlink" href="#validation-approaches" title="Link to this heading"></a></h2>
+<p>LavaLust supports three ways to run validation. The <strong>``validate()`` method</strong> is
+recommended for most use cases. The <strong>``rules()`` method</strong> is useful for setting rules
+before running validation manually. The <strong>fluent/legacy style</strong> is still fully supported
+for backward compatibility.</p>
+</section>
+<section id="using-validate-recommended">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">validate()</span></code> — Recommended<a class="headerlink" href="#using-validate-recommended" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">validate()</span></code> method accepts a rules array and an optional custom errors array.
+It resets previous errors automatically and returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> if all rules pass.</p>
+<p><strong>Basic example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">if ($this-&gt;form_validation-&gt;validate([</span>
 <span class="x">   &#39;username|Username&#39; =&gt; &#39;required|min_length[5]|max_length[20]&#39;,</span>
-<span class="x">   &#39;password|Password&#39; =&gt; &#39;required|min_length[8]&#39;,</span>
+<span class="x">   &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">])) {</span>
+<span class="x">   // Validation passed — process the data</span>
+<span class="x">} else {</span>
+<span class="x">   // Validation failed — redisplay the form</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Full registration form example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
+<span class="x">   &#39;username|Username&#39;         =&gt; &#39;required|alpha_numeric_dash|min_length[5]|max_length[30]&#39;,</span>
+<span class="x">   &#39;full_name|Full Name&#39;       =&gt; &#39;required|valid_name|max_length[100]&#39;,</span>
+<span class="x">   &#39;email|Email Address&#39;       =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">   &#39;password|Password&#39;         =&gt; &#39;required|min_length[8]|max_length[64]&#39;,</span>
 <span class="x">   &#39;passconf|Confirm Password&#39; =&gt; &#39;required|matches[password]&#39;,</span>
-<span class="x">   &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;</span>
+<span class="x">   &#39;age|Age&#39;                   =&gt; &#39;required|numeric|greater_than[17]|less_than_equal_to[120]&#39;,</span>
+<span class="x">   &#39;website|Website&#39;           =&gt; &#39;pattern[url]&#39;,</span>
+<span class="x">   &#39;role|Role&#39;                 =&gt; &#39;required|in_list[admin,editor,viewer]&#39;,</span>
 <span class="x">]);</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">|</span></code> to separate rules</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">[value]</span></code> to pass parameters</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">field|Label</span></code> to customize field names in error messages</p></li>
-</ul>
-</section>
-<section id="setting-custom-error-messages">
-<h2>Setting Custom Error Messages<a class="headerlink" href="#setting-custom-error-messages" title="Link to this heading"></a></h2>
+<p><strong>Using the ``field|Label`` syntax:</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">field_name|Label</span></code> as the array key to show a friendly label in error messages
+instead of the raw field name.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;username|Username&#39; =&gt; &#39;required|min_length[5]&#39;</span>
+<span class="x">   &#39;dob|Date of Birth&#39; =&gt; &#39;required|pattern[date_ymd]&#39;,</span>
+<span class="x">   &#39;phone|Phone Number&#39; =&gt; &#39;required|pattern[tel]&#39;,</span>
+<span class="x">]);</span>
+
+<span class="x">// Error example: &quot;Date of Birth&quot; does not match the required format.</span>
+</pre></div>
+</div>
+<p><strong>With custom error messages:</strong></p>
+<p>Pass a second array to override specific default messages per field and per rule.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
+<span class="x">   &#39;username|Username&#39; =&gt; &#39;required|min_length[5]|max_length[20]|alpha_numeric_dash&#39;,</span>
+<span class="x">   &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">   &#39;password|Password&#39; =&gt; &#39;required|min_length[8]&#39;,</span>
 <span class="x">], [</span>
 <span class="x">   &#39;username&#39; =&gt; [</span>
-<span class="x">      &#39;required&#39; =&gt; &#39;Username is required!&#39;,</span>
-<span class="x">      &#39;min_length&#39; =&gt; &#39;Username must be at least 5 characters&#39;</span>
-<span class="x">   ]</span>
+<span class="x">      &#39;required&#39;          =&gt; &#39;Please choose a username.&#39;,</span>
+<span class="x">      &#39;min_length&#39;        =&gt; &#39;Your username must be at least 5 characters long.&#39;,</span>
+<span class="x">      &#39;max_length&#39;        =&gt; &#39;Your username must not exceed 20 characters.&#39;,</span>
+<span class="x">      &#39;alpha_numeric_dash&#39; =&gt; &#39;Your username may only contain letters, numbers, and dashes.&#39;,</span>
+<span class="x">   ],</span>
+<span class="x">   &#39;email&#39; =&gt; [</span>
+<span class="x">      &#39;required&#39;    =&gt; &#39;An email address is required to create your account.&#39;,</span>
+<span class="x">      &#39;valid_email&#39; =&gt; &#39;Please enter a valid email address (e.g. user@example.com).&#39;,</span>
+<span class="x">   ],</span>
+<span class="x">   &#39;password&#39; =&gt; [</span>
+<span class="x">      &#39;required&#39;   =&gt; &#39;A password is required.&#39;,</span>
+<span class="x">      &#39;min_length&#39; =&gt; &#39;Your password must be at least 8 characters long.&#39;,</span>
+<span class="x">   ],</span>
+<span class="x">]);</span>
+</pre></div>
+</div>
+<p><strong>Product/inventory form example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
+<span class="x">   &#39;product_name|Product Name&#39; =&gt; &#39;required|alpha_numeric_space|max_length[150]&#39;,</span>
+<span class="x">   &#39;sku|SKU&#39;                   =&gt; &#39;required|alpha_numeric_dash|exact_length[10]&#39;,</span>
+<span class="x">   &#39;price|Price&#39;               =&gt; &#39;required|numeric|greater_than[0]&#39;,</span>
+<span class="x">   &#39;stock|Stock&#39;               =&gt; &#39;required|numeric|greater_than_equal_to[0]&#39;,</span>
+<span class="x">   &#39;category|Category&#39;         =&gt; &#39;required|in_list[electronics,clothing,food,tools]&#39;,</span>
+<span class="x">], [</span>
+<span class="x">   &#39;sku&#39; =&gt; [</span>
+<span class="x">      &#39;exact_length&#39; =&gt; &#39;SKU must be exactly 10 characters.&#39;,</span>
+<span class="x">   ],</span>
+<span class="x">   &#39;price&#39; =&gt; [</span>
+<span class="x">      &#39;greater_than&#39; =&gt; &#39;Price must be greater than 0.&#39;,</span>
+<span class="x">   ],</span>
 <span class="x">]);</span>
 </pre></div>
 </div>
 </section>
-<section id="using-submitted">
-<h2>Using submitted()<a class="headerlink" href="#using-submitted" title="Link to this heading"></a></h2>
-<p>You can check if the form is submitted:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">if ($this-&gt;form_validation-&gt;submitted()) {</span>
-<span class="x">   // form was submitted</span>
+<section id="using-rules-manual-validation">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">rules()</span></code> — Manual Validation<a class="headerlink" href="#using-rules-manual-validation" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rules()</span></code> method sets validation rules for the currently selected field
+without running the validation immediately. Combine it with <code class="docutils literal notranslate"><span class="pre">name()</span></code> and <code class="docutils literal notranslate"><span class="pre">run()</span></code>
+for full control over when validation executes.</p>
+<p><strong>Basic example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;username|Username&#39;)-&gt;rules(&#39;required|min_length[5]|max_length[20]&#39;)</span>
+<span class="x">   -&gt;name(&#39;email|Email Address&#39;)-&gt;rules(&#39;required|valid_email&#39;);</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">} else {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>With custom error messages:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
+<span class="x">      -&gt;rules(&#39;required|min_length[5]&#39;, [</span>
+<span class="x">         &#39;required&#39;   =&gt; &#39;Please enter your username.&#39;,</span>
+<span class="x">         &#39;min_length&#39; =&gt; &#39;Username must be at least 5 characters.&#39;,</span>
+<span class="x">      ])</span>
+<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
+<span class="x">      -&gt;rules(&#39;required|valid_email&#39;, [</span>
+<span class="x">         &#39;valid_email&#39; =&gt; &#39;Please enter a valid email address.&#39;,</span>
+<span class="x">      ]);</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">} else {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Conditional rule application example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
+<span class="x">      -&gt;rules(&#39;required|valid_email&#39;);</span>
+
+<span class="x">// Only validate password confirmation if a new password is provided</span>
+<span class="x">if (!empty($_POST[&#39;password&#39;])) {</span>
+<span class="x">   $this-&gt;form_validation</span>
+<span class="x">      -&gt;name(&#39;password|Password&#39;)</span>
+<span class="x">         -&gt;rules(&#39;required|min_length[8]&#39;)</span>
+<span class="x">      -&gt;name(&#39;passconf|Confirm Password&#39;)</span>
+<span class="x">         -&gt;rules(&#39;required|matches[password]&#39;);</span>
+<span class="x">}</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   // Process update</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Multi-step form example (step 2 only):</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$step = $_POST[&#39;step&#39;] ?? 1;</span>
+
+<span class="x">if ((int) $step === 2) {</span>
+<span class="x">   $this-&gt;form_validation</span>
+<span class="x">      -&gt;name(&#39;card_number|Card Number&#39;)-&gt;rules(&#39;required|exact_length[16]|numeric&#39;)</span>
+<span class="x">      -&gt;name(&#39;cvv|CVV&#39;)-&gt;rules(&#39;required|exact_length[3]|numeric&#39;)</span>
+<span class="x">      -&gt;name(&#39;expiry|Expiry Date&#39;)-&gt;rules(&#39;required|pattern[date_ymd]&#39;);</span>
+<span class="x">}</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   // Proceed to step 3</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 </section>
-<section id="legacy-fluent-style-optional">
-<h2>Legacy / Fluent Style (Optional)<a class="headerlink" href="#legacy-fluent-style-optional" title="Link to this heading"></a></h2>
-<p>The old chaining method is still supported:</p>
+<section id="legacy-fluent-style">
+<h2>Legacy / Fluent Style<a class="headerlink" href="#legacy-fluent-style" title="Link to this heading"></a></h2>
+<p>The original method-chaining style is still fully supported. Call <code class="docutils literal notranslate"><span class="pre">name()</span></code> to
+select a field, then chain validation methods directly onto it.</p>
+<p><strong>Basic example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
 <span class="x">   -&gt;name(&#39;username&#39;)</span>
 <span class="x">      -&gt;required()</span>
@@ -330,33 +453,137 @@ It handles checking for required fields, verifying data type, length, and unique
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;matches(&#39;password&#39;)</span>
 <span class="x">   -&gt;name(&#39;email&#39;)</span>
+<span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;valid_email();</span>
 
-<span class="x">if ($this-&gt;form_validation-&gt;run() == FALSE) {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
-<span class="x">} else {</span>
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
 <span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">} else {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>With custom error messages:</strong></p>
+<p>Each fluent method accepts an optional <code class="docutils literal notranslate"><span class="pre">$custom_error</span></code> string as its last argument.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
+<span class="x">      -&gt;required(&#39;Please enter your username.&#39;)</span>
+<span class="x">      -&gt;min_length(5, &#39;Username must be at least 5 characters long.&#39;)</span>
+<span class="x">      -&gt;max_length(20, &#39;Username must not exceed 20 characters.&#39;)</span>
+<span class="x">      -&gt;alpha_numeric_dash(&#39;Username may only contain letters, numbers, and dashes.&#39;)</span>
+<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
+<span class="x">      -&gt;required(&#39;An email address is required.&#39;)</span>
+<span class="x">      -&gt;valid_email(&#39;Please enter a valid email address.&#39;)</span>
+<span class="x">   -&gt;name(&#39;password|Password&#39;)</span>
+<span class="x">      -&gt;required(&#39;A password is required.&#39;)</span>
+<span class="x">      -&gt;min_length(8, &#39;Password must be at least 8 characters long.&#39;)</span>
+<span class="x">   -&gt;name(&#39;passconf|Confirm Password&#39;)</span>
+<span class="x">      -&gt;required(&#39;Please confirm your password.&#39;)</span>
+<span class="x">      -&gt;matches(&#39;password&#39;, &#39;Passwords do not match.&#39;);</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">} else {</span>
+<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Numeric and range validation example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;age|Age&#39;)</span>
+<span class="x">      -&gt;required()</span>
+<span class="x">      -&gt;numeric()</span>
+<span class="x">      -&gt;greater_than(17, &#39;You must be at least 18 years old.&#39;)</span>
+<span class="x">      -&gt;less_than_equal_to(120, &#39;Please enter a valid age.&#39;)</span>
+<span class="x">   -&gt;name(&#39;score|Score&#39;)</span>
+<span class="x">      -&gt;required()</span>
+<span class="x">      -&gt;numeric()</span>
+<span class="x">      -&gt;greater_than_equal_to(0, &#39;Score cannot be negative.&#39;)</span>
+<span class="x">      -&gt;less_than_equal_to(100, &#39;Score cannot exceed 100.&#39;);</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   // Process data</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p><strong>Pattern and uniqueness example:</strong></p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
+<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
+<span class="x">      -&gt;required()</span>
+<span class="x">      -&gt;min_length(5)</span>
+<span class="x">      -&gt;is_unique(&#39;users&#39;, &#39;username&#39;, $_POST[&#39;username&#39;] ?? &#39;&#39;, &#39;That username is already taken.&#39;)</span>
+<span class="x">   -&gt;name(&#39;website|Website&#39;)</span>
+<span class="x">      -&gt;pattern(&#39;url&#39;, &#39;Please enter a valid URL.&#39;)</span>
+<span class="x">   -&gt;name(&#39;birthdate|Date of Birth&#39;)</span>
+<span class="x">      -&gt;required()</span>
+<span class="x">      -&gt;pattern(&#39;date_ymd&#39;, &#39;Please use the format YYYY-MM-DD.&#39;)</span>
+<span class="x">   -&gt;name(&#39;phone|Phone Number&#39;)</span>
+<span class="x">      -&gt;pattern(&#39;tel&#39;, &#39;Please enter a valid phone number.&#39;);</span>
+
+<span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
+<span class="x">   // Process data</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 </section>
-<section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">validate()</span></code> is the <strong>recommended approach</strong></p></li>
-<li><p>It automatically resets previous errors</p></li>
-<li><p>Cleaner and easier to scale</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">run()</span></code> is mainly used for fluent style</p></li>
-</ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">name()</span></code> method selects the input field to validate.
-Chained methods like <code class="docutils literal notranslate"><span class="pre">required()</span></code>, <code class="docutils literal notranslate"><span class="pre">min_length()</span></code>, <code class="docutils literal notranslate"><span class="pre">matches()</span></code> apply validation rules to it.</p>
+<section id="using-submitted">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">submitted()</span></code><a class="headerlink" href="#using-submitted" title="Link to this heading"></a></h2>
+<p>Check whether the form was actually submitted before running validation:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function index()</span>
+<span class="x">{</span>
+<span class="x">   $this-&gt;call-&gt;library(&#39;form_validation&#39;);</span>
+
+<span class="x">   if ($this-&gt;form_validation-&gt;submitted()) {</span>
+
+<span class="x">      if ($this-&gt;form_validation-&gt;validate([</span>
+<span class="x">         &#39;username|Username&#39; =&gt; &#39;required|min_length[5]&#39;,</span>
+<span class="x">         &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">      ])) {</span>
+<span class="x">         $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">      } else {</span>
+<span class="x">         $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">      }</span>
+
+<span class="x">   } else {</span>
+<span class="x">      // Form has not been submitted yet — just display it</span>
+<span class="x">      $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">   }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</section>
+<section id="displaying-errors">
+<h2>Displaying Errors<a class="headerlink" href="#displaying-errors" title="Link to this heading"></a></h2>
+<p>Call <code class="docutils literal notranslate"><span class="pre">errors()</span></code> in your view to output all validation error messages as a
+newline-separated string. It returns an empty string when there are no errors.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+<p>For styled output, wrap it in a container:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="nv">$errors</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$errors</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="x">   &lt;div class=&quot;alert alert-danger&quot;&gt;</span>
+<span class="x">      </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$errors</span><span class="p">;</span> <span class="cp">?&gt;</span>
+<span class="x">   &lt;/div&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+<p>To retrieve errors as a raw array (e.g. for JSON responses or custom rendering):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$errors = $this-&gt;form_validation-&gt;get_errors();</span>
+
+<span class="x">if (!empty($errors)) {</span>
+<span class="x">   echo json_encode([&#39;success&#39; =&gt; false, &#39;errors&#39; =&gt; $errors]);</span>
+<span class="x">   exit;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
 </section>
 <section id="available-methods">
 <h2>Available Methods<a class="headerlink" href="#available-methods" title="Link to this heading"></a></h2>
 <table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 30.0%" />
-<col style="width: 70.0%" />
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
@@ -365,103 +592,300 @@ Chained methods like <code class="docutils literal notranslate"><span class="pre
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name($field)</span></code></p></td>
-<td><p>Selects the input field by its name attribute to apply rules on.</p></td>
+<td><p>Selects the input field by its <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute. Supports <code class="docutils literal notranslate"><span class="pre">field|Label</span></code>
+syntax to set a friendly label used in error messages.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pattern($name,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Validates using a built-in pattern. Possible values: <code class="docutils literal notranslate"><span class="pre">url,</span> <span class="pre">alpha,</span> <span class="pre">words,</span> <span class="pre">alphanum,</span> <span class="pre">int,</span> <span class="pre">float,</span> <span class="pre">tel,</span> <span class="pre">file,</span> <span class="pre">folder,</span> <span class="pre">date_dmy,</span> <span class="pre">date_ymd,</span> <span class="pre">email</span></code>.</p></td>
+<td><p>Validates against a built-in named pattern. Available patterns:
+<code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">words</span></code>, <code class="docutils literal notranslate"><span class="pre">alphanum</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tel</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>, <code class="docutils literal notranslate"><span class="pre">file</span></code>, <code class="docutils literal notranslate"><span class="pre">folder</span></code>, <code class="docutils literal notranslate"><span class="pre">address</span></code>,
+<code class="docutils literal notranslate"><span class="pre">date_dmy</span></code>, <code class="docutils literal notranslate"><span class="pre">date_ymd</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">custom_pattern($regex,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Validates against a custom regex pattern.</p></td>
+<td><p>Validates against a custom regular expression pattern.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">required($custom_error)</span></code></p></td>
-<td><p>Ensures the field is not empty.</p></td>
+<td><p>Ensures the field is not empty or null.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">matches($field,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value matches another field’s value.</p></td>
+<td><p>Ensures the value matches the value of another field.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">differs($field,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value differs from another field’s value.</p></td>
+<td><p>Ensures the value is different from another field’s value.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_unique($table,</span> <span class="pre">$field,</span> <span class="pre">$str,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Checks if the value does <strong>not</strong> exist in a database table column.</p></td>
+<td><p>Checks that the value does <strong>not</strong> already exist in the specified
+database table column.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exact_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the string length is exactly this number.</p></td>
+<td><p>Ensures the string is exactly <code class="docutils literal notranslate"><span class="pre">$length</span></code> characters long.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the string length is at least this number.</p></td>
+<td><p>Ensures the string is at least <code class="docutils literal notranslate"><span class="pre">$length</span></code> characters long.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_length($length,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the string length does not exceed this number.</p></td>
+<td><p>Ensures the string does not exceed <code class="docutils literal notranslate"><span class="pre">$length</span></code> characters.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">valid_email($custom_error)</span></code></p></td>
-<td><p>Ensures the value is a valid email format.</p></td>
+<td><p>Ensures the value is a properly formatted email address.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha($custom_error)</span></code></p></td>
-<td><p>Allows only alphabetic characters.</p></td>
+<td><p>Allows only alphabetic characters (no spaces or numbers).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_space($custom_error)</span></code></p></td>
-<td><p>Allows alphabetic characters and spaces.</p></td>
+<td><p>Allows alphabetic characters and spaces only.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric($custom_error)</span></code></p></td>
-<td><p>Allows only alphanumeric characters.</p></td>
+<td><p>Allows letters and numbers only (no spaces or special characters).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_space($custom_error)</span></code></p></td>
-<td><p>Allows alphanumeric characters and spaces.</p></td>
+<td><p>Allows letters, numbers, and spaces only.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_dash($custom_error)</span></code></p></td>
-<td><p>Allows alphanumeric characters and dashes.</p></td>
+<td><p>Allows letters, numbers, underscores, and dashes only.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numeric($custom_error)</span></code></p></td>
-<td><p>Allows only numeric values.</p></td>
+<td><p>Ensures the value is a valid numeric value (integer or decimal).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than($value,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value is greater than the given number.</p></td>
+<td><p>Ensures the numeric value is strictly greater than <code class="docutils literal notranslate"><span class="pre">$value</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than_equal_to($value,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value is greater than or equal to the given number.</p></td>
+<td><p>Ensures the numeric value is greater than or equal to <code class="docutils literal notranslate"><span class="pre">$value</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">less_than($value,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value is less than the given number.</p></td>
+<td><p>Ensures the numeric value is strictly less than <code class="docutils literal notranslate"><span class="pre">$value</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">less_than_equal_to($value,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value is less than or equal to the given number.</p></td>
+<td><p>Ensures the numeric value is less than or equal to <code class="docutils literal notranslate"><span class="pre">$value</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">in_list($array,</span> <span class="pre">$custom_error)</span></code></p></td>
-<td><p>Ensures the value exists within the given array list.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">in_list($list,</span> <span class="pre">$custom_error)</span></code></p></td>
+<td><p>Ensures the value is one of the comma-separated values in <code class="docutils literal notranslate"><span class="pre">$list</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run()</span></code></p></td>
-<td><p>Runs the validation. Returns <strong>TRUE</strong> if no errors found.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors()</span></code></p></td>
-<td><p>Returns a string of all validation errors. Empty string if none.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">submitted()</span></code></p></td>
-<td><p>Checks if the form was submitted. Returns <strong>TRUE</strong> if submitted, <strong>FALSE</strong> otherwise.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset()</span></code></p></td>
-<td><p>Resets all validation errors and previous input values.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validate($rules,</span> <span class="pre">$custom_errors)</span></code></p></td>
-<td><p>Validates using an array of rules. Returns <strong>TRUE</strong> if all pass, <strong>FALSE</strong> if any fail.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">valid_name($custom_error)</span></code></p></td>
+<td><p>Ensures the value is a valid person name (Unicode letters and spaces only).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rules($rules,</span> <span class="pre">$custom_errors)</span></code></p></td>
-<td><p>Sets validation rules using an array. Does not run validation.</p></td>
+<td><p>Applies a pipe-separated rules string to the currently selected field.
+Does not run validation immediately.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run()</span></code></p></td>
+<td><p>Runs the validation and returns <strong>TRUE</strong> if there are no errors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">validate($fields,</span> <span class="pre">$custom_errors)</span></code></p></td>
+<td><p>Validates an array of field-rule pairs. Automatically resets previous
+errors. Returns <strong>TRUE</strong> if all rules pass.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">submitted()</span></code></p></td>
+<td><p>Returns <strong>TRUE</strong> if the form was submitted (i.e. <code class="docutils literal notranslate"><span class="pre">$_POST</span></code> is not empty).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors()</span></code></p></td>
+<td><p>Returns all validation error messages as a single HTML-escaped string,
+separated by <code class="docutils literal notranslate"><span class="pre">&lt;br&gt;</span></code> tags. Returns an empty string if there are no errors.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_errors()</span></code></p></td>
+<td><p>Returns a raw array of all current validation error messages.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Each validation method supports an optional <code class="docutils literal notranslate"><span class="pre">$custom_error</span></code> parameter to override the default error message.</p>
+<p>Every validation method accepts an optional <code class="docutils literal notranslate"><span class="pre">$custom_error</span></code> string as its
+final argument to override the default error message for that specific rule.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">validate()</span></code> method resets all previous errors at the start of each call,
+making it safe to call multiple times within the same request without accumulating
+stale errors. When using the fluent style with <code class="docutils literal notranslate"><span class="pre">run()</span></code>, errors accumulate across
+all chained calls until <code class="docutils literal notranslate"><span class="pre">run()</span></code> is invoked.</p>
 </div>
 </section>
-<section id="error-display">
-<h2>Error Display<a class="headerlink" href="#error-display" title="Link to this heading"></a></h2>
-<p>To show validation errors in your form, include this line in your view:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
-</pre></div>
-</div>
-<p>It will return a string of all validation errors. If there are none, it returns an empty string.</p>
+<section id="rule-reference">
+<h2>Rule Reference<a class="headerlink" href="#rule-reference" title="Link to this heading"></a></h2>
+<p>The table below summarises every built-in rule available for use in <code class="docutils literal notranslate"><span class="pre">validate()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">rules()</span></code> rule strings.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Rule</strong></p></th>
+<th class="head"><p><strong>Example</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">required</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">required</span></code></p></td>
+<td><p>Field must not be empty.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_email</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">valid_email</span></code></p></td>
+<td><p>Must be a valid email address.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">valid_name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">valid_name</span></code></p></td>
+<td><p>Must be a valid person name (letters and spaces).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">matches</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">matches[password]</span></code></p></td>
+<td><p>Must match the value of the given field.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">differs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">differs[old_password]</span></code></p></td>
+<td><p>Must differ from the value of the given field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_unique</span></code></p></td>
+<td><p><em>(fluent only)</em></p></td>
+<td><p>Value must not exist in the given database column.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">min_length[8]</span></code></p></td>
+<td><p>Minimum string length.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_length[255]</span></code></p></td>
+<td><p>Maximum string length.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">exact_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">exact_length[10]</span></code></p></td>
+<td><p>String must be exactly this many characters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></td>
+<td><p>Letters only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_space</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha_space</span></code></p></td>
+<td><p>Letters and spaces only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric</span></code></p></td>
+<td><p>Letters and numbers only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_space</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_space</span></code></p></td>
+<td><p>Letters, numbers, and spaces only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_dash</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_dash</span></code></p></td>
+<td><p>Letters, numbers, underscores, and dashes only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numeric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">numeric</span></code></p></td>
+<td><p>Must be a numeric value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">greater_than[0]</span></code></p></td>
+<td><p>Must be greater than the given number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than_equal_to</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">greater_than_equal_to[18]</span></code></p></td>
+<td><p>Must be greater than or equal to the given number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">less_than</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">less_than[100]</span></code></p></td>
+<td><p>Must be less than the given number.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">less_than_equal_to</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">less_than_equal_to[999]</span></code></p></td>
+<td><p>Must be less than or equal to the given number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">in_list</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">in_list[yes,no]</span></code></p></td>
+<td><p>Must be one of the comma-separated values.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pattern</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pattern[url]</span></code></p></td>
+<td><p>Must match a built-in named pattern.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="default-error-messages">
+<h2>Default Error Messages<a class="headerlink" href="#default-error-messages" title="Link to this heading"></a></h2>
+<p>The following messages are used when no custom error is provided. The <code class="docutils literal notranslate"><span class="pre">%s</span></code>
+placeholder is replaced with the field label; <code class="docutils literal notranslate"><span class="pre">%d</span></code> is replaced with the
+numeric parameter where applicable.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Rule</strong></p></th>
+<th class="head"><p><strong>Default Message</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">required</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">is</span> <span class="pre">required.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">matches</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">match</span> <span class="pre">the</span> <span class="pre">confirmation</span> <span class="pre">field.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">differs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">different</span> <span class="pre">from</span> <span class="pre">the</span> <span class="pre">other</span> <span class="pre">field.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_unique</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">already</span> <span class="pre">exists.</span> <span class="pre">Please</span> <span class="pre">enter</span> <span class="pre">a</span> <span class="pre">unique</span> <span class="pre">value.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">exact_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">exactly</span> <span class="pre">%d</span> <span class="pre">character(s)</span> <span class="pre">long.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">at</span> <span class="pre">least</span> <span class="pre">%d</span> <span class="pre">character(s)</span> <span class="pre">long.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">not</span> <span class="pre">exceed</span> <span class="pre">%d</span> <span class="pre">character(s).</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valid_email</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">email</span> <span class="pre">address.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">letters</span> <span class="pre">only.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">letters</span> <span class="pre">and</span> <span class="pre">numbers</span> <span class="pre">only.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_space</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">letters,</span> <span class="pre">numbers,</span> <span class="pre">and</span> <span class="pre">spaces</span> <span class="pre">only.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_space</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">letters</span> <span class="pre">and</span> <span class="pre">spaces</span> <span class="pre">only.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alpha_numeric_dash</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">contain</span> <span class="pre">letters,</span> <span class="pre">numbers,</span> <span class="pre">and</span> <span class="pre">dashes</span> <span class="pre">only.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numeric</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">a</span> <span class="pre">numeric</span> <span class="pre">value.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">greater</span> <span class="pre">than</span> <span class="pre">%s.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">less_than</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">less</span> <span class="pre">than</span> <span class="pre">%s.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">greater_than_equal_to</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">greater</span> <span class="pre">than</span> <span class="pre">or</span> <span class="pre">equal</span> <span class="pre">to</span> <span class="pre">%s.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">less_than_equal_to</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">less</span> <span class="pre">than</span> <span class="pre">or</span> <span class="pre">equal</span> <span class="pre">to</span> <span class="pre">%s.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">in_list</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">option.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pattern</span></code> / <code class="docutils literal notranslate"><span class="pre">custom_pattern</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">match</span> <span class="pre">the</span> <span class="pre">required</span> <span class="pre">format.</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">valid_name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;%s&quot;</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">name.</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
