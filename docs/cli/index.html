@@ -129,7 +129,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#utility-commands">Utility Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#subdirectory-support">Subdirectory Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#file-overwrite-protection">File Overwrite Protection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#registering-custom-commands">Registering Custom Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tips-and-best-practices">Tips and Best Practices</a></li>
 </ul>
@@ -196,7 +195,7 @@ automatically.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">[port]</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">serve</span> <span class="pre">[port]</span></code></p></td>
 <td><p>Start the PHP built-in development server (default port: <code class="docutils literal notranslate"><span class="pre">3000</span></code>)</p></td>
 </tr>
 </tbody>
@@ -289,13 +288,13 @@ automatically.</p>
 <h3><code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">[port]</span></code><a class="headerlink" href="#run-port" title="Link to this heading"></a></h3>
 <p>Starts the PHP built-in development server pointing to the <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start on the default port 3000</span>
-php<span class="w"> </span>lava<span class="w"> </span>run
+php<span class="w"> </span>lava<span class="w"> </span>serve
 
 <span class="c1"># Start on a custom port (positional)</span>
-php<span class="w"> </span>lava<span class="w"> </span>run<span class="w"> </span><span class="m">8080</span>
+php<span class="w"> </span>lava<span class="w"> </span>serve<span class="w"> </span><span class="m">8080</span>
 
 <span class="c1"># Start on a custom port (flag)</span>
-php<span class="w"> </span>lava<span class="w"> </span>run<span class="w"> </span>--port<span class="o">=</span><span class="m">8080</span>
+php<span class="w"> </span>lava<span class="w"> </span>serve<span class="w"> </span>--port<span class="o">=</span><span class="m">8080</span>
 </pre></div>
 </div>
 <p><strong>Output:</strong></p>
@@ -308,6 +307,11 @@ Press Ctrl+C to stop the server.
 <p class="admonition-title">Note</p>
 <p>The server requires a <code class="docutils literal notranslate"><span class="pre">public/</span></code> directory in the project root.
 An error is shown if it cannot be found.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also use <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span></code> command to start the server.
+Results are the same with <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">serve</span></code>.</p>
 </div>
 </section>
 </section>
@@ -554,39 +558,49 @@ php<span class="w"> </span>lava<span class="w"> </span>make:command<span class="
 </div>
 <p><strong>Generated file</strong> (<code class="docutils literal notranslate"><span class="pre">app/commands/SendEmails.php</span></code>):</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
-
 <span class="sd">/**</span>
-<span class="sd"> * Command: SendEmails</span>
-<span class="sd"> *</span>
-<span class="sd"> * Register this in your lava CLI file with:</span>
-<span class="sd"> *   register_command(&#39;send:emails&#39;, [new SendEmails, &#39;handle&#39;], &#39;Description here&#39;, []);</span>
-<span class="sd"> *</span>
-<span class="sd"> * Automatically generated via CLI.</span>
-<span class="sd"> */</span>
+<span class="sd">* Command: SendEmails</span>
+<span class="sd">*</span>
+<span class="sd">* Auto-discovered by the LavaLust CLI.</span>
+<span class="sd">* No registration needed — just drop this file in app/commands/.</span>
+<span class="sd">*/</span>
 <span class="k">class</span> <span class="nc">SendEmails</span>
 <span class="p">{</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$input</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[])</span>
-    <span class="p">{</span>
-        <span class="c1">// TODO: Add your command logic here</span>
-        <span class="k">echo</span> <span class="s2">&quot;Running SendEmails...&quot;</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-    <span class="p">}</span>
+   <span class="sd">/**</span>
+<span class="sd">   * The CLI command name.</span>
+<span class="sd">   * Usage: php lava send:emails</span>
+<span class="sd">   */</span>
+   <span class="k">public</span> <span class="k">static</span> <span class="nv">$command</span> <span class="o">=</span> <span class="s1">&#39;send:emails&#39;</span><span class="p">;</span>
+
+   <span class="sd">/** Short description shown in php lava help */</span>
+   <span class="k">public</span> <span class="k">static</span> <span class="nv">$description</span> <span class="o">=</span> <span class="s1">&#39;Description for send:emails&#39;</span><span class="p">;</span>
+
+   <span class="sd">/**</span>
+<span class="sd">   * Argument/flag descriptions shown in help.</span>
+<span class="sd">   *</span>
+<span class="sd">   * Example:</span>
+<span class="sd">   *   public static $arguments = [</span>
+<span class="sd">   *       &#39;name&#39;        =&gt; &#39;A positional argument&#39;,</span>
+<span class="sd">   *       &#39;[--flag=&lt;v&gt;]&#39; =&gt; &#39;An optional flag&#39;,</span>
+<span class="sd">   *   ];</span>
+<span class="sd">   */</span>
+   <span class="k">public</span> <span class="k">static</span> <span class="nv">$arguments</span> <span class="o">=</span> <span class="p">[];</span>
+
+   <span class="sd">/**</span>
+<span class="sd">   * Command entry point.</span>
+<span class="sd">   *</span>
+<span class="sd">   * @param string|null $input   First positional argument (php lavasend:emails &lt;input&gt;)</span>
+<span class="sd">   * @param array       $flags   Associative array of --flag=value pairs</span>
+<span class="sd">   */</span>
+   <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$input</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[])</span>
+   <span class="p">{</span>
+      <span class="c1">// TODO: Add your command logic here</span>
+      <span class="k">echo</span> <span class="s2">&quot;Running SendEmails...&quot;</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Registering the command in</strong> <code class="docutils literal notranslate"><span class="pre">lava</span></code>:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">require</span> <span class="nx">APP_DIR</span> <span class="o">.</span> <span class="s1">&#39;commands/SendEmails.php&#39;</span><span class="p">;</span>
-
-<span class="nx">register_command</span><span class="p">(</span>
-    <span class="s1">&#39;send:emails&#39;</span><span class="p">,</span>
-    <span class="p">[</span><span class="k">new</span> <span class="nx">SendEmails</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;Send queued emails to subscribers&#39;</span><span class="p">,</span>
-    <span class="p">[</span><span class="s1">&#39;[--dry-run]&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Preview without sending&#39;</span><span class="p">]</span>
-<span class="p">);</span>
-</pre></div>
-</div>
-<p>Once registered, run it from the terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>send:emails
 php<span class="w"> </span>lava<span class="w"> </span>send:emails<span class="w"> </span>--dry-run
 </pre></div>
@@ -747,40 +761,6 @@ An error message is shown instead:</p>
 </div>
 <p>Delete the existing file manually before regenerating it.</p>
 </section>
-<section id="registering-custom-commands">
-<h2>Registering Custom Commands<a class="headerlink" href="#registering-custom-commands" title="Link to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">lava</span></code> script uses a <code class="docutils literal notranslate"><span class="pre">register_command()</span></code> function that makes every
-command discoverable by the help system and the command dispatcher. You can
-register your own commands directly in the <code class="docutils literal notranslate"><span class="pre">lava</span></code> file or in a separate
-commands bootstrap file that you <code class="docutils literal notranslate"><span class="pre">require</span></code> from it.</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nx">register_command</span><span class="p">(</span>
-    <span class="s1">&#39;send:emails&#39;</span><span class="p">,</span>               <span class="c1">// Command name (used in terminal)</span>
-    <span class="s1">&#39;handle_send_emails&#39;</span><span class="p">,</span>        <span class="c1">// Handler: function name or callable</span>
-    <span class="s1">&#39;Send queued emails&#39;</span><span class="p">,</span>        <span class="c1">// Description shown in help output</span>
-    <span class="p">[</span>                            <span class="c1">// Named arguments shown in help</span>
-        <span class="s1">&#39;[--dry-run]&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Preview without actually sending&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;[--limit=n]&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Maximum number of emails to send&#39;</span><span class="p">,</span>
-    <span class="p">]</span>
-<span class="p">);</span>
-
-<span class="k">function</span> <span class="nf">handle_send_emails</span><span class="p">(</span><span class="nv">$input</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[])</span>
-<span class="p">{</span>
-    <span class="nv">$dry_run</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$flags</span><span class="p">[</span><span class="s1">&#39;dry-run&#39;</span><span class="p">]);</span>
-    <span class="nv">$limit</span>   <span class="o">=</span> <span class="nv">$flags</span><span class="p">[</span><span class="s1">&#39;limit&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">50</span><span class="p">;</span>
-
-    <span class="k">echo</span> <span class="s2">&quot;Sending up to </span><span class="si">{</span><span class="nv">$limit</span><span class="si">}</span><span class="s2"> email(s)&quot;</span> <span class="o">.</span> <span class="p">(</span><span class="nv">$dry_run</span> <span class="o">?</span> <span class="s1">&#39; [dry run]&#39;</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-    <span class="c1">// ... email logic ...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Run the command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>lava<span class="w"> </span>send:emails
-php<span class="w"> </span>lava<span class="w"> </span>send:emails<span class="w"> </span>--dry-run
-php<span class="w"> </span>lava<span class="w"> </span>send:emails<span class="w"> </span>--limit<span class="o">=</span><span class="m">100</span>
-</pre></div>
-</div>
-</section>
 <section id="getting-help">
 <h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
 <p>Running <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span></code> with no arguments prints the full grouped command reference:</p>
@@ -792,7 +772,7 @@ php<span class="w"> </span>lava<span class="w"> </span>send:emails<span class="w
 Usage: php lava &lt;command&gt; [options]
 
 Server:
-  run                    → Start PHP built-in development server
+  serve                    → Start PHP built-in development server
     [port]                  Port number (default: 3000)
     [--port=&lt;n&gt;]            Port number via flag (e.g. --port=8080)
 
@@ -816,9 +796,9 @@ Utilities:
   env:check              → Display current environment configuration summary
 
 Examples:
-  php lava run
-  php lava run 8080
-  php lava run --port=8080
+  php lava serve
+  php lava serve 8080
+  php lava serve --port=8080
   php lava make:controller Dashboard
   php lava make:model User
   php lava cache:clear
@@ -831,8 +811,8 @@ Examples:
 <section id="tips-and-best-practices">
 <h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span></code> during local development instead of configuring a full web server.</p></li>
-<li><p>Use the <code class="docutils literal notranslate"><span class="pre">--port</span></code> flag (<code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">run</span> <span class="pre">--port=8080</span></code>) when port 3000 is already in use.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">serve</span></code> during local development instead of configuring a full web server.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">--port</span></code> flag (<code class="docutils literal notranslate"><span class="pre">php</span> <span class="pre">lava</span> <span class="pre">serve</span> <span class="pre">--port=8080</span></code>) when port 3000 is already in use.</p></li>
 <li><p>Use subdirectory syntax (e.g. <code class="docutils literal notranslate"><span class="pre">Admin/UserController</span></code>) from the start to keep larger applications organised.</p></li>
 <li><p>After generating a model, fill in <code class="docutils literal notranslate"><span class="pre">$table</span></code>, <code class="docutils literal notranslate"><span class="pre">$fillable</span></code>, and <code class="docutils literal notranslate"><span class="pre">$guarded</span></code> before using it with the Query Builder.</p></li>
 <li><p>After generating a middleware, register it in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code> before attaching it to routes.</p></li>

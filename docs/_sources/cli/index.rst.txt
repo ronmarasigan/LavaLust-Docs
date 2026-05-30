@@ -30,7 +30,7 @@ Commands are grouped by function.
 
    * - Command
      - Description
-   * - ``run [port]``
+   * - ``serve [port]``
      - Start the PHP built-in development server (default port: ``3000``)
 
 **Cache**
@@ -98,13 +98,13 @@ Starts the PHP built-in development server pointing to the ``public/`` directory
 .. code-block:: bash
 
    # Start on the default port 3000
-   php lava run
+   php lava serve
 
    # Start on a custom port (positional)
-   php lava run 8080
+   php lava serve 8080
 
    # Start on a custom port (flag)
-   php lava run --port=8080
+   php lava serve --port=8080
 
 **Output:**
 
@@ -119,6 +119,10 @@ Starts the PHP built-in development server pointing to the ``public/`` directory
    The server requires a ``public/`` directory in the project root.
    An error is shown if it cannot be found.
 
+.. note::
+
+   You can also use ``php lava run`` command to start the server.
+   Results are the same with ``php lava serve``.
 
 Cache Management
 -----------------
@@ -417,40 +421,48 @@ register the command in the ``lava`` script using ``register_command()``.
 .. code-block:: php
 
    <?php
-   defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
-
    /**
-    * Command: SendEmails
-    *
-    * Register this in your lava CLI file with:
-    *   register_command('send:emails', [new SendEmails, 'handle'], 'Description here', []);
-    *
-    * Automatically generated via CLI.
-    */
+   * Command: SendEmails
+   *
+   * Auto-discovered by the LavaLust CLI.
+   * No registration needed — just drop this file in app/commands/.
+   */
    class SendEmails
    {
-       public function handle($input = null, array $flags = [])
-       {
-           // TODO: Add your command logic here
-           echo "Running SendEmails..." . PHP_EOL;
-       }
+      /**
+      * The CLI command name.
+      * Usage: php lava send:emails
+      */
+      public static $command = 'send:emails';
+
+      /** Short description shown in php lava help */
+      public static $description = 'Description for send:emails';
+
+      /**
+      * Argument/flag descriptions shown in help.
+      *
+      * Example:
+      *   public static $arguments = [
+      *       'name'        => 'A positional argument',
+      *       '[--flag=<v>]' => 'An optional flag',
+      *   ];
+      */
+      public static $arguments = [];
+
+      /**
+      * Command entry point.
+      *
+      * @param string|null $input   First positional argument (php lavasend:emails <input>)
+      * @param array       $flags   Associative array of --flag=value pairs
+      */
+      public function handle($input = null, array $flags = [])
+      {
+         // TODO: Add your command logic here
+         echo "Running SendEmails..." . PHP_EOL;
+      }
    }
 
 **Registering the command in** ``lava``:
-
-.. code-block:: php
-
-   <?php
-   require APP_DIR . 'commands/SendEmails.php';
-
-   register_command(
-       'send:emails',
-       [new SendEmails, 'handle'],
-       'Send queued emails to subscribers',
-       ['[--dry-run]' => 'Preview without sending']
-   );
-
-Once registered, run it from the terminal:
 
 .. code-block:: bash
 
@@ -617,45 +629,6 @@ An error message is shown instead:
 Delete the existing file manually before regenerating it.
 
 
-Registering Custom Commands
------------------------------
-
-The ``lava`` script uses a ``register_command()`` function that makes every
-command discoverable by the help system and the command dispatcher. You can
-register your own commands directly in the ``lava`` file or in a separate
-commands bootstrap file that you ``require`` from it.
-
-.. code-block:: php
-
-   <?php
-   register_command(
-       'send:emails',               // Command name (used in terminal)
-       'handle_send_emails',        // Handler: function name or callable
-       'Send queued emails',        // Description shown in help output
-       [                            // Named arguments shown in help
-           '[--dry-run]' => 'Preview without actually sending',
-           '[--limit=n]' => 'Maximum number of emails to send',
-       ]
-   );
-
-   function handle_send_emails($input = null, array $flags = [])
-   {
-       $dry_run = isset($flags['dry-run']);
-       $limit   = $flags['limit'] ?? 50;
-
-       echo "Sending up to {$limit} email(s)" . ($dry_run ? ' [dry run]' : '') . PHP_EOL;
-       // ... email logic ...
-   }
-
-Run the command:
-
-.. code-block:: bash
-
-   php lava send:emails
-   php lava send:emails --dry-run
-   php lava send:emails --limit=100
-
-
 Getting Help
 -------------
 
@@ -673,7 +646,7 @@ Running ``php lava`` with no arguments prints the full grouped command reference
    Usage: php lava <command> [options]
 
    Server:
-     run                    → Start PHP built-in development server
+     serve                    → Start PHP built-in development server
        [port]                  Port number (default: 3000)
        [--port=<n>]            Port number via flag (e.g. --port=8080)
 
@@ -697,9 +670,9 @@ Running ``php lava`` with no arguments prints the full grouped command reference
      env:check              → Display current environment configuration summary
 
    Examples:
-     php lava run
-     php lava run 8080
-     php lava run --port=8080
+     php lava serve
+     php lava serve 8080
+     php lava serve --port=8080
      php lava make:controller Dashboard
      php lava make:model User
      php lava cache:clear
@@ -711,8 +684,8 @@ Running ``php lava`` with no arguments prints the full grouped command reference
 Tips and Best Practices
 ------------------------
 
-- Run ``php lava run`` during local development instead of configuring a full web server.
-- Use the ``--port`` flag (``php lava run --port=8080``) when port 3000 is already in use.
+- Run ``php lava serve`` during local development instead of configuring a full web server.
+- Use the ``--port`` flag (``php lava serve --port=8080``) when port 3000 is already in use.
 - Use subdirectory syntax (e.g. ``Admin/UserController``) from the start to keep larger applications organised.
 - After generating a model, fill in ``$table``, ``$fillable``, and ``$guarded`` before using it with the Query Builder.
 - After generating a middleware, register it in ``app/config/middleware.php`` before attaching it to routes.
