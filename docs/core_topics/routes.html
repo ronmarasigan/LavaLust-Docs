@@ -311,6 +311,9 @@ or <code class="docutils literal notranslate"><span class="pre">&#64;</span></co
 
 <span class="c1">// Controller with no method — calls index() by default</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="s1">&#39;HomeController&#39;</span><span class="p">);</span>
+
+<span class="c1">// Modern way call - use aray to call controller and method</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">HomeController</span><span class="o">::</span><span class="na">class</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 <div class="admonition note">

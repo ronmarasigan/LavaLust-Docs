@@ -73,7 +73,7 @@ Open a terminal in the project root and run:
 
 .. code-block:: bash
 
-    php lava run
+    php lava serve
 
 **Step 5 — Open in browser**
 
@@ -121,7 +121,7 @@ This creates a ``LavaLust/`` directory with all project files inside.
 
 .. code-block:: bash
 
-    php lava run
+    php lava serve
 
 **Step 5 — Open in browser**
 
@@ -185,7 +185,7 @@ Troubleshooting
 
    .. code-block:: bash
 
-       php lava run 8080
+       php lava serve 8080
 
 **Composer not found**
    Ensure Composer is installed globally and ``~/.composer/vendor/bin`` (Linux/macOS)

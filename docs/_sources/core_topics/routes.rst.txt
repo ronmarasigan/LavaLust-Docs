@@ -146,6 +146,9 @@ or ``@`` as a separator:
     // Controller with no method — calls index() by default
     $router->get('/home', 'HomeController');
 
+    // Modern way call - use aray to call controller and method
+    $router->get('/home', [HomeController::class, 'index']);
+
 .. note::
 
    The controller file must exist at ``app/controllers/ControllerName.php``.
