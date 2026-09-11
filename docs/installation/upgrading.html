@@ -201,7 +201,7 @@ RewriteRule ^(.*)$ public/$1 [L,QSA]
 &lt;/IfModule&gt;
 
 # Optional: Deny access to sensitive files
-&lt;FilesMatch &quot;^\.env|composer\.json|composer\.lock&quot;&gt;
+&lt;FilesMatch "^\.env|composer\.json|composer\.lock"&gt;
    Order allow,deny
    Deny from all
 &lt;/FilesMatch&gt;

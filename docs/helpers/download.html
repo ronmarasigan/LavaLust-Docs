@@ -228,9 +228,9 @@ Make sure your server has proper read permissions for the files you intend to do
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">try</span> <span class="p">{</span>
     <span class="c1">// Force the download of a file</span>
-    <span class="nx">force_download</span><span class="p">(</span><span class="s1">&#39;/path/to/file.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;myfile.zip&#39;</span><span class="p">);</span>
+    <span class="nx">force_download</span><span class="p">(</span><span class="s1">'/path/to/file.zip'</span><span class="p">,</span> <span class="s1">'myfile.zip'</span><span class="p">);</span>
 <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s1">&#39;Error: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">();</span>
+    <span class="k">echo</span> <span class="s1">'Error: '</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>

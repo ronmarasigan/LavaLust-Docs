@@ -219,13 +219,13 @@ Ensure that the language files for your supported locales are properly loaded.</
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Basic translation</span>
-<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">&#39;welcome_message&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">'welcome_message'</span><span class="p">);</span>
 
 <span class="c1">// Translation with parameters</span>
-<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">&#39;greeting_user&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Ronald&#39;</span><span class="p">]);</span>
+<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">'greeting_user'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Ronald'</span><span class="p">]);</span>
 
 <span class="c1">// Escaped translation for HTML output</span>
-<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">&#39;html_content&#39;</span><span class="p">,</span> <span class="p">[],</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">'html_content'</span><span class="p">,</span> <span class="p">[],</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -247,10 +247,10 @@ Ensure that the language files for your supported locales are properly loaded.</
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Switch application language to French</span>
-<span class="nv">$fr</span> <span class="o">=</span> <span class="nx">language</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">);</span>
+<span class="nv">$fr</span> <span class="o">=</span> <span class="nx">language</span><span class="p">(</span><span class="s1">'fr'</span><span class="p">);</span>
 
 <span class="c1">// Retrieve translated text in French</span>
-<span class="k">echo</span> <span class="nv">$fr</span><span class="o">-&gt;</span><span class="na">translate</span><span class="p">(</span><span class="s1">&#39;welcome_message&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$fr</span><span class="o">-&gt;</span><span class="na">translate</span><span class="p">(</span><span class="s1">'welcome_message'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>

@@ -248,12 +248,12 @@ Returns complete security information for the current session.</p>
 <p><strong>Example Usage:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$status = $this-&gt;session-&gt;get_security_status();</span>
 
-<span class="x">if ($status[&#39;locked&#39;]) {</span>
-<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds&quot;;</span>
+<span class="x">if ($status['locked']) {</span>
+<span class="x">    echo "Locked for {$status['remaining']} seconds";</span>
 <span class="x">}</span>
 
-<span class="x">if ($status[&#39;creation_locked&#39;]) {</span>
-<span class="x">    echo &quot;Too many sessions created. Wait {$status[&#39;creation_remaining&#39;]} seconds&quot;;</span>
+<span class="x">if ($status['creation_locked']) {</span>
+<span class="x">    echo "Too many sessions created. Wait {$status['creation_remaining']} seconds";</span>
 <span class="x">}</span>
 </pre></div>
 </div>
@@ -302,8 +302,8 @@ Check login attempt lock status.</p>
 <p><strong>Example Usage:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$status = $this-&gt;session-&gt;check_lock_status();</span>
 
-<span class="x">if ($status[&#39;locked&#39;]) {</span>
-<span class="x">    echo &quot;Locked for {$status[&#39;remaining&#39;]} seconds.&quot;;</span>
+<span class="x">if ($status['locked']) {</span>
+<span class="x">    echo "Locked for {$status['remaining']} seconds.";</span>
 <span class="x">}</span>
 </pre></div>
 </div>
@@ -326,7 +326,7 @@ Prevents execution if user is currently locked.</p>
 <p><strong>Purpose:</strong>
 Logs failed login or suspicious activity.</p>
 <p><strong>Example Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;security_log_attempt($ip, $fingerprint, &#39;Invalid password&#39;);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;session-&gt;security_log_attempt($ip, $fingerprint, 'Invalid password');</span>
 </pre></div>
 </div>
 </section>
@@ -354,7 +354,7 @@ Unlock a specific user manually.</p>
 Reset all locks globally.</p>
 <p><strong>Example Usage:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$count = $this-&gt;session-&gt;unlock_all_attempts();</span>
-<span class="x">echo &quot;{$count} users unlocked&quot;;</span>
+<span class="x">echo "{$count} users unlocked";</span>
 </pre></div>
 </div>
 </section>
@@ -434,14 +434,14 @@ Automatically destroys session after inactivity.</p>
 <section id="storage-format-security-json">
 <h2>Storage Format (security.json)<a class="headerlink" href="#storage-format-security-json" title="Link to this heading"></a></h2>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;IP_FINGERPRINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;timestamps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
+<span class="w">  </span><span class="nt">"IP_FINGERPRINT"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"attempts"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"timestamps"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"locked_until"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;creation_IP_FINGERPRINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;creations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;locked_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
+<span class="w">  </span><span class="nt">"creation_IP_FINGERPRINT"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"creations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1234567890</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"locked_until"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567999</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>

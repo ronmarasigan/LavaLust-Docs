@@ -245,11 +245,11 @@
 <section id="model-blogmodel-php">
 <h2>Model: BlogModel.php<a class="headerlink" href="#model-blogmodel-php" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">'PREVENT_DIRECT_ACCESS'</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">'No direct script access allowed'</span><span class="p">);</span>
 
 <span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;blogs&#39;</span><span class="p">;</span>  <span class="c1"># Database table name</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">'blogs'</span><span class="p">;</span>  <span class="c1"># Database table name</span>
 
     <span class="sd">/**</span>
 <span class="sd">     * Get all blog posts</span>
@@ -269,7 +269,7 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -292,7 +292,7 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">updatePost</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -303,7 +303,7 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">deletePost</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>
@@ -313,14 +313,14 @@
 <section id="controller-blogcontroller-php">
 <h2>Controller: BlogController.php<a class="headerlink" href="#controller-blogcontroller-php" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;PREVENT_DIRECT_ACCESS&#39;</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+<span class="nb">defined</span><span class="p">(</span><span class="s1">'PREVENT_DIRECT_ACCESS'</span><span class="p">)</span> <span class="k">OR</span> <span class="k">exit</span><span class="p">(</span><span class="s1">'No direct script access allowed'</span><span class="p">);</span>
 
 <span class="k">class</span> <span class="nc">BlogController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;BlogModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'BlogModel'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -328,8 +328,8 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;blogs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getAll</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/index&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'blogs'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getAll</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/index'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -337,15 +337,15 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">([</span>
-                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
+                <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">),</span>
+                <span class="s1">'content'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">),</span>
+                <span class="s1">'created_at'</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d H:i:s'</span><span class="p">)</span>
             <span class="p">]);</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/create&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/create'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -355,18 +355,18 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;blog&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'blog'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">updatePost</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="p">[</span>
-                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;created_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
+                <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">),</span>
+                <span class="s1">'content'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">),</span>
+                <span class="s1">'created_at'</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d H:i:s'</span><span class="p">)</span>
             <span class="p">]);</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/edit&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/edit'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -377,7 +377,7 @@
     <span class="k">public</span> <span class="k">function</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">deletePost</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="sd">/**</span>
@@ -387,8 +387,8 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;blog&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/show&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'blog'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">getById</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/show'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>
@@ -400,13 +400,13 @@
 <p><strong>views/blog/index.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">All</span> <span class="nx">Blog</span> <span class="nx">Posts</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="k">New</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">"//put your route here"</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="k">New</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
     <span class="o">&lt;?</span><span class="nx">php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$blogs</span> <span class="k">as</span> <span class="nv">$blog</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
 <span class="x">        &lt;li&gt;</span>
-<span class="x">            &lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/show/&#39;</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/a&gt;</span>
-<span class="x">            - &lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/edit/&#39;</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Edit&lt;/a&gt;</span>
-<span class="x">            - &lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/delete/&#39;</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Delete&lt;/a&gt;</span>
+<span class="x">            &lt;a href="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/show/'</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/a&gt;</span>
+<span class="x">            - &lt;a href="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/edit/'</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"&gt;Edit&lt;/a&gt;</span>
+<span class="x">            - &lt;a href="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/delete/'</span><span class="o">.</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"&gt;Delete&lt;/a&gt;</span>
 <span class="x">        &lt;/li&gt;</span>
 <span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
 <span class="x">&lt;/ul&gt;</span>
@@ -416,12 +416,12 @@
 <p><strong>views/blog/create.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="nx">Blog</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">action</span><span class="o">=</span><span class="s2">"//put your route here"</span> <span class="nx">method</span><span class="o">=</span><span class="s2">"POST"</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Title</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;title&quot;</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">name</span><span class="o">=</span><span class="s2">"title"</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Content</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">textarea</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="o">&gt;&lt;/</span><span class="nx">textarea</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="o">&gt;</span><span class="nx">Create</span><span class="o">&lt;/</span><span class="nx">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">textarea</span> <span class="nx">name</span><span class="o">=</span><span class="s2">"content"</span><span class="o">&gt;&lt;/</span><span class="nx">textarea</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"submit"</span><span class="o">&gt;</span><span class="nx">Create</span><span class="o">&lt;/</span><span class="nx">button</span><span class="o">&gt;</span>
 <span class="o">&lt;/</span><span class="nx">form</span><span class="o">&gt;</span>
 <span class="cp">?&gt;</span>
 </pre></div>
@@ -429,12 +429,12 @@
 <p><strong>views/blog/edit.php</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Edit</span> <span class="nx">Blog</span> <span class="nx">Post</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span> <span class="nx">action</span><span class="o">=</span><span class="s2">&quot;//put your route here&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">method</span><span class="o">=</span><span class="s2">"POST"</span> <span class="nx">action</span><span class="o">=</span><span class="s2">"//put your route here"</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Title</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;title&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;&lt;?php echo html_escape(</span><span class="si">$BlogModel-&gt;title</span><span class="s2">); ?&gt;&quot;</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">name</span><span class="o">=</span><span class="s2">"title"</span> <span class="nx">value</span><span class="o">=</span><span class="s2">"&lt;?php echo html_escape(</span><span class="si">$BlogModel-&gt;title</span><span class="s2">); ?&gt;"</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="nx">Content</span><span class="o">&lt;/</span><span class="nx">label</span><span class="o">&gt;&lt;</span><span class="nx">br</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">textarea</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="o">&gt;&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;</span>
-<span class="x">    &lt;button type=&quot;submit&quot;&gt;Update&lt;/button&gt;</span>
+    <span class="o">&lt;</span><span class="nx">textarea</span> <span class="nx">name</span><span class="o">=</span><span class="s2">"content"</span><span class="o">&gt;&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;</span>
+<span class="x">    &lt;button type="submit"&gt;Update&lt;/button&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 <span class="x">?&gt;</span>
 </pre></div>
@@ -443,7 +443,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
 <span class="x">&lt;p&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$BlogModel</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">&lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Back&lt;/a&gt;</span>
+<span class="x">&lt;a href="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">"&gt;Back&lt;/a&gt;</span>
 <span class="x">?&gt;</span>
 </pre></div>
 </div>

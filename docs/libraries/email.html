@@ -198,7 +198,7 @@ recipients, reply-to addresses, file attachments, priority flags, and a
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Loading</a><a class="headerlink" href="#loading" title="Link to this heading"></a></h2>
 <p>Load the library inside your controller:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Once loaded it is available as <code class="docutils literal notranslate"><span class="pre">$this-&gt;email</span></code>.</p>
@@ -208,19 +208,19 @@ recipients, reply-to addresses, file attachments, priority flags, and a
 <p>Every setter returns <code class="docutils literal notranslate"><span class="pre">$this</span></code>, so calls can be chained:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
-    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome to My App&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello, thanks for signing up!&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">,</span> <span class="s1">'My App'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'user@example.com'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Welcome to My App'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Hello, thanks for signing up!'</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Or called individually:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello!&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">,</span> <span class="s1">'My App'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'user@example.com'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Welcome'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Hello!'</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -230,10 +230,10 @@ recipients, reply-to addresses, file attachments, priority flags, and a
 <p>Set the From address and an optional display name.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Address only</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">);</span>
 
 <span class="c1">// Address with display name</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My Application&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">,</span> <span class="s1">'My Application'</span><span class="p">);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -272,21 +272,21 @@ and high-byte characters, preventing header injection attacks.</p>
 <p>Add one or more primary recipients. Calling <code class="docutils literal notranslate"><span class="pre">recipient()</span></code> multiple times
 builds a list — duplicates are silently ignored.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;alice@example.com&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;bob@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'alice@example.com'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'bob@example.com'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>CC (Carbon Copy)</strong></p>
 <p>Recipients in the CC list receive the email and can see each other’s addresses.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;manager@example.com&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;team@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">'manager@example.com'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">'team@example.com'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>BCC (Blind Carbon Copy)</strong></p>
 <p>Recipients in the BCC list receive the email but are hidden from all other recipients.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">&#39;audit@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">'audit@example.com'</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -325,7 +325,7 @@ builds a list — duplicates are silently ignored.</p>
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Reply-To</a><a class="headerlink" href="#reply-to" title="Link to this heading"></a></h2>
 <p>Direct replies to a different address than the sender:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">&#39;support@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">'support@example.com'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>If <code class="docutils literal notranslate"><span class="pre">reply_to()</span></code> is not called, replies go to the sender address automatically.</p>
@@ -333,7 +333,7 @@ builds a list — duplicates are silently ignored.</p>
 <section id="subject">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Subject</a><a class="headerlink" href="#subject" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your order has shipped&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Your order has shipped'</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -347,22 +347,22 @@ through <code class="docutils literal notranslate"><span class="pre">filter_head
 <p>Set the body and its type. The default type is <code class="docutils literal notranslate"><span class="pre">'plain'</span></code>.</p>
 <p><strong>Plain text</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hello, your account is ready.&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Hello, your account is ready.'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>HTML</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'</span>
 <span class="s1">    &lt;h1&gt;Welcome!&lt;/h1&gt;</span>
 <span class="s1">    &lt;p&gt;Your account has been created.&lt;/p&gt;</span>
-<span class="s1">    &lt;p&gt;&lt;a href=&quot;https://example.com/login&quot;&gt;Log in here&lt;/a&gt;&lt;/p&gt;</span>
-<span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">);</span>
+<span class="s1">    &lt;p&gt;&lt;a href="https://example.com/login"&gt;Log in here&lt;/a&gt;&lt;/p&gt;</span>
+<span class="s1">'</span><span class="p">,</span> <span class="s1">'html'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>HTML shortcut</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">html()</span></code> is a convenience alias for <code class="docutils literal notranslate"><span class="pre">email_content($content,</span> <span class="pre">'html')</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Welcome!&lt;/h1&gt;&lt;p&gt;Thanks for joining.&lt;/p&gt;&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">'&lt;h1&gt;Welcome!&lt;/h1&gt;&lt;p&gt;Thanks for joining.&lt;/p&gt;'</span><span class="p">);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -445,7 +445,7 @@ Override it per-message with <code class="docutils literal notranslate"><span cl
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Charset</a><a class="headerlink" href="#charset" title="Link to this heading"></a></h2>
 <p>Override the character set used for HTML emails on a per-message basis:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">charset</span><span class="p">(</span><span class="s1">&#39;iso-8859-1&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">charset</span><span class="p">(</span><span class="s1">'iso-8859-1'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>If not called, the charset defaults to <code class="docutils literal notranslate"><span class="pre">config_item('charset')</span></code> (typically <code class="docutils literal notranslate"><span class="pre">utf-8</span></code>).</p>
@@ -456,12 +456,12 @@ Override it per-message with <code class="docutils literal notranslate"><span cl
 Duplicates are silently ignored.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Single attachment</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoice.pdf&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/invoice.pdf'</span><span class="p">);</span>
 
 <span class="c1">// Multiple attachments (chained)</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
-    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoice.pdf&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/receipt.pdf&#39;</span><span class="p">);</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/invoice.pdf'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/receipt.pdf'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Attachments are base64-encoded and sent as <code class="docutils literal notranslate"><span class="pre">multipart/related</span></code> MIME parts.
@@ -480,18 +480,18 @@ were silently skipped — explicit errors prevent silent data loss.</p>
 email without reloading the library:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Send first email</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;alice@example.com&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Hello Alice&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hi Alice!&#39;</span><span class="p">)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'alice@example.com'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Hello Alice'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Hi Alice!'</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 
 <span class="c1">// Reset and send a second email</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">reset</span><span class="p">()</span>
-            <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;bob@example.com&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Hello Bob&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Hi Bob!&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'bob@example.com'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Hello Bob'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Hi Bob!'</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -500,11 +500,11 @@ email without reloading the library:</p>
 <h2><a class="toc-backref" href="#id12" role="doc-backlink">Accessors</a><a class="headerlink" href="#accessors" title="Link to this heading"></a></h2>
 <p>These read-only methods are useful for logging, testing, or conditional logic:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_sender</span><span class="p">();</span>       <span class="c1">// &#39;no-reply@example.com&#39;</span>
-<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_recipients</span><span class="p">());</span> <span class="c1">// [&#39;alice@example.com&#39;, ...]</span>
-<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_cc</span><span class="p">());</span>         <span class="c1">// [&#39;manager@example.com&#39;]</span>
-<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_bcc</span><span class="p">());</span>        <span class="c1">// [&#39;audit@example.com&#39;]</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_subject</span><span class="p">();</span>        <span class="c1">// &#39;Your order has shipped&#39;</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_sender</span><span class="p">();</span>       <span class="c1">// 'no-reply@example.com'</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_recipients</span><span class="p">());</span> <span class="c1">// ['alice@example.com', ...]</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_cc</span><span class="p">());</span>         <span class="c1">// ['manager@example.com']</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_bcc</span><span class="p">());</span>        <span class="c1">// ['audit@example.com']</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">get_subject</span><span class="p">();</span>        <span class="c1">// 'Your order has shipped'</span>
 <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">is_html</span><span class="p">());</span>       <span class="c1">// bool(true)</span>
 </pre></div>
 </div>
@@ -560,7 +560,7 @@ email without reloading the library:</p>
 <span class="p">}</span>
 <span class="k">else</span>
 <span class="p">{</span>
-    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;mail() returned false&#39;</span><span class="p">);</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'mail() returned false'</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -578,7 +578,7 @@ email without reloading the library:</p>
 <span class="p">}</span>
 <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Email error: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'Email error: '</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
     <span class="c1">// handle gracefully</span>
 <span class="p">}</span>
 </pre></div>
@@ -690,57 +690,57 @@ email without reloading the library:</p>
 <h2><a class="toc-backref" href="#id15" role="doc-backlink">Complete Examples</a><a class="headerlink" href="#complete-examples" title="Link to this heading"></a></h2>
 <p><strong>Plain text password reset</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
-    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
-    <span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">&#39;support@example.com&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Password Reset Request&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">,</span> <span class="s1">'My App'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">'email'</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">reply_to</span><span class="p">(</span><span class="s1">'support@example.com'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Password Reset Request'</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span>
-        <span class="s2">&quot;Hello </span><span class="si">{</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span>
-        <span class="o">.</span> <span class="s2">&quot;Click the link below to reset your password:</span><span class="se">\r\n</span><span class="s2">&quot;</span>
-        <span class="o">.</span> <span class="s2">&quot;https://example.com/reset/</span><span class="si">{</span><span class="nv">$token</span><span class="si">}</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span>
-        <span class="o">.</span> <span class="s2">&quot;If you did not request this, please ignore this email.&quot;</span>
+        <span class="s2">"Hello </span><span class="si">{</span><span class="nv">$user</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="se">\r\n\r\n</span><span class="s2">"</span>
+        <span class="o">.</span> <span class="s2">"Click the link below to reset your password:</span><span class="se">\r\n</span><span class="s2">"</span>
+        <span class="o">.</span> <span class="s2">"https://example.com/reset/</span><span class="si">{</span><span class="nv">$token</span><span class="si">}</span><span class="se">\r\n\r\n</span><span class="s2">"</span>
+        <span class="o">.</span> <span class="s2">"If you did not request this, please ignore this email."</span>
     <span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
 <p><strong>HTML invoice email with attachment and high priority</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 
 <span class="k">try</span>
 <span class="p">{</span>
     <span class="nv">$sent</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
-        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;billing@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Billing Team&#39;</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
-        <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;accounts@example.com&#39;</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Invoice #&#39;</span> <span class="o">.</span> <span class="nv">$invoice_id</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'billing@example.com'</span><span class="p">,</span> <span class="s1">'Billing Team'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">'email'</span><span class="p">])</span>
+        <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">'accounts@example.com'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Invoice #'</span> <span class="o">.</span> <span class="nv">$invoice_id</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s2">&quot;</span>
+        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s2">"</span>
 <span class="s2">            &lt;h2&gt;Invoice #</span><span class="si">{</span><span class="nv">$invoice_id</span><span class="si">}</span><span class="s2">&lt;/h2&gt;</span>
-<span class="s2">            &lt;p&gt;Dear </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,&lt;/p&gt;</span>
+<span class="s2">            &lt;p&gt;Dear </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">,&lt;/p&gt;</span>
 <span class="s2">            &lt;p&gt;Please find your invoice attached.&lt;/p&gt;</span>
 <span class="s2">            &lt;p&gt;Thank you for your business.&lt;/p&gt;</span>
-<span class="s2">        &quot;</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/invoices/invoice_&#39;</span> <span class="o">.</span> <span class="nv">$invoice_id</span> <span class="o">.</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
+<span class="s2">        "</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/invoices/invoice_'</span> <span class="o">.</span> <span class="nv">$invoice_id</span> <span class="o">.</span> <span class="s1">'.pdf'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 
     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$sent</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s2">&quot;Invoice #</span><span class="si">{</span><span class="nv">$invoice_id</span><span class="si">}</span><span class="s2"> email failed for </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="s2">"Invoice #</span><span class="si">{</span><span class="nv">$invoice_id</span><span class="si">}</span><span class="s2"> email failed for </span><span class="si">{</span><span class="nv">$customer</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Email exception: &#39;</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'Email exception: '</span> <span class="o">.</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Looped newsletter with reset between sends</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 
 <span class="nv">$subscribers</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">subscriber_model</span><span class="o">-&gt;</span><span class="na">get_active</span><span class="p">();</span>
 
@@ -748,10 +748,10 @@ email without reloading the library:</p>
 <span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
         <span class="o">-&gt;</span><span class="na">reset</span><span class="p">()</span>
-        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;newsletter@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Monthly Update&#39;</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$subscriber</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
-        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;April 2026 Newsletter&#39;</span><span class="p">)</span>
-        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;April Update&lt;/h1&gt;&lt;p&gt;Here is what is new this month...&lt;/p&gt;&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'newsletter@example.com'</span><span class="p">,</span> <span class="s1">'Monthly Update'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="nv">$subscriber</span><span class="p">[</span><span class="s1">'email'</span><span class="p">])</span>
+        <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'April 2026 Newsletter'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">'&lt;h1&gt;April Update&lt;/h1&gt;&lt;p&gt;Here is what is new this month...&lt;/p&gt;'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
@@ -759,14 +759,14 @@ email without reloading the library:</p>
 <p><strong>Sending with CC, BCC, and low priority</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span>
-    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;hr@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;HR Team&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;employee@example.com&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">&#39;manager@example.com&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">&#39;hr-archive@example.com&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Your Annual Review&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">sender</span><span class="p">(</span><span class="s1">'hr@example.com'</span><span class="p">,</span> <span class="s1">'HR Team'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'employee@example.com'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">cc</span><span class="p">(</span><span class="s1">'manager@example.com'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">bcc</span><span class="p">(</span><span class="s1">'hr-archive@example.com'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Your Annual Review'</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">priority</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">&#39;Please find your annual review notes below...&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/reviews/review_2026.pdf&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">email_content</span><span class="p">(</span><span class="s1">'Please find your annual review notes below...'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">attachment</span><span class="p">(</span><span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/reviews/review_2026.pdf'</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>

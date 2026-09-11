@@ -199,7 +199,7 @@ classes to implement custom pre-action behavior.</p>
 <span class="x">    {</span>
 <span class="x">        // Ensure user is logged in before any action</span>
 <span class="x">        if (!$this-&gt;auth-&gt;check()) {</span>
-<span class="x">            redirect(&#39;login&#39;);</span>
+<span class="x">            redirect('login');</span>
 <span class="x">        }</span>
 <span class="x">    }</span>
 
@@ -207,7 +207,7 @@ classes to implement custom pre-action behavior.</p>
 <span class="x">    {</span>
 <span class="x">        // Runs only after before_action hook passes</span>
 <span class="x">        $posts = $this-&gt;postModel-&gt;all();</span>
-<span class="x">        $this-&gt;load-&gt;view(&#39;posts/index&#39;, [&#39;posts&#39; =&gt; $posts]);</span>
+<span class="x">        $this-&gt;load-&gt;view('posts/index', ['posts' =&gt; $posts]);</span>
 <span class="x">    }</span>
 <span class="x">}</span>
 </pre></div>

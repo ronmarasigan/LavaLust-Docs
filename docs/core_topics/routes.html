@@ -177,43 +177,43 @@ middleware, route groups, named routes, parameter constraints, and more.</p>
 <p>Each method registers a route that responds to a specific HTTP verb.</p>
 <p><strong>GET:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;List of users&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"List of users"</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>POST:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Create a user&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Create a user"</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>PUT:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Update user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Update user "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>PATCH:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Partially update user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Partially update user "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>DELETE:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Delete user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Delete user "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>OPTIONS:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Options for users&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Options for users"</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
@@ -261,15 +261,15 @@ middleware, route groups, named routes, parameter constraints, and more.</p>
 <h2>Matching Multiple Methods<a class="headerlink" href="#matching-multiple-methods" title="Link to this heading"></a></h2>
 <p><strong>match</strong> — respond to a specific set of HTTP methods:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/contact&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Handles GET and POST&quot;</span><span class="p">;</span>
-<span class="p">},</span> <span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">'/contact'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Handles GET and POST"</span><span class="p">;</span>
+<span class="p">},</span> <span class="p">[</span><span class="s1">'get'</span><span class="p">,</span> <span class="s1">'post'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>any</strong> — respond to all HTTP methods (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS):</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">any</span><span class="p">(</span><span class="s1">&#39;/ping&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Responds to any method&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">any</span><span class="p">(</span><span class="s1">'/ping'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Responds to any method"</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
@@ -299,21 +299,21 @@ middleware, route groups, named routes, parameter constraints, and more.</p>
 or <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> as a separator:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Recommended separator</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>       <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::update&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span><span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>        <span class="s1">'UserController::index'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>   <span class="s1">'UserController::show'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>       <span class="s1">'UserController::store'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>   <span class="s1">'UserController::update'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span><span class="s1">'UserController::destroy'</span><span class="p">);</span>
 
 <span class="c1">// Alternative separators (all equivalent)</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController-&gt;index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController@index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController-&gt;index'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController@index'</span><span class="p">);</span>
 
 <span class="c1">// Controller with no method — calls index() by default</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="s1">&#39;HomeController&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/home'</span><span class="p">,</span> <span class="s1">'HomeController'</span><span class="p">);</span>
 
 <span class="c1">// Modern way call - use aray to call controller and method</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">HomeController</span><span class="o">::</span><span class="na">class</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/home'</span><span class="p">,</span> <span class="p">[</span><span class="nx">HomeController</span><span class="o">::</span><span class="na">class</span><span class="p">,</span> <span class="s1">'index'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -328,18 +328,18 @@ A <code class="docutils literal notranslate"><span class="pre">RuntimeException<
 into the closure or controller method as arguments.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Single parameter</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;User ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"User ID: "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">});</span>
 
 <span class="c1">// Multiple parameters</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/post/{year}/{slug}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$year</span><span class="p">,</span> <span class="nv">$slug</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Post: &quot;</span> <span class="o">.</span> <span class="nv">$slug</span> <span class="o">.</span> <span class="s2">&quot; (&quot;</span> <span class="o">.</span> <span class="nv">$year</span> <span class="o">.</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/post/{year}/{slug}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$year</span><span class="p">,</span> <span class="nv">$slug</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Post: "</span> <span class="o">.</span> <span class="nv">$slug</span> <span class="o">.</span> <span class="s2">" ("</span> <span class="o">.</span> <span class="nv">$year</span> <span class="o">.</span> <span class="s2">")"</span><span class="p">;</span>
 <span class="p">});</span>
 
 <span class="c1">// Optional parameter (append ?)</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{tab?}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$tab</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;User: &quot;</span> <span class="o">.</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">&quot; Tab: &quot;</span> <span class="o">.</span> <span class="nv">$tab</span><span class="p">;</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}/{tab?}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$tab</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"User: "</span> <span class="o">.</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">" Tab: "</span> <span class="o">.</span> <span class="nv">$tab</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
@@ -353,16 +353,16 @@ into the closure or controller method as arguments.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">where()</span></code> to constrain the format of route parameters.</p>
 <p><strong>Single constraint:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{name}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="nv">$name</span><span class="p">;</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;[A-Za-z]+&#39;</span><span class="p">);</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'[A-Za-z]+'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Multiple constraints via array:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">&quot; - &quot;</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;[a-z]+&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}/{name}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$id</span> <span class="o">.</span> <span class="s2">" - "</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">([</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="s1">'[0-9]+'</span><span class="p">,</span> <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'[a-z]+'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -375,29 +375,29 @@ is returned automatically.</p>
 <p>For common patterns, shorthand helpers are available and can be chained:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Numeric only</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">'id'</span><span class="p">);</span>
 
 <span class="c1">// Alphabetic only</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{name}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">'name'</span><span class="p">);</span>
 
 <span class="c1">// Alphanumeric</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{username}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$username</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alphanumeric</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{username}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$username</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_alphanumeric</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
 
 <span class="c1">// UUID</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/order/{uuid}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$uuid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_uuid</span><span class="p">(</span><span class="s1">&#39;uuid&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/order/{uuid}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$uuid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_uuid</span><span class="p">(</span><span class="s1">'uuid'</span><span class="p">);</span>
 
 <span class="c1">// ULID</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/item/{ulid}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$ulid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_ulid</span><span class="p">(</span><span class="s1">&#39;ulid&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/item/{ulid}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$ulid</span><span class="p">)</span> <span class="p">{})</span><span class="o">-&gt;</span><span class="na">where_ulid</span><span class="p">(</span><span class="s1">'ulid'</span><span class="p">);</span>
 
 <span class="c1">// Enumerated values</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/category/{type}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/category/{type}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_in</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="s1">&#39;song&#39;</span><span class="p">,</span> <span class="s1">&#39;painting&#39;</span><span class="p">]);</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_in</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'movie'</span><span class="p">,</span> <span class="s1">'song'</span><span class="p">,</span> <span class="s1">'painting'</span><span class="p">]);</span>
 
 <span class="c1">// Chaining multiple helpers</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}/{name}'</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where_alpha</span><span class="p">(</span><span class="s1">'name'</span><span class="p">);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -441,14 +441,14 @@ is returned automatically.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">group()</span></code> to apply a shared prefix and/or middleware to a set of routes.</p>
 <p><strong>Prefix only:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/admin'</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Admin Dashboard&quot;</span><span class="p">;</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/dashboard'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"Admin Dashboard"</span><span class="p">;</span>
     <span class="p">});</span>
 
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Manage Users&quot;</span><span class="p">;</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">"Manage Users"</span><span class="p">;</span>
     <span class="p">});</span>
 
 <span class="p">});</span>
@@ -458,20 +458,20 @@ is returned automatically.</p>
 </div>
 <p><strong>Prefix with middleware:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/admin'</span><span class="p">,</span> <span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="s1">'AuthMiddleware'</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::dashboard&#39;</span><span class="p">);</span>
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::settings&#39;</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/dashboard'</span><span class="p">,</span> <span class="s1">'AdminController::dashboard'</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/settings'</span><span class="p">,</span> <span class="s1">'AdminController::settings'</span><span class="p">);</span>
 
 <span class="p">});</span>
 </pre></div>
 </div>
 <p><strong>Nested groups:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/api&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/api'</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/v1&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;ApiMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;Api\UserController::index&#39;</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/v1'</span><span class="p">,</span> <span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="s1">'ApiMiddleware'</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'Api\UserController::index'</span><span class="p">);</span>
     <span class="p">});</span>
 
 <span class="p">});</span>
@@ -490,20 +490,20 @@ executes, so they do not leak into routes defined outside the group.</p>
 <p>Middleware can be applied globally, per group, or per individual route.</p>
 <p><strong>Per-route middleware:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;DashboardController::index&#39;</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/dashboard'</span><span class="p">,</span> <span class="s1">'DashboardController::index'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'AuthMiddleware'</span><span class="p">);</span>
 
 <span class="c1">// Multiple middleware</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;AdminController::index&#39;</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;RoleMiddleware&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/admin'</span><span class="p">,</span> <span class="s1">'AdminController::index'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">'AuthMiddleware'</span><span class="p">,</span> <span class="s1">'RoleMiddleware'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Global middleware (runs on every request):</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">(</span><span class="s1">&#39;CorsMiddleware&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">(</span><span class="s1">'CorsMiddleware'</span><span class="p">);</span>
 
 <span class="c1">// Multiple global middleware</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">([</span><span class="s1">&#39;CorsMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;LogMiddleware&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">add_global_middleware</span><span class="p">([</span><span class="s1">'CorsMiddleware'</span><span class="p">,</span> <span class="s1">'LogMiddleware'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -531,23 +531,23 @@ executes, so they do not leak into routes defined outside the group.</p>
 <p>Assign a name to a route for easy reference and lookup.</p>
 <p><strong>Naming a route:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/profile&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::profile&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/profile'</span><span class="p">,</span> <span class="s1">'UserController::profile'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">'user.profile'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Looking up a route by name:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$route</span> <span class="o">=</span> <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_name</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">);</span>
+<span class="nv">$route</span> <span class="o">=</span> <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_name</span><span class="p">(</span><span class="s1">'user.profile'</span><span class="p">);</span>
 <span class="c1">// Returns the full route array, or null if not found</span>
 </pre></div>
 </div>
 <p><strong>Checking if a route exists (by name or URL):</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">&#39;user.profile&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Route exists&quot;</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">'user.profile'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Route exists"</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">&#39;/user/profile&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;URL is registered&quot;</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$router</span><span class="o">-&gt;</span><span class="na">route_exists</span><span class="p">(</span><span class="s1">'/user/profile'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"URL is registered"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>

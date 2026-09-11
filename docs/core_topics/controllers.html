@@ -192,32 +192,32 @@ to a route, and dynamic route parameters are automatically injected as method ar
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;List all users&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"List all users"</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;User Profile ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"User Profile ID: "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Show create user form&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Show create user form"</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Handle form submission&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Handle form submission"</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Edit user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Edit user "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">echo</span> <span class="s2">&quot;Delete user &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Delete user "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -233,24 +233,24 @@ are not accessible from the router.</p>
 <p>Navigate to <code class="docutils literal notranslate"><span class="pre">app/config/routes.php</span></code> and point routes at controller methods.
 The <code class="docutils literal notranslate"><span class="pre">::</span></code> symbol separates the controller class name from the method name.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>           <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>      <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/create&#39;</span><span class="p">,</span>    <span class="s1">&#39;UserController::create&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>          <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}/edit&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::edit&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>           <span class="s1">'UserController::index'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>      <span class="s1">'UserController::show'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/create'</span><span class="p">,</span>    <span class="s1">'UserController::create'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>          <span class="s1">'UserController::store'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}/edit'</span><span class="p">,</span> <span class="s1">'UserController::edit'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>   <span class="s1">'UserController::destroy'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Alternative separators — all three are equivalent:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>  <span class="c1">// recommended</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController-&gt;index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController@index&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController::index'</span><span class="p">);</span>  <span class="c1">// recommended</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController-&gt;index'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController@index'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>If no method is specified, <code class="docutils literal notranslate"><span class="pre">index()</span></code> is called by default:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController&#39;</span><span class="p">);</span>  <span class="c1">// calls UserController::index()</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span> <span class="s1">'UserController'</span><span class="p">);</span>  <span class="c1">// calls UserController::index()</span>
 </pre></div>
 </div>
 </section>
@@ -266,20 +266,20 @@ across multiple methods. Always call <code class="docutils literal notranslate">
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
 
         <span class="c1">// Load a model</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
 
         <span class="c1">// Load libraries</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'session'</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'form_validation'</span><span class="p">);</span>
 
         <span class="c1">// Load a helper</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">'url'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/index'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'users'</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -291,24 +291,24 @@ across multiple methods. Always call <code class="docutils literal notranslate">
 individual methods (loaded only when needed).</p>
 <p><strong>Loading a model:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
 <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
 </pre></div>
 </div>
 <p><strong>Loading multiple models at once:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;UserModel&#39;</span><span class="p">,</span> <span class="s1">&#39;PostModel&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">'UserModel'</span><span class="p">,</span> <span class="s1">'PostModel'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Loading a library:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'session'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'form_validation'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Loading a helper:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">'url'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -319,20 +319,20 @@ Pass data as an associative array — each key becomes a variable inside the vie
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
     <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/profile&#39;</span><span class="p">,</span> <span class="p">[</span>
-        <span class="s1">&#39;user&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">,</span>
-        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User Profile&#39;</span><span class="p">,</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/profile'</span><span class="p">,</span> <span class="p">[</span>
+        <span class="s1">'user'</span>  <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">,</span>
+        <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="s1">'User Profile'</span><span class="p">,</span>
     <span class="p">]);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Inside <code class="docutils literal notranslate"><span class="pre">app/views/user/profile.php</span></code> the variables are available directly:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$title</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
-<span class="x">&lt;p&gt;Name: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">&lt;p&gt;Email: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Name: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Email: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -344,16 +344,16 @@ inside controller methods.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="nv">$name</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
-    <span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+    <span class="nv">$name</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'name'</span><span class="p">);</span>
+    <span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
     <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$email</span><span class="p">,</span>
+        <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
+        <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="nv">$email</span><span class="p">,</span>
     <span class="p">]);</span>
 
-    <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+    <span class="nx">redirect</span><span class="p">(</span><span class="s1">'/users/'</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -361,12 +361,12 @@ inside controller methods.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nv">$page</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'page'</span><span class="p">)</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
     <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="nv">$page</span><span class="p">);</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="nv">$result</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/index'</span><span class="p">,</span> <span class="nv">$result</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -374,10 +374,10 @@ inside controller methods.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">form</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;post&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// handle submission</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/form&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/form'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -391,14 +391,14 @@ inside controller methods.</p>
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// GET /users</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/index'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'users'</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="c1">// GET /users/{id}</span>
@@ -410,64 +410,64 @@ inside controller methods.</p>
             <span class="nx">show_404</span><span class="p">();</span>
         <span class="p">}</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/show&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/show'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="c1">// GET /users/create</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/create&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/create'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// POST /users</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">store</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+            <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'name'</span><span class="p">),</span>
+            <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'email'</span><span class="p">),</span>
         <span class="p">];</span>
 
         <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'/users/'</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// GET /users/{id}/edit</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">edit</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/edit&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/edit'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="c1">// PUT /users/{id}</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+            <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'name'</span><span class="p">),</span>
+            <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'email'</span><span class="p">),</span>
         <span class="p">];</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
-        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users/&#39;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'/users/'</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// DELETE /users/{id}</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">destroy</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Routes for the above controller:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>             <span class="s1">&#39;UserController::index&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/create&#39;</span><span class="p">,</span>      <span class="s1">&#39;UserController::create&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::show&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>            <span class="s1">&#39;UserController::store&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}/edit&#39;</span><span class="p">,</span>   <span class="s1">&#39;UserController::edit&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>        <span class="s1">&#39;UserController::update&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>     <span class="s1">&#39;UserController::destroy&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>             <span class="s1">'UserController::index'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/create'</span><span class="p">,</span>      <span class="s1">'UserController::create'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>        <span class="s1">'UserController::show'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>            <span class="s1">'UserController::store'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}/edit'</span><span class="p">,</span>   <span class="s1">'UserController::edit'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>        <span class="s1">'UserController::update'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>     <span class="s1">'UserController::destroy'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -476,10 +476,10 @@ inside controller methods.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/config/routes.php</span>
 
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>           <span class="s1">&#39;Admin\UserController::index&#39;</span><span class="p">);</span>
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>      <span class="s1">&#39;Admin\UserController::show&#39;</span><span class="p">);</span>
-    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>   <span class="s1">&#39;Admin\UserController::destroy&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">([</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/admin'</span><span class="p">,</span> <span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="s1">'AuthMiddleware'</span><span class="p">],</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>           <span class="s1">'Admin\UserController::index'</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>      <span class="s1">'Admin\UserController::show'</span><span class="p">);</span>
+    <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>   <span class="s1">'Admin\UserController::destroy'</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
 </div>

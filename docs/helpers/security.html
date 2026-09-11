@@ -220,8 +220,8 @@ Always ensure user input is properly validated and sanitized when using these he
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$email</span> <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">);</span>
-<span class="nv">$id</span>    <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;123abc&#39;</span><span class="p">);</span> <span class="c1">// returns 123</span>
+<span class="nv">$email</span> <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="s1">'user@example.com'</span><span class="p">);</span>
+<span class="nv">$id</span>    <span class="o">=</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'int'</span><span class="p">,</span> <span class="s1">'123abc'</span><span class="p">);</span> <span class="c1">// returns 123</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -242,7 +242,7 @@ Always ensure user input is properly validated and sanitized when using these he
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$safe_name</span> <span class="o">=</span> <span class="nx">sanitize_filename</span><span class="p">(</span><span class="s1">&#39;my file&lt;&gt;.txt&#39;</span><span class="p">);</span>
+<span class="nv">$safe_name</span> <span class="o">=</span> <span class="nx">sanitize_filename</span><span class="p">(</span><span class="s1">'my file&lt;&gt;.txt'</span><span class="p">);</span>
 <span class="k">echo</span> <span class="nv">$safe_name</span><span class="p">;</span> <span class="c1">// Output: my_file.txt</span>
 </pre></div>
 </div>
@@ -259,10 +259,10 @@ Always ensure user input is properly validated and sanitized when using these he
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; action=&quot;/submit&quot;&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'&lt;form method="post" action="/submit"&gt;'</span><span class="p">;</span>
 <span class="nx">csrf_field</span><span class="p">();</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;&#39;</span><span class="p">;</span>
-<span class="k">echo</span> <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'&lt;input type="submit" value="Submit"&gt;'</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'&lt;/form&gt;'</span><span class="p">;</span>
 </pre></div>
 </div>
 </dd></dl>

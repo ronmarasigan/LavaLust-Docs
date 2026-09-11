@@ -190,9 +190,9 @@ at runtime.</p>
 All configuration values are stored in a PHP array named <code class="docutils literal notranslate"><span class="pre">$config</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/config/config.php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;https://yourdomain.com/&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;default_language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;english&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;charset&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'base_url'</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">'https://yourdomain.com/'</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'default_language'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'english'</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'charset'</span><span class="p">]</span>         <span class="o">=</span> <span class="s1">'UTF-8'</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>You can add your own keys directly to this file, or create separate config
@@ -200,9 +200,9 @@ files in the same <code class="docutils literal notranslate"><span class="pre">a
 together. A custom config file follows the same format:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/config/blog_settings.php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;site_name&#39;</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">&#39;My Blog&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;posts_per_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;allow_comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'site_name'</span><span class="p">]</span>    <span class="o">=</span> <span class="s1">'My Blog'</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'posts_per_page'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'allow_comments'</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -220,14 +220,14 @@ loading — see <a class="reference internal" href="#loading-config-files">Loadi
 <code class="docutils literal notranslate"><span class="pre">app/config/autoload.php</span></code> so it is loaded automatically on every request:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// app/config/autoload.php</span>
-<span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="s1">&#39;payment&#39;</span><span class="p">];</span>
+<span class="nv">$autoload</span><span class="p">[</span><span class="s1">'config'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'blog_settings'</span><span class="p">,</span> <span class="s1">'payment'</span><span class="p">];</span>
 </pre></div>
 </div>
 <p><strong>Manual loading (recommended for route-specific settings)</strong></p>
 <p>Load a config file inside a controller when it is only needed for specific
 requests. This avoids loading unnecessary configuration on every page.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">'blog_settings'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>By default, all items from the loaded file are merged into the global config
@@ -237,9 +237,9 @@ overwrite the earlier one.</p>
 <p>Pass <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> as the second argument to store the file’s items in their own
 named index instead of merging them into the global array:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Items stored under $config[&#39;blog_settings&#39;][...]</span>
+<span class="c1">// Items stored under $config['blog_settings'][...]</span>
 <span class="c1">// instead of being merged into the root config array</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">'blog_settings'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -268,8 +268,8 @@ under a named index and prevent key collisions.</p></td>
 <p>Use <code class="docutils literal notranslate"><span class="pre">get()</span></code> to read any config value by its array key.</p>
 <p><strong>Basic retrieval</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$charset</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;charset&#39;</span><span class="p">);</span>
-<span class="nv">$base_url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
+<span class="nv">$charset</span>  <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'charset'</span><span class="p">);</span>
+<span class="nv">$base_url</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'base_url'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the key does not exist.</p>
@@ -277,22 +277,22 @@ under a named index and prevent key collisions.</p></td>
 <p>If the config file was loaded with <code class="docutils literal notranslate"><span class="pre">$use_sections</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>, pass the section
 name as the second argument:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">load</span><span class="p">(</span><span class="s1">'blog_settings'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 
-<span class="c1">// Read a value from the &#39;blog_settings&#39; section</span>
-<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;site_name&#39;</span><span class="p">,</span> <span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
+<span class="c1">// Read a value from the 'blog_settings' section</span>
+<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'site_name'</span><span class="p">,</span> <span class="s1">'blog_settings'</span><span class="p">);</span>
 
 <span class="c1">// Or retrieve the entire section as an array and access keys manually</span>
-<span class="nv">$blog</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;blog_settings&#39;</span><span class="p">);</span>
-<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$blog</span><span class="p">[</span><span class="s1">&#39;site_name&#39;</span><span class="p">];</span>
+<span class="nv">$blog</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'blog_settings'</span><span class="p">);</span>
+<span class="nv">$site_name</span> <span class="o">=</span> <span class="nv">$blog</span><span class="p">[</span><span class="s1">'site_name'</span><span class="p">];</span>
 </pre></div>
 </div>
 <p><strong>Using the</strong> <code class="docutils literal notranslate"><span class="pre">config_item()</span></code> <strong>helper</strong></p>
 <p>For convenience, LavaLust also provides a global helper function that reads
 from the root config array without needing <code class="docutils literal notranslate"><span class="pre">$this-&gt;config</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="c1">// Equivalent to $this-&gt;config-&gt;get(&#39;base_url&#39;)</span>
-<span class="nv">$base_url</span> <span class="o">=</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
+<span class="c1">// Equivalent to $this-&gt;config-&gt;get('base_url')</span>
+<span class="nv">$base_url</span> <span class="o">=</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">'base_url'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>This is especially useful inside helpers, models, and middleware where
@@ -328,13 +328,13 @@ dynamically during the current request. Changes made this way are not written
 back to the config file on disk and only apply for the lifetime of the request.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Override an existing value</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;default_language&#39;</span><span class="p">,</span> <span class="s1">&#39;filipino&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">'default_language'</span><span class="p">,</span> <span class="s1">'filipino'</span><span class="p">);</span>
 
 <span class="c1">// Add a new value at runtime</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;maintenance_mode&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">'maintenance_mode'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 
 <span class="c1">// Read it back immediately</span>
-<span class="nv">$lang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;default_language&#39;</span><span class="p">);</span> <span class="c1">// &#39;filipino&#39;</span>
+<span class="nv">$lang</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">config</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'default_language'</span><span class="p">);</span> <span class="c1">// 'filipino'</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -407,7 +407,7 @@ everywhere <code class="docutils literal notranslate"><span class="pre">$this-&g
 <li><p>Never store secrets (API keys, passwords) directly in config files that are
 committed to version control. Load them from environment variables instead:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;db_password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASSWORD&#39;</span><span class="p">);</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'db_password'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'DB_PASSWORD'</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>

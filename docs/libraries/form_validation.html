@@ -203,20 +203,20 @@ as well as sanitizing and preparing data for database insertion.</p>
 <span class="cp">&lt;?php</span> <span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span> <span class="cp">?&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
 
-<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot;&gt;</span>
+<span class="x">&lt;form action="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'form'</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x">" method="post"&gt;</span>
 <span class="x">   &lt;h5&gt;Username&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;text&quot; name=&quot;username&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type="text" name="username" size="50" /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Password&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;password&quot; name=&quot;password&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type="password" name="password" size="50" /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Password Confirm&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;password&quot; name=&quot;passconf&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type="password" name="passconf" size="50" /&gt;</span>
 
 <span class="x">   &lt;h5&gt;Email Address&lt;/h5&gt;</span>
-<span class="x">   &lt;input type=&quot;text&quot; name=&quot;email&quot; size=&quot;50&quot; /&gt;</span>
+<span class="x">   &lt;input type="text" name="email" size="50" /&gt;</span>
 
-<span class="x">   &lt;div&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/div&gt;</span>
+<span class="x">   &lt;div&gt;&lt;input type="submit" value="Submit" /&gt;&lt;/div&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 
 <span class="x">&lt;/body&gt;</span>
@@ -246,20 +246,20 @@ as well as sanitizing and preparing data for database insertion.</p>
 
    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
    <span class="p">{</span>
-      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;form_validation&#39;</span><span class="p">);</span>
+      <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'form_validation'</span><span class="p">);</span>
 
       <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">validate</span><span class="p">([</span>
-         <span class="s1">&#39;username|Username&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[5]|max_length[20]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;password|Password&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;required|min_length[8]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;passconf|Confirm Password&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;required|matches[password]&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;email|Email Address&#39;</span>        <span class="o">=&gt;</span> <span class="s1">&#39;required|valid_email&#39;</span>
+         <span class="s1">'username|Username'</span>          <span class="o">=&gt;</span> <span class="s1">'required|min_length[5]|max_length[20]'</span><span class="p">,</span>
+         <span class="s1">'password|Password'</span>          <span class="o">=&gt;</span> <span class="s1">'required|min_length[8]'</span><span class="p">,</span>
+         <span class="s1">'passconf|Confirm Password'</span>  <span class="o">=&gt;</span> <span class="s1">'required|matches[password]'</span><span class="p">,</span>
+         <span class="s1">'email|Email Address'</span>        <span class="o">=&gt;</span> <span class="s1">'required|valid_email'</span>
       <span class="p">]))</span>
       <span class="p">{</span>
-         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;formsuccess&#39;</span><span class="p">);</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'formsuccess'</span><span class="p">);</span>
       <span class="p">}</span>
       <span class="k">else</span>
       <span class="p">{</span>
-         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;myform&#39;</span><span class="p">);</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'myform'</span><span class="p">);</span>
       <span class="p">}</span>
    <span class="p">}</span>
 <span class="p">}</span>
@@ -289,8 +289,8 @@ for backward compatibility.</p>
 It resets previous errors automatically and returns <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> if all rules pass.</p>
 <p><strong>Basic example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">if ($this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;username|Username&#39; =&gt; &#39;required|min_length[5]|max_length[20]&#39;,</span>
-<span class="x">   &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">   'username|Username' =&gt; 'required|min_length[5]|max_length[20]',</span>
+<span class="x">   'email|Email Address' =&gt; 'required|valid_email',</span>
 <span class="x">])) {</span>
 <span class="x">   // Validation passed — process the data</span>
 <span class="x">} else {</span>
@@ -300,14 +300,14 @@ It resets previous errors automatically and returns <code class="docutils litera
 </div>
 <p><strong>Full registration form example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;username|Username&#39;         =&gt; &#39;required|alpha_numeric_dash|min_length[5]|max_length[30]&#39;,</span>
-<span class="x">   &#39;full_name|Full Name&#39;       =&gt; &#39;required|valid_name|max_length[100]&#39;,</span>
-<span class="x">   &#39;email|Email Address&#39;       =&gt; &#39;required|valid_email&#39;,</span>
-<span class="x">   &#39;password|Password&#39;         =&gt; &#39;required|min_length[8]|max_length[64]&#39;,</span>
-<span class="x">   &#39;passconf|Confirm Password&#39; =&gt; &#39;required|matches[password]&#39;,</span>
-<span class="x">   &#39;age|Age&#39;                   =&gt; &#39;required|numeric|greater_than[17]|less_than_equal_to[120]&#39;,</span>
-<span class="x">   &#39;website|Website&#39;           =&gt; &#39;pattern[url]&#39;,</span>
-<span class="x">   &#39;role|Role&#39;                 =&gt; &#39;required|in_list[admin,editor,viewer]&#39;,</span>
+<span class="x">   'username|Username'         =&gt; 'required|alpha_numeric_dash|min_length[5]|max_length[30]',</span>
+<span class="x">   'full_name|Full Name'       =&gt; 'required|valid_name|max_length[100]',</span>
+<span class="x">   'email|Email Address'       =&gt; 'required|valid_email',</span>
+<span class="x">   'password|Password'         =&gt; 'required|min_length[8]|max_length[64]',</span>
+<span class="x">   'passconf|Confirm Password' =&gt; 'required|matches[password]',</span>
+<span class="x">   'age|Age'                   =&gt; 'required|numeric|greater_than[17]|less_than_equal_to[120]',</span>
+<span class="x">   'website|Website'           =&gt; 'pattern[url]',</span>
+<span class="x">   'role|Role'                 =&gt; 'required|in_list[admin,editor,viewer]',</span>
 <span class="x">]);</span>
 </pre></div>
 </div>
@@ -315,50 +315,50 @@ It resets previous errors automatically and returns <code class="docutils litera
 <p>Use <code class="docutils literal notranslate"><span class="pre">field_name|Label</span></code> as the array key to show a friendly label in error messages
 instead of the raw field name.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;dob|Date of Birth&#39; =&gt; &#39;required|pattern[date_ymd]&#39;,</span>
-<span class="x">   &#39;phone|Phone Number&#39; =&gt; &#39;required|pattern[tel]&#39;,</span>
+<span class="x">   'dob|Date of Birth' =&gt; 'required|pattern[date_ymd]',</span>
+<span class="x">   'phone|Phone Number' =&gt; 'required|pattern[tel]',</span>
 <span class="x">]);</span>
 
-<span class="x">// Error example: &quot;Date of Birth&quot; does not match the required format.</span>
+<span class="x">// Error example: "Date of Birth" does not match the required format.</span>
 </pre></div>
 </div>
 <p><strong>With custom error messages:</strong></p>
 <p>Pass a second array to override specific default messages per field and per rule.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;username|Username&#39; =&gt; &#39;required|min_length[5]|max_length[20]|alpha_numeric_dash&#39;,</span>
-<span class="x">   &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
-<span class="x">   &#39;password|Password&#39; =&gt; &#39;required|min_length[8]&#39;,</span>
+<span class="x">   'username|Username' =&gt; 'required|min_length[5]|max_length[20]|alpha_numeric_dash',</span>
+<span class="x">   'email|Email Address' =&gt; 'required|valid_email',</span>
+<span class="x">   'password|Password' =&gt; 'required|min_length[8]',</span>
 <span class="x">], [</span>
-<span class="x">   &#39;username&#39; =&gt; [</span>
-<span class="x">      &#39;required&#39;          =&gt; &#39;Please choose a username.&#39;,</span>
-<span class="x">      &#39;min_length&#39;        =&gt; &#39;Your username must be at least 5 characters long.&#39;,</span>
-<span class="x">      &#39;max_length&#39;        =&gt; &#39;Your username must not exceed 20 characters.&#39;,</span>
-<span class="x">      &#39;alpha_numeric_dash&#39; =&gt; &#39;Your username may only contain letters, numbers, and dashes.&#39;,</span>
+<span class="x">   'username' =&gt; [</span>
+<span class="x">      'required'          =&gt; 'Please choose a username.',</span>
+<span class="x">      'min_length'        =&gt; 'Your username must be at least 5 characters long.',</span>
+<span class="x">      'max_length'        =&gt; 'Your username must not exceed 20 characters.',</span>
+<span class="x">      'alpha_numeric_dash' =&gt; 'Your username may only contain letters, numbers, and dashes.',</span>
 <span class="x">   ],</span>
-<span class="x">   &#39;email&#39; =&gt; [</span>
-<span class="x">      &#39;required&#39;    =&gt; &#39;An email address is required to create your account.&#39;,</span>
-<span class="x">      &#39;valid_email&#39; =&gt; &#39;Please enter a valid email address (e.g. user@example.com).&#39;,</span>
+<span class="x">   'email' =&gt; [</span>
+<span class="x">      'required'    =&gt; 'An email address is required to create your account.',</span>
+<span class="x">      'valid_email' =&gt; 'Please enter a valid email address (e.g. user@example.com).',</span>
 <span class="x">   ],</span>
-<span class="x">   &#39;password&#39; =&gt; [</span>
-<span class="x">      &#39;required&#39;   =&gt; &#39;A password is required.&#39;,</span>
-<span class="x">      &#39;min_length&#39; =&gt; &#39;Your password must be at least 8 characters long.&#39;,</span>
+<span class="x">   'password' =&gt; [</span>
+<span class="x">      'required'   =&gt; 'A password is required.',</span>
+<span class="x">      'min_length' =&gt; 'Your password must be at least 8 characters long.',</span>
 <span class="x">   ],</span>
 <span class="x">]);</span>
 </pre></div>
 </div>
 <p><strong>Product/inventory form example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation-&gt;validate([</span>
-<span class="x">   &#39;product_name|Product Name&#39; =&gt; &#39;required|alpha_numeric_space|max_length[150]&#39;,</span>
-<span class="x">   &#39;sku|SKU&#39;                   =&gt; &#39;required|alpha_numeric_dash|exact_length[10]&#39;,</span>
-<span class="x">   &#39;price|Price&#39;               =&gt; &#39;required|numeric|greater_than[0]&#39;,</span>
-<span class="x">   &#39;stock|Stock&#39;               =&gt; &#39;required|numeric|greater_than_equal_to[0]&#39;,</span>
-<span class="x">   &#39;category|Category&#39;         =&gt; &#39;required|in_list[electronics,clothing,food,tools]&#39;,</span>
+<span class="x">   'product_name|Product Name' =&gt; 'required|alpha_numeric_space|max_length[150]',</span>
+<span class="x">   'sku|SKU'                   =&gt; 'required|alpha_numeric_dash|exact_length[10]',</span>
+<span class="x">   'price|Price'               =&gt; 'required|numeric|greater_than[0]',</span>
+<span class="x">   'stock|Stock'               =&gt; 'required|numeric|greater_than_equal_to[0]',</span>
+<span class="x">   'category|Category'         =&gt; 'required|in_list[electronics,clothing,food,tools]',</span>
 <span class="x">], [</span>
-<span class="x">   &#39;sku&#39; =&gt; [</span>
-<span class="x">      &#39;exact_length&#39; =&gt; &#39;SKU must be exactly 10 characters.&#39;,</span>
+<span class="x">   'sku' =&gt; [</span>
+<span class="x">      'exact_length' =&gt; 'SKU must be exactly 10 characters.',</span>
 <span class="x">   ],</span>
-<span class="x">   &#39;price&#39; =&gt; [</span>
-<span class="x">      &#39;greater_than&#39; =&gt; &#39;Price must be greater than 0.&#39;,</span>
+<span class="x">   'price' =&gt; [</span>
+<span class="x">      'greater_than' =&gt; 'Price must be greater than 0.',</span>
 <span class="x">   ],</span>
 <span class="x">]);</span>
 </pre></div>
@@ -371,47 +371,47 @@ without running the validation immediately. Combine it with <code class="docutil
 for full control over when validation executes.</p>
 <p><strong>Basic example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;username|Username&#39;)-&gt;rules(&#39;required|min_length[5]|max_length[20]&#39;)</span>
-<span class="x">   -&gt;name(&#39;email|Email Address&#39;)-&gt;rules(&#39;required|valid_email&#39;);</span>
+<span class="x">   -&gt;name('username|Username')-&gt;rules('required|min_length[5]|max_length[20]')</span>
+<span class="x">   -&gt;name('email|Email Address')-&gt;rules('required|valid_email');</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('formsuccess');</span>
 <span class="x">} else {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('myform');</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 <p><strong>With custom error messages:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
-<span class="x">      -&gt;rules(&#39;required|min_length[5]&#39;, [</span>
-<span class="x">         &#39;required&#39;   =&gt; &#39;Please enter your username.&#39;,</span>
-<span class="x">         &#39;min_length&#39; =&gt; &#39;Username must be at least 5 characters.&#39;,</span>
+<span class="x">   -&gt;name('username|Username')</span>
+<span class="x">      -&gt;rules('required|min_length[5]', [</span>
+<span class="x">         'required'   =&gt; 'Please enter your username.',</span>
+<span class="x">         'min_length' =&gt; 'Username must be at least 5 characters.',</span>
 <span class="x">      ])</span>
-<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
-<span class="x">      -&gt;rules(&#39;required|valid_email&#39;, [</span>
-<span class="x">         &#39;valid_email&#39; =&gt; &#39;Please enter a valid email address.&#39;,</span>
+<span class="x">   -&gt;name('email|Email Address')</span>
+<span class="x">      -&gt;rules('required|valid_email', [</span>
+<span class="x">         'valid_email' =&gt; 'Please enter a valid email address.',</span>
 <span class="x">      ]);</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('formsuccess');</span>
 <span class="x">} else {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('myform');</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 <p><strong>Conditional rule application example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
-<span class="x">      -&gt;rules(&#39;required|valid_email&#39;);</span>
+<span class="x">   -&gt;name('email|Email Address')</span>
+<span class="x">      -&gt;rules('required|valid_email');</span>
 
 <span class="x">// Only validate password confirmation if a new password is provided</span>
-<span class="x">if (!empty($_POST[&#39;password&#39;])) {</span>
+<span class="x">if (!empty($_POST['password'])) {</span>
 <span class="x">   $this-&gt;form_validation</span>
-<span class="x">      -&gt;name(&#39;password|Password&#39;)</span>
-<span class="x">         -&gt;rules(&#39;required|min_length[8]&#39;)</span>
-<span class="x">      -&gt;name(&#39;passconf|Confirm Password&#39;)</span>
-<span class="x">         -&gt;rules(&#39;required|matches[password]&#39;);</span>
+<span class="x">      -&gt;name('password|Password')</span>
+<span class="x">         -&gt;rules('required|min_length[8]')</span>
+<span class="x">      -&gt;name('passconf|Confirm Password')</span>
+<span class="x">         -&gt;rules('required|matches[password]');</span>
 <span class="x">}</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
@@ -420,13 +420,13 @@ for full control over when validation executes.</p>
 </pre></div>
 </div>
 <p><strong>Multi-step form example (step 2 only):</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$step = $_POST[&#39;step&#39;] ?? 1;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$step = $_POST['step'] ?? 1;</span>
 
 <span class="x">if ((int) $step === 2) {</span>
 <span class="x">   $this-&gt;form_validation</span>
-<span class="x">      -&gt;name(&#39;card_number|Card Number&#39;)-&gt;rules(&#39;required|exact_length[16]|numeric&#39;)</span>
-<span class="x">      -&gt;name(&#39;cvv|CVV&#39;)-&gt;rules(&#39;required|exact_length[3]|numeric&#39;)</span>
-<span class="x">      -&gt;name(&#39;expiry|Expiry Date&#39;)-&gt;rules(&#39;required|pattern[date_ymd]&#39;);</span>
+<span class="x">      -&gt;name('card_number|Card Number')-&gt;rules('required|exact_length[16]|numeric')</span>
+<span class="x">      -&gt;name('cvv|CVV')-&gt;rules('required|exact_length[3]|numeric')</span>
+<span class="x">      -&gt;name('expiry|Expiry Date')-&gt;rules('required|pattern[date_ymd]');</span>
 <span class="x">}</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
@@ -441,64 +441,64 @@ for full control over when validation executes.</p>
 select a field, then chain validation methods directly onto it.</p>
 <p><strong>Basic example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;username&#39;)</span>
+<span class="x">   -&gt;name('username')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;min_length(5)</span>
 <span class="x">      -&gt;max_length(20)</span>
-<span class="x">   -&gt;name(&#39;password&#39;)</span>
+<span class="x">   -&gt;name('password')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;min_length(8)</span>
-<span class="x">   -&gt;name(&#39;passconf&#39;)</span>
+<span class="x">   -&gt;name('passconf')</span>
 <span class="x">      -&gt;required()</span>
-<span class="x">      -&gt;matches(&#39;password&#39;)</span>
-<span class="x">   -&gt;name(&#39;email&#39;)</span>
+<span class="x">      -&gt;matches('password')</span>
+<span class="x">   -&gt;name('email')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;valid_email();</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('formsuccess');</span>
 <span class="x">} else {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('myform');</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 <p><strong>With custom error messages:</strong></p>
 <p>Each fluent method accepts an optional <code class="docutils literal notranslate"><span class="pre">$custom_error</span></code> string as its last argument.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
-<span class="x">      -&gt;required(&#39;Please enter your username.&#39;)</span>
-<span class="x">      -&gt;min_length(5, &#39;Username must be at least 5 characters long.&#39;)</span>
-<span class="x">      -&gt;max_length(20, &#39;Username must not exceed 20 characters.&#39;)</span>
-<span class="x">      -&gt;alpha_numeric_dash(&#39;Username may only contain letters, numbers, and dashes.&#39;)</span>
-<span class="x">   -&gt;name(&#39;email|Email Address&#39;)</span>
-<span class="x">      -&gt;required(&#39;An email address is required.&#39;)</span>
-<span class="x">      -&gt;valid_email(&#39;Please enter a valid email address.&#39;)</span>
-<span class="x">   -&gt;name(&#39;password|Password&#39;)</span>
-<span class="x">      -&gt;required(&#39;A password is required.&#39;)</span>
-<span class="x">      -&gt;min_length(8, &#39;Password must be at least 8 characters long.&#39;)</span>
-<span class="x">   -&gt;name(&#39;passconf|Confirm Password&#39;)</span>
-<span class="x">      -&gt;required(&#39;Please confirm your password.&#39;)</span>
-<span class="x">      -&gt;matches(&#39;password&#39;, &#39;Passwords do not match.&#39;);</span>
+<span class="x">   -&gt;name('username|Username')</span>
+<span class="x">      -&gt;required('Please enter your username.')</span>
+<span class="x">      -&gt;min_length(5, 'Username must be at least 5 characters long.')</span>
+<span class="x">      -&gt;max_length(20, 'Username must not exceed 20 characters.')</span>
+<span class="x">      -&gt;alpha_numeric_dash('Username may only contain letters, numbers, and dashes.')</span>
+<span class="x">   -&gt;name('email|Email Address')</span>
+<span class="x">      -&gt;required('An email address is required.')</span>
+<span class="x">      -&gt;valid_email('Please enter a valid email address.')</span>
+<span class="x">   -&gt;name('password|Password')</span>
+<span class="x">      -&gt;required('A password is required.')</span>
+<span class="x">      -&gt;min_length(8, 'Password must be at least 8 characters long.')</span>
+<span class="x">   -&gt;name('passconf|Confirm Password')</span>
+<span class="x">      -&gt;required('Please confirm your password.')</span>
+<span class="x">      -&gt;matches('password', 'Passwords do not match.');</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('formsuccess');</span>
 <span class="x">} else {</span>
-<span class="x">   $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;view('myform');</span>
 <span class="x">}</span>
 </pre></div>
 </div>
 <p><strong>Numeric and range validation example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;age|Age&#39;)</span>
+<span class="x">   -&gt;name('age|Age')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;numeric()</span>
-<span class="x">      -&gt;greater_than(17, &#39;You must be at least 18 years old.&#39;)</span>
-<span class="x">      -&gt;less_than_equal_to(120, &#39;Please enter a valid age.&#39;)</span>
-<span class="x">   -&gt;name(&#39;score|Score&#39;)</span>
+<span class="x">      -&gt;greater_than(17, 'You must be at least 18 years old.')</span>
+<span class="x">      -&gt;less_than_equal_to(120, 'Please enter a valid age.')</span>
+<span class="x">   -&gt;name('score|Score')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;numeric()</span>
-<span class="x">      -&gt;greater_than_equal_to(0, &#39;Score cannot be negative.&#39;)</span>
-<span class="x">      -&gt;less_than_equal_to(100, &#39;Score cannot exceed 100.&#39;);</span>
+<span class="x">      -&gt;greater_than_equal_to(0, 'Score cannot be negative.')</span>
+<span class="x">      -&gt;less_than_equal_to(100, 'Score cannot exceed 100.');</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
 <span class="x">   // Process data</span>
@@ -507,17 +507,17 @@ select a field, then chain validation methods directly onto it.</p>
 </div>
 <p><strong>Pattern and uniqueness example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;form_validation</span>
-<span class="x">   -&gt;name(&#39;username|Username&#39;)</span>
+<span class="x">   -&gt;name('username|Username')</span>
 <span class="x">      -&gt;required()</span>
 <span class="x">      -&gt;min_length(5)</span>
-<span class="x">      -&gt;is_unique(&#39;users&#39;, &#39;username&#39;, $_POST[&#39;username&#39;] ?? &#39;&#39;, &#39;That username is already taken.&#39;)</span>
-<span class="x">   -&gt;name(&#39;website|Website&#39;)</span>
-<span class="x">      -&gt;pattern(&#39;url&#39;, &#39;Please enter a valid URL.&#39;)</span>
-<span class="x">   -&gt;name(&#39;birthdate|Date of Birth&#39;)</span>
+<span class="x">      -&gt;is_unique('users', 'username', $_POST['username'] ?? '', 'That username is already taken.')</span>
+<span class="x">   -&gt;name('website|Website')</span>
+<span class="x">      -&gt;pattern('url', 'Please enter a valid URL.')</span>
+<span class="x">   -&gt;name('birthdate|Date of Birth')</span>
 <span class="x">      -&gt;required()</span>
-<span class="x">      -&gt;pattern(&#39;date_ymd&#39;, &#39;Please use the format YYYY-MM-DD.&#39;)</span>
-<span class="x">   -&gt;name(&#39;phone|Phone Number&#39;)</span>
-<span class="x">      -&gt;pattern(&#39;tel&#39;, &#39;Please enter a valid phone number.&#39;);</span>
+<span class="x">      -&gt;pattern('date_ymd', 'Please use the format YYYY-MM-DD.')</span>
+<span class="x">   -&gt;name('phone|Phone Number')</span>
+<span class="x">      -&gt;pattern('tel', 'Please enter a valid phone number.');</span>
 
 <span class="x">if ($this-&gt;form_validation-&gt;run()) {</span>
 <span class="x">   // Process data</span>
@@ -530,22 +530,22 @@ select a field, then chain validation methods directly onto it.</p>
 <p>Check whether the form was actually submitted before running validation:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function index()</span>
 <span class="x">{</span>
-<span class="x">   $this-&gt;call-&gt;library(&#39;form_validation&#39;);</span>
+<span class="x">   $this-&gt;call-&gt;library('form_validation');</span>
 
 <span class="x">   if ($this-&gt;form_validation-&gt;submitted()) {</span>
 
 <span class="x">      if ($this-&gt;form_validation-&gt;validate([</span>
-<span class="x">         &#39;username|Username&#39; =&gt; &#39;required|min_length[5]&#39;,</span>
-<span class="x">         &#39;email|Email Address&#39; =&gt; &#39;required|valid_email&#39;,</span>
+<span class="x">         'username|Username' =&gt; 'required|min_length[5]',</span>
+<span class="x">         'email|Email Address' =&gt; 'required|valid_email',</span>
 <span class="x">      ])) {</span>
-<span class="x">         $this-&gt;call-&gt;view(&#39;formsuccess&#39;);</span>
+<span class="x">         $this-&gt;call-&gt;view('formsuccess');</span>
 <span class="x">      } else {</span>
-<span class="x">         $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">         $this-&gt;call-&gt;view('myform');</span>
 <span class="x">      }</span>
 
 <span class="x">   } else {</span>
 <span class="x">      // Form has not been submitted yet — just display it</span>
-<span class="x">      $this-&gt;call-&gt;view(&#39;myform&#39;);</span>
+<span class="x">      $this-&gt;call-&gt;view('myform');</span>
 <span class="x">   }</span>
 <span class="x">}</span>
 </pre></div>
@@ -561,7 +561,7 @@ newline-separated string. It returns an empty string when there are no errors.</
 <p>For styled output, wrap it in a container:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="nv">$errors</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">errors</span><span class="p">();</span> <span class="cp">?&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$errors</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
-<span class="x">   &lt;div class=&quot;alert alert-danger&quot;&gt;</span>
+<span class="x">   &lt;div class="alert alert-danger"&gt;</span>
 <span class="x">      </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$errors</span><span class="p">;</span> <span class="cp">?&gt;</span>
 <span class="x">   &lt;/div&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
@@ -571,7 +571,7 @@ newline-separated string. It returns an empty string when there are no errors.</
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$errors = $this-&gt;form_validation-&gt;get_errors();</span>
 
 <span class="x">if (!empty($errors)) {</span>
-<span class="x">   echo json_encode([&#39;success&#39; =&gt; false, &#39;errors&#39; =&gt; $errors]);</span>
+<span class="x">   echo json_encode(['success' =&gt; false, 'errors' =&gt; $errors]);</span>
 <span class="x">   exit;</span>
 <span class="x">}</span>
 </pre></div>

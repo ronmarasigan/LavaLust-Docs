@@ -378,16 +378,16 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\DB</span><span class="p">;</span>
 
-<span class="c1">// Equivalent to $this-&gt;db-&gt;table(&#39;users&#39;)-&gt;where(&#39;status&#39;, &#39;active&#39;)-&gt;get_all()</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-           <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+<span class="c1">// Equivalent to $this-&gt;db-&gt;table('users')-&gt;where('status', 'active')-&gt;get_all()</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span>
+           <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">)</span>
            <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 
-<span class="nv">$user</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_array</span><span class="p">();</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">row_array</span><span class="p">();</span>
 
-<span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-    <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Jane&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;jane@example.com&#39;</span><span class="p">,</span>
+<span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
+    <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="s1">'Jane'</span><span class="p">,</span>
+    <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'jane@example.com'</span><span class="p">,</span>
 <span class="p">]);</span>
 </pre></div>
 </div>
@@ -395,30 +395,30 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Session</span><span class="p">;</span>
 
-<span class="nx">Session</span><span class="o">::</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">);</span>
-<span class="nv">$id</span> <span class="o">=</span> <span class="nx">Session</span><span class="o">::</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">);</span>
-<span class="nx">Session</span><span class="o">::</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">);</span>
+<span class="nx">Session</span><span class="o">::</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="mi">42</span><span class="p">);</span>
+<span class="nv">$id</span> <span class="o">=</span> <span class="nx">Session</span><span class="o">::</span><span class="na">userdata</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">);</span>
+<span class="nx">Session</span><span class="o">::</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Cache</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Cache</span><span class="p">;</span>
 
-<span class="nv">$posts</span> <span class="o">=</span> <span class="nx">Cache</span><span class="o">::</span><span class="na">remember</span><span class="p">(</span><span class="s1">&#39;latest_posts&#39;</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$posts</span> <span class="o">=</span> <span class="nx">Cache</span><span class="o">::</span><span class="na">remember</span><span class="p">(</span><span class="s1">'latest_posts'</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">'created_at'</span><span class="p">,</span> <span class="s1">'DESC'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 <span class="p">});</span>
 
-<span class="nx">Cache</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;latest_posts&#39;</span><span class="p">);</span>
+<span class="nx">Cache</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span><span class="s1">'latest_posts'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Email</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Email</span><span class="p">;</span>
 
-<span class="nx">Email</span><span class="o">::</span><span class="na">sender</span><span class="p">(</span><span class="s1">&#39;no-reply@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;My App&#39;</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">&#39;user@example.com&#39;</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">&#39;Welcome!&#39;</span><span class="p">)</span>
-     <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Welcome!&lt;/h1&gt;&#39;</span><span class="p">)</span>
+<span class="nx">Email</span><span class="o">::</span><span class="na">sender</span><span class="p">(</span><span class="s1">'no-reply@example.com'</span><span class="p">,</span> <span class="s1">'My App'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">recipient</span><span class="p">(</span><span class="s1">'user@example.com'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">subject</span><span class="p">(</span><span class="s1">'Welcome!'</span><span class="p">)</span>
+     <span class="o">-&gt;</span><span class="na">html</span><span class="p">(</span><span class="s1">'&lt;h1&gt;Welcome!&lt;/h1&gt;'</span><span class="p">)</span>
      <span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -434,8 +434,8 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Validation</span><span class="p">;</span>
 
-<span class="nx">Validation</span><span class="o">::</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;Email&#39;</span><span class="p">,</span> <span class="s1">&#39;required|valid_email&#39;</span><span class="p">);</span>
-<span class="nx">Validation</span><span class="o">::</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;Password&#39;</span><span class="p">,</span> <span class="s1">&#39;required|min_length[8]&#39;</span><span class="p">);</span>
+<span class="nx">Validation</span><span class="o">::</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="s1">'Email'</span><span class="p">,</span> <span class="s1">'required|valid_email'</span><span class="p">);</span>
+<span class="nx">Validation</span><span class="o">::</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">'password'</span><span class="p">,</span> <span class="s1">'Password'</span><span class="p">,</span> <span class="s1">'required|min_length[8]'</span><span class="p">);</span>
 
 <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">run</span><span class="p">())</span>
 <span class="p">{</span>
@@ -447,7 +447,7 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Pagination</span><span class="p">;</span>
 
-<span class="nv">$meta</span> <span class="o">=</span> <span class="nx">Pagination</span><span class="o">::</span><span class="na">initialize</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="nv">$page</span><span class="p">,</span> <span class="s1">&#39;users/index&#39;</span><span class="p">);</span>
+<span class="nv">$meta</span> <span class="o">=</span> <span class="nx">Pagination</span><span class="o">::</span><span class="na">initialize</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="nv">$page</span><span class="p">,</span> <span class="s1">'users/index'</span><span class="p">);</span>
 <span class="nv">$html</span> <span class="o">=</span> <span class="nx">Pagination</span><span class="o">::</span><span class="na">paginate</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -455,9 +455,9 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Upload</span><span class="p">;</span>
 
-<span class="nx">Upload</span><span class="o">::</span><span class="na">initialize</span><span class="p">([</span><span class="s1">&#39;upload_path&#39;</span> <span class="o">=&gt;</span> <span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">&#39;uploads/&#39;</span><span class="p">,</span> <span class="s1">&#39;allowed_types&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;jpg|png|pdf&#39;</span><span class="p">]);</span>
+<span class="nx">Upload</span><span class="o">::</span><span class="na">initialize</span><span class="p">([</span><span class="s1">'upload_path'</span> <span class="o">=&gt;</span> <span class="nx">APPPATH</span> <span class="o">.</span> <span class="s1">'uploads/'</span><span class="p">,</span> <span class="s1">'allowed_types'</span> <span class="o">=&gt;</span> <span class="s1">'jpg|png|pdf'</span><span class="p">]);</span>
 
-<span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nx">Upload</span><span class="o">::</span><span class="na">do_upload</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nx">Upload</span><span class="o">::</span><span class="na">do_upload</span><span class="p">(</span><span class="s1">'file'</span><span class="p">))</span>
 <span class="p">{</span>
     <span class="nv">$error</span> <span class="o">=</span> <span class="nx">Upload</span><span class="o">::</span><span class="na">display_errors</span><span class="p">();</span>
 <span class="p">}</span>
@@ -467,10 +467,10 @@ if the property cannot be resolved.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Profiler</span><span class="p">;</span>
 
-<span class="nx">Profiler</span><span class="o">::</span><span class="na">set_sections</span><span class="p">([</span><span class="s1">&#39;php_info&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span> <span class="o">=&gt;</span> <span class="k">FALSE</span><span class="p">]);</span>
-<span class="nx">Profiler</span><span class="o">::</span><span class="na">mark_start</span><span class="p">(</span><span class="s1">&#39;render&#39;</span><span class="p">);</span>
+<span class="nx">Profiler</span><span class="o">::</span><span class="na">set_sections</span><span class="p">([</span><span class="s1">'php_info'</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span> <span class="s1">'config'</span> <span class="o">=&gt;</span> <span class="k">FALSE</span><span class="p">]);</span>
+<span class="nx">Profiler</span><span class="o">::</span><span class="na">mark_start</span><span class="p">(</span><span class="s1">'render'</span><span class="p">);</span>
 <span class="c1">// ... work ...</span>
-<span class="nx">Profiler</span><span class="o">::</span><span class="na">mark_end</span><span class="p">(</span><span class="s1">&#39;render&#39;</span><span class="p">);</span>
+<span class="nx">Profiler</span><span class="o">::</span><span class="na">mark_end</span><span class="p">(</span><span class="s1">'render'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Loader</strong></p>
@@ -480,10 +480,10 @@ methods statically from anywhere:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Loader</span><span class="p">;</span>
 
-<span class="nx">Loader</span><span class="o">::</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;pdf&#39;</span><span class="p">);</span>
-<span class="nx">Loader</span><span class="o">::</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;Invoice_model&#39;</span><span class="p">,</span> <span class="s1">&#39;invoice_model&#39;</span><span class="p">);</span>
-<span class="nx">Loader</span><span class="o">::</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">);</span>
-<span class="nx">Loader</span><span class="o">::</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;invoices/show&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+<span class="nx">Loader</span><span class="o">::</span><span class="na">library</span><span class="p">(</span><span class="s1">'pdf'</span><span class="p">);</span>
+<span class="nx">Loader</span><span class="o">::</span><span class="na">model</span><span class="p">(</span><span class="s1">'Invoice_model'</span><span class="p">,</span> <span class="s1">'invoice_model'</span><span class="p">);</span>
+<span class="nx">Loader</span><span class="o">::</span><span class="na">helper</span><span class="p">(</span><span class="s1">'string'</span><span class="p">);</span>
+<span class="nx">Loader</span><span class="o">::</span><span class="na">view</span><span class="p">(</span><span class="s1">'invoices/show'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -564,17 +564,17 @@ resolved instance.</p></td>
 
 <span class="k">try</span>
 <span class="p">{</span>
-    <span class="nv">$users</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+    <span class="nv">$users</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">table</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 <span class="p">}</span>
 <span class="k">catch</span> <span class="p">(</span><span class="nx">\RuntimeException</span> <span class="nv">$e</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Database could not be resolved</span>
-    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
 <span class="p">}</span>
 <span class="k">catch</span> <span class="p">(</span><span class="nx">\BadMethodCallException</span> <span class="nv">$e</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Method does not exist on the DB instance</span>
-    <span class="nx">log_message</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+    <span class="nx">log_message</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -590,12 +590,12 @@ methods:</p>
 <span class="p">{</span>
     <span class="k">protected</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_library</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="s1">&#39;pdf&#39;</span><span class="p">;</span> <span class="c1">// loaded via $this-&gt;call-&gt;library(&#39;pdf&#39;)</span>
+        <span class="k">return</span> <span class="s1">'pdf'</span><span class="p">;</span> <span class="c1">// loaded via $this-&gt;call-&gt;library('pdf')</span>
     <span class="p">}</span>
 
     <span class="k">protected</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">get_property</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="s1">&#39;pdf&#39;</span><span class="p">;</span> <span class="c1">// resolved from lava_instance()-&gt;pdf</span>
+        <span class="k">return</span> <span class="s1">'pdf'</span><span class="p">;</span> <span class="c1">// resolved from lava_instance()-&gt;pdf</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -604,7 +604,7 @@ methods:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">LavaLust\Kernel\Proxies\Pdf</span><span class="p">;</span>
 
-<span class="nv">$html</span> <span class="o">=</span> <span class="s1">&#39;&lt;h1&gt;Invoice&lt;/h1&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$html</span> <span class="o">=</span> <span class="s1">'&lt;h1&gt;Invoice&lt;/h1&gt;'</span><span class="p">;</span>
 <span class="nx">Pdf</span><span class="o">::</span><span class="na">load_html</span><span class="p">(</span><span class="nv">$html</span><span class="p">);</span>
 <span class="nx">Pdf</span><span class="o">::</span><span class="na">render</span><span class="p">();</span>
 </pre></div>

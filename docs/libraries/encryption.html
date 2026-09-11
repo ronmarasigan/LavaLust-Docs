@@ -175,12 +175,12 @@ It utilizes the PHP <strong>OpenSSL</strong> extension under the hood.</p>
 <h2>Initializing the Class<a class="headerlink" href="#initializing-the-class" title="Link to this heading"></a></h2>
 <p>Like most other classes in LavaLust, the Encryption library is initialized in your controller using the <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library()</span></code> method:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;encryption&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'encryption'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>You may also optionally specify the cipher type:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;encryption&#39;</span><span class="p">,</span> <span class="s1">&#39;cipher type&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'encryption'</span><span class="p">,</span> <span class="s1">'cipher type'</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -199,7 +199,7 @@ It utilizes the PHP <strong>OpenSSL</strong> extension under the hood.</p>
 <p>Encrypting and decrypting data with the already configured library settings is simple.
 You just pass the string to the <code class="docutils literal notranslate"><span class="pre">encrypt()</span></code> and/or <code class="docutils literal notranslate"><span class="pre">decrypt()</span></code> methods:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$plain_text</span> <span class="o">=</span> <span class="s1">&#39;This is a plain-text message!&#39;</span><span class="p">;</span>
+<span class="nv">$plain_text</span> <span class="o">=</span> <span class="s1">'This is a plain-text message!'</span><span class="p">;</span>
 <span class="nv">$ciphertext</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">encryption</span><span class="o">-&gt;</span><span class="na">encrypt</span><span class="p">(</span><span class="nv">$plain_text</span><span class="p">);</span>
 
 <span class="c1">// Outputs: This is a plain-text message!</span>

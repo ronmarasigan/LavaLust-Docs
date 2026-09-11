@@ -218,7 +218,7 @@ Ensure your PHP installation has proper permissions for the directories you are 
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$map</span> <span class="o">=</span> <span class="nx">directory_map</span><span class="p">(</span><span class="s1">&#39;/path/to/folder&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nv">$map</span> <span class="o">=</span> <span class="nx">directory_map</span><span class="p">(</span><span class="s1">'/path/to/folder'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 <span class="nb">print_r</span><span class="p">(</span><span class="nv">$map</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -241,10 +241,10 @@ Ensure your PHP installation has proper permissions for the directories you are 
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nx">is_dir_usable</span><span class="p">(</span><span class="s1">&#39;/path/to/folder&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Directory is ready for use.&quot;</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">is_dir_usable</span><span class="p">(</span><span class="s1">'/path/to/folder'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"Directory is ready for use."</span><span class="p">;</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Directory is not usable.&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"Directory is not usable."</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>

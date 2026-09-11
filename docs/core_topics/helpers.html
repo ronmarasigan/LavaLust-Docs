@@ -182,14 +182,14 @@ They are not classes — just plain PHP functions you can call anywhere in your 
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
 
-        <span class="c1">// Load the &#39;url&#39; helper</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+        <span class="c1">// Load the 'url' helper</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">'url'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">profile</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$profileUrl</span> <span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;profile/view&#39;</span><span class="p">);</span>
-        <span class="k">echo</span> <span class="s2">&quot;Profile URL: &quot;</span> <span class="o">.</span> <span class="nv">$profileUrl</span><span class="p">;</span>
+        <span class="nv">$profileUrl</span> <span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'profile/view'</span><span class="p">);</span>
+        <span class="k">echo</span> <span class="s2">"Profile URL: "</span> <span class="o">.</span> <span class="nv">$profileUrl</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -215,7 +215,7 @@ They are not classes — just plain PHP functions you can call anywhere in your 
 <span class="x">     }</span>
 
 <span class="x">// Use inside a controller or view</span>
-<span class="x">echo base_url().&#39;assets/css/style.css&#39;;</span>
+<span class="x">echo base_url().'assets/css/style.css';</span>
 </pre></div>
 </div>
 <p><strong>Output:</strong></p>
@@ -225,7 +225,7 @@ They are not classes — just plain PHP functions you can call anywhere in your 
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You can also load multiple helpers at once:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;helper([&#39;url&#39;, &#39;form&#39;, &#39;string&#39;]);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;helper(['url', 'form', 'string']);</span>
 </pre></div>
 </div>
 </div>
@@ -239,7 +239,7 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <li><p>Add your helper names in the <code class="docutils literal notranslate"><span class="pre">$autoload['helpers']</span></code> array.</p></li>
 </ol>
 <p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;helpers&#39;] = [&#39;url&#39;, &#39;form&#39;];</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload['helpers'] = ['url', 'form'];</span>
 </pre></div>
 </div>
 <p>These helpers will now be loaded automatically for every request.</p>
@@ -250,17 +250,17 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <p><strong>Example:</strong></p>
 <p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">app/helpers/str_helper.php</span></code></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span><span class="s1">&#39;greet&#39;</span><span class="p">))</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">function_exists</span><span class="p">(</span><span class="s1">'greet'</span><span class="p">))</span> <span class="p">{</span>
     <span class="k">function</span> <span class="nf">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;!&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="s2">"Hello, "</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"!"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Usage:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;helper(&#39;str&#39;);</span>
-<span class="x">echo greet(&#39;lavalust&#39;); // Output: Hello, Lavalust!</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;helper('str');</span>
+<span class="x">echo greet('lavalust'); // Output: Hello, Lavalust!</span>
 </pre></div>
 </div>
 <div class="admonition important">

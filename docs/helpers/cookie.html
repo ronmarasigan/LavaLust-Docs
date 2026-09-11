@@ -222,10 +222,10 @@ Make sure the IO class is properly loaded by the framework (it is loaded automat
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nx">set_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;ronald&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="p">[</span>
-    <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;secure&#39;</span>   <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
-    <span class="s1">&#39;httponly&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span>
+<span class="nx">set_cookie</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'ronald'</span><span class="p">,</span> <span class="mi">3600</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'path'</span>     <span class="o">=&gt;</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="s1">'secure'</span>   <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'httponly'</span> <span class="o">=&gt;</span> <span class="k">true</span>
 <span class="p">])</span>
 </pre></div>
 </div>
@@ -247,9 +247,9 @@ Make sure the IO class is properly loaded by the framework (it is loaded automat
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$username</span> <span class="o">=</span> <span class="nx">get_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="nv">$username</span> <span class="o">=</span> <span class="nx">get_cookie</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$username</span> <span class="o">!==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;Welcome back, </span><span class="si">$username</span><span class="s2">!&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"Welcome back, </span><span class="si">$username</span><span class="s2">!"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -274,7 +274,7 @@ Make sure the IO class is properly loaded by the framework (it is loaded automat
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nx">delete_cookie</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="nx">delete_cookie</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>

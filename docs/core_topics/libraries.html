@@ -182,16 +182,16 @@ Unlike <strong>helpers</strong> (which are just standalone functions), <strong>l
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
 
-        <span class="c1">// Load the &#39;session&#39; library</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+        <span class="c1">// Load the 'session' library</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'session'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="c1">// Use the session library</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="mi">123</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="mi">123</span><span class="p">);</span>
 
-        <span class="k">echo</span> <span class="s2">&quot;Logged in as user 123&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Logged in as user 123"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -206,13 +206,13 @@ Unlike <strong>helpers</strong> (which are just standalone functions), <strong>l
 <p>Once loaded, you can use the library just like any other PHP object.</p>
 <p><strong>Example using the ``session`` library:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// Set a value</span>
-<span class="x">$this-&gt;session-&gt;set(&#39;username&#39;, &#39;LavaUser&#39;);</span>
+<span class="x">$this-&gt;session-&gt;set('username', 'LavaUser');</span>
 
 <span class="x">// Get a value</span>
-<span class="x">echo $this-&gt;session-&gt;get(&#39;username&#39;);</span>
+<span class="x">echo $this-&gt;session-&gt;get('username');</span>
 
 <span class="x">// Remove a value</span>
-<span class="x">$this-&gt;session-&gt;remove(&#39;username&#39;);</span>
+<span class="x">$this-&gt;session-&gt;remove('username');</span>
 
 <span class="x">// Destroy session</span>
 <span class="x">$this-&gt;session-&gt;destroy();</span>
@@ -222,7 +222,7 @@ Unlike <strong>helpers</strong> (which are just standalone functions), <strong>l
 <section id="loading-multiple-libraries">
 <h2>Loading Multiple Libraries<a class="headerlink" href="#loading-multiple-libraries" title="Link to this heading"></a></h2>
 <p>You can also load multiple libraries at once:</p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;library([&#39;session&#39;, &#39;form_validation&#39;, &#39;email&#39;]);</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$this-&gt;call-&gt;library(['session', 'form_validation', 'email']);</span>
 </pre></div>
 </div>
 <p>All of these libraries will then be available as:</p>
@@ -241,7 +241,7 @@ you can <strong>auto-load</strong> them in the configuration file:</p>
 <li><p>Add your library names in the <code class="docutils literal notranslate"><span class="pre">$autoload['libraries']</span></code> array.</p></li>
 </ol>
 <p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;libraries&#39;] = [&#39;session&#39;, &#39;form_validation&#39;];</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload['libraries'] = ['session', 'form_validation'];</span>
 </pre></div>
 </div>
 <p>These libraries will now be loaded automatically for every request.</p>
@@ -256,7 +256,7 @@ you can <strong>auto-load</strong> them in the configuration file:</p>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">hello</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;!&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="s2">"Hello, "</span> <span class="o">.</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"!"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -267,9 +267,9 @@ you can <strong>auto-load</strong> them in the configuration file:</p>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;greeter&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'greeter'</span><span class="p">);</span>
 
-        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">greeter</span><span class="o">-&gt;</span><span class="na">hello</span><span class="p">(</span><span class="s1">&#39;lavalust&#39;</span><span class="p">);</span>
+        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">greeter</span><span class="o">-&gt;</span><span class="na">hello</span><span class="p">(</span><span class="s1">'lavalust'</span><span class="p">);</span>
         <span class="c1">// Output: Hello, Lavalust!</span>
     <span class="p">}</span>
 <span class="p">}</span>

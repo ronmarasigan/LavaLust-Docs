@@ -198,11 +198,11 @@ pattern</strong> — each middleware decides whether to continue execution by ca
 <p>Register all middleware in <code class="docutils literal notranslate"><span class="pre">app/config/middleware.php</span></code>. Each key is the alias
 you reference when attaching middleware to routes or controllers.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;middlewares&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;auth&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AuthMiddleware&#39;</span><span class="p">,</span>  <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;admin&#39;</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;AdminMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;role&#39;</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;RoleMiddleware&#39;</span><span class="p">,</span>  <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
-    <span class="s1">&#39;guest&#39;</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;GuestMiddleware&#39;</span><span class="p">,</span> <span class="s1">&#39;middlewares&#39;</span><span class="p">),</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'middlewares'</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'auth'</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">'AuthMiddleware'</span><span class="p">,</span>  <span class="s1">'middlewares'</span><span class="p">),</span>
+    <span class="s1">'admin'</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">'AdminMiddleware'</span><span class="p">,</span> <span class="s1">'middlewares'</span><span class="p">),</span>
+    <span class="s1">'role'</span>  <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">'RoleMiddleware'</span><span class="p">,</span>  <span class="s1">'middlewares'</span><span class="p">),</span>
+    <span class="s1">'guest'</span> <span class="o">=&gt;</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">'GuestMiddleware'</span><span class="p">,</span> <span class="s1">'middlewares'</span><span class="p">),</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -224,8 +224,8 @@ Omitting <code class="docutils literal notranslate"><span class="pre">$next()</s
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
@@ -241,12 +241,12 @@ Omitting <code class="docutils literal notranslate"><span class="pre">$next()</s
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;403 Forbidden&#39;</span><span class="p">,</span> <span class="s1">&#39;You do not have access to this page.&#39;</span><span class="p">,</span> <span class="s1">&#39;error_general&#39;</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'user'</span><span class="p">][</span><span class="s1">'role'</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">'admin'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">show_error</span><span class="p">(</span><span class="s1">'403 Forbidden'</span><span class="p">,</span> <span class="s1">'You do not have access to this page.'</span><span class="p">,</span> <span class="s1">'error_general'</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
@@ -261,18 +261,18 @@ Omitting <code class="docutils literal notranslate"><span class="pre">$next()</s
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">RoleMiddleware</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$allowed_roles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;editor&#39;</span><span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$allowed_roles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'admin'</span><span class="p">,</span> <span class="s1">'editor'</span><span class="p">];</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="k">null</span><span class="p">;</span>
+        <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span> <span class="o">??</span> <span class="k">null</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">],</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">allowed_roles</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;403 Forbidden&#39;</span><span class="p">,</span> <span class="s1">&#39;Insufficient permissions.&#39;</span><span class="p">,</span> <span class="s1">&#39;error_general&#39;</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="s1">'role'</span><span class="p">],</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">allowed_roles</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">show_error</span><span class="p">(</span><span class="s1">'403 Forbidden'</span><span class="p">,</span> <span class="s1">'Insufficient permissions.'</span><span class="p">,</span> <span class="s1">'error_general'</span><span class="p">,</span> <span class="mi">403</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
@@ -288,8 +288,8 @@ Omitting <code class="docutils literal notranslate"><span class="pre">$next()</s
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'dashboard'</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nv">$next</span><span class="p">();</span>
@@ -308,21 +308,21 @@ Middleware keys are resolved from <code class="docutils literal notranslate"><sp
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Single middleware on a group</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;auth&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/dashboard'</span><span class="p">,</span> <span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="s1">'auth'</span><span class="p">],</span>
     <span class="k">function</span> <span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span>     <span class="s1">&#39;DashboardController::index&#39;</span><span class="p">);</span>
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="s1">&#39;DashboardController::settings&#39;</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/home'</span><span class="p">,</span>     <span class="s1">'DashboardController::index'</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/settings'</span><span class="p">,</span> <span class="s1">'DashboardController::settings'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">);</span>
 
 <span class="c1">// Multiple middleware on a group (executed in order)</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;prefix&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="s1">&#39;middleware&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">]],</span>
+    <span class="p">[</span><span class="s1">'prefix'</span> <span class="o">=&gt;</span> <span class="s1">'/admin'</span><span class="p">,</span> <span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'auth'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">]],</span>
     <span class="k">function</span> <span class="p">(</span><span class="nv">$router</span><span class="p">)</span> <span class="p">{</span>
 
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users&#39;</span><span class="p">,</span>         <span class="s1">&#39;Admin\UserController::index&#39;</span><span class="p">);</span>
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span>    <span class="s1">&#39;Admin\UserController::show&#39;</span><span class="p">);</span>
-        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;Admin\UserController::destroy&#39;</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users'</span><span class="p">,</span>         <span class="s1">'Admin\UserController::index'</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span>    <span class="s1">'Admin\UserController::show'</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">'/users/{id}'</span><span class="p">,</span> <span class="s1">'Admin\UserController::destroy'</span><span class="p">);</span>
 
     <span class="p">}</span>
 <span class="p">);</span>
@@ -334,18 +334,18 @@ Middleware keys are resolved from <code class="docutils literal notranslate"><sp
 <p>Attach middleware to an individual route by chaining <code class="docutils literal notranslate"><span class="pre">-&gt;middleware()</span></code>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Single middleware</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/admin/panel&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s1">&#39;Admin panel&#39;</span><span class="p">;</span>
-<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/admin/panel'</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">'Admin panel'</span><span class="p">;</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'admin'</span><span class="p">);</span>
 
 <span class="c1">// Multiple middleware chained</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/reports&#39;</span><span class="p">,</span> <span class="s1">&#39;ReportController::index&#39;</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">]);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/reports'</span><span class="p">,</span> <span class="s1">'ReportController::index'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">([</span><span class="s1">'auth'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">]);</span>
 
 <span class="c1">// With parameter constraint</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="s1">&#39;UserController::show&#39;</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
-       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'/user/{id}'</span><span class="p">,</span> <span class="s1">'UserController::show'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">where_number</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span>
+       <span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -360,9 +360,9 @@ Middleware keys are resolved from <code class="docutils literal notranslate"><sp
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">'auth'</span><span class="p">],</span>
             <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;dashboard/index&#39;</span><span class="p">);</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'dashboard/index'</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">);</span>
     <span class="p">}</span>
@@ -370,9 +370,9 @@ Middleware keys are resolved from <code class="docutils literal notranslate"><sp
     <span class="k">public</span> <span class="k">function</span> <span class="nf">admin_panel</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">'auth'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">],</span>
             <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;admin/panel&#39;</span><span class="p">);</span>
+                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'admin/panel'</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">);</span>
     <span class="p">}</span>

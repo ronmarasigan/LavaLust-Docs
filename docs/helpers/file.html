@@ -221,9 +221,9 @@ Ensure your PHP scripts have proper file and directory permissions to perform th
 </dl>
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nx">write_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s2">&quot;Hello, LavaLust!&quot;</span><span class="p">);</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nx">write_file</span><span class="p">(</span><span class="s1">'/path/to/file.txt'</span><span class="p">,</span> <span class="s2">"Hello, LavaLust!"</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;File written successfully!&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"File written successfully!"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -249,10 +249,10 @@ Can preserve common web files like <code class="docutils literal notranslate"><s
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Delete all files but keep the directory</span>
-<span class="nx">delete_files</span><span class="p">(</span><span class="s1">&#39;/path/to/directory&#39;</span><span class="p">);</span>
+<span class="nx">delete_files</span><span class="p">(</span><span class="s1">'/path/to/directory'</span><span class="p">);</span>
 
 <span class="c1">// Delete all files and the directory itself</span>
-<span class="nx">delete_files</span><span class="p">(</span><span class="s1">&#39;/path/to/directory&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nx">delete_files</span><span class="p">(</span><span class="s1">'/path/to/directory'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -276,10 +276,10 @@ Can preserve common web files like <code class="docutils literal notranslate"><s
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Copy a file</span>
-<span class="nx">copy_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;/new/path/file.txt&#39;</span><span class="p">);</span>
+<span class="nx">copy_file</span><span class="p">(</span><span class="s1">'/path/to/file.txt'</span><span class="p">,</span> <span class="s1">'/new/path/file.txt'</span><span class="p">);</span>
 
 <span class="c1">// Move a file</span>
-<span class="nx">copy_file</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;/new/path/file.txt&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+<span class="nx">copy_file</span><span class="p">(</span><span class="s1">'/path/to/file.txt'</span><span class="p">,</span> <span class="s1">'/new/path/file.txt'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>

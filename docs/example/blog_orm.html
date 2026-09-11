@@ -243,15 +243,15 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;blog&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$fillable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">];</span>
-    <span class="k">protected</span> <span class="nv">$guarded</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">'blog'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$fillable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'content'</span><span class="p">,</span> <span class="s1">'author'</span><span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$guarded</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'id'</span><span class="p">];</span>
     <span class="k">protected</span> <span class="nv">$timestamps</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$created_at_column</span> <span class="o">=</span> <span class="s1">&#39;created_at&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$updated_at_column</span> <span class="o">=</span> <span class="s1">&#39;updated_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$created_at_column</span> <span class="o">=</span> <span class="s1">'created_at'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$updated_at_column</span> <span class="o">=</span> <span class="s1">'updated_at'</span><span class="p">;</span>
     <span class="k">protected</span> <span class="nv">$has_soft_delete</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">&#39;deleted_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">'deleted_at'</span><span class="p">;</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_all_posts</span><span class="p">()</span>
     <span class="p">{</span>
@@ -289,32 +289,32 @@
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;BlogModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'BlogModel'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_all_posts</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/index&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'posts'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_all_posts</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/index'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">view</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/view&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'post'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/view'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">create_post</span><span class="p">([</span>
-                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)),</span>
-                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)),</span>
-                <span class="s1">&#39;author&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Admin&#39;</span>
+                <span class="s1">'title'</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'string'</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)),</span>
+                <span class="s1">'content'</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'string'</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">)),</span>
+                <span class="s1">'author'</span>     <span class="o">=&gt;</span> <span class="s1">'Admin'</span>
             <span class="p">]);</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/create&#39;</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/create'</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
@@ -322,20 +322,20 @@
     <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$_POST</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">update_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="p">[</span>
-                <span class="s1">&#39;title&#39;</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)),</span>
-                <span class="s1">&#39;content&#39;</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">))</span>
+                <span class="s1">'title'</span>      <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'string'</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)),</span>
+                <span class="s1">'content'</span>    <span class="o">=&gt;</span> <span class="nx">filter_io</span><span class="p">(</span><span class="s1">'string'</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">))</span>
             <span class="p">]);</span>
-            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;post&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/edit&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'post'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/edit'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">delete_post</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;blog&#39;</span><span class="p">);</span>
+        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -345,27 +345,27 @@
 <h2>Views<a class="headerlink" href="#views" title="Link to this heading"></a></h2>
 <p><strong>Index View - List all posts</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$posts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
-<span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
-<span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">str_limitwords</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span> <span class="mi">20</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">    &lt;a href=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/view/&#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Read More&lt;/a&gt;</span>
-<span class="x">    &lt;a href=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/edit/&#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Edit&lt;/a&gt;</span>
-<span class="x">    &lt;a href=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;blog/delete/&#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;Delete&lt;/a&gt;</span>
+<span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">str_limitwords</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'content'</span><span class="p">],</span> <span class="mi">20</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">    &lt;a href="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/view/'</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">"&gt;Read More&lt;/a&gt;</span>
+<span class="x">    &lt;a href="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/edit/'</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">"&gt;Edit&lt;/a&gt;</span>
+<span class="x">    &lt;a href="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'blog/delete/'</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">"&gt;Delete&lt;/a&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
 </pre></div>
 </div>
 <p><strong>View Single Post</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
-<span class="x">&lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
-<span class="x">&lt;p&gt;Author: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;h1&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'content'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">&lt;p&gt;Author: </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nx">html_escape</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'author'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 </pre></div>
 </div>
 <p><strong>Create/Edit Form</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;form method=&quot;post&quot; action=&quot;//put your route here&quot;&gt;</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;form method="post" action="//put your route here"&gt;</span>
 <span class="x">    &lt;label&gt;Title&lt;/label&gt;</span>
-<span class="x">    &lt;input type=&quot;text&quot; name=&quot;title&quot; value=&quot;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span> <span class="cp">?&gt;</span><span class="x">&quot; /&gt;</span>
+<span class="x">    &lt;input type="text" name="title" value="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">''</span> <span class="cp">?&gt;</span><span class="x">" /&gt;</span>
 <span class="x">    &lt;label&gt;Content&lt;/label&gt;</span>
-<span class="x">    &lt;textarea name=&quot;content&quot;&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="s1">&#39;&#39;</span> <span class="cp">?&gt;</span><span class="x">&lt;/textarea&gt;</span>
-<span class="x">    &lt;button type=&quot;submit&quot;&gt;Save&lt;/button&gt;</span>
+<span class="x">    &lt;textarea name="content"&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'content'</span><span class="p">]</span> <span class="o">??</span> <span class="s1">''</span> <span class="cp">?&gt;</span><span class="x">&lt;/textarea&gt;</span>
+<span class="x">    &lt;button type="submit"&gt;Save&lt;/button&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 </pre></div>
 </div>

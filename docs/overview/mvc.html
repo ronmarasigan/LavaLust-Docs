@@ -208,10 +208,10 @@ status transitions)</p></li>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_published</span><span class="p">(</span><span class="nv">$limit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
-            <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">&#39;id, title, slug, created_at&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;published&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">,</span> <span class="s1">&#39;DESC&#39;</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'id, title, slug, created_at'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'published'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">'created_at'</span><span class="p">,</span> <span class="s1">'DESC'</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="nv">$limit</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
     <span class="p">}</span>
@@ -219,8 +219,8 @@ status transitions)</p></li>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span>
-            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -275,8 +275,8 @@ data; they must not contain database calls or business logic.</p>
 
 <span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$posts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span>
 <span class="x">    &lt;article&gt;</span>
-<span class="x">        &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
-<span class="x">        &lt;time&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/time&gt;</span>
+<span class="x">        &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">        &lt;time&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'created_at'</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/time&gt;</span>
 <span class="x">    &lt;/article&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
 </pre></div>
@@ -305,13 +305,13 @@ returns a response directly). It is the glue between the model and the view.</p>
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;Post_model&#39;</span><span class="p">,</span> <span class="s1">&#39;post_model&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'Post_model'</span><span class="p">,</span> <span class="s1">'post_model'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">post_model</span><span class="o">-&gt;</span><span class="na">get_published</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;posts/index&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$data</span><span class="p">[</span><span class="s1">'posts'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">post_model</span><span class="o">-&gt;</span><span class="na">get_published</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'posts/index'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
@@ -320,11 +320,11 @@ returns a response directly). It is the glue between the model and the view.</p>
 
         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="nv">$post</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_not_found</span><span class="p">(</span><span class="s1">&#39;Post not found.&#39;</span><span class="p">);</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_not_found</span><span class="p">(</span><span class="s1">'Post not found.'</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;posts/show&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;post&#39;</span> <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'posts/show'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'post'</span> <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>

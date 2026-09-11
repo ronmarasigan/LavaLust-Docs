@@ -185,7 +185,7 @@ You can define various preferences, such as allowed file types, size restriction
 <h2>Loading the Upload Library<a class="headerlink" href="#loading-the-upload-library" title="Link to this heading"></a></h2>
 <p>Before using the upload features, load it via:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Note:</strong> The second parameter passes the uploaded file data to the constructor for processing.</p>
@@ -484,14 +484,14 @@ You can define various preferences, such as allowed file types, size restriction
 
 <span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$errors</span><span class="p">))</span><span class="o">:</span> <span class="cp">?&gt;</span>
 <span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
-<span class="x">        &lt;div style=&quot;color: red;&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$error</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/div&gt;</span>
+<span class="x">        &lt;div style="color: red;"&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$error</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/div&gt;</span>
 <span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span>
 
-<span class="x">&lt;form action=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">&#39;upload/do_upload&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span>
-<span class="x">    &lt;input type=&quot;file&quot; name=&quot;userfile&quot; size=&quot;20&quot; /&gt;</span>
+<span class="x">&lt;form action="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">site_url</span><span class="p">(</span><span class="s1">'upload/do_upload'</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">" method="post" enctype="multipart/form-data"&gt;</span>
+<span class="x">    &lt;input type="file" name="userfile" size="20" /&gt;</span>
 <span class="x">    &lt;br&gt;&lt;br&gt;</span>
-<span class="x">    &lt;input type=&quot;submit&quot; value=&quot;Upload&quot; /&gt;</span>
+<span class="x">    &lt;input type="submit" value="Upload" /&gt;</span>
 <span class="x">&lt;/form&gt;</span>
 
 <span class="x">&lt;/body&gt;</span>
@@ -525,29 +525,29 @@ You can define various preferences, such as allowed file types, size restriction
 <span class="k">class</span> <span class="nc">UploadController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">upload_form</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'upload_form'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">do_upload</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
             <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
             <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
-            <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
-            <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span>
+            <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="s1">'jpeg'</span><span class="p">,</span> <span class="s1">'png'</span><span class="p">])</span>
+            <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">'image/jpeg'</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">])</span>
             <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
             <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">();</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;extension&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">();</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">();</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'size'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">();</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'extension'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'upload_success'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_form&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'errors'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'upload_form'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -570,41 +570,41 @@ chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>u
 All preference methods support <strong>method chaining</strong> for cleaner code.</p>
 <p><strong>Basic Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
     <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>              <span class="c1">// 5 MB maximum</span>
     <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>              <span class="c1">// 1 MB minimum</span>
-    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads/images&#39;</span><span class="p">)</span> <span class="c1">// Save to uploads/images/</span>
-    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span> <span class="c1">// Only JPG and PNG</span>
-    <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span> <span class="c1">// Only JPEG and PNG MIME types</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads/images'</span><span class="p">)</span> <span class="c1">// Save to uploads/images/</span>
+    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="s1">'png'</span><span class="p">])</span> <span class="c1">// Only JPG and PNG</span>
+    <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">'image/jpeg'</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">])</span> <span class="c1">// Only JPEG and PNG MIME types</span>
     <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>               <span class="c1">// Must be valid image</span>
     <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>          <span class="c1">// Rename with SHA1 hash</span>
 </pre></div>
 </div>
 <p><strong>Example with Overwrite:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
-    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">,</span> <span class="s1">&#39;docx&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'pdf'</span><span class="p">,</span> <span class="s1">'doc'</span><span class="p">,</span> <span class="s1">'docx'</span><span class="p">])</span>
     <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 
 <span class="c1">// Overwrite existing file with the same name</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">(</span><span class="k">TRUE</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;File uploaded (overwritten if existed)&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"File uploaded (overwritten if existed)"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Example without Extension:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span>
-    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads'</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
 
 <span class="c1">// Save file without extension</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">(</span><span class="k">FALSE</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;File saved without extension&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"File saved without extension"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -613,12 +613,12 @@ All preference methods support <strong>method chaining</strong> for cleaner code
 <h2>Method Chaining<a class="headerlink" href="#method-chaining" title="Link to this heading"></a></h2>
 <p>All preference methods support <strong>method chaining</strong> for more concise code:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
              <span class="o">-&gt;</span><span class="na">min_size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">)</span>
-             <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
+             <span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads'</span><span class="p">)</span>
+             <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="s1">'png'</span><span class="p">])</span>
              <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
              <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">()</span>
              <span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">();</span>
@@ -629,9 +629,9 @@ All preference methods support <strong>method chaining</strong> for cleaner code
 <h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
 <p>Always check if the upload was successful and display appropriate error messages:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;userfile&quot;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"userfile"</span><span class="p">]);</span>
 
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads'</span><span class="p">);</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
     <span class="c1">// Success - proceed with success logic</span>
@@ -640,7 +640,7 @@ All preference methods support <strong>method chaining</strong> for cleaner code
     <span class="c1">// Failure - display errors</span>
     <span class="nv">$errors</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$errors</span> <span class="k">as</span> <span class="nv">$error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">echo</span> <span class="nv">$error</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nv">$error</span> <span class="o">.</span> <span class="s2">"&lt;br&gt;"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -678,8 +678,8 @@ All preference methods support <strong>method chaining</strong> for cleaner code
 <p><strong>Additional security recommendations:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Restrict to specific image types only</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">])</span>
-             <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">])</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="s1">'jpeg'</span><span class="p">,</span> <span class="s1">'png'</span><span class="p">])</span>
+             <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">'image/jpeg'</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">])</span>
              <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">();</span>
 
 <span class="c1">// Use encrypted names to hide original filenames</span>
@@ -689,7 +689,7 @@ All preference methods support <strong>method chaining</strong> for cleaner code
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// 5 MB max</span>
 
 <span class="c1">// Store in a non-public directory when possible</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;/var/www/private/uploads/&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'/var/www/private/uploads/'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -741,15 +741,15 @@ All preference methods support <strong>method chaining</strong> for cleaner code
 <span class="k">class</span> <span class="nc">GalleryController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;gallery_upload&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'gallery_upload'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">upload_image</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;upload&#39;</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&quot;gallery_image&quot;</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'upload'</span><span class="p">,</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s2">"gallery_image"</span><span class="p">]);</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">&#39;uploads/gallery&#39;</span><span class="p">)</span>
-                     <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;gif&#39;</span><span class="p">])</span>
-                     <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">])</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">set_dir</span><span class="p">(</span><span class="s1">'uploads/gallery'</span><span class="p">)</span>
+                     <span class="o">-&gt;</span><span class="na">allowed_extensions</span><span class="p">([</span><span class="s1">'jpg'</span><span class="p">,</span> <span class="s1">'jpeg'</span><span class="p">,</span> <span class="s1">'png'</span><span class="p">,</span> <span class="s1">'gif'</span><span class="p">])</span>
+                     <span class="o">-&gt;</span><span class="na">allowed_mimes</span><span class="p">([</span><span class="s1">'image/jpeg'</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">,</span> <span class="s1">'image/gif'</span><span class="p">])</span>
                      <span class="o">-&gt;</span><span class="na">max_size</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
                      <span class="o">-&gt;</span><span class="na">is_image</span><span class="p">()</span>
                      <span class="o">-&gt;</span><span class="na">encrypt_name</span><span class="p">();</span>
@@ -757,21 +757,21 @@ All preference methods support <strong>method chaining</strong> for cleaner code
         <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">do_upload</span><span class="p">())</span> <span class="p">{</span>
             <span class="c1">// Save file info to database</span>
             <span class="nv">$image_data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">&#39;filename&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">(),</span>
-                <span class="s1">&#39;size&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">(),</span>
-                <span class="s1">&#39;extension&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">(),</span>
-                <span class="s1">&#39;mime&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">mime</span><span class="p">,</span>
-                <span class="s1">&#39;uploaded_at&#39;</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">)</span>
+                <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_filename</span><span class="p">(),</span>
+                <span class="s1">'size'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_size</span><span class="p">(),</span>
+                <span class="s1">'extension'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_extension</span><span class="p">(),</span>
+                <span class="s1">'mime'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">mime</span><span class="p">,</span>
+                <span class="s1">'uploaded_at'</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d H:i:s'</span><span class="p">)</span>
             <span class="p">);</span>
 
-            <span class="c1">// $this-&gt;db-&gt;insert(&#39;gallery_images&#39;, $image_data);</span>
+            <span class="c1">// $this-&gt;db-&gt;insert('gallery_images', $image_data);</span>
 
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$image_data</span><span class="p">;</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;upload_success&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'success'</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'file'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$image_data</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'upload_success'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
-            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;gallery_upload&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+            <span class="nv">$data</span><span class="p">[</span><span class="s1">'errors'</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">upload</span><span class="o">-&gt;</span><span class="na">get_errors</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'gallery_upload'</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>

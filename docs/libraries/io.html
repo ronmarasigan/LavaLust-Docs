@@ -179,12 +179,12 @@
 <p>Instead of directly using superglobals like <code class="docutils literal notranslate"><span class="pre">$_POST['field']</span></code> and having to check if they exist, the IO class provides safe methods that automatically return <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the value is not set.</p>
 <p><strong>Example (without IO):</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$something</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;something&#39;</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;something&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="k">NULL</span><span class="p">;</span>
+<span class="nv">$something</span> <span class="o">=</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'something'</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'something'</span><span class="p">]</span> <span class="o">:</span> <span class="k">NULL</span><span class="p">;</span>
 </pre></div>
 </div>
 <p><strong>Example (with IO):</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$something</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;something&#39;</span><span class="p">);</span>
+<span class="nv">$something</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'something'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -193,20 +193,20 @@
 <p>These methods are used to fetch data from different superglobals:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// POST data</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">([</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">([</span><span class="s1">'field1'</span><span class="p">,</span> <span class="s1">'field2'</span><span class="p">]);</span>
 
 <span class="c1">// GET data</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">([</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">([</span><span class="s1">'field1'</span><span class="p">,</span> <span class="s1">'field2'</span><span class="p">]);</span>
 
 <span class="c1">// COOKIE data</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">([</span><span class="s1">&#39;cookie1&#39;</span><span class="p">,</span> <span class="s1">&#39;cookie2&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">cookie</span><span class="p">([</span><span class="s1">'cookie1'</span><span class="p">,</span> <span class="s1">'cookie2'</span><span class="p">]);</span>
 
 <span class="c1">// SERVER data</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">([</span><span class="s1">&#39;SERVER_PROTOCOL&#39;</span><span class="p">,</span> <span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">server</span><span class="p">([</span><span class="s1">'SERVER_PROTOCOL'</span><span class="p">,</span> <span class="s1">'REQUEST_URI'</span><span class="p">]);</span>
 </pre></div>
 </div>
 </section>
@@ -214,20 +214,20 @@
 <h2>Additional Request Methods<a class="headerlink" href="#additional-request-methods" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Search both POST and GET (POST first)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post_get</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
 
 <span class="c1">// Search both GET and POST (GET first)</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">get_post</span><span class="p">(</span><span class="s1">'field'</span><span class="p">);</span>
 
 <span class="c1">// Set a cookie</span>
 <span class="c1">// Options: domain, path, prefix, secure, samesite</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_cookie</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$expiration</span><span class="p">,</span> <span class="nv">$options</span> <span class="o">=</span> <span class="p">[]);</span>
 
-<span class="c1">// Get user IP address (returns &#39;0.0.0.0&#39; if invalid)</span>
+<span class="c1">// Get user IP address (returns '0.0.0.0' if invalid)</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">ip_address</span><span class="p">();</span>
 
 <span class="c1">// Validate an IP address</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">valid_ip</span><span class="p">(</span><span class="s1">'127.0.0.1'</span><span class="p">);</span>
 
 <span class="c1">// Check if request is AJAX</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">is_ajax</span><span class="p">();</span>
@@ -242,15 +242,15 @@
 <p>The IO class also allows you to build and send responses with headers, content, and status codes.</p>
 <p><strong>Example: HTML Response</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;text/html&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span> <span class="s1">'text/html'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_content</span><span class="p">(</span><span class="s1">'Hello, World!'</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
 </div>
 <p><strong>Shorthand:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_html_content</span><span class="p">(</span><span class="s1">'Hello, World!'</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 </pre></div>
@@ -258,10 +258,10 @@
 <p><strong>Example: JSON Response</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">add_header</span><span class="p">([</span>
-    <span class="s1">&#39;Access-Control-Allow-Origin&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;application/json&#39;</span>
+    <span class="s1">'Access-Control-Allow-Origin'</span> <span class="o">=&gt;</span> <span class="s1">'*'</span><span class="p">,</span>
+    <span class="s1">'Content-Type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span>
 <span class="p">]);</span>
-<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Hello, World!&#39;</span><span class="p">];</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'message'</span> <span class="o">=&gt;</span> <span class="s1">'Hello, World!'</span><span class="p">];</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
 </pre></div>

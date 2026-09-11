@@ -177,8 +177,8 @@ They provide a clean separation of database logic from controllers and views, fo
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">'users'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -194,25 +194,25 @@ They provide a clean separation of database logic from controllers and views, fo
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span>              <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$primary_key</span>        <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span>              <span class="o">=</span> <span class="s1">'users'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span>        <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
 
     <span class="c1">// Whitelist of columns allowed for mass assignment</span>
-    <span class="k">protected</span> <span class="nv">$fillable</span>           <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$fillable</span>           <span class="o">=</span> <span class="p">[</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">,</span> <span class="s1">'role'</span><span class="p">];</span>
 
     <span class="c1">// Blacklist of columns protected from mass assignment</span>
-    <span class="k">protected</span> <span class="nv">$guarded</span>            <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">];</span>
+    <span class="k">protected</span> <span class="nv">$guarded</span>            <span class="o">=</span> <span class="p">[</span><span class="s1">'id'</span><span class="p">];</span>
 
     <span class="c1">// Automatically manage created_at and updated_at</span>
     <span class="k">protected</span> <span class="nv">$timestamps</span>         <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
 
     <span class="c1">// Customize timestamp column names</span>
-    <span class="k">protected</span> <span class="nv">$created_at_column</span>  <span class="o">=</span> <span class="s1">&#39;created_at&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$updated_at_column</span>  <span class="o">=</span> <span class="s1">&#39;updated_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$created_at_column</span>  <span class="o">=</span> <span class="s1">'created_at'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$updated_at_column</span>  <span class="o">=</span> <span class="s1">'updated_at'</span><span class="p">;</span>
 
     <span class="c1">// Soft delete settings</span>
     <span class="k">protected</span> <span class="nv">$has_soft_delete</span>    <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">&#39;deleted_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">'deleted_at'</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -232,19 +232,19 @@ Always define <code class="docutils literal notranslate"><span class="pre">$fill
     <span class="p">{</span>
         <span class="c1">// Load the UserModel</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">listUsers</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/list&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/list'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'users'</span> <span class="o">=&gt;</span> <span class="nv">$users</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">showUser</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;user/profile&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'user/profile'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'user'</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -262,7 +262,7 @@ Always define <code class="docutils literal notranslate"><span class="pre">$fill
 <span class="p">{</span>
     <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
     <span class="k">foreach</span> <span class="p">(</span><span class="nv">$users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">echo</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s2">&quot; - &quot;</span> <span class="o">.</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">.</span> <span class="s2">" - "</span> <span class="o">.</span> <span class="nv">$user</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]</span> <span class="o">.</span> <span class="s2">"&lt;br&gt;"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -272,11 +272,11 @@ Always define <code class="docutils literal notranslate"><span class="pre">$fill
 <span class="k">public</span> <span class="k">function</span> <span class="nf">addUser</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span>
+        <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="s1">'Alice Smith'</span><span class="p">,</span>
+        <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span>
     <span class="p">];</span>
     <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="s2">&quot;User added with ID: &quot;</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"User added with ID: "</span> <span class="o">.</span> <span class="nv">$id</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -290,10 +290,10 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <span class="k">public</span> <span class="k">function</span> <span class="nf">updateUser</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice.smith@example.com&#39;</span>
+        <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice.smith@example.com'</span>
     <span class="p">];</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="s2">&quot;User updated successfully!&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"User updated successfully!"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -302,7 +302,7 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <span class="k">public</span> <span class="k">function</span> <span class="nf">deleteUser</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="s2">&quot;User deleted successfully!&quot;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"User deleted successfully!"</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -316,25 +316,25 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 </div>
 <p><strong>6. Find a single record by column:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_by</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">);</span>
+<span class="nv">$user</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_by</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="s1">'alice@example.com'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>7. Find all records matching a column value:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$admins</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_all_by</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">);</span>
+<span class="nv">$admins</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">find_all_by</span><span class="p">(</span><span class="s1">'role'</span><span class="p">,</span> <span class="s1">'admin'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>8. Update records matching conditions:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update_where</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;guest&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;member&#39;</span><span class="p">]</span>
+    <span class="p">[</span><span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'guest'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'member'</span><span class="p">]</span>
 <span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>9. Delete records matching conditions:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete_where</span><span class="p">([</span><span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">delete_where</span><span class="p">([</span><span class="s1">'active'</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">]);</span>
 </pre></div>
 </div>
 </section>
@@ -352,20 +352,20 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 </div>
 <p><strong>Get a single column value:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
+<span class="nv">$email</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Get a flat array of column values:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">);</span>
+<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">'email'</span><span class="p">);</span>
 
 <span class="c1">// With conditions</span>
-<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">]);</span>
+<span class="nv">$emails</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">pluck</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'admin'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Check if a record exists:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$exists</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">exists</span><span class="p">([</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">]);</span>
+<span class="nv">$exists</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">exists</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Row count:</strong></p>
@@ -378,7 +378,7 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 </div>
 <p><strong>Order results:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">);</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'ASC'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Limit results:</strong></p>
@@ -389,7 +389,7 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p><strong>Filter with a WHERE clause:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$activeAdmins</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span>
-    <span class="o">-&gt;</span><span class="na">filter</span><span class="p">([</span><span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">filter</span><span class="p">([</span><span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'admin'</span><span class="p">,</span> <span class="s1">'active'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">])</span>
     <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -401,14 +401,14 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p><strong>Raw SQL query:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$results</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span>
-    <span class="s1">&#39;SELECT * FROM users WHERE created_at &gt; ?&#39;</span><span class="p">,</span>
-    <span class="p">[</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">]</span>
+    <span class="s1">'SELECT * FROM users WHERE created_at &gt; ?'</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">'2024-01-01'</span><span class="p">]</span>
 <span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Access the query builder directly:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'active'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
@@ -417,19 +417,19 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p><strong>first_or_create</strong> — finds the first matching record or inserts one if none exists:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">first_or_create</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">]</span>
+    <span class="p">[</span><span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="s1">'Alice Smith'</span><span class="p">]</span>
 <span class="p">);</span>
 
-<span class="nv">$user</span>    <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;record&#39;</span><span class="p">];</span>
-<span class="nv">$created</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">];</span> <span class="c1">// true if a new record was inserted</span>
+<span class="nv">$user</span>    <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">'record'</span><span class="p">];</span>
+<span class="nv">$created</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">[</span><span class="s1">'created'</span><span class="p">];</span> <span class="c1">// true if a new record was inserted</span>
 </pre></div>
 </div>
 <p><strong>update_or_create</strong> — updates the first matching record, or creates one if none found:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$id</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">update_or_create</span><span class="p">(</span>
-    <span class="p">[</span><span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice Smith&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;editor&#39;</span><span class="p">]</span>
+    <span class="p">[</span><span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="s1">'Alice Smith'</span><span class="p">,</span> <span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'editor'</span><span class="p">]</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -439,22 +439,22 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p>All aggregate methods accept optional <code class="docutils literal notranslate"><span class="pre">$conditions</span></code> and a <code class="docutils literal notranslate"><span class="pre">$with_deleted</span></code> flag.</p>
 <p><strong>Sum:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">OrderModel</span><span class="o">-&gt;</span><span class="na">sum</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
+<span class="nv">$total</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">OrderModel</span><span class="o">-&gt;</span><span class="na">sum</span><span class="p">(</span><span class="s1">'amount'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'user_id'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Max:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$max</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">max</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;category_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]);</span>
+<span class="nv">$max</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">max</span><span class="p">(</span><span class="s1">'price'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'category_id'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Min:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$min</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">min</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">);</span>
+<span class="nv">$min</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProductModel</span><span class="o">-&gt;</span><span class="na">min</span><span class="p">(</span><span class="s1">'price'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><strong>Average:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$avg</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ReviewModel</span><span class="o">-&gt;</span><span class="na">avg</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;product_id&#39;</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">]);</span>
+<span class="nv">$avg</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ReviewModel</span><span class="o">-&gt;</span><span class="na">avg</span><span class="p">(</span><span class="s1">'rating'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'product_id'</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">]);</span>
 </pre></div>
 </div>
 </section>
@@ -462,8 +462,8 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <h2>Grouping and Having<a class="headerlink" href="#grouping-and-having" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span>
-    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">&#39;COUNT(id)&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">group_by</span><span class="p">(</span><span class="s1">'role'</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">having</span><span class="p">(</span><span class="s1">'COUNT(id)'</span><span class="p">,</span> <span class="s1">'&gt;'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span>
     <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
@@ -474,7 +474,7 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p>Use <code class="docutils literal notranslate"><span class="pre">scope()</span></code> to apply a reusable query closure to the underlying database builder:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">scope</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$db</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;verified&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ASC&#39;</span><span class="p">);</span>
+    <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'verified'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'ASC'</span><span class="p">);</span>
 <span class="p">})</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -482,20 +482,20 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <section id="pagination">
 <h2>Pagination<a class="headerlink" href="#pagination" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$page</span>   <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nv">$page</span>   <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'page'</span><span class="p">]</span> <span class="o">??</span> <span class="mi">1</span><span class="p">;</span>
 <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(</span>
     <span class="mi">15</span><span class="p">,</span>              <span class="c1">// per page</span>
     <span class="nv">$page</span><span class="p">,</span>           <span class="c1">// current page</span>
-    <span class="p">[</span><span class="s1">&#39;active&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1">// optional conditions</span>
+    <span class="p">[</span><span class="s1">'active'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1">// optional conditions</span>
 <span class="p">);</span>
 
 <span class="c1">// Result structure:</span>
 <span class="c1">// [</span>
-<span class="c1">//   &#39;data&#39;         =&gt; [...],  // rows for this page</span>
-<span class="c1">//   &#39;total&#39;        =&gt; 150,    // total matching rows</span>
-<span class="c1">//   &#39;per_page&#39;     =&gt; 15,</span>
-<span class="c1">//   &#39;current_page&#39; =&gt; 2,</span>
-<span class="c1">//   &#39;last_page&#39;    =&gt; 10,</span>
+<span class="c1">//   'data'         =&gt; [...],  // rows for this page</span>
+<span class="c1">//   'total'        =&gt; 150,    // total matching rows</span>
+<span class="c1">//   'per_page'     =&gt; 15,</span>
+<span class="c1">//   'current_page' =&gt; 2,</span>
+<span class="c1">//   'last_page'    =&gt; 10,</span>
 <span class="c1">// ]</span>
 </pre></div>
 </div>
@@ -505,17 +505,17 @@ automatically sets <code class="docutils literal notranslate"><span class="pre">
 <p><strong>Bulk insert:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">bulk_insert</span><span class="p">([</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span>   <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;bob@example.com&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Carol&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;carol@example.com&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Alice'</span><span class="p">,</span> <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Bob'</span><span class="p">,</span>   <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'bob@example.com'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Carol'</span><span class="p">,</span> <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'carol@example.com'</span><span class="p">],</span>
 <span class="p">]);</span>
 </pre></div>
 </div>
 <p><strong>Bulk update:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nv">$affected</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">bulk_update</span><span class="p">([</span>
-    <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;editor&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'admin'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'role'</span> <span class="o">=&gt;</span> <span class="s1">'editor'</span><span class="p">],</span>
 <span class="p">]);</span>
 <span class="c1">// Returns: int (number of rows updated)</span>
 </pre></div>
@@ -536,11 +536,11 @@ This is useful for recovering deleted records later.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">UserModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span>          <span class="o">=</span> <span class="s1">&#39;users&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span>          <span class="o">=</span> <span class="s1">'users'</span><span class="p">;</span>
     <span class="k">protected</span> <span class="nv">$has_soft_delete</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// Enable soft deletes</span>
 
     <span class="c1">// Optional: customize the column name (default: deleted_at)</span>
-    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">&#39;removed_at&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$soft_delete_column</span> <span class="o">=</span> <span class="s1">'removed_at'</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -588,31 +588,31 @@ hard <code class="docutils literal notranslate"><span class="pre">delete()</span
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">PostModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span>       <span class="o">=</span> <span class="s1">&#39;posts&#39;</span><span class="p">;</span>
-    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span>       <span class="o">=</span> <span class="s1">'posts'</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$primary_key</span> <span class="o">=</span> <span class="s1">'id'</span><span class="p">;</span>
 
     <span class="c1">// A post has one author (FK: user_id on users table)</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">author</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_one</span><span class="p">(</span><span class="s1">&#39;UserModel&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_one</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">,</span> <span class="s1">'user_id'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// A post has many comments (FK: post_id on comments table)</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">comments</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_many</span><span class="p">(</span><span class="s1">&#39;CommentModel&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_many</span><span class="p">(</span><span class="s1">'CommentModel'</span><span class="p">,</span> <span class="s1">'post_id'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// A post belongs to a category (FK: category_id on posts table)</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">category</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongs_to</span><span class="p">(</span><span class="s1">&#39;CategoryModel&#39;</span><span class="p">,</span> <span class="s1">&#39;category_id&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongs_to</span><span class="p">(</span><span class="s1">'CategoryModel'</span><span class="p">,</span> <span class="s1">'category_id'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="c1">// A post has many tags via pivot table</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">tags</span><span class="p">()</span><span class="o">:</span> <span class="k">array</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">many_to_many</span><span class="p">(</span><span class="s1">&#39;TagModel&#39;</span><span class="p">,</span> <span class="s1">&#39;post_tag&#39;</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tag_id&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">many_to_many</span><span class="p">(</span><span class="s1">'TagModel'</span><span class="p">,</span> <span class="s1">'post_tag'</span><span class="p">,</span> <span class="s1">'post_id'</span><span class="p">,</span> <span class="s1">'tag_id'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -631,7 +631,7 @@ hard <code class="docutils literal notranslate"><span class="pre">delete()</span
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;PostModel&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'PostModel'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">showPost</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
@@ -640,10 +640,10 @@ hard <code class="docutils literal notranslate"><span class="pre">delete()</span
         <span class="nv">$author</span>   <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">author</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
         <span class="nv">$comments</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span><span class="o">-&gt;</span><span class="na">comments</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
 
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;post/show&#39;</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">&#39;post&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">,</span>
-            <span class="s1">&#39;author&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$author</span><span class="p">,</span>
-            <span class="s1">&#39;comments&#39;</span> <span class="o">=&gt;</span> <span class="nv">$comments</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'post/show'</span><span class="p">,</span> <span class="p">[</span>
+            <span class="s1">'post'</span>     <span class="o">=&gt;</span> <span class="nv">$post</span><span class="p">,</span>
+            <span class="s1">'author'</span>   <span class="o">=&gt;</span> <span class="nv">$author</span><span class="p">,</span>
+            <span class="s1">'comments'</span> <span class="o">=&gt;</span> <span class="nv">$comments</span>
         <span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -660,12 +660,12 @@ hard <code class="docutils literal notranslate"><span class="pre">delete()</span
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Load all posts with their author and comments attached</span>
 <span class="nv">$posts</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">PostModel</span>
-    <span class="o">-&gt;</span><span class="na">with</span><span class="p">([</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;comments&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">with</span><span class="p">([</span><span class="s1">'author'</span><span class="p">,</span> <span class="s1">'comments'</span><span class="p">])</span>
     <span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
 
-<span class="c1">// Each post now has $post[&#39;author&#39;] and $post[&#39;comments&#39;]</span>
+<span class="c1">// Each post now has $post['author'] and $post['comments']</span>
 <span class="k">foreach</span> <span class="p">(</span><span class="nv">$posts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39; by &#39;</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
+    <span class="k">echo</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span> <span class="o">.</span> <span class="s1">' by '</span> <span class="o">.</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'author'</span><span class="p">][</span><span class="s1">'name'</span><span class="p">];</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -683,13 +683,13 @@ does not leak between requests.</p>
 
 <span class="k">try</span> <span class="p">{</span>
     <span class="nv">$userId</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-        <span class="s1">&#39;name&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;alice@example.com&#39;</span><span class="p">,</span>
+        <span class="s1">'name'</span>  <span class="o">=&gt;</span> <span class="s1">'Alice'</span><span class="p">,</span>
+        <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'alice@example.com'</span><span class="p">,</span>
     <span class="p">]);</span>
 
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ProfileModel</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">([</span>
-        <span class="s1">&#39;user_id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$userId</span><span class="p">,</span>
-        <span class="s1">&#39;bio&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello world&#39;</span><span class="p">,</span>
+        <span class="s1">'user_id'</span> <span class="o">=&gt;</span> <span class="nv">$userId</span><span class="p">,</span>
+        <span class="s1">'bio'</span>     <span class="o">=&gt;</span> <span class="s1">'Hello world'</span><span class="p">,</span>
     <span class="p">]);</span>
 
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">commit</span><span class="p">();</span>
@@ -705,12 +705,12 @@ does not leak between requests.</p>
 <h2>Loading Multiple Models<a class="headerlink" href="#loading-multiple-models" title="Link to this heading"></a></h2>
 <p>If you would like to load multiple models at a time you can use this:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;model_1&#39;</span><span class="p">,</span> <span class="s1">&#39;model_2&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">'model_1'</span><span class="p">,</span> <span class="s1">'model_2'</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">model_1</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">model_2</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 
 <span class="c1">// Or with aliases</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;model_1&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;m1&#39;</span><span class="p">,</span> <span class="s1">&#39;model_2&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;m2&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">'model_1'</span> <span class="o">=&gt;</span> <span class="s1">'m1'</span><span class="p">,</span> <span class="s1">'model_2'</span> <span class="o">=&gt;</span> <span class="s1">'m2'</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">m1</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">m2</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 </pre></div>
@@ -725,7 +725,7 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <li><p>Add your model names in the <code class="docutils literal notranslate"><span class="pre">$autoload['models']</span></code> array.</p></li>
 </ol>
 <p><strong>Example:</strong></p>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload[&#39;models&#39;] = [&#39;UserModel&#39;, &#39;PostModel&#39;];</span>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$autoload['models'] = ['UserModel', 'PostModel'];</span>
 </pre></div>
 </div>
 <p>These models will now be loaded automatically for every request.</p>
@@ -734,11 +734,11 @@ you can <strong>auto-load</strong> them in the configuration:</p>
 <h2>Assigning Model to Different Name<a class="headerlink" href="#assigning-model-to-different-name" title="Link to this heading"></a></h2>
 <p>If you would like your model assigned to a different object name you can specify it via the second parameter of the loading method:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">&#39;model_name&#39;</span><span class="p">,</span> <span class="s1">&#39;foobar&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'model_name'</span><span class="p">,</span> <span class="s1">'foobar'</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">foobar</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 
 <span class="c1">// Or using array syntax</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">&#39;foobar&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;model_name&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">([</span><span class="s1">'foobar'</span> <span class="o">=&gt;</span> <span class="s1">'model_name'</span><span class="p">]);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">foobar</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">();</span>
 </pre></div>
 </div>

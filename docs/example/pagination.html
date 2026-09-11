@@ -228,7 +228,7 @@
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="c1">// Load pagination library</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;pagination&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'pagination'</span><span class="p">);</span>
 
         <span class="c1">// Current page from URL segment</span>
         <span class="nv">$current_page</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nx">segment</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">?:</span> <span class="mi">1</span><span class="p">;</span><span class="c1">// or use segment(3) if your URL is like /blog/index/2</span>
@@ -240,7 +240,7 @@
         <span class="nv">$rows_per_page</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
 
         <span class="c1">// Base URL for pagination links</span>
-        <span class="nv">$base_url</span> <span class="o">=</span> <span class="s1">&#39;blog/index&#39;</span><span class="p">;</span>
+        <span class="nv">$base_url</span> <span class="o">=</span> <span class="s1">'blog/index'</span><span class="p">;</span>
 
         <span class="c1">// Initialize pagination with options</span>
         <span class="nv">$page_data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">initialize</span><span class="p">(</span>
@@ -252,31 +252,31 @@
         <span class="p">);</span>
 
         <span class="c1">// Optional: set a custom theme</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_theme</span><span class="p">(</span><span class="s1">&#39;tailwind&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_theme</span><span class="p">(</span><span class="s1">'tailwind'</span><span class="p">);</span>
 
         <span class="c1">// Optional: set custom CSS classes</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_custom_classes</span><span class="p">([</span>
-            <span class="s1">&#39;ul&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;flex space-x-2&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;li&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;px-1&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;a&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;px-3 py-1 rounded bg-gray-100 hover:bg-gray-200&#39;</span>
+            <span class="s1">'ul'</span> <span class="o">=&gt;</span> <span class="s1">'flex space-x-2'</span><span class="p">,</span>
+            <span class="s1">'li'</span> <span class="o">=&gt;</span> <span class="s1">'px-1'</span><span class="p">,</span>
+            <span class="s1">'a'</span>  <span class="o">=&gt;</span> <span class="s1">'px-3 py-1 rounded bg-gray-100 hover:bg-gray-200'</span>
         <span class="p">]);</span>
 
         <span class="c1">// Optional: override text options</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_options</span><span class="p">([</span>
-            <span class="s1">&#39;first_link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&lt;&lt; First&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;last_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Last &gt;&gt;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;next_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;Next &gt;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;prev_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&lt; Prev&#39;</span>
+            <span class="s1">'first_link'</span> <span class="o">=&gt;</span> <span class="s1">'&lt;&lt; First'</span><span class="p">,</span>
+            <span class="s1">'last_link'</span>  <span class="o">=&gt;</span> <span class="s1">'Last &gt;&gt;'</span><span class="p">,</span>
+            <span class="s1">'next_link'</span>  <span class="o">=&gt;</span> <span class="s1">'Next &gt;'</span><span class="p">,</span>
+            <span class="s1">'prev_link'</span>  <span class="o">=&gt;</span> <span class="s1">'&lt; Prev'</span>
         <span class="p">]);</span>
 
         <span class="c1">// Get paginated blog posts</span>
-        <span class="nv">$limit_clause</span> <span class="o">=</span> <span class="nv">$page_data</span><span class="p">[</span><span class="s1">&#39;limit&#39;</span><span class="p">];</span>
+        <span class="nv">$limit_clause</span> <span class="o">=</span> <span class="nv">$page_data</span><span class="p">[</span><span class="s1">'limit'</span><span class="p">];</span>
         <span class="nv">$blogs</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">blogmodel</span><span class="o">-&gt;</span><span class="na">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">);</span>
 
         <span class="c1">// Pass data to view</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">&#39;blog/index&#39;</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">&#39;blogs&#39;</span> <span class="o">=&gt;</span> <span class="nv">$blogs</span><span class="p">,</span>
-            <span class="s1">&#39;pagination&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(),</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/index'</span><span class="p">,</span> <span class="p">[</span>
+            <span class="s1">'blogs'</span> <span class="o">=&gt;</span> <span class="nv">$blogs</span><span class="p">,</span>
+            <span class="s1">'pagination'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(),</span>
         <span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -289,7 +289,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
 <span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">&#39;blog_posts&#39;</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">'blog_posts'</span><span class="p">;</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">count_all</span><span class="p">()</span>
     <span class="p">{</span>
@@ -298,7 +298,7 @@
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>
@@ -308,11 +308,11 @@
 <section id="view">
 <h2>View<a class="headerlink" href="#view" title="Link to this heading"></a></h2>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">foreach</span><span class="p">(</span><span class="nv">$blogs</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
-<span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
-<span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="x">    &lt;h2&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">    &lt;p&gt;</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">'content'</span><span class="p">]</span> <span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
 <span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
 
-<span class="x">&lt;div class=&quot;pagination&quot;&gt;</span>
+<span class="x">&lt;div class="pagination"&gt;</span>
 <span class="x">    </span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$pagination</span> <span class="cp">?&gt;</span>
 <span class="x">&lt;/div&gt;</span>
 </pre></div>

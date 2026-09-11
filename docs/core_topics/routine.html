@@ -192,8 +192,8 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="nv">$logger</span> <span class="o">=</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">&#39;Logger&#39;</span><span class="p">,</span> <span class="s1">&#39;kernel&#39;</span><span class="p">);</span>
-<span class="nv">$logger</span><span class="o">-&gt;</span><span class="na">log</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;This is a test message.&#39;</span><span class="p">);</span>
+<span class="nv">$logger</span> <span class="o">=</span> <span class="nx">load_class</span><span class="p">(</span><span class="s1">'Logger'</span><span class="p">,</span> <span class="s1">'kernel'</span><span class="p">);</span>
+<span class="nv">$logger</span><span class="o">-&gt;</span><span class="na">log</span><span class="p">(</span><span class="s1">'info'</span><span class="p">,</span> <span class="s1">'This is a test message.'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -244,7 +244,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="nx">show_404</span><span class="p">(</span><span class="s1">&#39;Page Not Found&#39;</span><span class="p">,</span> <span class="s1">&#39;The requested page does not exist.&#39;</span><span class="p">);</span>
+<span class="nx">show_404</span><span class="p">(</span><span class="s1">'Page Not Found'</span><span class="p">,</span> <span class="s1">'The requested page does not exist.'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -269,7 +269,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="nx">show_error</span><span class="p">(</span><span class="s1">&#39;Database Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Unable to connect to the database&#39;</span><span class="p">,</span> <span class="s1">&#39;error_db&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+<span class="nx">show_error</span><span class="p">(</span><span class="s1">'Database Error'</span><span class="p">,</span> <span class="s1">'Unable to connect to the database'</span><span class="p">,</span> <span class="s1">'error_db'</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -290,7 +290,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
 <span class="nv">$config</span> <span class="o">=</span> <span class="nx">get_config</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">];</span>
+<span class="k">echo</span> <span class="nv">$config</span><span class="p">[</span><span class="s1">'base_url'</span><span class="p">];</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -310,7 +310,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="k">echo</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">&#39;base_url&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">config_item</span><span class="p">(</span><span class="s1">'base_url'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -328,7 +328,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
 <span class="nv">$autoload</span> <span class="o">=</span> <span class="nx">autoload_config</span><span class="p">();</span>
-<span class="nb">print_r</span><span class="p">(</span><span class="nv">$autoload</span><span class="p">[</span><span class="s1">&#39;libraries&#39;</span><span class="p">]);</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$autoload</span><span class="p">[</span><span class="s1">'libraries'</span><span class="p">]);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -346,7 +346,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
 <span class="nv">$db_config</span> <span class="o">=</span> <span class="nx">database_config</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$db_config</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;hostname&#39;</span><span class="p">];</span>
+<span class="k">echo</span> <span class="nv">$db_config</span><span class="p">[</span><span class="s1">'default'</span><span class="p">][</span><span class="s1">'hostname'</span><span class="p">];</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -364,7 +364,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
 <span class="nv">$routes</span> <span class="o">=</span> <span class="nx">route_config</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;default_controller&#39;</span><span class="p">];</span>
+<span class="k">echo</span> <span class="nv">$routes</span><span class="p">[</span><span class="s1">'default_controller'</span><span class="p">];</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -390,7 +390,7 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="s1">&#39;&lt;script&gt;alert(1)&lt;/script&gt;&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">html_escape</span><span class="p">(</span><span class="s1">'&lt;script&gt;alert(1)&lt;/script&gt;'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -410,8 +410,8 @@
 <p><strong>Example:</strong></p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nx">is_php</span><span class="p">(</span><span class="s1">&#39;8.0&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s1">&#39;Running PHP 8+&#39;</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">is_php</span><span class="p">(</span><span class="s1">'8.0'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s1">'Running PHP 8+'</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -430,7 +430,7 @@
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nx">is_https</span><span class="p">())</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s1">&#39;Secure connection&#39;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'Secure connection'</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -455,13 +455,13 @@
 <span class="nv">$LAVA</span> <span class="o">=</span> <span class="nx">lava_instance</span><span class="p">();</span>
 
 <span class="c1">// Access the database</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+<span class="nv">$users</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="s1">'users'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
 
 <span class="c1">// Access security methods</span>
 <span class="nv">$csrf_token</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_hash</span><span class="p">();</span>
 
 <span class="c1">// Load a library</span>
-<span class="nv">$logger</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">);</span>
+<span class="nv">$logger</span> <span class="o">=</span> <span class="nv">$LAVA</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'logger'</span><span class="p">);</span>
 </pre></div>
 </div>
 </dd></dl>

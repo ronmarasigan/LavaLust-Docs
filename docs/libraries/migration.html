@@ -176,7 +176,7 @@ It provides a structured and versioned way to track and apply changes (such as c
 <h2>Enabling and Loading Migration<a class="headerlink" href="#enabling-and-loading-migration" title="Link to this heading"></a></h2>
 <p>Like most other classes in LavaLust, the Migration library is initialized in your controller using the <code class="docutils literal notranslate"><span class="pre">$this-&gt;call-&gt;library()</span></code> method:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;migration&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'migration'</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Once loaded, the Migration library object will be available using:</p>
@@ -187,9 +187,9 @@ It provides a structured and versioned way to track and apply changes (such as c
 <p>You must also enable migrations in the configuration file:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// File: app/config/migration.php</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;migration_enabled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;migration_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;app/migrations&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;migration_table&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;migrations&#39;</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'migration_enabled'</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'migration_path'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'app/migrations'</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'migration_table'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'migrations'</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -203,12 +203,12 @@ It provides a structured and versioned way to track and apply changes (such as c
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;migration&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'migration'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="c1">// e.g. $migration_class = &quot;create_users_table&quot;</span>
+        <span class="c1">// e.g. $migration_class = "create_users_table"</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -238,11 +238,11 @@ It provides a structured and versioned way to track and apply changes (such as c
 <h2>Routes Example<a class="headerlink" href="#routes-example" title="Link to this heading"></a></h2>
 <p>Add routes so you can call these actions via the browser:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;create-migration/{migration_class}&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::create_migration&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;migrate&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::migrate&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;rollback&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::rollback&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;rollback-all&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::rollback_all&#39;</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;refresh&#39;</span><span class="p">,</span> <span class="s1">&#39;Migration::refresh&#39;</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'create-migration/{migration_class}'</span><span class="p">,</span> <span class="s1">'Migration::create_migration'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate'</span><span class="p">,</span> <span class="s1">'Migration::migrate'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback'</span><span class="p">,</span> <span class="s1">'Migration::rollback'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-all'</span><span class="p">,</span> <span class="s1">'Migration::rollback_all'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">,</span> <span class="s1">'Migration::refresh'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -271,20 +271,20 @@ It provides a structured and versioned way to track and apply changes (such as c
     <span class="p">{</span>
         <span class="c1">// Define the table structure</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">add_field</span><span class="p">([</span>
-            <span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
-                <span class="s1">&#39;type&#39;</span>           <span class="o">=&gt;</span> <span class="s1">&#39;INT&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;constraint&#39;</span>     <span class="o">=&gt;</span> <span class="mi">11</span><span class="p">,</span>
-                <span class="s1">&#39;auto_increment&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
+            <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                <span class="s1">'type'</span>           <span class="o">=&gt;</span> <span class="s1">'INT'</span><span class="p">,</span>
+                <span class="s1">'constraint'</span>     <span class="o">=&gt;</span> <span class="mi">11</span><span class="p">,</span>
+                <span class="s1">'auto_increment'</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
             <span class="p">]</span>
         <span class="p">]);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">add_key</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">create_table</span><span class="p">(</span><span class="s1">&#39;your_table_name&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">add_key</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">create_table</span><span class="p">(</span><span class="s1">'your_table_name'</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">down</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="c1">// Drop the table</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">drop_table</span><span class="p">(</span><span class="s1">&#39;your_table_name&#39;</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_lava</span><span class="o">-&gt;</span><span class="na">dbforge</span><span class="o">-&gt;</span><span class="na">drop_table</span><span class="p">(</span><span class="s1">'your_table_name'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>

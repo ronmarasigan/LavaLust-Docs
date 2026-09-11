@@ -179,8 +179,8 @@
     <span class="sd">/**</span>
 <span class="sd">     * Other strings to be translated</span>
 <span class="sd">     */</span>
-    <span class="s1">&#39;welcome&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello {username} {type}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;first_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;‹ First&#39;</span><span class="p">,</span>
+    <span class="s1">'welcome'</span>     <span class="o">=&gt;</span> <span class="s1">'Hello {username} {type}'</span><span class="p">,</span>
+    <span class="s1">'first_link'</span>  <span class="o">=&gt;</span> <span class="s1">'‹ First'</span><span class="p">,</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -194,8 +194,8 @@ For example, to create a Filipino (Tagalog) translation file, create <code class
     <span class="sd">/**</span>
 <span class="sd">     * Other strings to be translated</span>
 <span class="sd">     */</span>
-    <span class="s1">&#39;welcome&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello {username} {type}&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;first_link&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;‹ Una&#39;</span><span class="p">,</span>
+    <span class="s1">'welcome'</span>     <span class="o">=&gt;</span> <span class="s1">'Hello {username} {type}'</span><span class="p">,</span>
+    <span class="s1">'first_link'</span>  <span class="o">=&gt;</span> <span class="s1">'‹ Una'</span><span class="p">,</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -204,13 +204,13 @@ For example, to create a Filipino (Tagalog) translation file, create <code class
 <h2>Switching Languages<a class="headerlink" href="#switching-languages" title="Link to this heading"></a></h2>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">language</span></code> helper functions <code class="docutils literal notranslate"><span class="pre">language()</span></code> and <code class="docutils literal notranslate"><span class="pre">lang()</span></code> to load and fetch translations.</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">&#39;language&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">helper</span><span class="p">(</span><span class="s1">'language'</span><span class="p">);</span>
 
 <span class="c1">// Set the current language</span>
-<span class="nx">language</span><span class="p">(</span><span class="s1">&#39;tl-PH&#39;</span><span class="p">);</span>
+<span class="nx">language</span><span class="p">(</span><span class="s1">'tl-PH'</span><span class="p">);</span>
 
 <span class="c1">// Get the translated value of a key</span>
-<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">&#39;first_link&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">lang</span><span class="p">(</span><span class="s1">'first_link'</span><span class="p">);</span>
 <span class="c1">// Output: ‹ Una</span>
 </pre></div>
 </div>

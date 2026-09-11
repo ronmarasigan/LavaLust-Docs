@@ -176,21 +176,21 @@ It uses PHP’s native session handling with optional custom handlers (<cite>fil
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>Configure session settings in <strong>``config/config.php``</strong>:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
-<span class="linenos"> 2</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_driver&#39;</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">&#39;file&#39;</span><span class="p">;</span>              <span class="c1">// or &#39;database&#39;</span>
-<span class="linenos"> 3</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_cookie_name&#39;</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">&#39;lava_session&#39;</span><span class="p">;</span>
-<span class="linenos"> 4</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_expiration&#39;</span><span class="p">]</span>         <span class="o">=</span> <span class="mi">7200</span><span class="p">;</span>                 <span class="c1">// Session lifetime (seconds)</span>
-<span class="linenos"> 5</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_time_to_update&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>                  <span class="c1">// Regenerate ID interval</span>
-<span class="linenos"> 6</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_match_ip&#39;</span><span class="p">]</span>            <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
-<span class="linenos"> 7</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_match_fingerprint&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-<span class="linenos"> 8</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_regenerate_destroy&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-<span class="linenos"> 9</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_expire_on_close&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_driver'</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">'file'</span><span class="p">;</span>              <span class="c1">// or 'database'</span>
+<span class="linenos"> 3</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_cookie_name'</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">'lava_session'</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_expiration'</span><span class="p">]</span>         <span class="o">=</span> <span class="mi">7200</span><span class="p">;</span>                 <span class="c1">// Session lifetime (seconds)</span>
+<span class="linenos"> 5</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_time_to_update'</span><span class="p">]</span>     <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>                  <span class="c1">// Regenerate ID interval</span>
+<span class="linenos"> 6</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_match_ip'</span><span class="p">]</span>            <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_match_fingerprint'</span><span class="p">]</span>   <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_regenerate_destroy'</span><span class="p">]</span>  <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'sess_expire_on_close'</span><span class="p">]</span>     <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_prefix&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-<span class="linenos">12</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_path&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
-<span class="linenos">13</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_domain&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-<span class="linenos">14</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_secure&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
-<span class="linenos">15</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_httponly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-<span class="linenos">16</span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;cookie_samesite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Lax&#39;</span><span class="p">;</span>
+<span class="linenos">11</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_prefix'</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="linenos">12</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_path'</span><span class="p">]</span>     <span class="o">=</span> <span class="s1">'/'</span><span class="p">;</span>
+<span class="linenos">13</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_domain'</span><span class="p">]</span>   <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="linenos">14</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_secure'</span><span class="p">]</span>   <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+<span class="linenos">15</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_httponly'</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+<span class="linenos">16</span><span class="nv">$config</span><span class="p">[</span><span class="s1">'cookie_samesite'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Lax'</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -209,13 +209,13 @@ It is available globally as:</p>
 <h3><strong>Setting Session Data</strong><a class="headerlink" href="#setting-session-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Set a single key</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;john_doe&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'john_doe'</span><span class="p">);</span>
 
 <span class="c1">// Set multiple keys</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
-    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;john_doe&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;role&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;logged_in&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
+    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'john_doe'</span><span class="p">,</span>
+    <span class="s1">'role'</span>     <span class="o">=&gt;</span> <span class="s1">'admin'</span><span class="p">,</span>
+    <span class="s1">'logged_in'</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
 <span class="p">]);</span>
 </pre></div>
 </div>
@@ -224,7 +224,7 @@ It is available globally as:</p>
 <h3><strong>Retrieving Session Data</strong><a class="headerlink" href="#retrieving-session-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Get a specific value</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
 
 <span class="c1">// Get all session data</span>
 <span class="nb">print_r</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">());</span>
@@ -234,13 +234,13 @@ It is available globally as:</p>
 <section id="checking-and-removing-data">
 <h3><strong>Checking and Removing Data</strong><a class="headerlink" href="#checking-and-removing-data" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">has_userdata</span><span class="p">(</span><span class="s1">&#39;logged_in&#39;</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&quot;User is logged in!&quot;</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">has_userdata</span><span class="p">(</span><span class="s1">'logged_in'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"User is logged in!"</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// Remove one or more keys</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">([</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">]);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">([</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'role'</span><span class="p">]);</span>
 </pre></div>
 </div>
 </section>
@@ -252,14 +252,14 @@ Useful for showing success/error messages after form submissions or redirects.</
 <section id="setting-flashdata">
 <h3><strong>Setting Flashdata</strong><a class="headerlink" href="#setting-flashdata" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;Account created successfully!&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">'message'</span><span class="p">,</span> <span class="s1">'Account created successfully!'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="retrieving-flashdata">
 <h3><strong>Retrieving Flashdata</strong><a class="headerlink" href="#retrieving-flashdata" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">flashdata</span><span class="p">(</span><span class="s1">'message'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -267,14 +267,14 @@ Useful for showing success/error messages after form submissions or redirects.</
 <h3><strong>Preserving Flashdata for Another Request</strong><a class="headerlink" href="#preserving-flashdata-for-another-request" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="c1">// Keep flashdata for one more request</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">keep_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">keep_flashdata</span><span class="p">(</span><span class="s1">'message'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="mark-existing-data-as-flashdata">
 <h3><strong>Mark Existing Data as Flashdata</strong><a class="headerlink" href="#mark-existing-data-as-flashdata" title="Link to this heading"></a></h3>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_flash</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_flash</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -339,25 +339,25 @@ Useful for showing success/error messages after form submissions or redirects.</
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?php</span>
 <span class="linenos"> 2</span><span class="k">class</span> <span class="nc">Auth</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 <span class="linenos"> 3</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">login</span><span class="p">()</span> <span class="p">{</span>
-<span class="linenos"> 4</span>        <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span>
-<span class="linenos"> 5</span>        <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">);</span>
+<span class="linenos"> 4</span>        <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
+<span class="linenos"> 5</span>        <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'password'</span><span class="p">);</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">user_model</span><span class="o">-&gt;</span><span class="na">validate</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">))</span> <span class="p">{</span>
 <span class="linenos"> 8</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">([</span>
-<span class="linenos"> 9</span>                <span class="s1">&#39;username&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$username</span><span class="p">,</span>
-<span class="linenos">10</span>                <span class="s1">&#39;logged_in&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
+<span class="linenos"> 9</span>                <span class="s1">'username'</span>  <span class="o">=&gt;</span> <span class="nv">$username</span><span class="p">,</span>
+<span class="linenos">10</span>                <span class="s1">'logged_in'</span> <span class="o">=&gt;</span> <span class="k">TRUE</span>
 <span class="linenos">11</span>            <span class="p">]);</span>
-<span class="linenos">12</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;Welcome back, &#39;</span><span class="o">.</span><span class="nv">$username</span><span class="o">.</span><span class="s1">&#39;!&#39;</span><span class="p">);</span>
-<span class="linenos">13</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">);</span>
+<span class="linenos">12</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">'message'</span><span class="p">,</span> <span class="s1">'Welcome back, '</span><span class="o">.</span><span class="nv">$username</span><span class="o">.</span><span class="s1">'!'</span><span class="p">);</span>
+<span class="linenos">13</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'dashboard'</span><span class="p">);</span>
 <span class="linenos">14</span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="linenos">15</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;Invalid credentials.&#39;</span><span class="p">);</span>
-<span class="linenos">16</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="linenos">15</span>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'Invalid credentials.'</span><span class="p">);</span>
+<span class="linenos">16</span>            <span class="nx">redirect</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
 <span class="linenos">17</span>        <span class="p">}</span>
 <span class="linenos">18</span>    <span class="p">}</span>
 <span class="linenos">19</span>
 <span class="linenos">20</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">logout</span><span class="p">()</span> <span class="p">{</span>
 <span class="linenos">21</span>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">sess_destroy</span><span class="p">();</span>
-<span class="linenos">22</span>        <span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="linenos">22</span>        <span class="nx">redirect</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
 <span class="linenos">23</span>    <span class="p">}</span>
 <span class="linenos">24</span><span class="p">}</span>
 </pre></div>
