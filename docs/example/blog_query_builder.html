@@ -337,10 +337,10 @@
 <span class="sd">     */</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">([</span>
-                <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">),</span>
-                <span class="s1">'content'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">),</span>
+                <span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'title'</span><span class="p">),</span>
+                <span class="s1">'content'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'content'</span><span class="p">),</span>
                 <span class="s1">'created_at'</span> <span class="o">=&gt;</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d H:i:s'</span><span class="p">)</span>
             <span class="p">]);</span>
             <span class="nx">redirect</span><span class="p">(</span><span class="s1">'blog'</span><span class="p">);</span>

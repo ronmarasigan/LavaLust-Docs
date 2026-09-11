@@ -146,8 +146,8 @@ Controller
         {
             if ($_POST) {
                 $this->BlogModel->update_post($id, [
-                    'title'      => filter_io('string', $this->io->post('title')),
-                    'content'    => filter_io('string', $this->io->post('content'))
+                    'title'      => filter_io('string', $this->request->post('title')),
+                    'content'    => filter_io('string', $this->request->post('content'))
                 ]);
                 redirect('blog');
             } else {

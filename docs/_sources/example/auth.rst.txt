@@ -179,6 +179,7 @@ Model Example
 
         public function get_user_by_id($id)
         {
+            //or you can just use UserModel->find($id)
             return $this->db->table($this->table)
                             ->where('id', $id)
                             ->get();
@@ -186,6 +187,7 @@ Model Example
 
         public function get_all_users()
         {
+            //or you can use UserModel->all()
             return $this->db->table($this->table)->get_all();
         }
     }
@@ -203,10 +205,10 @@ Controller Example
         {
             $this->call->library('auth');
 
-            if ($this->io->method() == 'post') {
-                $username = $this->io->post('username');
-                $password = $this->io->post('password');
-                $role = $this->io->post('role') ?? 'user';
+            if ($this->request->method() == 'post') {
+                $username = $this->request->post('username');
+                $password = $this->request->post('password');
+                $role = $this->request->post('role') ?? 'user';
 
                 if ($this->auth->register($username, $password, $role)) {
                     redirect('auth/login');
@@ -220,9 +222,9 @@ Controller Example
         {
             $this->call->library('auth');
 
-            if ($this->io->method() == 'post') {
-                $username = $this->io->post('username');
-                $password = $this->io->post('password');
+            if ($this->request->method() == 'post') {
+                $username = $this->request->post('username');
+                $password = $this->request->post('password');
 
                 if ($this->auth->login($username, $password)) {
                     redirect('auth/dashboard');

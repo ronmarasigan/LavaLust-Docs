@@ -161,10 +161,10 @@ Controller: BlogController.php
          */
         public function create()
         {
-            if ($this->io->method() == 'post') {
+            if ($this->request->method() == 'post') {
                 $this->BlogModel->create([
-                    'title' => $this->io->post('title'),
-                    'content' => $this->io->post('content'),
+                    'title' => $this->request->post('title'),
+                    'content' => $this->request->post('content'),
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
                 redirect('blog');

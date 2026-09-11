@@ -353,6 +353,7 @@
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_user_by_id</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
     <span class="p">{</span>
+        <span class="c1">//or you can just use UserModel-&gt;find($id)</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span>
                         <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span>
                         <span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
@@ -360,6 +361,7 @@
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">get_all_users</span><span class="p">()</span>
     <span class="p">{</span>
+        <span class="c1">//or you can use UserModel-&gt;all()</span>
         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -376,10 +378,10 @@
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
-            <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'password'</span><span class="p">);</span>
-            <span class="nv">$role</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'role'</span><span class="p">)</span> <span class="o">??</span> <span class="s1">'user'</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
+            <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'password'</span><span class="p">);</span>
+            <span class="nv">$role</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'role'</span><span class="p">)</span> <span class="o">??</span> <span class="s1">'user'</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">auth</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">,</span> <span class="nv">$role</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">redirect</span><span class="p">(</span><span class="s1">'auth/login'</span><span class="p">);</span>
@@ -393,9 +395,9 @@
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
-            <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">io</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'password'</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">method</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'post'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
+            <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">'password'</span><span class="p">);</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">auth</span><span class="o">-&gt;</span><span class="na">login</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">redirect</span><span class="p">(</span><span class="s1">'auth/dashboard'</span><span class="p">);</span>

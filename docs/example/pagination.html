@@ -227,78 +227,36 @@
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="c1">// Load pagination library</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'pagination'</span><span class="p">);</span>
 
-        <span class="c1">// Current page from URL segment</span>
-        <span class="nv">$current_page</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nx">segment</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">?:</span> <span class="mi">1</span><span class="p">;</span><span class="c1">// or use segment(3) if your URL is like /blog/index/2</span>
-
-        <span class="c1">// Total rows</span>
-        <span class="nv">$total_rows</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">count_all</span><span class="p">();</span>
-
-        <span class="c1">// Rows per page</span>
+        <span class="nv">$current_page</span>  <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nx">segment</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">?:</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nv">$total_rows</span>    <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
         <span class="nv">$rows_per_page</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+        <span class="nv">$base_url</span>      <span class="o">=</span> <span class="s1">'blog/index'</span><span class="p">;</span>
 
-        <span class="c1">// Base URL for pagination links</span>
-        <span class="nv">$base_url</span> <span class="o">=</span> <span class="s1">'blog/index'</span><span class="p">;</span>
-
-        <span class="c1">// Initialize pagination with options</span>
         <span class="nv">$page_data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">initialize</span><span class="p">(</span>
             <span class="nv">$total_rows</span><span class="p">,</span>
             <span class="nv">$rows_per_page</span><span class="p">,</span>
             <span class="nv">$current_page</span><span class="p">,</span>
             <span class="nv">$base_url</span><span class="p">,</span>
-            <span class="mi">5</span> <span class="c1">// number of visible page links</span>
+            <span class="mi">5</span>
         <span class="p">);</span>
 
-        <span class="c1">// Optional: set a custom theme</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_theme</span><span class="p">(</span><span class="s1">'tailwind'</span><span class="p">);</span>
 
-        <span class="c1">// Optional: set custom CSS classes</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_custom_classes</span><span class="p">([</span>
-            <span class="s1">'ul'</span> <span class="o">=&gt;</span> <span class="s1">'flex space-x-2'</span><span class="p">,</span>
-            <span class="s1">'li'</span> <span class="o">=&gt;</span> <span class="s1">'px-1'</span><span class="p">,</span>
-            <span class="s1">'a'</span>  <span class="o">=&gt;</span> <span class="s1">'px-3 py-1 rounded bg-gray-100 hover:bg-gray-200'</span>
-        <span class="p">]);</span>
+        <span class="c1">// Calculate offset yourself (cleanest)</span>
+        <span class="nv">$offset</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$current_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$rows_per_page</span><span class="p">;</span>
 
-        <span class="c1">// Optional: override text options</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">set_options</span><span class="p">([</span>
-            <span class="s1">'first_link'</span> <span class="o">=&gt;</span> <span class="s1">'&lt;&lt; First'</span><span class="p">,</span>
-            <span class="s1">'last_link'</span>  <span class="o">=&gt;</span> <span class="s1">'Last &gt;&gt;'</span><span class="p">,</span>
-            <span class="s1">'next_link'</span>  <span class="o">=&gt;</span> <span class="s1">'Next &gt;'</span><span class="p">,</span>
-            <span class="s1">'prev_link'</span>  <span class="o">=&gt;</span> <span class="s1">'&lt; Prev'</span>
-        <span class="p">]);</span>
+        <span class="c1">// Correct usage with the new limit() method</span>
+        <span class="nv">$blogs</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">BlogModel</span>
+                    <span class="o">-&gt;</span><span class="na">query</span><span class="p">()</span>
+                    <span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="nv">$rows_per_page</span><span class="p">,</span> <span class="nv">$offset</span><span class="p">)</span>   <span class="c1">// limit, offset</span>
+                    <span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>                       <span class="c1">// or -&gt;result() / -&gt;result_array()</span>
 
-        <span class="c1">// Get paginated blog posts</span>
-        <span class="nv">$limit_clause</span> <span class="o">=</span> <span class="nv">$page_data</span><span class="p">[</span><span class="s1">'limit'</span><span class="p">];</span>
-        <span class="nv">$blogs</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">blogmodel</span><span class="o">-&gt;</span><span class="na">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">);</span>
-
-        <span class="c1">// Pass data to view</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'blog/index'</span><span class="p">,</span> <span class="p">[</span>
-            <span class="s1">'blogs'</span> <span class="o">=&gt;</span> <span class="nv">$blogs</span><span class="p">,</span>
+            <span class="s1">'blogs'</span>      <span class="o">=&gt;</span> <span class="nv">$blogs</span><span class="p">,</span>
             <span class="s1">'pagination'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pagination</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(),</span>
         <span class="p">]);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="cp">?&gt;</span>
-</pre></div>
-</div>
-</section>
-<section id="model">
-<h2>Model<a class="headerlink" href="#model" title="Link to this heading"></a></h2>
-<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="k">class</span> <span class="nc">BlogModel</span> <span class="k">extends</span> <span class="nx">Model</span>
-<span class="p">{</span>
-    <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s1">'blog_posts'</span><span class="p">;</span>
-
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">count_all</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">get_paginated</span><span class="p">(</span><span class="nv">$limit_clause</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s2">"SELECT * FROM </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">table</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$limit_clause</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_all</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="cp">?&gt;</span>

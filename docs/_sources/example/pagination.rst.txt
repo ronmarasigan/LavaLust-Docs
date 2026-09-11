@@ -54,79 +54,36 @@ Controller
     {
         public function index()
         {
-            // Load pagination library
             $this->call->library('pagination');
 
-            // Current page from URL segment
-            $current_page = (int) segment(2) ?: 1;// or use segment(3) if your URL is like /blog/index/2
-
-            // Total rows
-            $total_rows = $this->BlogModel->count_all();
-
-            // Rows per page
+            $current_page  = (int) segment(2) ?: 1;
+            $total_rows    = $this->BlogModel->count();
             $rows_per_page = 5;
+            $base_url      = 'blog/index';
 
-            // Base URL for pagination links
-            $base_url = 'blog/index';
-
-            // Initialize pagination with options
             $page_data = $this->pagination->initialize(
                 $total_rows,
                 $rows_per_page,
                 $current_page,
                 $base_url,
-                5 // number of visible page links
+                5
             );
 
-            // Optional: set a custom theme
             $this->pagination->set_theme('tailwind');
 
-            // Optional: set custom CSS classes
-            $this->pagination->set_custom_classes([
-                'ul' => 'flex space-x-2',
-                'li' => 'px-1',
-                'a'  => 'px-3 py-1 rounded bg-gray-100 hover:bg-gray-200'
-            ]);
+            // Calculate offset yourself (cleanest)
+            $offset = ($current_page - 1) * $rows_per_page;
 
-            // Optional: override text options
-            $this->pagination->set_options([
-                'first_link' => '<< First',
-                'last_link'  => 'Last >>',
-                'next_link'  => 'Next >',
-                'prev_link'  => '< Prev'
-            ]);
+            // Correct usage with the new limit() method
+            $blogs = $this->BlogModel
+                        ->query()
+                        ->limit($rows_per_page, $offset)   // limit, offset
+                        ->get_all();                       // or ->result() / ->result_array()
 
-            // Get paginated blog posts
-            $limit_clause = $page_data['limit'];
-            $blogs = $this->blogmodel->get_paginated($limit_clause);
-
-            // Pass data to view
             $this->call->view('blog/index', [
-                'blogs' => $blogs,
+                'blogs'      => $blogs,
                 'pagination' => $this->pagination->paginate(),
             ]);
-        }
-    }
-    ?>
-
-Model
--------------
-
-.. code-block:: php
-
-    <?php
-    class BlogModel extends Model
-    {
-        protected $table = 'blog_posts';
-
-        public function count_all()
-        {
-            return $this->db->table($this->table)->count();
-        }
-
-        public function get_paginated($limit_clause)
-        {
-            return $this->db->raw("SELECT * FROM {$this->table} {$limit_clause}")->get_all();
         }
     }
     ?>
