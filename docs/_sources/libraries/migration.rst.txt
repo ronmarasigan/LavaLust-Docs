@@ -36,13 +36,13 @@ You must also enable migrations in the configuration file:
 Controller Example
 -------------------
 
-Create a controller (e.g. ``Migrations.php``) to handle migration commands:
+Create a controller (e.g. ``MigrationController.php``) to handle migration commands:
 
 .. code-block:: php
 
    <?php
 
-   class Migration extends Controller {
+   class MigrationController extends Controller {
 
        public function __construct()
        {
@@ -84,11 +84,11 @@ Add routes so you can call these actions via the browser:
 .. code-block:: php
 
    <?php
-   $router->get('create-migration/{migration_class}', 'Migration::create_migration');
-   $router->get('migrate', 'Migration::migrate');
-   $router->get('rollback', 'Migration::rollback');
-   $router->get('rollback-all', 'Migration::rollback_all');
-   $router->get('refresh', 'Migration::refresh');
+   $router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
+   $router->get('migrate', 'MigrationController::migrate');
+   $router->get('rollback', 'MigrationController::rollback');
+   $router->get('rollback-all', 'MigrationController::rollback_all');
+   $router->get('refresh', 'MigrationController::refresh');
 
 Creating a Migration File
 --------------------------

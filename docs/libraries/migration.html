@@ -195,10 +195,10 @@ It provides a structured and versioned way to track and apply changes (such as c
 </section>
 <section id="controller-example">
 <h2>Controller Example<a class="headerlink" href="#controller-example" title="Link to this heading"></a></h2>
-<p>Create a controller (e.g. <code class="docutils literal notranslate"><span class="pre">Migrations.php</span></code>) to handle migration commands:</p>
+<p>Create a controller (e.g. <code class="docutils literal notranslate"><span class="pre">MigrationController.php</span></code>) to handle migration commands:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="k">class</span> <span class="nc">Migration</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+<span class="k">class</span> <span class="nc">MigrationController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
     <span class="p">{</span>
@@ -238,11 +238,11 @@ It provides a structured and versioned way to track and apply changes (such as c
 <h2>Routes Example<a class="headerlink" href="#routes-example" title="Link to this heading"></a></h2>
 <p>Add routes so you can call these actions via the browser:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'create-migration/{migration_class}'</span><span class="p">,</span> <span class="s1">'Migration::create_migration'</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate'</span><span class="p">,</span> <span class="s1">'Migration::migrate'</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback'</span><span class="p">,</span> <span class="s1">'Migration::rollback'</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-all'</span><span class="p">,</span> <span class="s1">'Migration::rollback_all'</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">,</span> <span class="s1">'Migration::refresh'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'create-migration/{migration_class}'</span><span class="p">,</span> <span class="s1">'MigrationController::create_migration'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate'</span><span class="p">,</span> <span class="s1">'MigrationController::migrate'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-all'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback_all'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">,</span> <span class="s1">'MigrationController::refresh'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
