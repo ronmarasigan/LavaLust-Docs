@@ -222,13 +222,17 @@ It provides a structured and versioned way to track and apply changes (such as c
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">();</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback</span><span class="o">-</span><span class="nx">all</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback_all</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback_all</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span> <span class="p">{</span>
          <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">refresh</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">status</span><span class="p">()</span> <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">status</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -243,16 +247,77 @@ It provides a structured and versioned way to track and apply changes (such as c
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback'</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-all'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback_all'</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">,</span> <span class="s1">'MigrationController::refresh'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">status</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'MigrationController::status'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="creating-a-migration-file">
 <h2>Creating a Migration File<a class="headerlink" href="#creating-a-migration-file" title="Link to this heading"></a></h2>
 <p>Visit the following URL to create a new migration file:</p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">create</span><span class="o">-</span><span class="nx">migration</span><span class="o">/</span><span class="nx">create_users_table</span>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">run</span> <span class="nx">command</span> <span class="nx">php</span> <span class="k">public</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span> <span class="nx">create</span><span class="o">-</span><span class="nx">migration</span><span class="o">/</span><span class="nx">create_users_table</span>
 </pre></div>
 </div>
 <p>This will generate a file like <code class="docutils literal notranslate"><span class="pre">app/migrations/001_create_users_table.php</span></code>.</p>
+<p>You can also create you own php lava command by adding this class in <code class="docutils literal notranslate"><span class="pre">app/commands</span></code> or using command php lava make:command Migration</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="sd">/**</span>
+<span class="sd">* Command: Migration</span>
+<span class="sd">*</span>
+<span class="sd">* Auto-discovered by the LavaLust CLI.</span>
+<span class="sd">* Proxies migration actions to the framework's route-based migration system.</span>
+<span class="sd">*/</span>
+<span class="k">class</span> <span class="nc">Migration</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="nv">$command</span>     <span class="o">=</span> <span class="s1">'migration'</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="nv">$description</span> <span class="o">=</span> <span class="s1">'Run database migrations'</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="nv">$arguments</span>   <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'[action]'</span> <span class="o">=&gt;</span> <span class="s1">'Action: run (default), create-migration, rollback, rollback-all, refresh, status'</span><span class="p">,</span>
+        <span class="s1">'[name]'</span>   <span class="o">=&gt;</span> <span class="s1">'Migration class name (only for create-migration)'</span><span class="p">,</span>
+    <span class="p">];</span>
+
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$route_map</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'run'</span>              <span class="o">=&gt;</span> <span class="s1">'migrate'</span><span class="p">,</span>
+        <span class="s1">'create-migration'</span> <span class="o">=&gt;</span> <span class="s1">'create-migration'</span><span class="p">,</span>
+        <span class="s1">'rollback'</span>         <span class="o">=&gt;</span> <span class="s1">'rollback'</span><span class="p">,</span>
+        <span class="s1">'rollback-all'</span>     <span class="o">=&gt;</span> <span class="s1">'rollback-all'</span><span class="p">,</span>
+        <span class="s1">'refresh'</span>          <span class="o">=&gt;</span> <span class="s1">'refresh'</span><span class="p">,</span>
+        <span class="s1">'status'</span>           <span class="o">=&gt;</span> <span class="s1">'status'</span><span class="p">,</span>
+    <span class="p">];</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$action</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">$name</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$action</span> <span class="o">=</span> <span class="nv">$action</span> <span class="o">??</span> <span class="s1">'run'</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Unknown migration action: </span><span class="se">\"</span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="se">\"</span><span class="s2">"</span><span class="p">);</span>
+            <span class="k">echo</span> <span class="s2">"Available actions: "</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">', '</span><span class="p">,</span> <span class="nb">array_keys</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+            <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'create-migration'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Migration name is required."</span><span class="p">);</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migrate create-migration create_user_table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nv">$route</span> <span class="o">=</span> <span class="s1">'create-migration/'</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nv">$route</span> <span class="o">=</span> <span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="nv">$index</span> <span class="o">=</span> <span class="nx">PUBLIC_DIR</span> <span class="o">.</span> <span class="s1">'index.php'</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$index</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"index.php not found at: </span><span class="si">{</span><span class="nv">$index</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+            <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nv">$command</span> <span class="o">=</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s1">'php %s %s'</span><span class="p">,</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$index</span><span class="p">),</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$route</span><span class="p">));</span>
+        <span class="nb">passthru</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Open the file and define your schema:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
@@ -294,14 +359,14 @@ It provides a structured and versioned way to track and apply changes (such as c
 <h2>Running Migrations<a class="headerlink" href="#running-migrations" title="Link to this heading"></a></h2>
 <ul>
 <li><p><strong>Run all pending migrations</strong></p>
-<p>Visit:</p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">migrate</span>
+<p>Run</p>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">php</span> <span class="nx">lava</span> <span class="nx">migration</span> <span class="nx">run</span>
 </pre></div>
 </div>
 </li>
 <li><p><strong>Rollback the last migration batch</strong></p>
-<p>Visit:</p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">localhost</span><span class="o">/</span><span class="nx">project_name</span><span class="o">/</span><span class="nx">rollback</span>
+<p>Run:</p>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">php</span> <span class="nx">lava</span> <span class="nx">migration</span> <span class="nx">rollback</span>
 </pre></div>
 </div>
 </li>
@@ -328,6 +393,15 @@ It provides a structured and versioned way to track and apply changes (such as c
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rollback()</span></code></p></td>
 <td><p>Reverts (drops) the most recent migration batch</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rollback-all()</span></code></p></td>
+<td><p>Reverts (drops) all migration batch</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">refresh()</span></code></p></td>
+<td><p>Refresh  migration batch</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">status()</span></code></p></td>
+<td><p>Show status of migration batch</p></td>
 </tr>
 </tbody>
 </table>

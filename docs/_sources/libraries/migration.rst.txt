@@ -66,13 +66,17 @@ Create a controller (e.g. ``MigrationController.php``) to handle migration comma
            $this->migration->rollback();
        }
 
-       public function rollback-all()
+       public function rollback_all()
        {
            $this->migration->rollback_all();
        }
 
        public function refresh() {
             $this->migration->refresh();        
+       }
+
+       public function status() {
+            $this->migration->status();        
        }
    }
 
@@ -89,6 +93,7 @@ Add routes so you can call these actions via the browser:
    $router->get('rollback', 'MigrationController::rollback');
    $router->get('rollback-all', 'MigrationController::rollback_all');
    $router->get('refresh', 'MigrationController::refresh');
+   $router->status('status', 'MigrationController::status');
 
 Creating a Migration File
 --------------------------
@@ -97,9 +102,71 @@ Visit the following URL to create a new migration file:
 
 ::
 
-   http://localhost/project_name/create-migration/create_users_table
+   run command php public/index.php create-migration/create_users_table
 
 This will generate a file like ``app/migrations/001_create_users_table.php``.
+
+You can also create you own php lava command by adding this class in ``app/commands`` or using command php lava make:command Migration
+
+.. code-block:: php
+
+    <?php
+    /**
+    * Command: Migration
+    *
+    * Auto-discovered by the LavaLust CLI.
+    * Proxies migration actions to the framework's route-based migration system.
+    */
+    class Migration
+    {
+        public static $command     = 'migration';
+        public static $description = 'Run database migrations';
+        public static $arguments   = [
+            '[action]' => 'Action: run (default), create-migration, rollback, rollback-all, refresh, status',
+            '[name]'   => 'Migration class name (only for create-migration)',
+        ];
+
+        protected static $route_map = [
+            'run'              => 'migrate',
+            'create-migration' => 'create-migration',
+            'rollback'         => 'rollback',
+            'rollback-all'     => 'rollback-all',
+            'refresh'          => 'refresh',
+            'status'           => 'status',
+        ];
+
+        public function handle($action = null, array $flags = [], $name = null)
+        {
+            $action = $action ?? 'run';
+
+            if (!isset(static::$route_map[$action])) {
+                echo danger("Unknown migration action: \"{$action}\"");
+                echo "Available actions: " . implode(', ', array_keys(static::$route_map)) . PHP_EOL;
+                exit(1);
+            }
+
+            if ($action === 'create-migration') {
+                if (!$name) {
+                    echo danger("Migration name is required.");
+                    echo "Example: php lava migrate create-migration create_user_table" . PHP_EOL;
+                    exit(1);
+                }
+                $route = 'create-migration/' . $name;
+            } else {
+                $route = static::$route_map[$action];
+            }
+
+            $index = PUBLIC_DIR . 'index.php';
+
+            if (!file_exists($index)) {
+                echo danger("index.php not found at: {$index}");
+                exit(1);
+            }
+
+            $command = sprintf('php %s %s', escapeshellarg($index), escapeshellarg($route));
+            passthru($command);
+        }
+    }
 
 Open the file and define your schema:
 
@@ -144,19 +211,19 @@ Running Migrations
 
 - **Run all pending migrations**
 
-  Visit:
+  Run
 
   ::
-
-     http://localhost/project_name/migrate
+        
+     php lava migration run
 
 - **Rollback the last migration batch**
 
-  Visit:
+  Run:
 
   ::
 
-     http://localhost/project_name/rollback
+     php lava migration rollback
 
 Available Methods Reference
 ----------------------------
@@ -174,6 +241,12 @@ Available Methods Reference
      - Executes all available migration files that have not been run yet
    * - ``rollback()``
      - Reverts (drops) the most recent migration batch
+   * - ``rollback-all()``
+     - Reverts (drops) all migration batch
+   * - ``refresh()``
+     - Refresh  migration batch
+   * - ``status()``
+     - Show status of migration batch
 
 .. note::
 
