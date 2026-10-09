@@ -41,16 +41,21 @@ Set the following values in ``app/config/api.php``:
     $config['refresh_token_expiration'] = 604800;    // 7 days
 
     // Signing keys (minimum 32 characters each)
-    $config['jwt_secret']               = 'your-32-char-minimum-secret-key!!';
-    $config['refresh_token_key']        = 'your-32-char-minimum-refresh-key!';
+    $config['jwt_secret']               = getenv('JWT_SECRET') ?: '';
+    $config['refresh_token_key']        = getenv('JWT_SECRET') ?: '';
 
     // JWT claims
     $config['jwt_issuer']               = 'https://yourdomain.com';
     $config['jwt_audience']             = 'https://yourdomain.com';
 
-    // CORS: single origin or array of allowed origins
-    $config['allow_origin']             = '*';
-    // $config['allow_origin']          = ['https://app.example.com', 'https://admin.example.com'];
+    // This config was now under config/config.php with other security headers 
+    'cors' => [
+        'allowed_origins' => [], //here you can add your allowed origins
+        'credentials'     => false,
+        'methods'         => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'headers'         => 'Authorization, Content-Type, X-Requested-With',
+        'max_age'         => 600,
+    ],
 
     // Refresh token table
     $config['refresh_token_table']      = 'refresh_tokens';
@@ -86,9 +91,9 @@ Properties
    * - ``$refresh_token_expiration``
      - integer
      - Lifetime of refresh tokens in seconds
-   * - ``$allow_origin``
-     - string|array
-     - Allowed origin(s) for CORS. Accepts ``'*'``, a single origin string, or an array of origins.
+   * - ``$allow_origins``
+     - array
+     - Allowed origin(s) for CORS. Accepts an array of origins. This was now under config/config.php
    * - ``$jwt_secret``
      - string
      - Secret key used for signing JWT tokens (min 32 chars)

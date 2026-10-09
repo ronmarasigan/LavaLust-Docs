@@ -204,16 +204,21 @@ It supports:</p>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">'refresh_token_expiration'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">604800</span><span class="p">;</span>    <span class="c1">// 7 days</span>
 
 <span class="c1">// Signing keys (minimum 32 characters each)</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">'jwt_secret'</span><span class="p">]</span>               <span class="o">=</span> <span class="s1">'your-32-char-minimum-secret-key!!'</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">'refresh_token_key'</span><span class="p">]</span>        <span class="o">=</span> <span class="s1">'your-32-char-minimum-refresh-key!'</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'jwt_secret'</span><span class="p">]</span>               <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'JWT_SECRET'</span><span class="p">)</span> <span class="o">?:</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'refresh_token_key'</span><span class="p">]</span>        <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'JWT_SECRET'</span><span class="p">)</span> <span class="o">?:</span> <span class="s1">''</span><span class="p">;</span>
 
 <span class="c1">// JWT claims</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">'jwt_issuer'</span><span class="p">]</span>               <span class="o">=</span> <span class="s1">'https://yourdomain.com'</span><span class="p">;</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">'jwt_audience'</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">'https://yourdomain.com'</span><span class="p">;</span>
 
-<span class="c1">// CORS: single origin or array of allowed origins</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">'allow_origin'</span><span class="p">]</span>             <span class="o">=</span> <span class="s1">'*'</span><span class="p">;</span>
-<span class="c1">// $config['allow_origin']          = ['https://app.example.com', 'https://admin.example.com'];</span>
+<span class="c1">// This config was now under config/config.php with other security headers</span>
+<span class="s1">'cors'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s1">'allowed_origins'</span> <span class="o">=&gt;</span> <span class="p">[],</span> <span class="c1">//here you can add your allowed origins</span>
+    <span class="s1">'credentials'</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+    <span class="s1">'methods'</span>         <span class="o">=&gt;</span> <span class="s1">'GET, POST, PUT, PATCH, DELETE, OPTIONS'</span><span class="p">,</span>
+    <span class="s1">'headers'</span>         <span class="o">=&gt;</span> <span class="s1">'Authorization, Content-Type, X-Requested-With'</span><span class="p">,</span>
+    <span class="s1">'max_age'</span>         <span class="o">=&gt;</span> <span class="mi">600</span><span class="p">,</span>
+<span class="p">],</span>
 
 <span class="c1">// Refresh token table</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">'refresh_token_table'</span><span class="p">]</span>      <span class="o">=</span> <span class="s1">'refresh_tokens'</span><span class="p">;</span>
@@ -256,9 +261,9 @@ The library will call <code class="docutils literal notranslate"><span class="pr
 <td><p>integer</p></td>
 <td><p>Lifetime of refresh tokens in seconds</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$allow_origin</span></code></p></td>
-<td><p>string|array</p></td>
-<td><p>Allowed origin(s) for CORS. Accepts <code class="docutils literal notranslate"><span class="pre">'*'</span></code>, a single origin string, or an array of origins.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$allow_origins</span></code></p></td>
+<td><p>array</p></td>
+<td><p>Allowed origin(s) for CORS. Accepts an array of origins. This was now under config/config.php</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$jwt_secret</span></code></p></td>
 <td><p>string</p></td>
