@@ -1,0 +1,783 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Headers &mdash; LavaLust Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme.css?v=40781d81" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/lavatheme_dark.css?v=cbca0b96" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://lavalust.netlify.app/docs/core_topics/security_headers.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=71af5d5d"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/lavatheme.js?v=667fea26"></script>
+      <script src="../_static/js/carbon.js?v=35530795"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database Reference" href="../database/index.html" />
+    <link rel="prev" title="Proxies (Static Facades)" href="proxies.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+<a href="..//../index.html">
+  <img src="../_static/images/logo.png" class="logo" width="240" height="67" alt="Logo">
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">Welcome to LavaLust</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../general/welcome.html">What is LavaLust?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/license.html">MIT License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/changelog.html">LavaLust Changelog</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation/guide.html">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">LavaLust Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview/getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/at_a_glance.html">LavaLust at a Glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html">Support Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/features.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/application_flow.html">Application Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview/mvc.html">Model–View–Controller</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="routes.html">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libraries.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoload.html">Auto-loading Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel.html">Creating Kernel Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routine.html">Common Functions and Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="before_action.html">before_action Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middlewares.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxies.html">Proxies (Static Facades)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Security Headers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../database/database_reference.html">Database Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/query_builder.html">SQL Query Builder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/index.html">Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/api.html">API Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/cache.html">Cache Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/config.html">Config Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/email.html">Email Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/encryption.html">Encryption Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/upload.html">Upload Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/form_validation.html">Form Validation Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/io.html">Input and Output Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/request.html">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/language.html">Language Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/migration.html">Migration Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/pagination.html">Pagination Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session.html">Session Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/session_security.html">Session Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/performance.html">Performance Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/profiler.html">Profiler Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ember.html">Ember Template Engine</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/directory.html">Directory Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/download.html">Download Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/file.html">File Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/language.html">Language Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security.html">Security Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/string.html">String Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/url.html">URL &amp; Asset Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/debug.html">Debug Helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html">CLI Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#available-commands">Available Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#development-server">Development Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#cache-management">Cache Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#generating-files">Generating Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#utility-commands">Utility Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#subdirectory-support">Subdirectory Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#file-overwrite-protection">File Overwrite Protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html#tips-and-best-practices">Tips and Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example/index.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_orm.html">Blog CRUD using ORM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/blog_query_builder.html">Blog CRUD using Query Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/auth.html">User Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example/api.html">API Usage Sample</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LavaLust</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">General Topics</a></li>
+      <li class="breadcrumb-item active">Security Headers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="security-headers">
+<h1>Security Headers<a class="headerlink" href="#security-headers" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Security_headers</span></code> class provides a structured way to apply <strong>HTTP security headers</strong>
+to both HTML pages and API responses in LavaLust. It supports Content Security Policy (CSP)
+with nonce generation, HSTS, CORS, referrer policy, permissions policy, and more.</p>
+<p>It is configured via <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code> under the <code class="docutils literal notranslate"><span class="pre">security_headers</span></code> key, and can
+also accept inline overrides when instantiated.</p>
+<section id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/
+└── config/
+    └── config.php   ← security_headers key goes here
+</pre></div>
+</div>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>All settings live under the <code class="docutils literal notranslate"><span class="pre">security_headers</span></code> key in <code class="docutils literal notranslate"><span class="pre">app/config/config.php</span></code>.
+You only need to define the values you want to override — the rest use sensible defaults.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'security_headers'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="c1">// ── Content Security Policy ──────────────────────────────────────────</span>
+    <span class="s1">'csp_enabled'</span>     <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'csp_report_only'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>     <span class="c1">// set true to test without blocking</span>
+    <span class="s1">'report_uri'</span>      <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span>        <span class="c1">// e.g. 'https://yourdomain.com/csp-report'</span>
+
+    <span class="c1">// Additional allowed sources per directive (merged with 'self' + nonce)</span>
+    <span class="s1">'script_src'</span>      <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://cdn.jsdelivr.net'</span><span class="p">],</span>
+    <span class="s1">'style_src'</span>       <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://fonts.googleapis.com'</span><span class="p">],</span>
+    <span class="s1">'font_src'</span>        <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://fonts.gstatic.com'</span><span class="p">],</span>
+    <span class="s1">'img_src'</span>         <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://res.cloudinary.com'</span><span class="p">],</span>
+    <span class="s1">'connect_src'</span>     <span class="o">=&gt;</span> <span class="p">[],</span>
+    <span class="s1">'frame_src'</span>       <span class="o">=&gt;</span> <span class="p">[],</span>
+
+    <span class="c1">// Allow inline style/script attributes (style="..." onclick="...")</span>
+    <span class="s1">'allow_inline_style_attr'</span>  <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'allow_inline_script_attr'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+
+    <span class="c1">// ── Transport ────────────────────────────────────────────────────────</span>
+    <span class="s1">'hsts_max_age'</span>    <span class="o">=&gt;</span> <span class="mi">31536000</span><span class="p">,</span>  <span class="c1">// 1 year</span>
+    <span class="s1">'hsts_subdomains'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'trust_proxy'</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>     <span class="c1">// set true behind a reverse proxy</span>
+
+    <span class="c1">// ── Other headers ────────────────────────────────────────────────────</span>
+    <span class="s1">'frame_options'</span>      <span class="o">=&gt;</span> <span class="s1">'DENY'</span><span class="p">,</span>
+    <span class="s1">'referrer_policy'</span>    <span class="o">=&gt;</span> <span class="s1">'strict-origin-when-cross-origin'</span><span class="p">,</span>
+    <span class="s1">'permissions_policy'</span> <span class="o">=&gt;</span> <span class="s1">'geolocation=(), microphone=(), camera=(), payment=()'</span><span class="p">,</span>
+    <span class="s1">'coop'</span>               <span class="o">=&gt;</span> <span class="s1">'same-origin'</span><span class="p">,</span>  <span class="c1">// set '' to allow OAuth popups</span>
+    <span class="s1">'frame_ancestors'</span>    <span class="o">=&gt;</span> <span class="s2">"'none'"</span><span class="p">,</span>        <span class="c1">// or "'self'"</span>
+
+    <span class="c1">// ── API body size limit ───────────────────────────────────────────────</span>
+    <span class="s1">'api_max_body'</span>    <span class="o">=&gt;</span> <span class="mi">1048576</span><span class="p">,</span>   <span class="c1">// 1 MB in bytes</span>
+
+    <span class="c1">// ── CORS ─────────────────────────────────────────────────────────────</span>
+    <span class="s1">'cors'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'allowed_origins'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://app.example.com'</span><span class="p">,</span> <span class="s1">'https://admin.example.com'</span><span class="p">],</span>
+        <span class="s1">'methods'</span>         <span class="o">=&gt;</span> <span class="s1">'GET, POST, PUT, PATCH, DELETE, OPTIONS'</span><span class="p">,</span>
+        <span class="s1">'headers'</span>         <span class="o">=&gt;</span> <span class="s1">'Authorization, Content-Type, X-Requested-With'</span><span class="p">,</span>
+        <span class="s1">'expose_headers'</span>  <span class="o">=&gt;</span> <span class="s1">'X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After'</span><span class="p">,</span>
+        <span class="s1">'credentials'</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+        <span class="s1">'max_age'</span>         <span class="o">=&gt;</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="p">],</span>
+
+    <span class="c1">// ── Custom headers ────────────────────────────────────────────────────</span>
+    <span class="s1">'extra_headers'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'X-Custom-Header'</span> <span class="o">=&gt;</span> <span class="s1">'value'</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">cors.allowed_origins</span></code> is left empty, the class falls back to the
+<code class="docutils literal notranslate"><span class="pre">allow_origin</span></code> value from <code class="docutils literal notranslate"><span class="pre">app/config/api.php</span></code> for backwards compatibility
+with the <code class="docutils literal notranslate"><span class="pre">Api</span></code> library.</p>
+</div>
+<section id="default-values-reference">
+<h3>Default Values Reference<a class="headerlink" href="#default-values-reference" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 18.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">csp_enabled</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Enable the <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code> header</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">csp_report_only</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy-Report-Only</span></code> instead of blocking</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">report_uri</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">''</span></code></p></td>
+<td><p>URI where CSP violation reports are sent</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trust_proxy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Trust <code class="docutils literal notranslate"><span class="pre">X-Forwarded-Proto</span></code> for HTTPS detection behind a proxy</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">script_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">script-src</span></code> origins (merged with <code class="docutils literal notranslate"><span class="pre">'self'</span></code> and nonce)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">style_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">style-src</span></code> origins</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">font_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">font-src</span></code> origins</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">img_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">img-src</span></code> origins (<code class="docutils literal notranslate"><span class="pre">data:</span></code> always included)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">connect_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">connect-src</span></code> origins</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">frame_src</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">frame-src</span></code> origins</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">allow_inline_style_attr</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Allow <code class="docutils literal notranslate"><span class="pre">style=&quot;...&quot;</span></code> attributes via <code class="docutils literal notranslate"><span class="pre">style-src-attr</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">allow_inline_script_attr</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Allow inline event handlers via <code class="docutils literal notranslate"><span class="pre">script-src-attr</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hsts_max_age</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">31536000</span></code></p></td>
+<td><p>HSTS max-age in seconds (1 year)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hsts_subdomains</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Include <code class="docutils literal notranslate"><span class="pre">includeSubDomains</span></code> in the HSTS header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">frame_options</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'DENY'</span></code></p></td>
+<td><p>Value for <code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">referrer_policy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'strict-origin-when-cross-origin'</span></code></p></td>
+<td><p>Value for <code class="docutils literal notranslate"><span class="pre">Referrer-Policy</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">permissions_policy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'geolocation=(),</span> <span class="pre">...'</span></code></p></td>
+<td><p>Value for <code class="docutils literal notranslate"><span class="pre">Permissions-Policy</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">coop</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'same-origin'</span></code></p></td>
+<td><p>Value for <code class="docutils literal notranslate"><span class="pre">Cross-Origin-Opener-Policy</span></code>. Set <code class="docutils literal notranslate"><span class="pre">''</span></code> to skip.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">frame_ancestors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;'none'&quot;</span></code></p></td>
+<td><p>CSP <code class="docutils literal notranslate"><span class="pre">frame-ancestors</span></code> directive</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">api_max_body</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1048576</span></code></p></td>
+<td><p>Maximum allowed request body size in bytes (1 MB)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cors.allowed_origins</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Exact allowed origins. Falls back to <code class="docutils literal notranslate"><span class="pre">allow_origin</span></code> in api.php.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cors.methods</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'GET,</span> <span class="pre">POST,</span> <span class="pre">...'</span></code></p></td>
+<td><p>Allowed HTTP methods for CORS preflight</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cors.headers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Authorization,</span> <span class="pre">...'</span></code></p></td>
+<td><p>Allowed request headers for CORS preflight</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cors.expose_headers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'X-RateLimit-...'</span></code></p></td>
+<td><p>Headers exposed to the browser via <code class="docutils literal notranslate"><span class="pre">Access-Control-Expose-Headers</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cors.credentials</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">true</span></code> only when using cookie-based auth across origins</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cors.max_age</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">600</span></code></p></td>
+<td><p>Preflight cache duration in seconds</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">extra_headers</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Any additional custom headers as <code class="docutils literal notranslate"><span class="pre">['Name'</span> <span class="pre">=&gt;</span> <span class="pre">'Value']</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h2>
+<section id="apply">
+<h3>apply()<a class="headerlink" href="#apply" title="Link to this heading"></a></h3>
+<p>Applies security headers suitable for <strong>HTML page responses</strong>. When CSP is enabled,
+a unique per-request nonce is injected into <code class="docutils literal notranslate"><span class="pre">script-src</span></code> and <code class="docutils literal notranslate"><span class="pre">style-src</span></code> automatically.
+Also sets <code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code>, HSTS (on HTTPS), and all common headers.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">PageController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">apply</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'home/index'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="apply-api">
+<h3>apply_api()<a class="headerlink" href="#apply-api" title="Link to this heading"></a></h3>
+<p>Applies a strict set of headers for <strong>API / JSON responses</strong>. Sets a restrictive
+<code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code>, disables caching, applies <code class="docutils literal notranslate"><span class="pre">DENY</span></code> for framing, and
+calls <code class="docutils literal notranslate"><span class="pre">cors()</span></code> automatically.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">apply_api</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">users</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
+        <span class="nv">$users</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">set_status_code</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$users</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="api-guard-methods-max-body">
+<h3>api_guard($methods, $max_body)<a class="headerlink" href="#api-guard-methods-max-body" title="Link to this heading"></a></h3>
+<p>Enforces request method, body size, and content type on API endpoints.
+Responds automatically with <code class="docutils literal notranslate"><span class="pre">405</span></code>, <code class="docutils literal notranslate"><span class="pre">413</span></code>, or <code class="docutils literal notranslate"><span class="pre">415</span></code> on failure.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$methods</span></code></p></td>
+<td><p>array|null</p></td>
+<td><p>Allowed HTTP methods. <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> is always added automatically. Pass <code class="docutils literal notranslate"><span class="pre">null</span></code> to skip method checking.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$max_body</span></code></p></td>
+<td><p>int|null</p></td>
+<td><p>Max body size in bytes. Falls back to <code class="docutils literal notranslate"><span class="pre">api_max_body</span></code> in config.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Allow only POST; reject oversized bodies; validate Content-Type</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">api_guard</span><span class="p">([</span><span class="s1">'POST'</span><span class="p">]);</span>
+
+<span class="c1">// Allow GET and POST with a custom 512 KB body limit</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">api_guard</span><span class="p">([</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'POST'</span><span class="p">],</span> <span class="mi">524288</span><span class="p">);</span>
+
+<span class="c1">// Skip method check — useful when require_method() handles it separately</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">api_guard</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="cors">
+<h3>cors()<a class="headerlink" href="#cors" title="Link to this heading"></a></h3>
+<p>Sends CORS headers based on the <code class="docutils literal notranslate"><span class="pre">cors</span></code> config block. Called automatically
+by <code class="docutils literal notranslate"><span class="pre">apply_api()</span></code>. Can be called manually for pages that need CORS support.</p>
+<ul class="simple">
+<li><p>Matches the incoming <code class="docutils literal notranslate"><span class="pre">Origin</span></code> header against <code class="docutils literal notranslate"><span class="pre">cors.allowed_origins</span></code>.</p></li>
+<li><p>Handles <code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code> preflight requests and responds with <code class="docutils literal notranslate"><span class="pre">204</span></code>.</p></li>
+<li><p>Wildcard <code class="docutils literal notranslate"><span class="pre">*</span></code> in <code class="docutils literal notranslate"><span class="pre">allowed_origins</span></code> is supported but cannot be combined
+with <code class="docutils literal notranslate"><span class="pre">credentials:</span> <span class="pre">true</span></code>.</p></li>
+</ul>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// Manual use (e.g. on a specific page route)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">cors</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="nonce">
+<h3>nonce()<a class="headerlink" href="#nonce" title="Link to this heading"></a></h3>
+<p>Returns the CSP nonce for the current request (static, generated once per request).
+Use it to mark inline <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;style&gt;</span></code> tags as trusted.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// In a view file</span>
+<span class="nv">$nonce</span> <span class="o">=</span> <span class="nx">csp_nonce</span><span class="p">();</span>  <span class="c1">// global helper — equivalent to Security_headers::nonce()</span>
+<span class="cp">?&gt;</span>
+<span class="x">&lt;script nonce="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$nonce</span> <span class="cp">?&gt;</span><span class="x">"&gt;</span>
+<span class="x">    console.log('Trusted inline script');</span>
+<span class="x">&lt;/script&gt;</span>
+
+<span class="x">&lt;style nonce="</span><span class="cp">&lt;?</span><span class="o">=</span> <span class="nv">$nonce</span> <span class="cp">?&gt;</span><span class="x">"&gt;</span>
+<span class="x">    body { margin: 0; }</span>
+<span class="x">&lt;/style&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The global helper function <code class="docutils literal notranslate"><span class="pre">csp_nonce()</span></code> is registered automatically when the
+class is loaded. It is also available as the <code class="docutils literal notranslate"><span class="pre">csp_nonce</span></code> template variable in
+LavaLust’s template engine.</p>
+</div>
+</section>
+<section id="max-body">
+<h3>max_body()<a class="headerlink" href="#max-body" title="Link to this heading"></a></h3>
+<p>Returns the configured maximum request body size in bytes.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$limit</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">max_body</span><span class="p">();</span> <span class="c1">// e.g. 1048576</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-usage-patterns">
+<h2>Common Usage Patterns<a class="headerlink" href="#common-usage-patterns" title="Link to this heading"></a></h2>
+<section id="html-pages-with-csp-enabled">
+<h3>HTML pages with CSP enabled<a class="headerlink" href="#html-pages-with-csp-enabled" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// app/config/config.php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'security_headers'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'csp_enabled'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'script_src'</span>  <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://cdn.jsdelivr.net'</span><span class="p">],</span>
+    <span class="s1">'style_src'</span>   <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://fonts.googleapis.com'</span><span class="p">],</span>
+    <span class="s1">'font_src'</span>    <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://fonts.gstatic.com'</span><span class="p">],</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="c1">// In your controller</span>
+<span class="k">class</span> <span class="nc">HomeController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">apply</span><span class="p">();</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">view</span><span class="p">(</span><span class="s1">'home/index'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- In your view: use the nonce on inline tags --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"&lt;?= csp_nonce() ?&gt;"</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="c1">// trusted inline script</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="api-controller-with-full-protection">
+<h3>API controller with full protection<a class="headerlink" href="#api-controller-with-full-protection" title="Link to this heading"></a></h3>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">ApiController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+        <span class="c1">// Apply API headers on every request</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">apply_api</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">create</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Enforce POST, validate Content-Type, limit body to 1 MB</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">api_guard</span><span class="p">([</span><span class="s1">'POST'</span><span class="p">]);</span>
+
+        <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">api</span><span class="o">-&gt;</span><span class="na">body</span><span class="p">();</span>
+        <span class="c1">// ... handle the request</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">list</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// GET only, custom 256 KB limit</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security_headers</span><span class="o">-&gt;</span><span class="na">api_guard</span><span class="p">([</span><span class="s1">'GET'</span><span class="p">],</span> <span class="mi">262144</span><span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">model</span><span class="p">(</span><span class="s1">'UserModel'</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">response</span><span class="o">-&gt;</span><span class="na">send_json</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">UserModel</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="report-only-mode-csp-testing">
+<h3>Report-only mode (CSP testing)<a class="headerlink" href="#report-only-mode-csp-testing" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">csp_report_only</span></code> to observe violations without blocking anything:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'security_headers'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'csp_enabled'</span>     <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'csp_report_only'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'report_uri'</span>      <span class="o">=&gt;</span> <span class="s1">'https://yourdomain.com/csp-report'</span><span class="p">,</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="oauth-popup-compatible-coop">
+<h3>OAuth / popup-compatible COOP<a class="headerlink" href="#oauth-popup-compatible-coop" title="Link to this heading"></a></h3>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">coop</span></code> to an empty string skips the <code class="docutils literal notranslate"><span class="pre">Cross-Origin-Opener-Policy</span></code> header,
+which is required for OAuth flows that open a popup:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$config</span><span class="p">[</span><span class="s1">'security_headers'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'coop'</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span>   <span class="c1">// skip COOP — required for OAuth popups</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="inline-override-at-runtime">
+<h3>Inline override at runtime<a class="headerlink" href="#inline-override-at-runtime" title="Link to this heading"></a></h3>
+<p>You can pass overrides directly when constructing the class:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nv">$sh</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Security_headers</span><span class="p">([</span>
+    <span class="s1">'csp_enabled'</span>  <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+    <span class="s1">'frame_options'</span><span class="o">=&gt;</span> <span class="s1">'SAMEORIGIN'</span><span class="p">,</span>
+    <span class="s1">'cors'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'allowed_origins'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'https://partner.example.com'</span><span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">]);</span>
+<span class="nv">$sh</span><span class="o">-&gt;</span><span class="na">apply</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="headers-applied">
+<h2>Headers Applied<a class="headerlink" href="#headers-applied" title="Link to this heading"></a></h2>
+<section id="apply-html-pages">
+<h3>apply() — HTML Pages<a class="headerlink" href="#apply-html-pages" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code></p></td>
+<td><p>Only when <code class="docutils literal notranslate"><span class="pre">csp_enabled</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code></p></td>
+<td><p>Default: <code class="docutils literal notranslate"><span class="pre">DENY</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X-Content-Type-Options</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">nosniff</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Referrer-Policy</span></code></p></td>
+<td><p>Default: <code class="docutils literal notranslate"><span class="pre">strict-origin-when-cross-origin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Permissions-Policy</span></code></p></td>
+<td><p>Default disables geolocation, microphone, camera, payment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Cross-Origin-Opener-Policy</span></code></p></td>
+<td><p>Default: <code class="docutils literal notranslate"><span class="pre">same-origin</span></code> (skipped when <code class="docutils literal notranslate"><span class="pre">coop</span></code> is <code class="docutils literal notranslate"><span class="pre">''</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X-Permitted-Cross-Domain-Policies</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Strict-Transport-Security</span></code></p></td>
+<td><p>Added on HTTPS only</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">X-Powered-By</span></code></p></td>
+<td><p>Removed</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="apply-api-api-responses">
+<h3>apply_api() — API Responses<a class="headerlink" href="#apply-api-api-responses" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">default-src</span> <span class="pre">'none';</span> <span class="pre">frame-ancestors</span> <span class="pre">'none'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">no-store,</span> <span class="pre">max-age=0</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Pragma</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">no-cache</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">DENY</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Cross-Origin-Resource-Policy</span></code></p></td>
+<td><p>Always <code class="docutils literal notranslate"><span class="pre">same-origin</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>All common headers above</p></td>
+<td><p>Same as <code class="docutils literal notranslate"><span class="pre">apply()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>CORS headers</p></td>
+<td><p>Applied via <code class="docutils literal notranslate"><span class="pre">cors()</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="method-reference">
+<h2>Method Reference<a class="headerlink" href="#method-reference" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38.0%" />
+<col style="width: 62.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">apply()</span></code></p></td>
+<td><p>Applies security headers for HTML page responses</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">apply_api()</span></code></p></td>
+<td><p>Applies strict headers for API/JSON responses; calls <code class="docutils literal notranslate"><span class="pre">cors()</span></code> automatically</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">api_guard($methods,</span> <span class="pre">$max_body)</span></code></p></td>
+<td><p>Validates method, body size, and content type; auto-responds on failure</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cors()</span></code></p></td>
+<td><p>Sends CORS headers; handles OPTIONS preflight and exits with 204</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nonce()</span></code> <em>(static)</em></p></td>
+<td><p>Returns the per-request CSP nonce (generated once, reused)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_body()</span></code></p></td>
+<td><p>Returns the configured max request body size in bytes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">csp_nonce()</span></code> <em>(global helper)</em></p></td>
+<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">Security_headers::nonce()</span></code>; available in views</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tips-and-best-practices">
+<h2>Tips and Best Practices<a class="headerlink" href="#tips-and-best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">apply()</span></code> as early as possible in a controller — ideally in <code class="docutils literal notranslate"><span class="pre">__construct()</span></code>
+for pages that always need headers, or at the top of the method for conditional pages.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">apply_api()</span></code> in the API controller’s <code class="docutils literal notranslate"><span class="pre">__construct()</span></code> so all endpoints
+automatically receive the correct headers without repeating the call.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">api_guard()</span></code> at the start of each API method to validate the request before
+any model or business logic runs.</p></li>
+<li><p>Enable <code class="docutils literal notranslate"><span class="pre">csp_report_only</span></code> first when rolling out CSP on an existing application —
+collect violations at <code class="docutils literal notranslate"><span class="pre">report_uri</span></code> and fix them before switching to enforcement mode.</p></li>
+<li><p>Never set <code class="docutils literal notranslate"><span class="pre">cors.credentials</span> <span class="pre">=</span> <span class="pre">true</span></code> together with <code class="docutils literal notranslate"><span class="pre">allowed_origins</span> <span class="pre">=</span> <span class="pre">['*']</span></code> —
+browsers will reject the response.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">coop</span> <span class="pre">=</span> <span class="pre">''</span></code> only for routes that genuinely need OAuth popup support; leave it
+at <code class="docutils literal notranslate"><span class="pre">same-origin</span></code> everywhere else.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">csp_nonce()</span></code> on every inline <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;style&gt;</span></code> tag in your views
+instead of adding <code class="docutils literal notranslate"><span class="pre">'unsafe-inline'</span></code> to the CSP directives.</p></li>
+<li><p>Add any third-party CDN URLs to the relevant <code class="docutils literal notranslate"><span class="pre">*_src</span></code> arrays in config rather than
+falling back to <code class="docutils literal notranslate"><span class="pre">'unsafe-inline'</span></code> or <code class="docutils literal notranslate"><span class="pre">'unsafe-eval'</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="proxies.html" class="btn btn-neutral float-left" title="Proxies (Static Facades)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../database/index.html" class="btn btn-neutral float-right" title="Database Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, LavaLust PHP Framework.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,523 @@
+Security Headers
+=================
+
+The ``Security_headers`` class provides a structured way to apply **HTTP security headers**
+to both HTML pages and API responses in LavaLust. It supports Content Security Policy (CSP)
+with nonce generation, HSTS, CORS, referrer policy, permissions policy, and more.
+
+It is configured via ``app/config/config.php`` under the ``security_headers`` key, and can
+also accept inline overrides when instantiated.
+
+Folder Structure
+-----------------
+
+.. code-block:: text
+
+    app/
+    └── config/
+        └── config.php   ← security_headers key goes here
+
+Configuration
+--------------
+
+All settings live under the ``security_headers`` key in ``app/config/config.php``.
+You only need to define the values you want to override — the rest use sensible defaults.
+
+.. code-block:: php
+
+    <?php
+    $config['security_headers'] = [
+
+        // ── Content Security Policy ──────────────────────────────────────────
+        'csp_enabled'     => true,
+        'csp_report_only' => false,     // set true to test without blocking
+        'report_uri'      => '',        // e.g. 'https://yourdomain.com/csp-report'
+
+        // Additional allowed sources per directive (merged with 'self' + nonce)
+        'script_src'      => ['https://cdn.jsdelivr.net'],
+        'style_src'       => ['https://fonts.googleapis.com'],
+        'font_src'        => ['https://fonts.gstatic.com'],
+        'img_src'         => ['https://res.cloudinary.com'],
+        'connect_src'     => [],
+        'frame_src'       => [],
+
+        // Allow inline style/script attributes (style="..." onclick="...")
+        'allow_inline_style_attr'  => true,
+        'allow_inline_script_attr' => false,
+
+        // ── Transport ────────────────────────────────────────────────────────
+        'hsts_max_age'    => 31536000,  // 1 year
+        'hsts_subdomains' => true,
+        'trust_proxy'     => false,     // set true behind a reverse proxy
+
+        // ── Other headers ────────────────────────────────────────────────────
+        'frame_options'      => 'DENY',
+        'referrer_policy'    => 'strict-origin-when-cross-origin',
+        'permissions_policy' => 'geolocation=(), microphone=(), camera=(), payment=()',
+        'coop'               => 'same-origin',  // set '' to allow OAuth popups
+        'frame_ancestors'    => "'none'",        // or "'self'"
+
+        // ── API body size limit ───────────────────────────────────────────────
+        'api_max_body'    => 1048576,   // 1 MB in bytes
+
+        // ── CORS ─────────────────────────────────────────────────────────────
+        'cors' => [
+            'allowed_origins' => ['https://app.example.com', 'https://admin.example.com'],
+            'methods'         => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+            'headers'         => 'Authorization, Content-Type, X-Requested-With',
+            'expose_headers'  => 'X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After',
+            'credentials'     => false,
+            'max_age'         => 600,
+        ],
+
+        // ── Custom headers ────────────────────────────────────────────────────
+        'extra_headers' => [
+            'X-Custom-Header' => 'value',
+        ],
+    ];
+
+.. note::
+
+   If ``cors.allowed_origins`` is left empty, the class falls back to the
+   ``allow_origin`` value from ``app/config/api.php`` for backwards compatibility
+   with the ``Api`` library.
+
+Default Values Reference
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 32 18 50
+
+   * - Key
+     - Default
+     - Description
+   * - ``csp_enabled``
+     - ``false``
+     - Enable the ``Content-Security-Policy`` header
+   * - ``csp_report_only``
+     - ``false``
+     - Use ``Content-Security-Policy-Report-Only`` instead of blocking
+   * - ``report_uri``
+     - ``''``
+     - URI where CSP violation reports are sent
+   * - ``trust_proxy``
+     - ``false``
+     - Trust ``X-Forwarded-Proto`` for HTTPS detection behind a proxy
+   * - ``script_src``
+     - ``[]``
+     - Extra ``script-src`` origins (merged with ``'self'`` and nonce)
+   * - ``style_src``
+     - ``[]``
+     - Extra ``style-src`` origins
+   * - ``font_src``
+     - ``[]``
+     - Extra ``font-src`` origins
+   * - ``img_src``
+     - ``[]``
+     - Extra ``img-src`` origins (``data:`` always included)
+   * - ``connect_src``
+     - ``[]``
+     - Extra ``connect-src`` origins
+   * - ``frame_src``
+     - ``[]``
+     - Extra ``frame-src`` origins
+   * - ``allow_inline_style_attr``
+     - ``true``
+     - Allow ``style="..."`` attributes via ``style-src-attr``
+   * - ``allow_inline_script_attr``
+     - ``false``
+     - Allow inline event handlers via ``script-src-attr``
+   * - ``hsts_max_age``
+     - ``31536000``
+     - HSTS max-age in seconds (1 year)
+   * - ``hsts_subdomains``
+     - ``true``
+     - Include ``includeSubDomains`` in the HSTS header
+   * - ``frame_options``
+     - ``'DENY'``
+     - Value for ``X-Frame-Options``
+   * - ``referrer_policy``
+     - ``'strict-origin-when-cross-origin'``
+     - Value for ``Referrer-Policy``
+   * - ``permissions_policy``
+     - ``'geolocation=(), ...'``
+     - Value for ``Permissions-Policy``
+   * - ``coop``
+     - ``'same-origin'``
+     - Value for ``Cross-Origin-Opener-Policy``. Set ``''`` to skip.
+   * - ``frame_ancestors``
+     - ``"'none'"``
+     - CSP ``frame-ancestors`` directive
+   * - ``api_max_body``
+     - ``1048576``
+     - Maximum allowed request body size in bytes (1 MB)
+   * - ``cors.allowed_origins``
+     - ``[]``
+     - Exact allowed origins. Falls back to ``allow_origin`` in api.php.
+   * - ``cors.methods``
+     - ``'GET, POST, ...'``
+     - Allowed HTTP methods for CORS preflight
+   * - ``cors.headers``
+     - ``'Authorization, ...'``
+     - Allowed request headers for CORS preflight
+   * - ``cors.expose_headers``
+     - ``'X-RateLimit-...'``
+     - Headers exposed to the browser via ``Access-Control-Expose-Headers``
+   * - ``cors.credentials``
+     - ``false``
+     - Set ``true`` only when using cookie-based auth across origins
+   * - ``cors.max_age``
+     - ``600``
+     - Preflight cache duration in seconds
+   * - ``extra_headers``
+     - ``[]``
+     - Any additional custom headers as ``['Name' => 'Value']``
+
+Methods
+--------
+
+apply()
+~~~~~~~~
+
+Applies security headers suitable for **HTML page responses**. When CSP is enabled,
+a unique per-request nonce is injected into ``script-src`` and ``style-src`` automatically.
+Also sets ``X-Frame-Options``, HSTS (on HTTPS), and all common headers.
+
+.. code-block:: php
+
+    <?php
+    class PageController extends Controller
+    {
+        public function index()
+        {
+            $this->security_headers->apply();
+            $this->call->view('home/index');
+        }
+    }
+
+apply_api()
+~~~~~~~~~~~~
+
+Applies a strict set of headers for **API / JSON responses**. Sets a restrictive
+``Content-Security-Policy``, disables caching, applies ``DENY`` for framing, and
+calls ``cors()`` automatically.
+
+.. code-block:: php
+
+    <?php
+    class ApiController extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            $this->security_headers->apply_api();
+        }
+
+        public function users()
+        {
+            $this->call->model('UserModel');
+            $users = $this->UserModel->all();
+            $this->response->set_status_code(200);
+            $this->response->send_json($users);
+        }
+    }
+
+api_guard($methods, $max_body)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Enforces request method, body size, and content type on API endpoints.
+Responds automatically with ``405``, ``413``, or ``415`` on failure.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 15 60
+
+   * - Parameter
+     - Type
+     - Description
+   * - ``$methods``
+     - array|null
+     - Allowed HTTP methods. ``OPTIONS`` is always added automatically. Pass ``null`` to skip method checking.
+   * - ``$max_body``
+     - int|null
+     - Max body size in bytes. Falls back to ``api_max_body`` in config.
+
+.. code-block:: php
+
+    <?php
+    // Allow only POST; reject oversized bodies; validate Content-Type
+    $this->security_headers->api_guard(['POST']);
+
+    // Allow GET and POST with a custom 512 KB body limit
+    $this->security_headers->api_guard(['GET', 'POST'], 524288);
+
+    // Skip method check — useful when require_method() handles it separately
+    $this->security_headers->api_guard(null);
+
+cors()
+~~~~~~~
+
+Sends CORS headers based on the ``cors`` config block. Called automatically
+by ``apply_api()``. Can be called manually for pages that need CORS support.
+
+- Matches the incoming ``Origin`` header against ``cors.allowed_origins``.
+- Handles ``OPTIONS`` preflight requests and responds with ``204``.
+- Wildcard ``*`` in ``allowed_origins`` is supported but cannot be combined
+  with ``credentials: true``.
+
+.. code-block:: php
+
+    <?php
+    // Manual use (e.g. on a specific page route)
+    $this->security_headers->cors();
+
+nonce()
+~~~~~~~~
+
+Returns the CSP nonce for the current request (static, generated once per request).
+Use it to mark inline ``<script>`` and ``<style>`` tags as trusted.
+
+.. code-block:: php
+
+    <?php
+    // In a view file
+    $nonce = csp_nonce();  // global helper — equivalent to Security_headers::nonce()
+    ?>
+    <script nonce="<?= $nonce ?>">
+        console.log('Trusted inline script');
+    </script>
+
+    <style nonce="<?= $nonce ?>">
+        body { margin: 0; }
+    </style>
+
+.. note::
+
+   The global helper function ``csp_nonce()`` is registered automatically when the
+   class is loaded. It is also available as the ``csp_nonce`` template variable in
+   LavaLust's template engine.
+
+max_body()
+~~~~~~~~~~~
+
+Returns the configured maximum request body size in bytes.
+
+.. code-block:: php
+
+    <?php
+    $limit = $this->security_headers->max_body(); // e.g. 1048576
+
+Common Usage Patterns
+----------------------
+
+HTML pages with CSP enabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    // app/config/config.php
+    $config['security_headers'] = [
+        'csp_enabled' => true,
+        'script_src'  => ['https://cdn.jsdelivr.net'],
+        'style_src'   => ['https://fonts.googleapis.com'],
+        'font_src'    => ['https://fonts.gstatic.com'],
+    ];
+
+.. code-block:: php
+
+    <?php
+    // In your controller
+    class HomeController extends Controller
+    {
+        public function index()
+        {
+            $this->security_headers->apply();
+            $this->call->view('home/index');
+        }
+    }
+
+.. code-block:: html
+
+    <!-- In your view: use the nonce on inline tags -->
+    <script nonce="<?= csp_nonce() ?>">
+        // trusted inline script
+    </script>
+
+API controller with full protection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    <?php
+    class ApiController extends Controller
+    {
+        public function __construct()
+        {
+            parent::__construct();
+            // Apply API headers on every request
+            $this->security_headers->apply_api();
+        }
+
+        public function create()
+        {
+            // Enforce POST, validate Content-Type, limit body to 1 MB
+            $this->security_headers->api_guard(['POST']);
+
+            $input = $this->api->body();
+            // ... handle the request
+        }
+
+        public function list()
+        {
+            // GET only, custom 256 KB limit
+            $this->security_headers->api_guard(['GET'], 262144);
+
+            $this->call->model('UserModel');
+            $this->response->send_json($this->UserModel->all());
+        }
+    }
+
+Report-only mode (CSP testing)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use ``csp_report_only`` to observe violations without blocking anything:
+
+.. code-block:: php
+
+    <?php
+    $config['security_headers'] = [
+        'csp_enabled'     => true,
+        'csp_report_only' => true,
+        'report_uri'      => 'https://yourdomain.com/csp-report',
+    ];
+
+OAuth / popup-compatible COOP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Setting ``coop`` to an empty string skips the ``Cross-Origin-Opener-Policy`` header,
+which is required for OAuth flows that open a popup:
+
+.. code-block:: php
+
+    <?php
+    $config['security_headers'] = [
+        'coop' => '',   // skip COOP — required for OAuth popups
+    ];
+
+Inline override at runtime
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can pass overrides directly when constructing the class:
+
+.. code-block:: php
+
+    <?php
+    $sh = new Security_headers([
+        'csp_enabled'  => true,
+        'frame_options'=> 'SAMEORIGIN',
+        'cors' => [
+            'allowed_origins' => ['https://partner.example.com'],
+        ],
+    ]);
+    $sh->apply();
+
+Headers Applied
+----------------
+
+apply() — HTML Pages
+~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 45 55
+
+   * - Header
+     - Notes
+   * - ``Content-Security-Policy``
+     - Only when ``csp_enabled`` is ``true``
+   * - ``X-Frame-Options``
+     - Default: ``DENY``
+   * - ``X-Content-Type-Options``
+     - Always ``nosniff``
+   * - ``Referrer-Policy``
+     - Default: ``strict-origin-when-cross-origin``
+   * - ``Permissions-Policy``
+     - Default disables geolocation, microphone, camera, payment
+   * - ``Cross-Origin-Opener-Policy``
+     - Default: ``same-origin`` (skipped when ``coop`` is ``''``)
+   * - ``X-Permitted-Cross-Domain-Policies``
+     - Always ``none``
+   * - ``Strict-Transport-Security``
+     - Added on HTTPS only
+   * - ``X-Powered-By``
+     - Removed
+
+apply_api() — API Responses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 45 55
+
+   * - Header
+     - Notes
+   * - ``Content-Security-Policy``
+     - Always ``default-src 'none'; frame-ancestors 'none'``
+   * - ``Cache-Control``
+     - Always ``no-store, max-age=0``
+   * - ``Pragma``
+     - Always ``no-cache``
+   * - ``X-Frame-Options``
+     - Always ``DENY``
+   * - ``Cross-Origin-Resource-Policy``
+     - Always ``same-origin``
+   * - All common headers above
+     - Same as ``apply()``
+   * - CORS headers
+     - Applied via ``cors()``
+
+Method Reference
+-----------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Method
+     - Description
+   * - ``apply()``
+     - Applies security headers for HTML page responses
+   * - ``apply_api()``
+     - Applies strict headers for API/JSON responses; calls ``cors()`` automatically
+   * - ``api_guard($methods, $max_body)``
+     - Validates method, body size, and content type; auto-responds on failure
+   * - ``cors()``
+     - Sends CORS headers; handles OPTIONS preflight and exits with 204
+   * - ``nonce()`` *(static)*
+     - Returns the per-request CSP nonce (generated once, reused)
+   * - ``max_body()``
+     - Returns the configured max request body size in bytes
+   * - ``csp_nonce()`` *(global helper)*
+     - Alias for ``Security_headers::nonce()``; available in views
+
+Tips and Best Practices
+------------------------
+
+- Call ``apply()`` as early as possible in a controller — ideally in ``__construct()``
+  for pages that always need headers, or at the top of the method for conditional pages.
+- Call ``apply_api()`` in the API controller's ``__construct()`` so all endpoints
+  automatically receive the correct headers without repeating the call.
+- Use ``api_guard()`` at the start of each API method to validate the request before
+  any model or business logic runs.
+- Enable ``csp_report_only`` first when rolling out CSP on an existing application —
+  collect violations at ``report_uri`` and fix them before switching to enforcement mode.
+- Never set ``cors.credentials = true`` together with ``allowed_origins = ['*']`` —
+  browsers will reject the response.
+- Set ``coop = ''`` only for routes that genuinely need OAuth popup support; leave it
+  at ``same-origin`` everywhere else.
+- Use ``csp_nonce()`` on every inline ``<script>`` and ``<style>`` tag in your views
+  instead of adding ``'unsafe-inline'`` to the CSP directives.
+- Add any third-party CDN URLs to the relevant ``*_src`` arrays in config rather than
+  falling back to ``'unsafe-inline'`` or ``'unsafe-eval'``.

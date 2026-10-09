@@ -16,4 +16,5 @@ General Topics
    before_action
    middlewares
    proxies
+   security_headers
 
