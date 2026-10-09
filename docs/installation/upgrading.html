@@ -172,14 +172,14 @@
 <h1>Upgrading Version<a class="headerlink" href="#upgrading-version" title="Link to this heading"></a></h1>
 <section id="upgrading-from-4-6-0-to-4-7-0">
 <h2>Upgrading from 4.6.0 to 4.7.0<a class="headerlink" href="#upgrading-from-4-6-0-to-4-7-0" title="Link to this heading"></a></h2>
-<p>Replace all files and directories in your <code class="docutils literal notranslate"><span class="pre">scheme/</span></code> directory.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>Modify your config/config.php to use the new config file for Security_headers class.
 Replace your old error pages in app/views/errors/ with the new ones in app/views/errors.
 Replace your old welcome_page in app/views/ with the new one in app/views/.
 Remove $config[‘allowed_origins’] from config/api.php. It is now configurable in config/config.php.
-Before performing an update, you should take your site offline by replacing the <code class="docutils literal notranslate"><span class="pre">index.php</span></code> file with a static one.</p>
+Replace all files and directories in your <code class="docutils literal notranslate"><span class="pre">scheme/</span></code> directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before performing an update, you should take your site offline by replacing the <code class="docutils literal notranslate"><span class="pre">index.php</span></code> file with a static one.</p>
 </div>
 </section>
 <section id="upgrading-from-4-5-0-to-4-6-0">
