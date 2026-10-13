@@ -42,43 +42,160 @@ Create a controller (e.g. ``MigrationController.php``) to handle migration comma
 
    <?php
 
-   class MigrationController extends Controller {
+    class MigrationController extends Controller {
 
-       public function __construct()
-       {
-           parent::__construct();
-           $this->call->library('migration');
-       }
+        public function __construct()
+        {
+            parent::__construct();
+            $this->call->library('migration');
+        }
 
-       public function create_migration($migration_class)
-       {
-           // e.g. $migration_class = "create_users_table"
-           $this->migration->create_migration($migration_class);
-       }
+        // ==========================================================
+        //  CREATE
+        // ==========================================================
 
-       public function migrate()
-       {
-           $this->migration->migrate();
-       }
+        /**
+        * Create a new migration file.
+        *
+        * Route: create-migration/(:any)
+        *        create-migration/(:any)/(:any)   (with type)
+        *
+        * @param string      $migration_class
+        * @param string|null $type  create|modify|drop
+        */
+        public function create_migration($migration_class, $type = 'create')
+        {
+            $this->migration->create_migration($migration_class, $type);
+        }
 
-       public function rollback()
-       {
-           $this->migration->rollback();
-       }
+        // ==========================================================
+        //  MIGRATE
+        // ==========================================================
 
-       public function rollback_all()
-       {
-           $this->migration->rollback_all();
-       }
+        /**
+        * Run all pending migrations.
+        *
+        * Route: migrate
+        */
+        public function migrate()
+        {
+            $this->migration->migrate(false);
+        }
 
-       public function refresh() {
-            $this->migration->refresh();        
-       }
+        public function migrate_dry()
+        {
+            $this->migration->migrate(true);
+        }
 
-       public function status() {
-            $this->migration->status();        
-       }
-   }
+        /**
+        * Migrate up to a specific version.
+        *
+        * Route: migrate-to/(:num)
+        *
+        * @param int $version
+        */
+        public function migrate_to($version)
+        {
+            $this->migration->migrate_to($version);
+        }
+
+        // ==========================================================
+        //  ROLLBACK
+        // ==========================================================
+
+        /**
+        * Rollback the most recent batch (or N batches).
+        *
+        * Route: rollback
+        *        rollback/(:num)
+        *
+        * @param int $steps  Number of batches to rollback (default: 1)
+        */
+        public function rollback($steps = 1)
+        {
+            $this->migration->rollback($steps);
+        }
+
+        /**
+        * Rollback down to a specific version.
+        *
+        * Route: rollback-to/(:num)
+        *
+        * @param int $version
+        */
+        public function rollback_to($version)
+        {
+            $this->migration->rollback_to($version);
+        }
+
+        /**
+        * Rollback every applied migration.
+        *
+        * Route: rollback-all
+        */
+        public function rollback_all()
+        {
+            $this->migration->rollback_all();
+        }
+
+        // ==========================================================
+        //  REFRESH / RESET / FRESH
+        // ==========================================================
+
+        /**
+        * Rollback all + re-run all migrations.
+        *
+        * Route: refresh
+        */
+        public function refresh()
+        {
+            $this->migration->refresh();
+        }
+
+        /**
+        * Rollback all migrations WITHOUT re-running them.
+        *
+        * Route: reset
+        */
+        public function reset()
+        {
+            $this->migration->reset();
+        }
+
+        /**
+        * Drop ALL tables and re-run all migrations.
+        *
+        * Route: fresh
+        */
+        public function fresh()
+        {
+            $this->migration->fresh();
+        }
+
+        // ==========================================================
+        //  INSPECTION
+        // ==========================================================
+
+        /**
+        * Show the migration status table.
+        *
+        * Route: status
+        */
+        public function status()
+        {
+            $this->migration->status();
+        }
+
+        /**
+        * Preview UP code for pending migrations.
+        *
+        * Route: preview
+        */
+        public function preview()
+        {
+            $this->migration->preview();
+        }
+    }
 
 Routes Example
 ---------------
@@ -87,13 +204,41 @@ Add routes so you can call these actions via the browser:
 
 .. code-block:: php
 
-   <?php
-   $router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
-   $router->get('migrate', 'MigrationController::migrate');
-   $router->get('rollback', 'MigrationController::rollback');
-   $router->get('rollback-all', 'MigrationController::rollback_all');
-   $router->get('refresh', 'MigrationController::refresh');
-   $router->status('status', 'MigrationController::status');
+    <?php
+
+    // -------------------------------------------------------------------
+    //  CREATE
+    // -------------------------------------------------------------------
+    $router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
+    $router->get('create-migration/{migration_class}/{type}', 'MigrationController::create_migration');
+
+    // -------------------------------------------------------------------
+    //  MIGRATE
+    // -------------------------------------------------------------------
+    $router->get('migrate/dry-run', 'MigrationController::migrate_dry');
+    $router->get('migrate', 'MigrationController::migrate');
+    $router->get('migrate-to/{version}', 'MigrationController::migrate_to');
+
+    // -------------------------------------------------------------------
+    //  ROLLBACK
+    // -------------------------------------------------------------------
+    $router->get('rollback', 'MigrationController::rollback');
+    $router->get('rollback/{steps}', 'MigrationController::rollback');
+    $router->get('rollback-to/{version}', 'MigrationController::rollback_to');
+    $router->get('rollback-all', 'MigrationController::rollback_all');
+
+    // -------------------------------------------------------------------
+    //  REFRESH / RESET / FRESH
+    // -------------------------------------------------------------------
+    $router->get('refresh', 'MigrationController::refresh');
+    $router->get('reset', 'MigrationController::reset');
+    $router->get('fresh', 'MigrationController::fresh');
+
+    // -------------------------------------------------------------------
+    //  INSPECTION
+    // -------------------------------------------------------------------
+    $router->get('status', 'MigrationController::status');
+    $router->get('preview', 'MigrationController::preview');
 
 Creating a Migration File
 --------------------------
@@ -122,49 +267,393 @@ You can also create you own php lava command by adding this class in ``app/comma
         public static $command     = 'migration';
         public static $description = 'Run database migrations';
         public static $arguments   = [
-            '[action]' => 'Action: run (default), create-migration, rollback, rollback-all, refresh, status',
-            '[name]'   => 'Migration class name (only for create-migration)',
+            '[action]' => 'Action: run (default), create-migration, rollback, rollback-all, rollback-to, ' .
+                        'migrate-to, refresh, reset, fresh, status, preview',
+            '[name]'   => 'Migration name (for create-migration) OR target version (for migrate-to / rollback-to) ' .
+                        'OR number of batches (for rollback, default: 1)',
         ];
 
+        /**
+        * Environment variables read by the framework's Migration class.
+        * Passing options this way means no route changes are needed.
+        */
+        const ENV_DRY_RUN = 'LAVA_MIGRATION_DRY_RUN';
+        const ENV_FORCE   = 'LAVA_MIGRATION_FORCE';
+
+        /**
+        * Map CLI actions to framework routes.
+        */
         protected static $route_map = [
             'run'              => 'migrate',
             'create-migration' => 'create-migration',
             'rollback'         => 'rollback',
             'rollback-all'     => 'rollback-all',
+            'rollback-to'      => 'rollback-to',
+            'migrate-to'       => 'migrate-to',
             'refresh'          => 'refresh',
+            'reset'            => 'reset',
+            'fresh'            => 'fresh',
             'status'           => 'status',
+            'preview'          => 'preview',
         ];
 
-        public function handle($action = null, array $flags = [], $name = null)
+        /**
+        * Actions that require a version number argument.
+        */
+        protected static $requires_version = [
+            'migrate-to',
+            'rollback-to',
+        ];
+
+        /**
+        * Actions that honor --dry-run.
+        */
+        protected static $supports_dry_run = [
+            'run',
+            'migrate-to',
+        ];
+
+        /**
+        * Valid migration template types.
+        */
+        protected static $valid_types = ['create', 'modify', 'drop'];
+
+        /**
+        * @param string|null $action  Action to run (default: run)
+        * @param array       $flags   Flags such as --dry-run, --force, --type=modify
+        * @param string|null $name    Migration name, version, or step count
+        * @param string|null $extra   Optional positional migration type (create-migration)
+        */
+        public function handle($action = null, array $flags = [], $name = null, $extra = null)
         {
             $action = $action ?? 'run';
 
+            // cli.php only treats `--x` as a flag, so `-h` arrives as a positional
+            // (either as the action or as the name).
+            if ($action === '-h' || $action === 'help') {
+                $this->print_help(null);
+                return;
+            }
+            if ($this->has_flag($flags, 'help') || $name === '-h') {
+                $this->print_help($action);
+                return;
+            }
+
             if (!isset(static::$route_map[$action])) {
-                echo danger("Unknown migration action: \"{$action}\"");
+                echo danger("Unknown migration action: \"{$action}\"") . PHP_EOL;
                 echo "Available actions: " . implode(', ', array_keys(static::$route_map)) . PHP_EOL;
+                echo "Run `php lava migration --help` for usage details." . PHP_EOL;
                 exit(1);
             }
 
-            if ($action === 'create-migration') {
-                if (!$name) {
-                    echo danger("Migration name is required.");
-                    echo "Example: php lava migrate create-migration create_user_table" . PHP_EOL;
-                    exit(1);
-                }
-                $route = 'create-migration/' . $name;
-            } else {
-                $route = static::$route_map[$action];
+            $dry_run = $this->has_flag($flags, 'dry-run');
+
+            // Never print "dry run" for an action that would really execute
+            if ($dry_run && !in_array($action, static::$supports_dry_run, true)) {
+                echo danger("--dry-run is only supported for: " . implode(', ', static::$supports_dry_run) . ".") . PHP_EOL;
+                exit(1);
+            }
+
+            $route = $this->build_route($action, $flags, $name, $extra);
+
+            if ($route === null) {
+                exit(1);
             }
 
             $index = PUBLIC_DIR . 'index.php';
 
             if (!file_exists($index)) {
-                echo danger("index.php not found at: {$index}");
+                echo danger("index.php not found at: {$index}") . PHP_EOL;
                 exit(1);
             }
 
-            $command = sprintf('php %s %s', escapeshellarg($index), escapeshellarg($route));
-            passthru($command);
+            // Options are handed to the child process through its environment
+            // (reset first so nothing leaks in from the parent shell).
+            putenv(self::ENV_DRY_RUN);
+            putenv(self::ENV_FORCE);
+
+            if ($dry_run) {
+                putenv(self::ENV_DRY_RUN . '=1');
+                echo $this->info("Dry run enabled — no changes will be made.") . PHP_EOL;
+            }
+
+            if ($action === 'fresh' && $this->has_flag($flags, 'force')) {
+                putenv(self::ENV_FORCE . '=1');
+            }
+
+            $php     = defined('PHP_BINARY') && PHP_BINARY !== '' ? PHP_BINARY : 'php';
+            $command = sprintf('%s %s %s', escapeshellarg($php), escapeshellarg($index), escapeshellarg($route));
+
+            $exit_code = 0;
+            passthru($command, $exit_code);
+
+            // Propagate the child's exit status so scripts/CI can detect failures
+            exit((int) $exit_code);
+        }
+
+        /**
+        * Build the framework route string from CLI arguments.
+        *
+        * @param  string      $action
+        * @param  array       $flags
+        * @param  string|null $name
+        * @param  string|null $extra
+        * @return string|null  Route string, or null on validation failure
+        */
+        protected function build_route($action, array $flags, $name, $extra = null)
+        {
+            // create-migration requires a name
+            if ($action === 'create-migration') {
+                if (!$name) {
+                    echo danger("Migration name is required.") . PHP_EOL;
+                    echo "Example: php lava migration create-migration create_user_table" . PHP_EOL;
+                    echo "         php lava migration create-migration add_status_to_posts_table modify" . PHP_EOL;
+                    return null;
+                }
+
+                // The name becomes a URL segment, so keep it route-safe
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9_\-]*$/', (string) $name)) {
+                    echo danger("Invalid migration name \"{$name}\". Use letters, numbers and underscores.") . PHP_EOL;
+                    return null;
+                }
+
+                $type = $this->extract_type($flags, $extra);
+                if ($type === false) {
+                    return null;
+                }
+
+                $route = 'create-migration/' . $name;
+                if ($type !== null) {
+                    $route .= '/' . $type;
+                }
+                return $route;
+            }
+
+            // migrate-to / rollback-to require a version
+            if (in_array($action, static::$requires_version, true)) {
+                if ($name === null || !ctype_digit((string) $name)) {
+                    echo danger("A numeric version is required for \"{$action}\".") . PHP_EOL;
+                    echo "Example: php lava migration {$action} 5" . PHP_EOL;
+                    return null;
+                }
+                return static::$route_map[$action] . '/' . (int) $name;
+            }
+
+            // rollback accepts an optional step count (default 1)
+            if ($action === 'rollback') {
+                $steps = 1;
+                if ($name !== null) {
+                    if (!ctype_digit((string) $name) || (int) $name < 1) {
+                        echo danger("Steps must be a positive number.") . PHP_EOL;
+                        echo "Example: php lava migration rollback 3" . PHP_EOL;
+                        return null;
+                    }
+                    $steps = (int) $name;
+                }
+                return static::$route_map[$action] . '/' . $steps;
+            }
+
+            // Static route for everything else
+            return static::$route_map[$action];
+        }
+
+        /**
+        * Extract the migration type.
+        *
+        * Accepts: --type=modify, --create/--modify/--drop, a positional type
+        * argument, or a bare type word among the flags.
+        *
+        * @param  array       $flags
+        * @param  string|null $positional
+        * @return string|null|false  Type, null for "use default", false on an invalid value
+        */
+        protected function extract_type(array $flags, $positional = null)
+        {
+            // --type=modify  (cli.php gives $flags['type'] = 'modify')
+            if (array_key_exists('type', $flags)) {
+                $type = $flags['type'];
+                if (is_string($type) && in_array($type, static::$valid_types, true)) {
+                    return $type;
+                }
+                echo danger("Invalid migration type. Allowed: " . implode(', ', static::$valid_types) . ".") . PHP_EOL;
+                return false;
+            }
+
+            // Shorthand flags: --create, --modify, --drop
+            foreach (static::$valid_types as $type) {
+                if ($this->has_flag($flags, $type)) {
+                    return $type;
+                }
+            }
+
+            // Optional third positional (needs cli.php to pass it, see notes)
+            if ($positional !== null && in_array($positional, static::$valid_types, true)) {
+                return $positional;
+            }
+
+            return null;
+        }
+
+        /**
+        * Check for a flag. cli.php parses `--dry-run` into $flags['dry-run'] = true
+        * and `--type=x` into $flags['type'] = 'x'. A raw "--name" entry is also
+        * accepted in case the flags ever arrive as a plain list.
+        *
+        * @param  array  $flags
+        * @param  string $name   Flag name without the leading dashes
+        * @return bool
+        */
+        protected function has_flag(array $flags, $name)
+        {
+            if (array_key_exists($name, $flags) && $flags[$name] !== false) {
+                return true;
+            }
+            return in_array('--' . $name, $flags, true);
+        }
+
+        /**
+        * Local output helpers: cli.php only defines danger() and success(),
+        * so info() and bold() are provided here instead of relying on globals.
+        */
+        protected function info($string)
+        {
+            return "\e[0;36m" . $string . "\e[0m";
+        }
+
+        protected function bold($string)
+        {
+            return "\e[1m" . $string . "\e[0m";
+        }
+
+        /**
+        * Print help text for the migration command.
+        *
+        * @param string|null $action  Specific action to describe, or null for all
+        */
+        protected function print_help($action = null)
+        {
+            if ($action && $action !== 'run' && isset(static::$route_map[$action])) {
+                $this->print_action_help($action);
+                return;
+            }
+
+            echo $this->bold("Migration Command") . PHP_EOL;
+            echo str_repeat("=", 70) . PHP_EOL;
+            echo "Usage: php lava migration [action] [options]" . PHP_EOL . PHP_EOL;
+
+            echo "Available actions:" . PHP_EOL;
+            echo "  run                              Run all pending migrations (default)" . PHP_EOL;
+            echo "  migrate-to <version>             Run migrations up to a specific version" . PHP_EOL;
+            echo "  create-migration <name> [type]   Create a new migration file" . PHP_EOL;
+            echo "  rollback [steps]                 Rollback N batches (default: 1)" . PHP_EOL;
+            echo "  rollback-to <version>            Rollback down to a specific version" . PHP_EOL;
+            echo "  rollback-all                     Rollback all applied migrations" . PHP_EOL;
+            echo "  refresh                          Rollback all + re-run all migrations" . PHP_EOL;
+            echo "  reset                            Rollback all (without re-running)" . PHP_EOL;
+            echo "  fresh                            Drop ALL tables and re-run migrations" . PHP_EOL;
+            echo "  status                           Show migration status table" . PHP_EOL;
+            echo "  preview                          Show pending migration UP code" . PHP_EOL . PHP_EOL;
+
+            echo "Options:" . PHP_EOL;
+            echo "  --help, -h                       Show this help or action-specific help" . PHP_EOL;
+            echo "  --dry-run                        Show what would run, change nothing (run, migrate-to)" . PHP_EOL;
+            echo "  --force                          Skip the confirmation prompt (fresh)" . PHP_EOL;
+            echo "  --type=create|modify|drop        Migration template type" . PHP_EOL;
+            echo "  --create, --modify, --drop       Shorthand for --type" . PHP_EOL . PHP_EOL;
+
+            echo "Examples:" . PHP_EOL;
+            echo "  php lava migration" . PHP_EOL;
+            echo "  php lava migration run" . PHP_EOL;
+            echo "  php lava migration run --dry-run" . PHP_EOL;
+            echo "  php lava migration create-migration create_users_table" . PHP_EOL;
+            echo "  php lava migration create-migration add_status_to_posts_table --type=modify" . PHP_EOL;
+            echo "  php lava migration rollback 3" . PHP_EOL;
+            echo "  php lava migration rollback-to 5" . PHP_EOL;
+            echo "  php lava migration migrate-to 8 --dry-run" . PHP_EOL;
+            echo "  php lava migration status" . PHP_EOL;
+            echo "  php lava migration fresh" . PHP_EOL;
+        }
+
+        /**
+        * Print help text for a specific action.
+        *
+        * @param string $action
+        */
+        protected function print_action_help($action)
+        {
+            echo $this->bold("Migration: {$action}") . PHP_EOL;
+            echo str_repeat("-", 50) . PHP_EOL;
+
+            switch ($action) {
+                case 'run':
+                    echo "Run all pending migrations in ascending version order." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration run [--dry-run]" . PHP_EOL;
+                    echo "Aliases: php lava migration (no args)" . PHP_EOL;
+                    break;
+
+                case 'migrate-to':
+                    echo "Run migrations up to (and including) the given version." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration migrate-to <version> [--dry-run]" . PHP_EOL;
+                    echo "Example: php lava migration migrate-to 5" . PHP_EOL;
+                    break;
+
+                case 'create-migration':
+                    echo "Create a new numbered migration file." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration create-migration <name> [--type=TYPE]" . PHP_EOL;
+                    echo "Types:   create (default), modify, drop" . PHP_EOL . PHP_EOL;
+                    echo "Examples:" . PHP_EOL;
+                    echo "  php lava migration create-migration create_users_table" . PHP_EOL;
+                    echo "  php lava migration create-migration add_email_to_users_table modify" . PHP_EOL;
+                    echo "  php lava migration create-migration drop_old_logs_table drop" . PHP_EOL;
+                    break;
+
+                case 'rollback':
+                    echo "Rollback the most recent migration batch (or N batches)." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration rollback [steps]" . PHP_EOL;
+                    echo "Example: php lava migration rollback 3" . PHP_EOL;
+                    break;
+
+                case 'rollback-to':
+                    echo "Rollback all migrations newer than the given version." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration rollback-to <version>" . PHP_EOL;
+                    echo "Example: php lava migration rollback-to 3" . PHP_EOL;
+                    break;
+
+                case 'rollback-all':
+                    echo "Rollback every applied migration in reverse version order." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration rollback-all" . PHP_EOL;
+                    break;
+
+                case 'refresh':
+                    echo "Rollback all migrations, then re-run them." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration refresh" . PHP_EOL;
+                    break;
+
+                case 'reset':
+                    echo "Rollback all migrations WITHOUT re-running them." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration reset" . PHP_EOL;
+                    break;
+
+                case 'fresh':
+                    echo "Drop ALL database tables and re-run all migrations." . PHP_EOL;
+                    echo danger("WARNING: This destroys all data!") . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration fresh [--force]" . PHP_EOL;
+                    echo "         --force skips the 'yes' confirmation prompt" . PHP_EOL;
+                    break;
+
+                case 'status':
+                    echo "Display a table of all migrations and their applied/pending state." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration status" . PHP_EOL;
+                    break;
+
+                case 'preview':
+                    echo "Show the up() method body of all pending migrations." . PHP_EOL . PHP_EOL;
+                    echo "Usage:   php lava migration preview" . PHP_EOL;
+                    break;
+
+                default:
+                    echo "No help available for this action." . PHP_EOL;
+            }
         }
     }
 
@@ -223,7 +712,7 @@ Running Migrations
 
   ::
 
-     php lava migration rollback
+     php lava migration rollback 1
 
 Available Methods Reference
 ----------------------------
@@ -239,14 +728,24 @@ Available Methods Reference
      - Creates a new migration file with the given name inside ``app/migrations``
    * - ``migrate()``
      - Executes all available migration files that have not been run yet
+   * - ``migrate_to($version)``
+     - Executes all available migration files up to (and including) the given version
    * - ``rollback()``
      - Reverts (drops) the most recent migration batch
+   * - ``rollback_to($version)``
+     - Reverts (drops) all migration batches newer than the given version
    * - ``rollback-all()``
      - Reverts (drops) all migration batch
    * - ``refresh()``
      - Refresh  migration batch
+   * - ``reset()``
+     - Reverts (drops) all migration batch without re-running them
+   * - ``fresh()``
+     - Drop ALL database tables and re-run all migrations
    * - ``status()``
      - Show status of migration batch
+   * - ``preview()``
+     - Show the up() method body of all pending migrations
 
 .. note::
 

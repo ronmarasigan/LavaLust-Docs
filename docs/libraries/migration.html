@@ -199,43 +199,160 @@ It provides a structured and versioned way to track and apply changes (such as c
 <p>Create a controller (e.g. <code class="docutils literal notranslate"><span class="pre">MigrationController.php</span></code>) to handle migration commands:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
 
-<span class="k">class</span> <span class="nc">MigrationController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+ <span class="k">class</span> <span class="nc">MigrationController</span> <span class="k">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'migration'</span><span class="p">);</span>
-    <span class="p">}</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">call</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">'migration'</span><span class="p">);</span>
+     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// e.g. $migration_class = "create_users_table"</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">);</span>
-    <span class="p">}</span>
+     <span class="c1">// ==========================================================</span>
+     <span class="c1">//  CREATE</span>
+     <span class="c1">// ==========================================================</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">migrate</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">migrate</span><span class="p">();</span>
-    <span class="p">}</span>
+     <span class="sd">/**</span>
+<span class="sd">     * Create a new migration file.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: create-migration/(:any)</span>
+<span class="sd">     *        create-migration/(:any)/(:any)   (with type)</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param string      $migration_class</span>
+<span class="sd">     * @param string|null $type  create|modify|drop</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">,</span> <span class="nv">$type</span> <span class="o">=</span> <span class="s1">'create'</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">create_migration</span><span class="p">(</span><span class="nv">$migration_class</span><span class="p">,</span> <span class="nv">$type</span><span class="p">);</span>
+     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">();</span>
-    <span class="p">}</span>
+     <span class="c1">// ==========================================================</span>
+     <span class="c1">//  MIGRATE</span>
+     <span class="c1">// ==========================================================</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback_all</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback_all</span><span class="p">();</span>
-    <span class="p">}</span>
+     <span class="sd">/**</span>
+<span class="sd">     * Run all pending migrations.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: migrate</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">migrate</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">migrate</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">migrate_dry</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">migrate</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+     <span class="p">}</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Migrate up to a specific version.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: migrate-to/(:num)</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int $version</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">migrate_to</span><span class="p">(</span><span class="nv">$version</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">migrate_to</span><span class="p">(</span><span class="nv">$version</span><span class="p">);</span>
+     <span class="p">}</span>
+
+     <span class="c1">// ==========================================================</span>
+     <span class="c1">//  ROLLBACK</span>
+     <span class="c1">// ==========================================================</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Rollback the most recent batch (or N batches).</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: rollback</span>
+<span class="sd">     *        rollback/(:num)</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int $steps  Number of batches to rollback (default: 1)</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback</span><span class="p">(</span><span class="nv">$steps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback</span><span class="p">(</span><span class="nv">$steps</span><span class="p">);</span>
+     <span class="p">}</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Rollback down to a specific version.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: rollback-to/(:num)</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param int $version</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback_to</span><span class="p">(</span><span class="nv">$version</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback_to</span><span class="p">(</span><span class="nv">$version</span><span class="p">);</span>
+     <span class="p">}</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Rollback every applied migration.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: rollback-all</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">rollback_all</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">rollback_all</span><span class="p">();</span>
+     <span class="p">}</span>
+
+     <span class="c1">// ==========================================================</span>
+     <span class="c1">//  REFRESH / RESET / FRESH</span>
+     <span class="c1">// ==========================================================</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Rollback all + re-run all migrations.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: refresh</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">refresh</span><span class="p">()</span>
+     <span class="p">{</span>
          <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">refresh</span><span class="p">();</span>
-    <span class="p">}</span>
+     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">status</span><span class="p">()</span> <span class="p">{</span>
+     <span class="sd">/**</span>
+<span class="sd">     * Rollback all migrations WITHOUT re-running them.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: reset</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">reset</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">reset</span><span class="p">();</span>
+     <span class="p">}</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Drop ALL tables and re-run all migrations.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: fresh</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">fresh</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">fresh</span><span class="p">();</span>
+     <span class="p">}</span>
+
+     <span class="c1">// ==========================================================</span>
+     <span class="c1">//  INSPECTION</span>
+     <span class="c1">// ==========================================================</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Show the migration status table.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: status</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">status</span><span class="p">()</span>
+     <span class="p">{</span>
          <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">status</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+     <span class="p">}</span>
+
+     <span class="sd">/**</span>
+<span class="sd">     * Preview UP code for pending migrations.</span>
+<span class="sd">     *</span>
+<span class="sd">     * Route: preview</span>
+<span class="sd">     */</span>
+     <span class="k">public</span> <span class="k">function</span> <span class="nf">preview</span><span class="p">()</span>
+     <span class="p">{</span>
+         <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">preview</span><span class="p">();</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -243,12 +360,40 @@ It provides a structured and versioned way to track and apply changes (such as c
 <h2>Routes Example<a class="headerlink" href="#routes-example" title="Link to this heading"></a></h2>
 <p>Add routes so you can call these actions via the browser:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="c1">//  CREATE</span>
+<span class="c1">// -------------------------------------------------------------------</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'create-migration/{migration_class}'</span><span class="p">,</span> <span class="s1">'MigrationController::create_migration'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'create-migration/{migration_class}/{type}'</span><span class="p">,</span> <span class="s1">'MigrationController::create_migration'</span><span class="p">);</span>
+
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="c1">//  MIGRATE</span>
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate/dry-run'</span><span class="p">,</span> <span class="s1">'MigrationController::migrate_dry'</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate'</span><span class="p">,</span> <span class="s1">'MigrationController::migrate'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'migrate-to/{version}'</span><span class="p">,</span> <span class="s1">'MigrationController::migrate_to'</span><span class="p">);</span>
+
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="c1">//  ROLLBACK</span>
+<span class="c1">// -------------------------------------------------------------------</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback/{steps}'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-to/{version}'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback_to'</span><span class="p">);</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'rollback-all'</span><span class="p">,</span> <span class="s1">'MigrationController::rollback_all'</span><span class="p">);</span>
+
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="c1">//  REFRESH / RESET / FRESH</span>
+<span class="c1">// -------------------------------------------------------------------</span>
 <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">,</span> <span class="s1">'MigrationController::refresh'</span><span class="p">);</span>
-<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">status</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'MigrationController::status'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'reset'</span><span class="p">,</span> <span class="s1">'MigrationController::reset'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'fresh'</span><span class="p">,</span> <span class="s1">'MigrationController::fresh'</span><span class="p">);</span>
+
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="c1">//  INSPECTION</span>
+<span class="c1">// -------------------------------------------------------------------</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'MigrationController::status'</span><span class="p">);</span>
+<span class="nv">$router</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'preview'</span><span class="p">,</span> <span class="s1">'MigrationController::preview'</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -272,49 +417,393 @@ It provides a structured and versioned way to track and apply changes (such as c
     <span class="k">public</span> <span class="k">static</span> <span class="nv">$command</span>     <span class="o">=</span> <span class="s1">'migration'</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">static</span> <span class="nv">$description</span> <span class="o">=</span> <span class="s1">'Run database migrations'</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">static</span> <span class="nv">$arguments</span>   <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'[action]'</span> <span class="o">=&gt;</span> <span class="s1">'Action: run (default), create-migration, rollback, rollback-all, refresh, status'</span><span class="p">,</span>
-        <span class="s1">'[name]'</span>   <span class="o">=&gt;</span> <span class="s1">'Migration class name (only for create-migration)'</span><span class="p">,</span>
+        <span class="s1">'[action]'</span> <span class="o">=&gt;</span> <span class="s1">'Action: run (default), create-migration, rollback, rollback-all, rollback-to, '</span> <span class="o">.</span>
+                    <span class="s1">'migrate-to, refresh, reset, fresh, status, preview'</span><span class="p">,</span>
+        <span class="s1">'[name]'</span>   <span class="o">=&gt;</span> <span class="s1">'Migration name (for create-migration) OR target version (for migrate-to / rollback-to) '</span> <span class="o">.</span>
+                    <span class="s1">'OR number of batches (for rollback, default: 1)'</span><span class="p">,</span>
     <span class="p">];</span>
 
+    <span class="sd">/**</span>
+<span class="sd">    * Environment variables read by the framework's Migration class.</span>
+<span class="sd">    * Passing options this way means no route changes are needed.</span>
+<span class="sd">    */</span>
+    <span class="k">const</span> <span class="no">ENV_DRY_RUN</span> <span class="o">=</span> <span class="s1">'LAVA_MIGRATION_DRY_RUN'</span><span class="p">;</span>
+    <span class="k">const</span> <span class="no">ENV_FORCE</span>   <span class="o">=</span> <span class="s1">'LAVA_MIGRATION_FORCE'</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Map CLI actions to framework routes.</span>
+<span class="sd">    */</span>
     <span class="k">protected</span> <span class="k">static</span> <span class="nv">$route_map</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s1">'run'</span>              <span class="o">=&gt;</span> <span class="s1">'migrate'</span><span class="p">,</span>
         <span class="s1">'create-migration'</span> <span class="o">=&gt;</span> <span class="s1">'create-migration'</span><span class="p">,</span>
         <span class="s1">'rollback'</span>         <span class="o">=&gt;</span> <span class="s1">'rollback'</span><span class="p">,</span>
         <span class="s1">'rollback-all'</span>     <span class="o">=&gt;</span> <span class="s1">'rollback-all'</span><span class="p">,</span>
+        <span class="s1">'rollback-to'</span>      <span class="o">=&gt;</span> <span class="s1">'rollback-to'</span><span class="p">,</span>
+        <span class="s1">'migrate-to'</span>       <span class="o">=&gt;</span> <span class="s1">'migrate-to'</span><span class="p">,</span>
         <span class="s1">'refresh'</span>          <span class="o">=&gt;</span> <span class="s1">'refresh'</span><span class="p">,</span>
+        <span class="s1">'reset'</span>            <span class="o">=&gt;</span> <span class="s1">'reset'</span><span class="p">,</span>
+        <span class="s1">'fresh'</span>            <span class="o">=&gt;</span> <span class="s1">'fresh'</span><span class="p">,</span>
         <span class="s1">'status'</span>           <span class="o">=&gt;</span> <span class="s1">'status'</span><span class="p">,</span>
+        <span class="s1">'preview'</span>          <span class="o">=&gt;</span> <span class="s1">'preview'</span><span class="p">,</span>
     <span class="p">];</span>
 
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$action</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">$name</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="sd">/**</span>
+<span class="sd">    * Actions that require a version number argument.</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$requires_version</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'migrate-to'</span><span class="p">,</span>
+        <span class="s1">'rollback-to'</span><span class="p">,</span>
+    <span class="p">];</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Actions that honor --dry-run.</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$supports_dry_run</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'run'</span><span class="p">,</span>
+        <span class="s1">'migrate-to'</span><span class="p">,</span>
+    <span class="p">];</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Valid migration template types.</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">static</span> <span class="nv">$valid_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'create'</span><span class="p">,</span> <span class="s1">'modify'</span><span class="p">,</span> <span class="s1">'drop'</span><span class="p">];</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * @param string|null $action  Action to run (default: run)</span>
+<span class="sd">    * @param array       $flags   Flags such as --dry-run, --force, --type=modify</span>
+<span class="sd">    * @param string|null $name    Migration name, version, or step count</span>
+<span class="sd">    * @param string|null $extra   Optional positional migration type (create-migration)</span>
+<span class="sd">    */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$action</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">$name</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nv">$extra</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
     <span class="p">{</span>
         <span class="nv">$action</span> <span class="o">=</span> <span class="nv">$action</span> <span class="o">??</span> <span class="s1">'run'</span><span class="p">;</span>
 
+        <span class="c1">// cli.php only treats `--x` as a flag, so `-h` arrives as a positional</span>
+        <span class="c1">// (either as the action or as the name).</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'-h'</span> <span class="o">||</span> <span class="nv">$action</span> <span class="o">===</span> <span class="s1">'help'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">print_help</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_flag</span><span class="p">(</span><span class="nv">$flags</span><span class="p">,</span> <span class="s1">'help'</span><span class="p">)</span> <span class="o">||</span> <span class="nv">$name</span> <span class="o">===</span> <span class="s1">'-h'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">print_help</span><span class="p">(</span><span class="nv">$action</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Unknown migration action: </span><span class="se">\"</span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="se">\"</span><span class="s2">"</span><span class="p">);</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Unknown migration action: </span><span class="se">\"</span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="se">\"</span><span class="s2">"</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
             <span class="k">echo</span> <span class="s2">"Available actions: "</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">', '</span><span class="p">,</span> <span class="nb">array_keys</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+            <span class="k">echo</span> <span class="s2">"Run `php lava migration --help` for usage details."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
             <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'create-migration'</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Migration name is required."</span><span class="p">);</span>
-                <span class="k">echo</span> <span class="s2">"Example: php lava migrate create-migration create_user_table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-                <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="nv">$route</span> <span class="o">=</span> <span class="s1">'create-migration/'</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nv">$route</span> <span class="o">=</span> <span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">];</span>
+        <span class="nv">$dry_run</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_flag</span><span class="p">(</span><span class="nv">$flags</span><span class="p">,</span> <span class="s1">'dry-run'</span><span class="p">);</span>
+
+        <span class="c1">// Never print "dry run" for an action that would really execute</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$dry_run</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$action</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$supports_dry_run</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"--dry-run is only supported for: "</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">', '</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$supports_dry_run</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+            <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nv">$route</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">build_route</span><span class="p">(</span><span class="nv">$action</span><span class="p">,</span> <span class="nv">$flags</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$route</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="nv">$index</span> <span class="o">=</span> <span class="nx">PUBLIC_DIR</span> <span class="o">.</span> <span class="s1">'index.php'</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$index</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"index.php not found at: </span><span class="si">{</span><span class="nv">$index</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"index.php not found at: </span><span class="si">{</span><span class="nv">$index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
             <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="nv">$command</span> <span class="o">=</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s1">'php %s %s'</span><span class="p">,</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$index</span><span class="p">),</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$route</span><span class="p">));</span>
-        <span class="nb">passthru</span><span class="p">(</span><span class="nv">$command</span><span class="p">);</span>
+        <span class="c1">// Options are handed to the child process through its environment</span>
+        <span class="c1">// (reset first so nothing leaks in from the parent shell).</span>
+        <span class="nb">putenv</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">ENV_DRY_RUN</span><span class="p">);</span>
+        <span class="nb">putenv</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">ENV_FORCE</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$dry_run</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">putenv</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">ENV_DRY_RUN</span> <span class="o">.</span> <span class="s1">'=1'</span><span class="p">);</span>
+            <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">info</span><span class="p">(</span><span class="s2">"Dry run enabled — no changes will be made."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'fresh'</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_flag</span><span class="p">(</span><span class="nv">$flags</span><span class="p">,</span> <span class="s1">'force'</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nb">putenv</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">ENV_FORCE</span> <span class="o">.</span> <span class="s1">'=1'</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nv">$php</span>     <span class="o">=</span> <span class="nb">defined</span><span class="p">(</span><span class="s1">'PHP_BINARY'</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">PHP_BINARY</span> <span class="o">!==</span> <span class="s1">''</span> <span class="o">?</span> <span class="nx">PHP_BINARY</span> <span class="o">:</span> <span class="s1">'php'</span><span class="p">;</span>
+        <span class="nv">$command</span> <span class="o">=</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s1">'%s %s %s'</span><span class="p">,</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$php</span><span class="p">),</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$index</span><span class="p">),</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$route</span><span class="p">));</span>
+
+        <span class="nv">$exit_code</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nb">passthru</span><span class="p">(</span><span class="nv">$command</span><span class="p">,</span> <span class="nv">$exit_code</span><span class="p">);</span>
+
+        <span class="c1">// Propagate the child's exit status so scripts/CI can detect failures</span>
+        <span class="k">exit</span><span class="p">((</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$exit_code</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Build the framework route string from CLI arguments.</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param  string      $action</span>
+<span class="sd">    * @param  array       $flags</span>
+<span class="sd">    * @param  string|null $name</span>
+<span class="sd">    * @param  string|null $extra</span>
+<span class="sd">    * @return string|null  Route string, or null on validation failure</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">build_route</span><span class="p">(</span><span class="nv">$action</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$flags</span><span class="p">,</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$extra</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// create-migration requires a name</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'create-migration'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Migration name is required."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migration create-migration create_user_table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"         php lava migration create-migration add_status_to_posts_table modify"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="c1">// The name becomes a URL segment, so keep it route-safe</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">preg_match</span><span class="p">(</span><span class="s1">'/^[A-Za-z][A-Za-z0-9_\-]*$/'</span><span class="p">,</span> <span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="nv">$name</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Invalid migration name </span><span class="se">\"</span><span class="si">{</span><span class="nv">$name</span><span class="si">}</span><span class="se">\"</span><span class="s2">. Use letters, numbers and underscores."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$type</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">extract_type</span><span class="p">(</span><span class="nv">$flags</span><span class="p">,</span> <span class="nv">$extra</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nv">$route</span> <span class="o">=</span> <span class="s1">'create-migration/'</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$type</span> <span class="o">!==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$route</span> <span class="o">.=</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="nv">$type</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nv">$route</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// migrate-to / rollback-to require a version</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$action</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$requires_version</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">===</span> <span class="k">null</span> <span class="o">||</span> <span class="o">!</span><span class="nb">ctype_digit</span><span class="p">((</span><span class="nx">string</span><span class="p">)</span> <span class="nv">$name</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"A numeric version is required for </span><span class="se">\"</span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="se">\"</span><span class="s2">."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migration </span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="s2"> 5"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">]</span> <span class="o">.</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$name</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// rollback accepts an optional step count (default 1)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">===</span> <span class="s1">'rollback'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$steps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">!==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">ctype_digit</span><span class="p">((</span><span class="nx">string</span><span class="p">)</span> <span class="nv">$name</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$name</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Steps must be a positive number."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                    <span class="k">echo</span> <span class="s2">"Example: php lava migration rollback 3"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nv">$steps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$name</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">]</span> <span class="o">.</span> <span class="s1">'/'</span> <span class="o">.</span> <span class="nv">$steps</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Static route for everything else</span>
+        <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Extract the migration type.</span>
+<span class="sd">    *</span>
+<span class="sd">    * Accepts: --type=modify, --create/--modify/--drop, a positional type</span>
+<span class="sd">    * argument, or a bare type word among the flags.</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param  array       $flags</span>
+<span class="sd">    * @param  string|null $positional</span>
+<span class="sd">    * @return string|null|false  Type, null for "use default", false on an invalid value</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">extract_type</span><span class="p">(</span><span class="k">array</span> <span class="nv">$flags</span><span class="p">,</span> <span class="nv">$positional</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// --type=modify  (cli.php gives $flags['type'] = 'modify')</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">array_key_exists</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="nv">$flags</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$type</span> <span class="o">=</span> <span class="nv">$flags</span><span class="p">[</span><span class="s1">'type'</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">in_array</span><span class="p">(</span><span class="nv">$type</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$valid_types</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$type</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"Invalid migration type. Allowed: "</span> <span class="o">.</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">', '</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$valid_types</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"."</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+            <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Shorthand flags: --create, --modify, --drop</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$valid_types</span> <span class="k">as</span> <span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">has_flag</span><span class="p">(</span><span class="nv">$flags</span><span class="p">,</span> <span class="nv">$type</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nv">$type</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Optional third positional (needs cli.php to pass it, see notes)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$positional</span> <span class="o">!==</span> <span class="k">null</span> <span class="o">&amp;&amp;</span> <span class="nb">in_array</span><span class="p">(</span><span class="nv">$positional</span><span class="p">,</span> <span class="k">static</span><span class="o">::</span><span class="nv">$valid_types</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$positional</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Check for a flag. cli.php parses `--dry-run` into $flags['dry-run'] = true</span>
+<span class="sd">    * and `--type=x` into $flags['type'] = 'x'. A raw "--name" entry is also</span>
+<span class="sd">    * accepted in case the flags ever arrive as a plain list.</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param  array  $flags</span>
+<span class="sd">    * @param  string $name   Flag name without the leading dashes</span>
+<span class="sd">    * @return bool</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">has_flag</span><span class="p">(</span><span class="k">array</span> <span class="nv">$flags</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">array_key_exists</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$flags</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$flags</span><span class="p">[</span><span class="nv">$name</span><span class="p">]</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">in_array</span><span class="p">(</span><span class="s1">'--'</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">,</span> <span class="nv">$flags</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Local output helpers: cli.php only defines danger() and success(),</span>
+<span class="sd">    * so info() and bold() are provided here instead of relying on globals.</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">info</span><span class="p">(</span><span class="nv">$string</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"\e[0;36m"</span> <span class="o">.</span> <span class="nv">$string</span> <span class="o">.</span> <span class="s2">"\e[0m"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">bold</span><span class="p">(</span><span class="nv">$string</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"\e[1m"</span> <span class="o">.</span> <span class="nv">$string</span> <span class="o">.</span> <span class="s2">"\e[0m"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Print help text for the migration command.</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param string|null $action  Specific action to describe, or null for all</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">print_help</span><span class="p">(</span><span class="nv">$action</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$action</span> <span class="o">&amp;&amp;</span> <span class="nv">$action</span> <span class="o">!==</span> <span class="s1">'run'</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$route_map</span><span class="p">[</span><span class="nv">$action</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">print_action_help</span><span class="p">(</span><span class="nv">$action</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bold</span><span class="p">(</span><span class="s2">"Migration Command"</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nb">str_repeat</span><span class="p">(</span><span class="s2">"="</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"Usage: php lava migration [action] [options]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+
+        <span class="k">echo</span> <span class="s2">"Available actions:"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  run                              Run all pending migrations (default)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  migrate-to &lt;version&gt;             Run migrations up to a specific version"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  create-migration &lt;name&gt; [type]   Create a new migration file"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  rollback [steps]                 Rollback N batches (default: 1)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  rollback-to &lt;version&gt;            Rollback down to a specific version"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  rollback-all                     Rollback all applied migrations"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  refresh                          Rollback all + re-run all migrations"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  reset                            Rollback all (without re-running)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  fresh                            Drop ALL tables and re-run migrations"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  status                           Show migration status table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  preview                          Show pending migration UP code"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+
+        <span class="k">echo</span> <span class="s2">"Options:"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  --help, -h                       Show this help or action-specific help"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  --dry-run                        Show what would run, change nothing (run, migrate-to)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  --force                          Skip the confirmation prompt (fresh)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  --type=create|modify|drop        Migration template type"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  --create, --modify, --drop       Shorthand for --type"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+
+        <span class="k">echo</span> <span class="s2">"Examples:"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration run"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration run --dry-run"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration create-migration create_users_table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration create-migration add_status_to_posts_table --type=modify"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration rollback 3"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration rollback-to 5"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration migrate-to 8 --dry-run"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration status"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="s2">"  php lava migration fresh"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * Print help text for a specific action.</span>
+<span class="sd">    *</span>
+<span class="sd">    * @param string $action</span>
+<span class="sd">    */</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">print_action_help</span><span class="p">(</span><span class="nv">$action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bold</span><span class="p">(</span><span class="s2">"Migration: </span><span class="si">{</span><span class="nv">$action</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="k">echo</span> <span class="nb">str_repeat</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+
+        <span class="k">switch</span> <span class="p">(</span><span class="nv">$action</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s1">'run'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Run all pending migrations in ascending version order."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration run [--dry-run]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Aliases: php lava migration (no args)"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'migrate-to'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Run migrations up to (and including) the given version."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration migrate-to &lt;version&gt; [--dry-run]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migration migrate-to 5"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'create-migration'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Create a new numbered migration file."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration create-migration &lt;name&gt; [--type=TYPE]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Types:   create (default), modify, drop"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Examples:"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"  php lava migration create-migration create_users_table"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"  php lava migration create-migration add_email_to_users_table modify"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"  php lava migration create-migration drop_old_logs_table drop"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'rollback'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Rollback the most recent migration batch (or N batches)."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration rollback [steps]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migration rollback 3"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'rollback-to'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Rollback all migrations newer than the given version."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration rollback-to &lt;version&gt;"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Example: php lava migration rollback-to 3"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'rollback-all'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Rollback every applied migration in reverse version order."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration rollback-all"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'refresh'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Rollback all migrations, then re-run them."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration refresh"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'reset'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Rollback all migrations WITHOUT re-running them."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration reset"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'fresh'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Drop ALL database tables and re-run all migrations."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="nx">danger</span><span class="p">(</span><span class="s2">"WARNING: This destroys all data!"</span><span class="p">)</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration fresh [--force]"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"         --force skips the 'yes' confirmation prompt"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'status'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Display a table of all migrations and their applied/pending state."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration status"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="s1">'preview'</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"Show the up() method body of all pending migrations."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">echo</span> <span class="s2">"Usage:   php lava migration preview"</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">default</span><span class="o">:</span>
+                <span class="k">echo</span> <span class="s2">"No help available for this action."</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+        <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -367,7 +856,7 @@ It provides a structured and versioned way to track and apply changes (such as c
 </li>
 <li><p><strong>Rollback the last migration batch</strong></p>
 <p>Run:</p>
-<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">php</span> <span class="nx">lava</span> <span class="nx">migration</span> <span class="nx">rollback</span>
+<div class="highlight-html+php notranslate"><div class="highlight"><pre><span></span><span class="nx">php</span> <span class="nx">lava</span> <span class="nx">migration</span> <span class="nx">rollback</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
@@ -392,8 +881,14 @@ It provides a structured and versioned way to track and apply changes (such as c
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">migrate()</span></code></p></td>
 <td><p>Executes all available migration files that have not been run yet</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rollback()</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">migrate_to($version)</span></code></p></td>
+<td><p>Executes all available migration files up to (and including) the given version</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rollback()</span></code></p></td>
 <td><p>Reverts (drops) the most recent migration batch</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rollback_to($version)</span></code></p></td>
+<td><p>Reverts (drops) all migration batches newer than the given version</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rollback-all()</span></code></p></td>
 <td><p>Reverts (drops) all migration batch</p></td>
@@ -401,8 +896,17 @@ It provides a structured and versioned way to track and apply changes (such as c
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">refresh()</span></code></p></td>
 <td><p>Refresh  migration batch</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reset()</span></code></p></td>
+<td><p>Reverts (drops) all migration batch without re-running them</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fresh()</span></code></p></td>
+<td><p>Drop ALL database tables and re-run all migrations</p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">status()</span></code></p></td>
 <td><p>Show status of migration batch</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">preview()</span></code></p></td>
+<td><p>Show the up() method body of all pending migrations</p></td>
 </tr>
 </tbody>
 </table>
